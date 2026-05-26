@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF8C00">
+    <title>ISKCON Complete Mantra System</title>
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
+    
+    <!-- ============================================== -->
+    <!-- 🎨 CSS STYLES DIRECTLY INJECTED HERE -->
+    <!-- ============================================== -->
+    <style>
+        /* ROOT VARIABLES FOR DYNAMIC FONT SIZING & THEMING */
+        :root {
+            --bg-color: #fdfaf6;
+            --saffron-main: #FF8C00;
+            --saffron-dark: #E65100;
+            --text-scale: 1; /* For dynamic resizing */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .bg-saffron {
+            background: linear-gradient(135deg, var(--saffron-main), var(--saffron-dark)) !important;
+        }
+
+        .text-saffron {
+            color: var(--saffron-dark) !important;
+        }
+
+        /* SANSKRIT FONT STYLING */
+        .sanskrit-text {
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            line-height: 1.8;
+            color: #b71c1c !important;
+            font-size: calc(1.3rem * var(--text-scale));
+        }
+
+        .translation-text {
+            font-size: calc(1.1rem * var(--text-scale));
+            line-height: 1.7;
+        }
+
+        .scale-text p, .scale-text {
+            font-size: calc(1rem * var(--text-scale));
+        }
+
+        /* NAVBAR CONTROLS */
+        .brand-text {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* NEW: FLOATING FONT WIDGET */
+        .floating-font-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1050;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .floating-font-control:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .font-btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            border-radius: 50%;
+        }
+        
+        .font-btn:hover {
+            background: var(--saffron-main);
+            color: white !important;
+            transform: scale(1.1);
+        }
+
+        /* SELECT OPTIONS UI */
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        .category-select {
+            background-color: #fffaf0;
+            transition: all 0.3s;
+        }
+        .category-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(255, 140, 0, 0.25);
+            background-color: #fff;
+        }
+
+        /* MANTRA CARDS */
+        .mantra-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid rgba(255, 140, 0, 0.1);
+            border-bottom: 4px solid var(--saffron-main);
+            cursor: pointer;
+        }
+
+        .mantra-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1) !important;
+            border-bottom: 4px solid #b71c1c;
+        }
+
+        .mantra-card .card-title {
+            font-size: calc(1.2rem * var(--text-scale));
+        }
+        .mantra-card .card-text {
+            font-size: calc(1.1rem * var(--text-scale)) !important;
+        }
+
+        /* BACKGROUND CANVAS */
+        #devotionalCanvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .header-content {
+            z-index: 2;
+        }
+
+        /* MODAL STYLES */
+        .devotional-border {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .hover-lift {
+            transition: transform 0.2s;
+        }
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+
+        /* ANIMATIONS */
+        .spinner-slow {
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* CUSTOM SCROLLBAR FOR MODAL */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--saffron-main); 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--saffron-dark); 
+        }
+
+        /* APP-LIKE NATIVE TOAST NOTIFICATION */
+        #appToast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #323232;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 1060; /* Above modal */
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+        }
+        #appToast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px; /* Slides up slightly */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Animation Canvas -->
+    <canvas id="devotionalCanvas"></canvas>
+
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-saffron sticky-top shadow">
+        <div class="container">
+            <!-- Back Button Go Home & Brand -->
+            <div class="d-flex align-items-center">
+                <a href="go:home" class="btn btn-sm btn-outline-light me-3 rounded-circle" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" title="Go Home">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <a class="navbar-brand fw-bold fs-4 d-flex align-items-center mb-0" href="#">
+                    <i class="fa-solid fa-hands-praying me-2 text-white"></i> 
+                    <span class="brand-text">ISKCON Mantras</span>
+                </a>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <!-- Language Selector -->
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-language text-white me-2 fs-4"></i>
+                    <select id="langSelector" class="form-select form-select-sm shadow-sm fw-bold border-0 cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="hi" selected>हिंदी</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NEW: Floating Font Sizer Widget -->
+    <div class="floating-font-control rounded-pill p-2 d-flex align-items-center border border-2 border-warning">
+        <button class="btn btn-sm text-saffron font-btn border-0 shadow-none" onclick="changeFontSize(-0.1)" title="Decrease Text Size"><i class="fa-solid fa-minus"></i></button>
+        <div class="d-flex flex-column align-items-center mx-2" style="line-height: 1;">
+            <span class="text-dark fw-bold fs-5">A</span>
+            <span class="text-muted" style="font-size: 0.6rem;">Size</span>
+        </div>
+        <button class="btn btn-sm text-saffron font-btn border-0 shadow-none" onclick="changeFontSize(0.1)" title="Increase Text Size"><i class="fa-solid fa-plus"></i></button>
+        <div class="vr mx-1"></div>
+        <button class="btn btn-sm text-secondary font-btn border-0 shadow-none ms-1" onclick="resetFontSize()" title="Reset Text Size"><i class="fa-solid fa-rotate-right"></i></button>
+    </div>
+
+    <!-- Header Section -->
+    <header class="text-center py-5 position-relative header-content">
+        <div class="container">
+            <div class="hero-box p-4 rounded-4 shadow-sm mx-auto" style="max-width: 800px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);">
+                <i class="fa-solid fa-dharmachakra fs-1 text-saffron mb-2 spinner-slow"></i>
+                <h1 class="fw-bolder display-5 text-dark">Mantra Knowledge System</h1>
+                <p class="lead fw-bold text-saffron mb-4" id="headerSubtext">सम्पूर्ण गौड़ीय वैष्णव मंत्र</p>
+                
+                <div class="row justify-content-center g-3">
+                    <div class="col-12">
+                        <div class="search-wrapper position-relative shadow-sm rounded-pill overflow-hidden border border-2 border-warning">
+                            <span class="position-absolute top-50 start-0 translate-middle-y ms-3 text-saffron"><i class="fa-solid fa-magnifying-glass fs-5"></i></span>
+                            <input type="text" id="searchInput" class="form-control form-control-lg border-0 fw-medium bg-white ps-5" placeholder="मंत्र खोजें (उदा. हरे कृष्ण)...">
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <select id="categoryFilter" class="form-select form-select-lg shadow-sm border border-2 border-warning text-center fw-bold text-dark rounded-pill cursor-pointer category-select">
+                            <option value="ALL">All Categories / सभी श्रेणियाँ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-5 position-relative z-index-1">
+        <div class="row g-4" id="mantraContainer"></div>
+    </main>
+
+    <!-- Mantra Modal -->
+    <div class="modal fade" id="mantraModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-md-down modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content devotional-border border-0 shadow-lg">
+                <div class="modal-header bg-saffron text-white border-0">
+                    <h5 class="modal-title fw-bold fs-4 d-flex align-items-center" id="modalTitle">
+                        <i class="fa-solid fa-leaf me-2"></i> <span>Mantra Title</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-md-5 p-4 custom-scrollbar">
+                    <span class="badge bg-warning text-dark mb-4 px-4 py-2 fs-6 rounded-pill shadow-sm fw-bold border border-white" id="modalCategory">Category</span>
+                    
+                    <div class="sanskrit-text text-danger mb-4 fw-bold scale-text" id="modalSanskrit"></div>
+                    
+                    <div class="d-flex justify-content-center mb-4">
+                        <hr class="text-muted w-25 border-2 rounded-pill">
+                        <i class="fa-solid fa-fan mx-3 text-warning fs-5 spinner-slow"></i>
+                        <hr class="text-muted w-25 border-2 rounded-pill">
+                    </div>
+                    
+                    <div class="translation-text text-dark mb-4 fw-semibold scale-text" id="modalTranslation"></div>
+                    
+                    <div class="meaning-box bg-light p-4 rounded-4 shadow-sm border-start border-warning border-4 text-start mt-4 scale-text">
+                        <h5 class="fw-bold text-saffron mb-3"><i class="fa-solid fa-book-open"></i> <span id="meaningLabel">अर्थ (Meaning)</span>:</h5>
+                        <p class="mb-0 text-secondary lh-lg fw-medium" id="modalMeaning">Meaning text</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center bg-light border-0">
+                    <button type="button" class="btn btn-outline-dark px-4 fw-bold rounded-pill shadow-sm hover-lift" id="copyBtn">
+                        <i class="fa-regular fa-copy me-1"></i> Copy
+                    </button>
+                    <button type="button" class="btn btn-success px-4 fw-bold rounded-pill shadow-sm hover-lift" id="shareBtn" style="background-color: #25D366; border-color: #25D366;">
+                        <i class="fa-brands fa-whatsapp me-1"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Native-like Toast Notification -->
+    <div id="appToast"><i class="fa-solid fa-circle-check text-success me-2"></i> Mantra copied! हरि बोल!</div>
+
+    <!-- External Database File -->
+    <script src="database.js"></script> 
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ============================================== -->
+    <!-- ⚙️ JAVASCRIPT LOGIC DIRECTLY INJECTED HERE -->
+    <!-- ============================================== -->
+    <script>
+        let currentLang = 'hi';
+
+        // UI Strings for Localization
+        const uiStrings = {
+            en: { search: "Search mantras or meaning...", meaning: "Meaning", all: "All Categories", subtext: "Complete Gaudiya Vaishnava Mantras", empty: "No mantras found. Try different words." },
+            hi: { search: "मंत्र या अर्थ खोजें...", meaning: "अर्थ", all: "सभी श्रेणियाँ", subtext: "सम्पूर्ण गौड़ीय वैष्णव मंत्र", empty: "कोई मंत्र नहीं मिला। दूसरे शब्द आज़माएँ।" },
+            mr: { search: "मंत्र किंवा अर्थ शोधा...", meaning: "अर्थ", all: "सर्व श्रेणी", subtext: "संपूर्ण गौडीय वैष्णव मंत्र", empty: "कोणतेही मंत्र आढळले नाहीत. दुसरे शब्द वापरून पहा." }
+        };
+
+        // CATEGORY TRANSLATIONS DICTIONARY
+        const catTranslations = {
+            "FOUNDATION MANTRAS": { en: "Foundation Mantras", hi: "मूल मंत्र", mr: "पायाभूत मंत्र" },
+            "MORNING PURIFICATION MANTRAS": { en: "Morning Purification", hi: "प्रातः शुद्धि मंत्र", mr: "सकाळचे शुद्धीकरण मंत्र" },
+            "TILAK MANTRAS": { en: "Tilak Mantras", hi: "तिलक मंत्र", mr: "टिळक मंत्र" },
+            "GURU PARAMPARA MANTRAS": { en: "Guru Parampara", hi: "गुरु परम्परा मंत्र", mr: "गुरु परंपरा मंत्र" },
+            "DEITY PRANAMA MANTRAS": { en: "Deity Pranama", hi: "भगवान प्रणाम मंत्र", mr: "देवता प्रणाम मंत्र" },
+            "JAPA & KIRTAN MANTRAS": { en: "Japa & Kirtan", hi: "जप एवं कीर्तन मंत्र", mr: "जप आणि कीर्तन मंत्र" },
+            "TULASI MAHARANI MANTRAS": { en: "Tulasi Maharani", hi: "तुलसी महारानी मंत्र", mr: "तुळशी महाराणी मंत्र" },
+            "BHOGA & PRASADAM MANTRAS": { en: "Bhoga & Prasadam", hi: "भोग एवं प्रसाद मंत्र", mr: "नैवेद्य आणि प्रसाद मंत्र" },
+            "TEMPLE ENTRY MANTRAS": { en: "Temple Entry", hi: "मन्दिर प्रवेश मंत्र", mr: "मंदिर प्रवेश मंत्र" },
+            "DAILY ARATI & STOTRAS": { en: "Daily Arati & Stotras", hi: "दैनिक आरती एवं स्तोत्र", mr: "दैनंदिन आरती आणि स्तोत्रे" },
+            "SCRIPTURE RECITATION MANTRAS": { en: "Scripture Recitation", hi: "शास्त्र पाठ मंत्र", mr: "शास्त्र पठण मंत्र" },
+            "ARCANA & PUJA MANTRAS": { en: "Arcana & Puja", hi: "अर्चन एवं पूजा मंत्र", mr: "अर्चन आणि पूजा मंत्र" },
+            "ABHISHEK MANTRAS": { en: "Abhishek Mantras", hi: "अभिषेक मंत्र", mr: "अभिषेक मंत्र" },
+            "YAJNA MANTRAS": { en: "Yajna Mantras", hi: "यज्ञ मंत्र", mr: "यज्ञ मंत्र" },
+            "HOLY PLACE PRANAMA": { en: "Holy Place Pranama", hi: "धाम प्रणाम मंत्र", mr: "धाम प्रणाम मंत्र" },
+            "FESTIVAL MANTRAS": { en: "Festival Mantras", hi: "त्यौहार मंत्र", mr: "उत्सव मंत्र" },
+            "KSHAMA PRARTHANA": { en: "Kshama Prarthana", hi: "क्षमा प्रार्थना", mr: "क्षमा प्रार्थना" }
+        };
+
+        // DOM Elements
+        const mantraContainer = document.getElementById('mantraContainer');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const langSelector = document.getElementById('langSelector');
+        let mantraModalInstance;
+
+        // Font Scaling Logic
+        let currentFontScale = 1.0;
+        function changeFontSize(step) {
+            currentFontScale += step;
+            if (currentFontScale < 0.7) currentFontScale = 0.7; // Minimum limit
+            if (currentFontScale > 1.8) currentFontScale = 1.8; // Maximum limit
+            document.documentElement.style.setProperty('--text-scale', currentFontScale);
+        }
+        function resetFontSize() {
+            currentFontScale = 1.0;
+            document.documentElement.style.setProperty('--text-scale', currentFontScale);
+        }
+
+        // Custom Native-like Toast Function
+        function showAppToast(message) {
+            const toast = document.getElementById("appToast");
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-success me-2"></i> ${message}`;
+            toast.classList.add("show");
+            
+            // Hide after 2.5 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            mantraModalInstance = new bootstrap.Modal(document.getElementById('mantraModal'));
+            initCategories();
+            updateUILanguage();
+            renderMantras(mantras);
+            initCanvasAnimation(); 
+            setupBackButtonFix();
+        });
+
+        // Category Population with Translation
+        function initCategories() {
+            const currentSelection = categoryFilter.value;
+            categoryFilter.innerHTML = `<option value="ALL">${uiStrings[currentLang].all}</option>`;
+            
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = catTranslations[cat] ? catTranslations[cat][currentLang] : cat;
+                categoryFilter.appendChild(option);
+            });
+            
+            // Restore selection if it still exists
+            if(currentSelection) {
+                categoryFilter.value = currentSelection;
+            }
+        }
+
+        // Render Mantras
+        function renderMantras(data) {
+            mantraContainer.innerHTML = '';
+            
+            if(data.length === 0) {
+                mantraContainer.innerHTML = `<div class="text-center w-100 py-5"><h4 class="text-muted fw-bold"><i class="fa-solid fa-circle-exclamation text-warning mb-2 fs-1"></i><br>${uiStrings[currentLang].empty}</h4></div>`;
+                return;
+            }
+
+            data.forEach(mantra => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+                const shortSanskrit = mantra.sanskrit.split('\n')[0] + '...';
+                
+                const translatedCat = catTranslations[mantra.category] ? catTranslations[mantra.category][currentLang] : mantra.category;
+
+                col.innerHTML = `
+                    <div class="card mantra-card h-100 p-4 rounded-4" onclick="openMantra('${mantra.id}')">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <span class="badge bg-warning text-dark mb-3 mx-auto px-3 py-2 rounded-pill fw-bold border border-white shadow-sm" style="font-size:0.75rem;">${translatedCat}</span>
+                            <h5 class="card-title fw-bold text-saffron mb-3">${mantra.title}</h5>
+                            <p class="card-text sanskrit-text mb-0">
+                                ${shortSanskrit}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                mantraContainer.appendChild(col);
+            });
+        }
+
+        // Listeners
+        searchInput.addEventListener('input', applyFilters);
+        categoryFilter.addEventListener('change', applyFilters);
+
+        langSelector.addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            updateUILanguage();
+            applyFilters(); 
+        });
+
+        // 🧠 POWERFUL SMART & FUZZY SEARCH
+        function applyFilters() {
+            const queryWords = searchInput.value.toLowerCase().split(' ').filter(w => w.trim() !== '');
+            const category = categoryFilter.value;
+            
+            const filtered = mantras.filter(m => {
+                const megaSearchString = `
+                    ${m.title.toLowerCase()}
+                    ${m.sanskrit.toLowerCase()}
+                    ${m.translations.en ? m.translations.en.toLowerCase() : ''}
+                    ${m.translations.hi ? m.translations.hi.toLowerCase() : ''}
+                    ${m.translations.mr ? m.translations.mr.toLowerCase() : ''}
+                    ${m.meaning.en ? m.meaning.en.toLowerCase() : ''}
+                    ${m.meaning.hi ? m.meaning.hi.toLowerCase() : ''}
+                    ${m.meaning.mr ? m.meaning.mr.toLowerCase() : ''}
+                `;
+
+                const matchesSearch = queryWords.every(word => megaSearchString.includes(word));
+                const matchesCategory = category === "ALL" || m.category === category;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderMantras(filtered);
+        }
+
+        // Update UI text strings
+        function updateUILanguage() {
+            searchInput.placeholder = uiStrings[currentLang].search;
+            document.getElementById('meaningLabel').textContent = uiStrings[currentLang].meaning;
+            document.getElementById('headerSubtext').textContent = uiStrings[currentLang].subtext;
+            initCategories(); 
+        }
+
+        // Modal Data population
+        let currentMantraTextForCopy = "";
+
+        function openMantra(id) {
+            const mantra = mantras.find(m => m.id === id);
+            if(!mantra) return;
+
+            const translatedCat = catTranslations[mantra.category] ? catTranslations[mantra.category][currentLang] : mantra.category;
+
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-leaf me-2"></i> ${mantra.title}`;
+            document.getElementById('modalCategory').textContent = translatedCat;
+            document.getElementById('modalSanskrit').innerHTML = mantra.sanskrit.replace(/\n/g, '<br>');
+            document.getElementById('modalSanskrit').setAttribute('data-raw', mantra.sanskrit); 
+            document.getElementById('modalTranslation').innerHTML = mantra.translations[currentLang].replace(/\n/g, '<br>');
+            document.getElementById('modalMeaning').textContent = mantra.meaning[currentLang];
+
+            // Added ISKCON Hadapsar branding for Sketchware Sharing
+            currentMantraTextForCopy = `*${mantra.title}*\n\n${mantra.sanskrit}\n\n*Translation:*\n${mantra.translations[currentLang]}\n\n*Meaning:*\n${mantra.meaning[currentLang]}\n\n🙏 Hare Krishna!\n📍 ISKCON Hadapsar`;
+
+            mantraModalInstance.show();
+        }
+
+        // Hardware Back Button Closes Modal instead of exiting App (Important for Sketchware WebView)
+        function setupBackButtonFix() {
+            const modalEl = document.getElementById('mantraModal');
+            let isModalOpen = false;
+
+            modalEl.addEventListener('show.bs.modal', () => {
+                isModalOpen = true;
+                history.pushState({ modalOpened: true }, "", "#mantra");
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                isModalOpen = false;
+                if (window.location.hash === "#mantra") {
+                    history.back(); 
+                }
+            });
+
+            window.addEventListener('popstate', () => {
+                if (isModalOpen) {
+                    mantraModalInstance.hide();
+                }
+            });
+        }
+
+        // Copy & Share functions (Optimized for Sketchware Pro)
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            if (navigator.clipboard && window.isSecureContext) {
+                // Modern API
+                navigator.clipboard.writeText(currentMantraTextForCopy).then(() => { 
+                    showAppToast("Mantra copied! हरि बोल! 🙏"); 
+                }).catch(err => {
+                    showAppToast("Copied! हरि बोल! 🙏"); 
+                });
+            } else {
+                // Fallback for older WebView versions
+                let textArea = document.createElement("textarea");
+                textArea.value = currentMantraTextForCopy;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showAppToast("Mantra copied! हरि बोल! 🙏");
+                } catch (err) {
+                    showAppToast("Copied! हरि बोल! 🙏");
+                }
+                textArea.remove();
+            }
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const titleToShare = document.getElementById('modalTitle').innerText;
+            const textToShare = currentMantraTextForCopy;
+
+            // 1. Check for Sketchware Pro / Android WebView Custom JS Interfaces
+            if (typeof Android !== "undefined" && Android.shareText) {
+                Android.shareText(textToShare);
+            } else if (typeof Sketchware !== "undefined" && Sketchware.shareText) {
+                Sketchware.shareText(textToShare);
+            } 
+            // 2. Standard Web Share API (Modern WebViews support this)
+            else if (navigator.share) {
+                navigator.share({ 
+                    title: titleToShare, 
+                    text: textToShare 
+                }).catch((error) => console.log('Error sharing', error));
+            } 
+            // 3. Fallback: Direct Intent / WhatsApp URL for WebView intent capture
+            else {
+                const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(textToShare)}`;
+                window.location.href = whatsappUrl;
+            }
+        });
+
+        // Devotional Canvas Background Animation
+        function initCanvasAnimation() {
+            const canvas = document.getElementById('devotionalCanvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles =[];
+            const symbols =["🪷", "✨", "🌺", "🙏"];
+
+            for (let i = 0; i < 25; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 20 + 10,
+                    speedY: Math.random() * 0.4 + 0.1,
+                    speedX: (Math.random() - 0.5) * 0.4,
+                    opacity: Math.random() * 0.3 + 0.1,
+                    symbol: symbols[Math.floor(Math.random() * symbols.length)],
+                    isLight: Math.random() > 0.6
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.y -= p.speedY; p.x += p.speedX;
+                    if (p.y < -50) { p.y = height + 50; p.x = Math.random() * width; }
+                    
+                    ctx.globalAlpha = p.opacity;
+                    if (p.isLight) {
+                        ctx.beginPath(); ctx.arc(p.x, p.y, p.size/2, 0, Math.PI * 2);
+                        ctx.fillStyle = "#FF8C00"; ctx.fill();
+                    } else {
+                        ctx.font = `${p.size}px Arial`; 
+                        ctx.fillText(p.symbol, p.x, p.y);
+                    }
+                });
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
