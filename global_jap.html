@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Live Global Japa - ISKCON Hadapsar</title>
+    <meta name="description" content="Chant with Gurumaharaja every morning globally.">
+    
+    <!-- Preconnect to speed up font and library loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600;800;900&family=Cinzel:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+        /* ---------------- CSS OPTIMIZATIONS ---------------- */
+        :root {
+            --primary: #FF9933;
+            --primary-glow: rgba(255, 153, 51, 0.8);
+            --gold: #FFD700;
+            --bg-dark: #050505;
+            --glass-bg: rgba(20, 20, 25, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --success: #00E676;
+            --danger: #FF1744;
+            --server1: #2196F3;
+            --server2: #FF9800;
+            --server3: #E91E63;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            word-wrap: break-word; 
+            user-select: none;
+        }
+
+        input, .info-value, .copy-icon { user-select: auto; }
+
+        html {
+            background-color: var(--bg-dark); 
+            overflow-x: hidden;
+            width: 100%;
+            height: 100%;
+            overscroll-behavior: none; 
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #050505;
+            color: var(--text-main);
+            min-height: 100vh;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden; 
+            touch-action: pan-y; 
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        body::before {
+            background: radial-gradient(circle at 15% 50%, rgba(255, 153, 51, 0.08), transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(33, 150, 243, 0.08), transparent 50%);
+            animation: pulseBg 10s ease-in-out infinite alternate;
+        }
+        body::after {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+        }
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        #dashboard-view {
+            padding: 20px 15px 120px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: opacity 0.5s ease;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            transform: translateZ(0); 
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 20px;
+        }
+
+        .go-home-btn {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+        .go-home-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.15); }
+
+        .brand-badge {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 0.75rem; 
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.8));
+            padding: 10px 15px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+
+        .lang-switcher-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 30px;
+            padding: 4px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .lang-btn {
+            flex: 1;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 8px 0;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary), #E65100);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(255, 153, 51, 0.5);
+        }
+
+        .guru-profile {
+            margin-top: 5px;
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, #FF9933, #FFD700, #FF5252, #E040FB);
+            background-size: 400% 400%;
+            box-shadow: 0 0 40px var(--primary-glow);
+            animation: floatProfile 5s infinite ease-in-out, profileGradient 8s ease infinite;
+        }
+        .guru-profile img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-dark);
+            background-color: #222; 
+        }
+        @keyframes floatProfile {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes profileGradient {
+            0% { background-position: 0% 50%; box-shadow: 0 0 30px var(--primary-glow); }
+            50% { background-position: 100% 50%; box-shadow: 0 0 50px rgba(255, 215, 0, 0.6); }
+            100% { background-position: 0% 50%; box-shadow: 0 0 30px var(--primary-glow); }
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 20px;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ffffff, #ffcc80, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shineText 5s linear infinite;
+        }
+        @keyframes shineText { to { background-position: 200% center; } }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .clock-container {
+            text-align: center;
+            margin: 10px 0 25px 0;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,153,51,0.05);
+            backdrop-filter: blur(15px);
+            width: 100%;
+            max-width: 480px;
+        }
+        .digital-clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 8vw, 3.2rem); 
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 10px #FF9933, 0 0 20px #E65100;
+            letter-spacing: 2px; 
+            line-height: 1.1;
+        }
+        .date-display {
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+        }
+        .live-active {
+            background: rgba(255, 23, 68, 0.15);
+            border: 2px solid var(--danger);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 23, 68, 0.5), inset 0 0 15px rgba(255, 23, 68, 0.2);
+            animation: pulseStatus 2s infinite alternate;
+        }
+        .live-inactive {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+        }
+        .live-dot-anim {
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #fff, 0 0 25px var(--danger);
+            animation: blinkFast 0.8s infinite;
+        }
+        @keyframes blinkFast {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+        
+        .status-message {
+            font-size: 0.95rem;
+            color: #ffb74d;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        .novice-guide-banner {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(0, 230, 118, 0.15));
+            border: 2px solid rgba(0, 230, 118, 0.5);
+            width: 100%;
+            max-width: 480px;
+            padding: 18px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .guide-title {
+            font-weight: 800;
+            color: var(--gold);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .guide-steps {
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+        }
+        .guide-steps span { font-weight: 800; color: var(--success); }
+
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 22px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .server-1-card { border-top: 3px solid var(--server1); }
+        .server-2-card { border-top: 3px solid var(--server2); }
+        .server-3-card { border-top: 3px solid var(--server3); }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 900;
+            font-family: 'Orbitron', monospace;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .join-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+        
+        .btn-blue {
+            background: linear-gradient(135deg, #1976D2, #0D47A1);
+            box-shadow: 0 8px 20px rgba(25, 118, 210, 0.4);
+            border: 1px solid rgba(25, 118, 210, 0.6);
+        }
+        .btn-orange {
+            background: linear-gradient(135deg, #F57C00, #E65100);
+            box-shadow: 0 8px 20px rgba(245, 124, 0, 0.4);
+            border: 1px solid rgba(245, 124, 0, 0.6);
+        }
+        .btn-red {
+            background: linear-gradient(135deg, #D81B60, #880E4F);
+            box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4);
+            border: 1px solid rgba(216, 27, 96, 0.6);
+        }
+
+        .join-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: sweepLight 3s infinite;
+        }
+        @keyframes sweepLight { 0% { left: -100%; } 50%, 100% { left: 200%; } }
+        .join-btn:active { transform: scale(0.95); }
+        
+        .disabled-look {
+            background: linear-gradient(135deg, #333, #111) !important;
+            box-shadow: none !important; border: 1px solid #444 !important;
+            opacity: 0.7; pointer-events: auto;
+        }
+        .disabled-look::after { display: none; }
+
+        .btn-helper-text {
+            text-align: center; margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); font-weight: 600;
+        }
+
+        .input-group { display: flex; gap: 10px; margin-top: 12px; width: 100%; }
+        .custom-input {
+            width: 100%; padding: 14px 18px; border-radius: 15px; border: 2px solid var(--glass-border);
+            background: rgba(0,0,0,0.6); color: white; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; outline: none;
+        }
+        .custom-input::placeholder { color: rgba(255,255,255,0.4); }
+        .custom-input:focus { border-color: var(--primary); background: rgba(0,0,0,0.8); }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #00E676, #00B0FF); color: #050505; border: none; padding: 0 20px;
+            border-radius: 15px; font-weight: 900; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .save-btn:active { transform: scale(0.9); }
+
+        .japa-counter-wrapper {
+            text-align: center; border: 2px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(145deg, rgba(30,20,10,0.6), rgba(10,5,0,0.8));
+        }
+        .counter-display {
+            font-size: 6rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 50px rgba(255, 153, 51, 0.6); margin: 10px 0; line-height: 1; transition: transform 0.1s;
+        }
+        .round-display { color: var(--success); font-size: 1.1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
+        
+        .tap-btn {
+            background: linear-gradient(135deg, #FF9933, #E65100); padding: 22px; border-radius: 50px; font-size: 1.4rem;
+            border: 2px solid rgba(255,255,255,0.2); animation: pulseTapBtn 3s infinite;
+        }
+        @keyframes pulseTapBtn {
+            0% { box-shadow: 0 10px 30px rgba(230,81,0,0.5); }
+            50% { box-shadow: 0 15px 45px rgba(255,153,51,0.8); }
+            100% { box-shadow: 0 10px 30px rgba(230,81,0,0.5); }
+        }
+        .tap-btn:active { transform: scale(0.9) translateY(4px); background: linear-gradient(135deg, #E65100, #BF360C); }
+
+        .reset-link {
+            text-align: center; color: var(--danger); font-size: 0.95rem; font-weight: 700; margin-top: 20px;
+            cursor: pointer; padding: 10px; border-radius: 12px; background: rgba(255, 23, 68, 0.1); border: 1px solid rgba(255, 23, 68, 0.2);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+        }
+
+        .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border); }
+        .info-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .copy-icon {
+            color: var(--primary); background: rgba(255,153,51,0.1); padding: 10px 12px; border-radius: 12px; font-size: 1.1rem;
+            cursor: pointer; border: 1px solid rgba(255,153,51,0.2);
+        }
+        .copy-icon:active { transform: scale(0.85); background: var(--primary); color: #000; }
+
+        .custom-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); z-index: 300000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .custom-modal-overlay.show { display: flex; opacity: 1; }
+        .custom-modal-box {
+            background: var(--bg-dark); border: 2px solid var(--danger); border-radius: 30px; padding: 30px 20px; text-align: center;
+            max-width: 90%; width: 340px; transform: scale(0.8) translateY(30px); transition: all 0.4s;
+        }
+        .custom-modal-overlay.show .custom-modal-box { transform: scale(1) translateY(0); }
+        .modal-icon { font-size: 3rem; color: var(--danger); margin-bottom: 10px; }
+        .modal-title { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; }
+        .modal-text { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 10px; }
+        .modal-btn { flex: 1; padding: 12px; border-radius: 15px; font-size: 0.95rem; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; }
+        .cancel-btn { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .confirm-btn { background: linear-gradient(135deg, #FF1744, #D50000); color: white; }
+
+        .toast-msg {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px); color: #fff; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: bottom 0.5s; z-index: 400000; pointer-events: none; border: 1px solid var(--gold); text-align: center;
+        }
+        .toast-msg.show { bottom: 40px; }
+    </style>
+</head>
+<body>
+
+    <div id="dashboard-view">
+        
+        <div class="top-nav">
+            <!-- Fixed .html path transition -->
+            <a href="home.html" class="go-home-btn" data-i18n="nav_home">
+                <i class="fas fa-arrow-left"></i> Home
+            </a>
+            <div class="brand-badge">
+                ISKCON Hadapsar
+            </div>
+        </div>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher-container">
+            <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn" id="btn-lang-hi" onclick="setLanguage('hi')">हिंदी</button>
+            <button class="lang-btn" id="btn-lang-mr" onclick="setLanguage('mr')">मराठी</button>
+        </div>
+
+        <div class="guru-profile">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2fsqfFIEJzWn-oG13g9IlczIYfU3sLK9bNo1Gsx_efRvrw_TNfLgToEifQYmwB3IojWs6OERHE4sTSbilez9MmkbWgpVXyROK33dKy39mR04_4bXJy6o0e1YAHc_eV4Vndi_UuISaOKiL1KrQIQan9VpgyrA3Dzuv0lMVLFQzqzavWgSp-4mt6LUceiA/s554/1000236612.webp" alt="Loknath Swami" loading="lazy">
+        </div>
+
+        <h1 class="title" data-i18n="title">Live Global Japa</h1>
+        <p class="subtitle" data-i18n="subtitle">Chant with Gurumaharaja Globally</p>
+
+        <div class="clock-container">
+            <div class="digital-clock" id="clock-display">00:00:00</div>
+            <div class="date-display" id="date-display">-- --- ----</div>
+        </div>
+
+        <div id="status-badge" class="status-badge live-inactive">
+            <i class="far fa-clock"></i> <span data-i18n="status_checking">CHECKING TIME...</span>
+        </div>
+        <div id="status-message" class="status-message" data-i18n="status_wait_msg">Please wait...</div>
+
+        <!-- HOW TO USE GUIDE -->
+        <div class="novice-guide-banner">
+            <div class="guide-title" data-i18n="guide_title">🙏 New Here? How to Join:</div>
+            <div class="guide-steps">
+                <div data-i18n="guide_step1">Just click <span>"CONNECT"</span> button below to join instantly!</div>
+                <div data-i18n="guide_step2">If one server says <span style="color: #FF1744;">Full</span>, simply click the <span>Next Server</span>!</div>
+            </div>
+        </div>
+
+        <!-- SERVER 1 (PRIMARY) -->
+        <div class="info-card server-1-card">
+            <div class="info-label" style="color: var(--server1);">👑 <span data-i18n="srv_primary">Primary Meeting</span></div>
+            <div class="info-value" style="font-size: 1.1rem; color: #90CAF9;">Server 1</div>
+            
+            <button class="join-btn btn-blue" id="btn-server1" onclick="openZoomDirect('84368040601', 'eFNuMnRsS0IvdEM5K09xcVd6aTRYdz09')">
+                <i class="fas fa-video"></i> <span data-i18n="btn_server1">CONNECT SERVER 1</span>
+            </button>
+            <div class="btn-helper-text">
+                <i class="fas fa-bolt" style="color: #FFD700;"></i> <span data-i18n="helper_s1">Auto-Login. If full, try the one below 👇</span>
+            </div>
+        </div>
+
+        <!-- SERVER 2 (BACKUP) -->
+        <div class="info-card server-2-card">
+            <div class="info-label" style="color: var(--server2);">⚡ <span data-i18n="srv_backup">Backup Meeting</span></div>
+            <div class="info-value" style="font-size: 1.1rem; color: #FFCC80;">Server 2</div>
+            
+            <button class="join-btn btn-orange" id="btn-server2" onclick="openZoomDirect('9415113791', 'ZDVhdGIxMmduaW9QeGNDeUFHaG1uZz09')">
+                <i class="fas fa-satellite-dish"></i> <span data-i18n="btn_server2">CONNECT SERVER 2</span>
+            </button>
+            <div class="btn-helper-text" data-i18n="helper_s2">If this is full too, try the 3rd server 👇</div>
+        </div>
+
+        <!-- SERVER 3 (EMERGENCY) -->
+        <div class="info-card server-3-card">
+            <div class="info-label" style="color: var(--server3);">🚀 <span data-i18n="srv_emergency">Emergency Meeting</span></div>
+            <div class="info-value" style="font-size: 1.1rem; color: #F48FB1;">Server 3</div>
+            
+            <button class="join-btn btn-red" id="btn-server3" onclick="openZoomDirect('3194225127', '5aJrZfRLawmxdTBbXyjbSihPA3ZFTb.1')">
+                <i class="fas fa-rocket"></i> <span data-i18n="btn_server3">CONNECT SERVER 3</span>
+            </button>
+            <div class="btn-helper-text" style="color: #00E676;">
+                <i class="fas fa-unlock-alt"></i> <span data-i18n="helper_s3">Password is automatically injected!</span>
+            </div>
+        </div>
+
+        <!-- JAPA COUNTER -->
+        <div class="info-card japa-counter-wrapper">
+            <div class="info-label" style="color: #FFD700;"><i class="fas fa-om"></i> <span data-i18n="counter_title">Digital Japa Counter</span></div>
+            <div class="counter-display" id="bead-count">0</div>
+            <div class="round-display" id="round-count">Rounds Completed: 0</div>
+            
+            <button class="join-btn tap-btn" onclick="tapJapa()">
+                <span data-i18n="tap_btn">📿 TAP TO CHANT</span>
+            </button>
+            <div class="reset-link" onclick="resetJapa()"><i class="fas fa-sync-alt"></i> <span data-i18n="reset_btn">Reset Counter to Zero</span></div>
+        </div>
+
+        <!-- AUTO-LOGIN PROFILE -->
+        <div class="info-card" style="border: 1px solid var(--glass-border);">
+            <div class="info-label"><i class="fas fa-user-edit"></i> <span data-i18n="name_label">Enter Your Name (Optional)</span></div>
+            <div class="input-group">
+                <input type="text" id="devotee-name" class="custom-input" placeholder="Enter name here..." data-i18n-placeholder="name_placeholder">
+                <button class="save-btn" onclick="saveName()"><i class="fas fa-check"></i></button>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; text-align: center;" data-i18n="name_helper">
+                Works without a name too. <b>'ISKCON Hadapsar'</b> is added automatically!
+            </div>
+            <div style="font-size: 0.9rem; color: #00E676; font-weight: 700; margin-top: 12px; text-align: center; display: none;" id="saved-success-msg">
+                <i class="fas fa-check-circle"></i> <span data-i18n="name_saved">Name Saved! ✅</span>
+            </div>
+        </div>
+
+        <!-- MANUAL ENTRY IDS -->
+        <div class="info-card" style="opacity: 0.85;">
+            <div style="text-align: center; margin-bottom: 20px; font-weight: 800; color: #fff; font-size: 1rem;">
+                <i class="fas fa-info-circle"></i> <span data-i18n="manual_info">Manual Login Info (Backup)</span>
+            </div>
+            <div class="info-row">
+                <div>
+                    <div class="info-label">Server 1 ID (Pass: 1896)</div>
+                    <div class="info-value">843 6804 0601</div>
+                </div>
+                <i class="fas fa-copy copy-icon" onclick="copyText('84368040601', translations[currentLang].copied_s1)"></i>
+            </div>
+            <div class="info-row">
+                <div>
+                    <div class="info-label">Server 2 ID (Pass: 1896)</div>
+                    <div class="info-value">941 5113 791</div>
+                </div>
+                <i class="fas fa-copy copy-icon" onclick="copyText('9415113791', translations[currentLang].copied_s2)"></i>
+            </div>
+            <div class="info-row">
+                <div>
+                    <div class="info-label">Server 3 ID</div>
+                    <div class="info-value">319 4225 127</div>
+                </div>
+                <i class="fas fa-copy copy-icon" onclick="copyText('3194225127', translations[currentLang].copied_s3)"></i>
+            </div>
+            <div class="info-row" style="border:none; padding-bottom: 0;">
+                <div>
+                    <div class="info-label"><span data-i18n="s3_pass">Server 3 Passcode</span></div>
+                    <div class="info-value" style="color: var(--success);">0000</div>
+                </div>
+                <i class="fas fa-copy copy-icon" onclick="copyText('0000', translations[currentLang].copied_pass)"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PREMIUM CONFIRM MODAL -->
+    <div id="custom-confirm-modal" class="custom-modal-overlay">
+        <div class="custom-modal-box">
+            <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3 class="modal-title" data-i18n="modal_title">Reset Counter?</h3>
+            <p class="modal-text" data-i18n="modal_text">Kya aap sach mein apna japa counter zero karna chahte hain? Ye wapas nahi aayega, bhai!</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" onclick="closeResetModal()" data-i18n="modal_cancel">Nahi, Cancel</button>
+                <button class="modal-btn confirm-btn" onclick="confirmResetJapa()" data-i18n="modal_confirm">Haan, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST MSG -->
+    <div id="toast" class="toast-msg">Copied!</div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ---------------- TRANSLATIONS DICTIONARY ----------------
+        const translations = {
+            en: {
+                nav_home: "<i class='fas fa-arrow-left'></i> Home",
+                title: "Live Global Japa",
+                subtitle: "Chant with Gurumaharaja Globally",
+                status_checking: "CHECKING TIME...",
+                status_wait_msg: "Please wait...",
+                status_live: "LIVE NOW",
+                status_live_msg: "Gurumaharaja is chanting. Join any server below!",
+                status_next: "NEXT AT 5:15 AM",
+                status_next_msg: "Waiting for next live session... (5:15 AM IST)",
+                guide_title: "🙏 New Here? How to Join:",
+                guide_step1: "Just click <span>'CONNECT'</span> button below to join instantly!",
+                guide_step2: "If one server says <span style='color: #FF1744;'>Full</span>, simply click the <span>Next Server</span>!",
+                name_label: "Enter Your Name (Optional)",
+                name_placeholder: "Enter name here...",
+                name_helper: "Works without a name too. <b>'ISKCON Hadapsar'</b> is added automatically!",
+                name_saved: "Name Saved! ✅",
+                srv_primary: "Primary Meeting",
+                srv_backup: "Backup Meeting",
+                srv_emergency: "Emergency Meeting",
+                btn_server1: "CONNECT SERVER 1",
+                btn_server2: "CONNECT SERVER 2",
+                btn_server3: "CONNECT SERVER 3",
+                helper_s1: "Auto-Login. If full, try the one below 👇",
+                helper_s2: "If this is full too, try the 3rd server 👇",
+                helper_s3: "Password is automatically injected!",
+                counter_title: "Digital Japa Counter",
+                rounds_text: "Rounds Completed",
+                tap_btn: "📿 TAP TO CHANT",
+                reset_btn: "Reset Counter to Zero",
+                manual_info: "Manual Login Info (Backup)",
+                s3_pass: "Server 3 Passcode",
+                modal_title: "Reset Counter?",
+                modal_text: "Do you really want to reset your Japa counter to zero? This cannot be undone!",
+                modal_cancel: "No, Cancel",
+                modal_confirm: "Yes, Reset",
+                zoom_back: "Go Back",
+                copied_s1: "Server 1 ID Copied!",
+                copied_s2: "Server 2 ID Copied!",
+                copied_s3: "Server 3 ID Copied!",
+                copied_pass: "Password Copied!",
+                name_cleared: "Name cleared. Now only 'ISKCON Hadapsar' will join!",
+                round_done: "Hare Krishna! 1 Round Completed! 🎉",
+                reset_done: "Counter Reset Done! Fresh start."
+            },
+            hi: {
+                nav_home: "<i class='fas fa-arrow-left'></i> होम (Home)",
+                title: "लाइव ग्लोबल जप",
+                subtitle: "गुरुमहाराज के साथ विश्वभर में जप करें",
+                status_checking: "समय जाँचा जा रहा है...",
+                status_wait_msg: "कृपया प्रतीक्षा करें...",
+                status_live: "लाइव (LIVE NOW)",
+                status_live_msg: "गुरुमहाराज जप कर रहे हैं। नीचे दिए किसी भी सर्वर से जुड़ें!",
+                status_next: "अगला जप 5:15 AM पर",
+                status_next_msg: "अगले लाइव सेशन का इंतज़ार है... (5:15 AM IST)",
+                guide_title: "🙏 नये हैं? ऐसे जुड़ें:",
+                guide_step1: "सीधा <span>'CONNECT'</span> बटन दबाएं, और तुरंत मीटिंग में जुड़ें!",
+                guide_step2: "अगर एक सर्वर <span style='color: #FF1744;'>Full</span> हो, तो बिना डरे <span>दूसरा सर्वर</span> ट्राई करें!",
+                name_label: "अपना नाम लिखें (Optional)",
+                name_placeholder: "यहाँ नाम लिखें...",
+                name_helper: "बिना नाम लिखे भी चलेगा। नाम के पीछे <b>'ISKCON Hadapsar'</b> खुद लग जाएगा!",
+                name_saved: "नाम सेव हो गया! ✅",
+                srv_primary: "प्राइमरी मीटिंग",
+                srv_backup: "बैकअप मीटिंग",
+                srv_emergency: "इमरजेंसी मीटिंग",
+                btn_server1: "सर्वर 1 से जुड़ें",
+                btn_server2: "सर्वर 2 से जुड़ें",
+                btn_server3: "सर्वर 3 से जुड़ें",
+                helper_s1: "Auto-Login. फुल हो जाए तो नीचे वाले पे दबाएं 👇",
+                helper_s2: "ये भी फुल मिले तो 3rd सर्वर ट्राई करें 👇",
+                helper_s3: "Password अपने आप लग जाएगा!",
+                counter_title: "डिजिटल जप काउंटर",
+                rounds_text: "पूरे किये गए राउंड",
+                tap_btn: "📿 जप के लिए दबाएं",
+                reset_btn: "काउंटर जीरो (0) करें",
+                manual_info: "मैनुअल लॉगिन जानकारी (बैकअप)",
+                s3_pass: "सर्वर 3 पासवर्ड",
+                modal_title: "काउंटर रीसेट करें?",
+                modal_text: "क्या आप सच में अपना जप काउंटर जीरो करना चाहते हैं? ये वापस नहीं आएगा!",
+                modal_cancel: "नहीं, कैंसिल",
+                modal_confirm: "हाँ, रीसेट करें",
+                zoom_back: "वापस जाएँ",
+                copied_s1: "सर्वर 1 ID कॉपी हो गया!",
+                copied_s2: "सर्वर 2 ID कॉपी हो गया!",
+                copied_s3: "सर्वर 3 ID कॉपी हो गया!",
+                copied_pass: "पासवर्ड कॉपी हो गया!",
+                name_cleared: "नाम हट गया। अब सिर्फ 'ISKCON Hadapsar' जॉइन होगा!",
+                round_done: "हरे कृष्णा! 1 राउंड पूरा हुआ! 🎉",
+                reset_done: "काउंटर रीसेट हो गया! नई शुरुआत।"
+            },
+            mr: {
+                nav_home: "<i class='fas fa-arrow-left'></i> मुख्यपृष्ठ",
+                title: "थेट ग्लोबल जप",
+                subtitle: "गुरुमहाराजांसोबत विश्वभरात जप करा",
+                status_checking: "वेळ तपासत आहे...",
+                status_wait_msg: "कृपया प्रतीक्षा करा...",
+                status_live: "आता लाईव्ह आहे",
+                status_live_msg: "गुरुमहाराज जप करत आहेत. खालील कोणत्याही सर्व्हरशी जोडा!",
+                status_next: "पुढील जप पहाटे 5:15 वाजता",
+                status_next_msg: "पुढील लाईव्ह सेशनची प्रतीक्षा... (पहाटे 5:15 IST)",
+                guide_title: "🙏 नवीन आहात? असे जॉईन करा:",
+                guide_step1: "फक्त <span>'CONNECT'</span> बटण दाबा, आणि थेट मीटिंगमध्ये जोडा!",
+                guide_step2: "जर एक सर्व्हर <span style='color: #FF1744;'>Full</span> असेल, तर न घाबरता <span>दुसरा सर्व्हर</span> दाबा!",
+                name_label: "तुमचे नाव लिहा (Optional)",
+                name_placeholder: "येथे नाव लिहा...",
+                name_helper: "नाव न लिहिताही चालेल. नावाच्या मागे <b>'ISKCON Hadapsar'</b> आपोआप जोडले जाईल!",
+                name_saved: "नाव सेव्ह झाले! ✅",
+                srv_primary: "प्राथमिक मीटिंग",
+                srv_backup: "बॅकअप मीटिंग",
+                srv_emergency: "आणीबाणी मीटिंग",
+                btn_server1: "सर्व्हर 1 शी जोडा",
+                btn_server2: "सर्व्हर 2 शी जोडा",
+                btn_server3: "सर्व्हर 3 शी जोडा",
+                helper_s1: "Auto-Login. फुल झाल्यास खालील बटण दाबा 👇",
+                helper_s2: "हे पण फुल असल्यास 3rd सर्व्हर वापरून पहा 👇",
+                helper_s3: "Password आपोआप टाकला जाईल!",
+                counter_title: "डिजिटल जप काउंटर",
+                rounds_text: "पूर्ण झालेले राऊंड्स",
+                tap_btn: "📿 जप करण्यासाठी दाबा",
+                reset_btn: "काउंटर शून्यावर रीसेट करा",
+                manual_info: "मॅन्युअल लॉगिन माहिती (बॅकअप)",
+                s3_pass: "सर्व्हर 3 पासवर्ड",
+                modal_title: "काउंटर रीसेट करायचा?",
+                modal_text: "तुम्हाला नक्की तुमचा जप काउंटर शून्यावर आणायचा आहे का? हे परत मिळवता येणार नाही!",
+                modal_cancel: "नाही, रद्द करा",
+                modal_confirm: "होय, रीसेट करा",
+                zoom_back: "मागे जा",
+                copied_s1: "सर्व्हर 1 ID कॉपी झाला!",
+                copied_s2: "सर्व्हर 2 ID कॉपी झाला!",
+                copied_s3: "सर्व्हर 3 ID कॉपी झाला!",
+                copied_pass: "पासवर्ड कॉपी झाला!",
+                name_cleared: "नाव काढले. आता फक्त 'ISKCON Hadapsar' जॉईन होईल!",
+                round_done: "हरे कृष्ण! 1 राऊंड पूर्ण! 🎉",
+                reset_done: "काउंटर रीसेट झाला! नवीन सुरुवात."
+            }
+        };
+
+        let currentLang = localStorage.getItem('preferred_language') || 'hi'; 
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferred_language', lang);
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-lang-' + lang).classList.add('active');
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if(translations[lang][key]) {
+                    el.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
+
+            updateClockAndStatus();
+            updateCounterUI();
+        }
+
+        // ---------------- CORE APP LOGIC ----------------
+        const DOM = {
+            toast: document.getElementById('toast'),
+            clockDisplay: document.getElementById('clock-display'),
+            dateDisplay: document.getElementById('date-display'),
+            statusBadge: document.getElementById('status-badge'),
+            statusMessage: document.getElementById('status-message'),
+            btnServer1: document.getElementById('btn-server1'),
+            btnServer2: document.getElementById('btn-server2'),
+            btnServer3: document.getElementById('btn-server3'),
+            devoteeName: document.getElementById('devotee-name'),
+            savedMsg: document.getElementById('saved-success-msg'),
+            beadCount: document.getElementById('bead-count'),
+            roundCount: document.getElementById('round-count'),
+            confirmModal: document.getElementById('custom-confirm-modal')
+        };
+
+        let toastTimeout;
+
+        function copyText(text, msg) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(fallbackCopyTextToClipboard.bind(null, text, msg));
+            } else {
+                fallbackCopyTextToClipboard(text, msg);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text, msg) {
+            let tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try { document.execCommand("copy"); showToast(msg); } catch (err) {}
+            document.body.removeChild(tempInput);
+        }
+
+        function showToast(msg) {
+            DOM.toast.innerHTML = `<i class="fas fa-check-circle" style="color: #00E676; margin-right: 8px;"></i> ` + msg;
+            DOM.toast.classList.add('show');
+            if (navigator.vibrate) navigator.vibrate(50);
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { DOM.toast.classList.remove('show'); }, 3000);
+        }
+
+        function updateClockAndStatus() {
+            const now = new Date();
+            
+            const optionsTime = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            DOM.clockDisplay.innerText = now.toLocaleTimeString('en-US', optionsTime);
+
+            const optionsDate = { timeZone: 'Asia/Kolkata', weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            DOM.dateDisplay.innerText = now.toLocaleDateString('en-US', optionsDate);
+
+            const istTimeStr = now.toLocaleString("en-US", {timeZone: "Asia/Kolkata", hourCycle: 'h23'});
+            const istDate = new Date(istTimeStr);
+            const hours = istDate.getHours();
+            const minutes = istDate.getMinutes();
+            const totalMins = (hours * 60) + minutes;
+
+            // Live Time Window: 5:15 AM to 7:30 AM IST (315 to 450 mins)
+            const isLive = (totalMins >= 315 && totalMins <= 450);
+
+            if (isLive) {
+                if (!DOM.statusBadge.classList.contains('live-active')) {
+                    DOM.statusBadge.className = 'status-badge live-active';
+                    DOM.statusBadge.innerHTML = '<div class="live-dot-anim"></div> ' + translations[currentLang].status_live;
+                    DOM.statusMessage.innerText = translations[currentLang].status_live_msg;
+                    DOM.statusMessage.style.color = "#00E676";
+                    
+                    DOM.btnServer1.classList.remove('disabled-look');
+                    DOM.btnServer2.classList.remove('disabled-look');
+                    DOM.btnServer3.classList.remove('disabled-look');
+                } else {
+                    DOM.statusBadge.innerHTML = '<div class="live-dot-anim"></div> ' + translations[currentLang].status_live;
+                    DOM.statusMessage.innerText = translations[currentLang].status_live_msg;
+                }
+            } else {
+                if (!DOM.statusBadge.classList.contains('live-inactive')) {
+                    DOM.statusBadge.className = 'status-badge live-inactive';
+                    DOM.statusBadge.innerHTML = '<i class="far fa-clock"></i> ' + translations[currentLang].status_next;
+                    DOM.statusMessage.innerText = translations[currentLang].status_next_msg;
+                    DOM.statusMessage.style.color = "#ffb74d";
+                    
+                    DOM.btnServer1.classList.add('disabled-look');
+                    DOM.btnServer2.classList.add('disabled-look');
+                    DOM.btnServer3.classList.add('disabled-look');
+                } else {
+                    DOM.statusBadge.innerHTML = '<i class="far fa-clock"></i> ' + translations[currentLang].status_next;
+                    DOM.statusMessage.innerText = translations[currentLang].status_next_msg;
+                }
+            }
+        }
+
+        let saveTimeout;
+        function saveName() {
+            const nameInput = DOM.devoteeName.value.trim();
+            if(nameInput) {
+                localStorage.setItem('japa_user_name', nameInput);
+                DOM.savedMsg.style.display = 'block';
+                if (navigator.vibrate) navigator.vibrate(50);
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(() => { DOM.savedMsg.style.display = 'none'; }, 3000);
+            } else {
+                localStorage.removeItem('japa_user_name');
+                showToast(translations[currentLang].name_cleared);
+            }
+        }
+
+        let beads = 0;
+        let rounds = 0;
+        
+        function loadData() {
+            let savedName = localStorage.getItem('japa_user_name') || "";
+            DOM.devoteeName.value = savedName;
+
+            beads = parseInt(localStorage.getItem('japa_beads') || 0);
+            rounds = parseInt(localStorage.getItem('japa_rounds') || 0);
+            updateCounterUI();
+        }
+
+        function tapJapa() {
+            DOM.beadCount.style.transform = 'scale(1.15)';
+            setTimeout(() => { DOM.beadCount.style.transform = 'scale(1)'; }, 120);
+
+            beads++;
+            if(beads >= 108) {
+                beads = 0;
+                rounds++;
+                showToast(translations[currentLang].round_done);
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            } else {
+                if (navigator.vibrate) navigator.vibrate(30); 
+            }
+            
+            saveCounterData();
+            updateCounterUI();
+        }
+
+        function resetJapa() {
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+            DOM.confirmModal.style.display = 'flex';
+            void DOM.confirmModal.offsetWidth;
+            DOM.confirmModal.classList.add('show');
+        }
+
+        function closeResetModal() {
+            DOM.confirmModal.classList.remove('show');
+            setTimeout(() => { DOM.confirmModal.style.display = 'none'; }, 300); 
+        }
+
+        function confirmResetJapa() {
+            beads = 0;
+            rounds = 0;
+            saveCounterData();
+            updateCounterUI();
+            closeResetModal();
+            showToast(translations[currentLang].reset_done);
+            if (navigator.vibrate) navigator.vibrate(100);
+        }
+
+        function saveCounterData() {
+            localStorage.setItem('japa_beads', beads);
+            localStorage.setItem('japa_rounds', rounds);
+        }
+
+        function updateCounterUI() {
+            DOM.beadCount.innerText = beads;
+            DOM.roundCount.innerText = translations[currentLang].rounds_text + ": " + rounds;
+        }
+
+        // 🔥 RAM BAN NO-IFRAME WEB COMPATIBLE DIRECT REDIRECTION 🔥
+        // This redirects the webview directly, bypassing iframe limitations, security policies, and injects user profile cleanly!
+        function openZoomDirect(meetingId, password) {
+            let userEnteredName = DOM.devoteeName.value.trim() || localStorage.getItem('japa_user_name') || "";
+            let finalName = userEnteredName ? (userEnteredName + " - ISKCON Hadapsar") : "ISKCON Hadapsar";
+            
+            // Encode name to satisfy Base64 standard and satisfy Zoom's dynamic un parameter
+            let encodedName = btoa(unescape(encodeURIComponent(finalName)));
+            
+            // Modern Web Client Join URL with auto-password and dynamic name parameters injection
+            let targetUrl = `https://zoom.us/wc/join/${meetingId}?pwd=${password}&audio=auto&video=true&un=${encodedName}&uname=${encodeURIComponent(finalName)}`;
+            
+            // Navigate the top window directly (Ensures CSP/SAMEORIGIN is ignored because webview itself loads it!)
+            window.location.href = targetUrl;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setLanguage(currentLang);
+            loadData();
+            updateClockAndStatus();
+            setInterval(updateClockAndStatus, 1000);
+        });
+
+    </script>
+</body>
+</html>
