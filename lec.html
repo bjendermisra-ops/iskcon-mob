@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>ISKCON Hadapsar - Power App</title>
+<!-- Noto Serif Devanagari Font and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+/* ═══════════════════════════════════════
+   PREMIUM ISKCON UI DESIGN & CSS (USER APP)
+═══════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;background:#FFFDF8; scroll-behavior: smooth;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#FFFDF8;color:#2c1e16;min-height:100%;-webkit-font-smoothing:antialiased}
+
+/* ─── OFFLINE BANNER ─── */
+.offline-banner { display: none; background: linear-gradient(135deg, #d32f2f, #f44336); color: white; text-align: center; padding: 10px 15px; font-size: 0.85rem; font-weight: 700; z-index: 2000; width: 100%; box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4); position: sticky; top: 0; } 
+body.is-offline .offline-banner { display: flex; justify-content: center; align-items: center; } 
+body.is-offline .hdr { top: 0px; }
+
+/* ─── HEADER ─── */
+.hdr{position:sticky;top:0;z-index:20;height:60px;background:rgba(255,253,248,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(230,81,0,.15);display:flex;align-items:center;padding:0 1.2rem;gap:12px;box-shadow:0 4px 15px rgba(230,81,0,0.05)}
+.back-btn {
+    color: #E65100; font-size: 1.2rem; text-decoration: none;
+    transition: all 0.2s ease;
+    background: rgba(230, 81, 0, 0.08);
+    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; border: 1px solid rgba(230, 81, 0, 0.15);
+}
+.back-btn:active { transform: scale(0.85); background: rgba(230, 81, 0, 0.2); }
+.hdot{width:8px;height:8px;border-radius:50%;background:#E65100;box-shadow:0 0 8px rgba(230,81,0,0.6); animation: pulse 2s infinite;}
+@keyframes pulse { 0% {transform: scale(1); opacity: 1;} 50% {transform: scale(1.5); opacity: 0.5;} 100% {transform: scale(1); opacity: 1;} }
+.htitle{font-size:17px;font-weight:800;letter-spacing:0.02em;color:#E65100;text-transform:uppercase}
+.hcount{font-size:12px;font-weight:600;color:#8a6a55;margin-left:auto; background:#f5ece4; padding:4px 8px; border-radius:12px;}
+
+/* ─── MAIN ─── */
+.main{max-width:850px;margin:0 auto;padding:1.5rem 1rem 3rem; width: 100%;}
+
+/* SEARCH BAR ENHANCEMENT */
+.search-wrapper { position:relative; margin-bottom: 1.2rem; }
+.search-input { width: 100%; padding: 12px 16px 12px 40px; border-radius: 12px; border: 1px solid rgba(230,81,0,0.15); font-size: 14px; outline: none; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; color: #3e2723; }
+.search-input:focus { border-color: #E65100; box-shadow: 0 0 0 3px rgba(230,81,0,0.1); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; fill: #8a6a55; }
+
+.tabs{display:flex;gap:10px;margin-bottom:1.5rem;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;padding-bottom:5px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;height:34px;padding:0 18px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid rgba(230,81,0,.2);background:#fff;color:#8a6a55;transition:all .2s ease;box-shadow:0 2px 5px rgba(0,0,0,0.02)}
+.tab.on{background:linear-gradient(135deg, #E65100 0%, #FF9800 100%);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(230,81,0,0.3)}
+
+/* ─── GRID & CARDS ─── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.card{background:#fff;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(230,81,0,.08);box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:transform .2s ease,box-shadow .2s ease;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;position:relative;}
+.card:active{transform:scale(.96)}
+@media(hover:hover){.card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(230,81,0,.12)}}
+
+.cthumb{position:relative;width:100%;padding-top:56.25%;background:#f5ece4;overflow:hidden}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+@media(hover:hover){.card:hover .cthumb img{transform:scale(1.06)}}
+.cplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background .3s}
+@media(hover:hover){.card:hover .cplay{background:rgba(0,0,0,.25)}}
+.cplaybtn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.cplaybtn svg{width:18px;height:18px;fill:#E65100;margin-left:3px}
+@media(hover:hover){.card:hover .cplaybtn{opacity:1;transform:scale(1)}}
+
+/* CATEGORY PILLS & VIEWS */
+.cpill{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:.04em;box-shadow:0 2px 8px rgba(0,0,0,0.2);backdrop-filter:blur(4px)}
+.pv{background:rgba(33,33,33,.85);color:#fff}
+.ps{background:rgba(211,47,47,.85);color:#fff}
+.pl{background:rgba(230,81,0,.9);color:#fff}
+.cviews{position:absolute;bottom:8px;right:8px;font-size:11px;font-weight:600;background:rgba(0,0,0,0.7);color:#fff;padding:3px 8px;border-radius:6px;display:flex;align-items:center;gap:4px;backdrop-filter:blur(4px);}
+
+.cbody{padding:12px;flex-grow:1;display:flex;flex-direction:column;justify-content:center}
+.cname{font-size:13px;font-weight:600;color:#3e2723;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* SKELETON LOADER */
+.skeleton { background: #eee; background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); background-size: 200% 100%; animation: 1.5s shine linear infinite; }
+@keyframes shine { to { background-position-x: -200%; } }
+.sk-card { border-radius:16px; overflow:hidden; border:1px solid #f0e6e0; box-shadow:0 4px 12px rgba(0,0,0,0.02); }
+.sk-thumb { width:100%; padding-top:56.25%; }
+.sk-body { padding:12px; }
+.sk-line { height:12px; border-radius:4px; margin-bottom:8px; }
+.sk-line.w70 { width:70%; } .sk-line.w40 { width:40%; }
+.status-msg {grid-column: 1/-1; padding: 50px 20px; text-align: center; color: #E65100; font-weight: 600; background: rgba(230,81,0,0.05); border-radius: 12px; border: 1px solid rgba(230,81,0,0.1); font-family: 'Noto Serif Devanagari', serif;}
+
+/* ═══════════════════════════════════════
+   CUSTOM ADVANCED VIDEO PLAYER MODAL 
+═══════════════════════════════════════ */
+.modal{position:fixed;inset:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);z-index:999;background:#000;display:none;flex-direction:column}
+.modal.open{display:flex; animation: fadeIn 0.3s ease-out;}
+@keyframes fadeIn {from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); }}
+
+.player-area{flex:1;position:relative;overflow:hidden;background:#000;min-height:0;display:flex;align-items:center;justify-content:center}
+
+/* Z00M ISSUE FIXED HERE */
+.player-area iframe, #yti { position:absolute; top:0; left:0; width:100%; height:100%; border:none; display:block; pointer-events:none; }
+
+/* OPTIMIZED STEALTH MASKS */
+.yt-cover-top { position:absolute; top:0; left:0; right:0; height:50px; background:linear-gradient(#000 40%, rgba(0,0,0,0)); z-index:3; pointer-events:none; }
+.yt-cover-bot { position:absolute; bottom:0; left:0; right:0; height:45px; background:#000; z-index:3; pointer-events:none; }
+
+.click-layer { position:absolute; inset:0; z-index:4; cursor:pointer; display:flex; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; }
+
+/* Double Tap zones */
+.tap-zone {position:absolute; top:0; bottom:0; width:35%; z-index:5; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s;}
+.tap-left {left:0;} .tap-right {right:0;}
+.tap-icon {background:rgba(0,0,0,0.5); color:#fff; border-radius:50%; width:60px; height:60px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:bold; font-size:12px; transform:scale(0.8); transition:transform 0.2s;}
+.tap-zone.active {opacity:1;} .tap-zone.active .tap-icon {transform:scale(1);}
+
+.cflash{width:76px;height:76px;border-radius:50%;background:rgba(230,81,0,.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transition:opacity .25s ease-out,transform .25s ease-out;pointer-events:none;box-shadow:0 0 20px rgba(230,81,0,0.4)}
+.cflash.show{opacity:1;transform:scale(1)}
+.cflash svg{width:36px;height:36px;fill:#fff}
+
+.ctrl{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:45px 16px 20px;background:linear-gradient(transparent,rgba(0,0,0,.95));transition:opacity .3s ease}
+.ctrl.hide{opacity:0;pointer-events:none}
+
+.prog{width:100%;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin-bottom:14px;cursor:pointer;position:relative;transition:height 0.15s}
+.prog:active,.prog:hover{height:8px}
+.prog-fill{height:100%;border-radius:3px;background:#E65100;width:0%;pointer-events:none;transition:width .2s linear;box-shadow:0 0 10px rgba(230,81,0,0.8)}
+.prog-dot{position:absolute;top:50%;right:0;transform:translate(50%,-50%);width:16px;height:16px;border-radius:50%;background:#fff;pointer-events:none;transition:opacity .15s, transform 0.15s;box-shadow:0 0 8px rgba(0,0,0,0.6)}
+.prog:hover .prog-dot{transform:translate(50%,-50%) scale(1.3)}
+
+.crow{display:flex;align-items:center;gap:15px}
+.cb{background:none;border:none;cursor:pointer;padding:8px;border-radius:10px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:background .2s, transform .1s; color:#fff; font-weight:bold; font-size:12px;}
+.cb:active{transform: scale(0.9)}
+.cb:hover{background:rgba(255,255,255,.2)}
+.cb svg{fill:#fff;display:block}
+.tl{font-size:13px;font-weight:600;color:rgba(255,255,255,.95);font-family:'Courier New', monospace;margin-right:auto;padding:0 8px;white-space:nowrap;letter-spacing:0.05em}
+
+.botbar{flex-shrink:0;background:#120e0c;border-top:1px solid #2a1f1a;padding:16px 18px;display:flex;align-items:center;gap:14px;min-height:65px}
+.btitle{flex:1;font-size:15px;font-weight:600;color:#f5ece4;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:0.02em}
+.closex{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:#2c1e16;border:none;color:#E65100;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s;-webkit-tap-highlight-color:transparent}
+.closex:hover{background:#E65100;color:#fff;transform:rotate(90deg)}
+
+@media(orientation:landscape){
+  .botbar{display:none}
+  .lclose{display:flex!important}
+}
+.lclose{display:none;position:absolute;top:20px;right:20px;z-index:15;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:20px;cursor:pointer;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition: background 0.2s, transform 0.2s}
+.lclose:hover{background:#E65100;transform:scale(1.1)}
+</style>
+</head>
+<body>
+
+<!-- OFFLINE BANNER -->
+<div id="offline-banner" class="offline-banner">
+  <i class="fas fa-wifi-slash" style="margin-right:6px;"></i> <span id="lbl-offline">You are currently offline. Showing saved version.</span>
+</div>
+
+<!-- USER APP MAIN UI -->
+<div class="hdr">
+  <!-- Added glassmorphic back button to index.html -->
+  <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+  <div class="hdot"></div>
+  <span class="htitle" id="lbl-header-title">ISKCON Videos</span>
+  <span class="hcount" id="hc">...</span>
+</div>
+
+<div class="main">
+  <!-- SEARCH BAR -->
+  <div class="search-wrapper">
+    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search kirtan, lectures, shorts..." oninput="applyFilters()" />
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tab-all" data-f="all" onclick="sf(this)">All Content</button>
+    <button class="tab" id="tab-lecture" data-f="lecture" onclick="sf(this)">Lectures</button>
+    <button class="tab" id="tab-video" data-f="video" onclick="sf(this)">Kirtan/Videos</button>
+    <button class="tab" id="tab-shorts" data-f="shorts" onclick="sf(this)">Shorts</button>
+  </div>
+  
+  <div class="grid" id="grid">
+    <div class="sk-card"><div class="sk-thumb skeleton"></div><div class="sk-body"><div class="sk-line skeleton"></div><div class="sk-line w70 skeleton"></div></div></div>
+    <div class="sk-card"><div class="sk-thumb skeleton"></div><div class="sk-body"><div class="sk-line skeleton"></div><div class="sk-line w40 skeleton"></div></div></div>
+    <div class="sk-card"><div class="sk-thumb skeleton"></div><div class="sk-body"><div class="sk-line skeleton"></div><div class="sk-line w70 skeleton"></div></div></div>
+    <div class="sk-card"><div class="sk-thumb skeleton"></div><div class="sk-body"><div class="sk-line skeleton"></div><div class="sk-line w40 skeleton"></div></div></div>
+  </div>
+</div>
+
+<!-- FULLSCREEN PLAYER MODAL -->
+<div class="modal" id="modal">
+  <div class="player-area" id="pa">
+    <!-- NATIVE YT API WILL CONVERT THIS DIV INTO SECURE IFRAME -->
+    <div id="yti"></div>
+    
+    <div class="yt-cover-top"></div>
+    <div class="yt-cover-bot"></div>
+    
+    <div class="click-layer" id="clk">
+      <div class="cflash" id="cf"><svg id="cfi" viewBox="0 0 24 24"></svg></div>
+    </div>
+    
+    <!-- Double Tap Zones -->
+    <div class="tap-zone tap-left" id="tapL">
+      <div class="tap-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg>-10s</div>
+    </div>
+    <div class="tap-zone tap-right" id="tapR">
+      <div class="tap-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg>+10s</div>
+    </div>
+
+    <div class="ctrl hide" id="ctrl">
+      <div class="prog" id="prog" onclick="customSeek(event)">
+        <div class="prog-fill" id="pf"></div>
+        <div class="prog-dot" id="pd"></div>
+      </div>
+      <div class="crow">
+        <button class="cb" onclick="skipFast(-10);stopProp(event)" title="Rewind 10s">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#fff" d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg>
+        </button>
+        <button class="cb" onclick="togglePlay();stopProp(event)">
+          <svg id="ppi" viewBox="0 0 24 24" width="28" height="28"></svg>
+        </button>
+        <button class="cb" onclick="skipFast(10);stopProp(event)" title="Forward 10s">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#fff" d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg>
+        </button>
+        
+        <span class="tl" id="tl">0:00 / 0:00</span>
+        
+        <button class="cb" onclick="toggleMute();stopProp(event)">
+          <svg id="mi" viewBox="0 0 24 24" width="24" height="24"></svg>
+        </button>
+        <button class="cb" onclick="toggleFS(event)">
+          <svg id="fsi" viewBox="0 0 24 24" width="24" height="24"><path fill="#fff" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"></path></svg>
+        </button>
+      </div>
+    </div>
+    <button class="lclose" id="lc" onclick="closeModal()">✕</button>
+  </div>
+  <div class="botbar">
+    <span class="btitle" id="bt"></span>
+    <button class="closex" onclick="closeModal()">✕</button>
+  </div>
+</div>
+
+<!-- Firebase & Official YouTube Scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+// FORCE YOUTUBE IFRAME SCRIPT
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+if(firstScriptTag && firstScriptTag.parentNode) {
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+} else {
+    document.head.appendChild(tag);
+}
+
+// FIREBASE INIT
+const firebaseConfig = {
+  apiKey: "AIzaSyBx6jCILnnsRmJ0ugdGJLJvH8d1sLuYtjc",
+  authDomain: "update-play-store-62fe4.firebaseapp.com",
+  databaseURL: "https://update-play-store-62fe4-default-rtdb.firebaseio.com",
+  projectId: "update-play-store-62fe4",
+  storageBucket: "update-play-store-62fe4.firebasestorage.app",
+  messagingSenderId: "409223184615",
+  appId: "1:409223184615:web:34f6200eda02cd1cc2e242"
+};
+
+try { firebase.initializeApp(firebaseConfig); } catch(err) { console.error("Firebase Init Error:", err); }
+const vRef = firebase.database().ref('videos');
+
+// 🌍 PREMIUM MULTI-LANGUAGE SYSTEM
+const langData = {
+    en: {
+        pageTitle: "ISKCON Videos",
+        searchPlaceholder: "Search kirtan, lectures, shorts...",
+        tabAll: "All Content",
+        tabLecture: "Lectures",
+        tabVideo: "Kirtan/Videos",
+        tabShorts: "Shorts",
+        viewsLabel: "views",
+        noVideosMsg: "🦚 Hare Krishna! App is synchronizing OR no videos found. Haribol!",
+        serverUpdateMsg: "✨ Hari Hari! Server par videos update ho rahe hain. 🙏",
+        offlineMsg: "You are currently offline. Showing saved version.",
+        playingTitle: "Playing Video"
+    },
+    hi: {
+        pageTitle: "इस्कॉन वीडियो",
+        searchPlaceholder: "कीर्तन, प्रवचन, शॉर्ट्स खोजें...",
+        tabAll: "सभी सामग्री",
+        tabLecture: "प्रवचन (Lectures)",
+        tabVideo: "कीर्तन/वीडियो",
+        tabShorts: "शॉर्ट्स (Shorts)",
+        viewsLabel: "दर्शन (views)",
+        noVideosMsg: "🦚 हरे कृष्ण! ऐप सिंक हो रहा है या कोई वीडियो नहीं मिला। हरिबोल!",
+        serverUpdateMsg: "✨ हरी हरी! सर्वर पर वीडियो अपडेट हो रहे हैं। 🙏",
+        offlineMsg: "आप अभी ऑफ़लाइन हैं। सुरक्षित वर्ज़न दिखा रहे हैं।",
+        playingTitle: "वीडियो चल रहा है"
+    },
+    mr: {
+        pageTitle: "इस्कॉन व्हिडिओ",
+        searchPlaceholder: "कीर्तन, प्रवचन, शॉर्ट्स शोधा...",
+        tabAll: "सर्व सामग्री",
+        tabLecture: "प्रवचन (Lectures)",
+        tabVideo: "कीर्तन/व्हिडिओ",
+        tabShorts: "शॉर्ट्स (Shorts)",
+        viewsLabel: "दर्शन (views)",
+        noVideosMsg: "🦚 हरे कृष्ण! अ‍ॅप सिंक होत आहे किंवा कोणतेही व्हिडिओ आढळले नाहीत। हरिबोल!",
+        serverUpdateMsg: "✨ हरी हरी! सर्व्हरवर व्हिडिओ अपडेट होत आहेत। 🙏",
+        offlineMsg: "तुम्ही सध्या ऑफलाइन आहात. सुरक्षित व्हर्जन दाखवत आहे.",
+        playingTitle: "व्हिडिओ चालू आहे"
+    }
+};
+
+let currentLang = 'en';
+let texts = langData.en;
+
+function syncThemeAndLanguage() {
+    let savedLang = localStorage.getItem('lang') || 'en';
+    if(savedLang.toLowerCase().includes('hi')) savedLang = 'hi';
+    else if(savedLang.toLowerCase().includes('mr')) savedLang = 'mr';
+    else savedLang = 'en';
+
+    currentLang = savedLang;
+    texts = langData[currentLang];
+
+    document.getElementById('lbl-header-title').textContent = texts.pageTitle;
+    document.getElementById('searchInput').placeholder = texts.searchPlaceholder;
+    document.getElementById('tab-all').textContent = texts.tabAll;
+    document.getElementById('tab-lecture').textContent = texts.tabLecture;
+    document.getElementById('tab-video').textContent = texts.tabVideo;
+    document.getElementById('tab-shorts').textContent = texts.tabShorts;
+    document.getElementById('lbl-offline').textContent = texts.offlineMsg;
+}
+
+function updateOnlineStatus() { 
+    if (!navigator.onLine) document.body.classList.add('is-offline'); 
+    else document.body.classList.remove('is-offline'); 
+}
+window.addEventListener('online', updateOnlineStatus); 
+window.addEventListener('offline', updateOnlineStatus); 
+updateOnlineStatus();
+
+let all=[], curFilter='all';
+
+// WEBVIEW SECURE CACHE WITH FULL SAFETY
+try {
+  const cachedData = localStorage.getItem('iskcon_videos_cache');
+  if(cachedData) { 
+      all = JSON.parse(cachedData); 
+      if(all && all.length > 0) renderGrid(all); 
+  }
+} catch(err) { console.warn("Cache access restricted in WebView"); }
+
+function getThumb(v){ return (v.thumbnail && !v.thumbnail.includes('/vi/')) ? v.thumbnail : `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`; }
+
+function getPillCSS(type){
+  if(type==='shorts') return {cls:'ps', txt: texts.tabShorts};
+  if(type==='lecture') return {cls:'pl', txt: texts.tabLecture};
+  return {cls:'pv', txt: texts.tabVideo};
+}
+
+function renderGrid(list){
+  try {
+    const g=document.getElementById('grid');
+    document.getElementById('hc').textContent = list.length ? list.length+' ' + texts.tabVideo.toLowerCase() : '';
+    
+    if(!list || !list.length){
+        g.innerHTML=`<div class="status-msg">${texts.noVideosMsg}</div>`;
+        return;
+    }
+    
+    g.innerHTML=list.map(v=> {
+      const pill = getPillCSS(v.type);
+      const safeName = (v.name || "").replace(/'/g, "\\'").replace(/"/g, """);
+      const safeId = v.videoId || ""; const safeKey = v.k || ""; const viewCount = v.views || 0;
+      return `
+      <div class="card" onclick="openVideo('${safeId}', '${safeName}', '${safeKey}')">
+        <div class="cthumb">
+          <img src="${getThumb(v)}" alt="" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg'"/>
+          <div class="cplay"><div class="cplaybtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></div></div>
+          <span class="cpill ${pill.cls}">${pill.txt}</span>
+          <span class="cviews">👁 ${viewCount} ${texts.viewsLabel}</span>
+        </div>
+        <div class="cbody"><div class="cname">${safeName}</div></div>
+      </div>`;
+    }).join('');
+  } catch(e) { console.error("Render Grid Error:", e); }
+}
+
+function applyFilters() {
+    let query = document.getElementById('searchInput').value.toLowerCase();
+    let filteredList = curFilter === 'all' ? all : all.filter(v => v.type === curFilter);
+    if(query) {
+        filteredList = filteredList.filter(v => (v.name || "").toLowerCase().includes(query));
+    }
+    renderGrid(filteredList);
+}
+
+function sf(btn){ 
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on')); 
+    btn.classList.add('on'); 
+    curFilter = btn.dataset.f; 
+    applyFilters(); 
+}
+
+vRef.on('value', snap => {
+  try {
+    const d=snap.val();
+    if(!d) { document.getElementById('grid').innerHTML = `<div class="status-msg">${texts.serverUpdateMsg}</div>`; return; }
+    all=Object.entries(d).map(([k,v])=>({...v,k})).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+    try { localStorage.setItem('iskcon_videos_cache', JSON.stringify(all)); } catch(ce){}
+    applyFilters();
+  } catch (error) { console.error("Firebase fetch error", error); }
+});
+
+/* ========================================================
+   ROBUST YOUTUBE PLAYER SYSTEM WITH PERFECT TAP-RESPONSIVENESS
+   ======================================================== */
+let playing=false, muted=false, dur=0, cur=0;
+let ytNativePlayer; let isNativeAPIReady = false; let pendingVideoToLoad = null;
+let ticker=null, hider=null, ctrlVisible=false;
+
+const ppi=document.getElementById('ppi'); const cfi=document.getElementById('cfi');
+const cf=document.getElementById('cf'); const pf=document.getElementById('pf');
+const pd=document.getElementById('pd'); const tl=document.getElementById('tl');
+const ctrl=document.getElementById('ctrl'); const fsi=document.getElementById('fsi');
+
+const I={
+  play:'<path fill="#fff" d="M8 5v14l11-7z"></path>', pause:'<path fill="#fff" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>',
+  vol:'<path fill="#fff" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>',
+  mute:'<path fill="#fff" d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06A8.99 8.99 0 0017.73 18l1.73 1.73L21 18.46 4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path>',
+  fsEnter:'<path fill="#fff" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"></path>',
+  fsExit:'<path fill="#fff" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"></path>'
+};
+
+window.onYouTubeIframeAPIReady = function() {
+    isNativeAPIReady = true;
+    try {
+        ytNativePlayer = new YT.Player('yti', {
+            host: 'https://www.youtube',
+            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1, 'playsinline': 1, 'fs': 0, 'disablekb': 1 },
+            events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+        });
+    } catch(err) { console.error("YT init error", err); }
+};
+
+function onPlayerReady(e) { if (pendingVideoToLoad) { ytNativePlayer.loadVideoById(pendingVideoToLoad); pendingVideoToLoad = null; } }
+
+function onPlayerStateChange(e) {
+    if (e.data === YT.PlayerState.PLAYING) {
+        setPlaying(true); dur = ytNativePlayer.getDuration() || 0; startTicker(); showCtrl();
+    } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+        setPlaying(false); clearInterval(ticker);
+        ctrl.classList.remove('hide'); ctrlVisible = true; clearTimeout(hider);
+    }
+}
+
+function fmt(s){ if(!s||isNaN(s)) return '0:00'; return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); }
+function updateTimeUI(current, total) { tl.textContent = fmt(current) + ' / ' + fmt(total); }
+function setPlaying(v){ playing=v; ppi.innerHTML=v?I.pause:I.play; cfi.innerHTML=v?I.pause:I.play; }
+function showCtrl(){ ctrl.classList.remove('hide'); ctrlVisible=true; clearTimeout(hider); if(playing) hider=setTimeout(() => {ctrl.classList.add('hide'); ctrlVisible=false;}, 3500); }
+function hideCtrl(){ ctrl.classList.add('hide'); ctrlVisible=false; clearTimeout(hider); }
+function flashCenter(){ cf.classList.add('show'); setTimeout(()=>cf.classList.remove('show'),400); }
+function flashZone(id){ const z=document.getElementById(id); z.classList.add('active'); setTimeout(()=>z.classList.remove('active'), 400); }
+function stopProp(e){e.stopPropagation();}
+
+// --- ADVANCED DOUBLE & SINGLE TAP SENSOR ---
+let lastTap = 0; let tapTimer = null;
+document.getElementById('clk').addEventListener('touchend', (e) => {
+  e.preventDefault(); 
+  const ct = new Date().getTime();
+  const rect = e.target.getBoundingClientRect(); 
+  const x = e.changedTouches[0].clientX - rect.left;
+
+  if (ct - lastTap < 300 && ct - lastTap > 0) { 
+    clearTimeout(tapTimer);
+    if (x < rect.width * 0.35) { skipFast(-10); flashZone('tapL'); } 
+    else if (x > rect.width * 0.65) { skipFast(10); flashZone('tapR'); }
+  } else { 
+    tapTimer = setTimeout(() => { 
+        if(!ctrlVisible){ showCtrl(); } else { hideCtrl(); } 
+    }, 280);
+  }
+  lastTap = ct;
+}, {passive: false});
+
+function skipFast(sec) {
+    if(!ytNativePlayer || !dur || dur === 0) return;
+    let realtimeCurrent = ytNativePlayer.getCurrentTime();
+    let safeTarget = Math.max(0, Math.min(dur, realtimeCurrent + sec));
+    ytNativePlayer.seekTo(safeTarget, true);
+    updateTimeUI(safeTarget, dur);
+    const pct=(safeTarget/dur)*100;
+    pf.style.transition='none'; pf.style.width=pct+'%'; pd.style.left=pct+'%';
+    showCtrl();
+}
+
+function customSeek(e){
+  e.stopPropagation(); if(!ytNativePlayer || !dur) return;
+  const r = document.getElementById('prog').getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width));
+  cur = pct * dur;
+  ytNativePlayer.seekTo(cur, true); updateTimeUI(cur, dur); showCtrl();
+}
+
+function togglePlay() {
+  if(!ytNativePlayer) return;
+  if(playing){ ytNativePlayer.pauseVideo(); setPlaying(false); }
+  else{ ytNativePlayer.playVideo(); setPlaying(true); } 
+  flashCenter(); showCtrl();
+}
+
+function toggleMute() {
+  if(!ytNativePlayer) return;
+  muted = !muted; 
+  if(muted) ytNativePlayer.mute(); else ytNativePlayer.unMute();
+  document.getElementById('mi').innerHTML = muted ? I.mute : I.vol; showCtrl();
+}
+
+function startTicker(){
+  clearInterval(ticker);
+  ticker = setInterval(()=>{
+    if(!playing || !ytNativePlayer || typeof ytNativePlayer.getCurrentTime !== 'function') return;
+    
+    let cc = ytNativePlayer.getCurrentTime(); 
+    let dt = ytNativePlayer.getDuration();
+    if (dt && dt > 0) { 
+        dur = dt; 
+        updateTimeUI(cc, dur);
+        const pct = (cc / dur) * 100;
+        pf.style.transition = 'width 1s linear';
+        pf.style.width = pct + '%'; pd.style.left = pct + '%';
+    }
+  }, 1000);
+}
+
+// ─── NATIVE PHYSICAL BACK BUTTON INTERCEPTOR (WebView-Safe Modal Exit) ───
+function openVideo(id, name, dbKey){
+  if(!id) return;
+  if(dbKey && vRef && vRef.child) { try { vRef.child(dbKey).child('views').set(firebase.database.ServerValue.increment(1)); } catch(ignored){} }
+  
+  // Push a secure state to browser history to catch back gestures
+  history.pushState({ modalOpen: true, videoId: id }, "");
+
+  document.getElementById('bt').textContent = name || texts.playingTitle;
+  document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden';
+  playing=false; muted=false; dur=0; cur=0; ctrlVisible=false; updateTimeUI(0, 0); 
+  pf.style.width='0%'; pf.style.transition='none';
+  document.getElementById('mi').innerHTML=I.vol; fsi.innerHTML=I.fsEnter; ctrl.classList.add('hide');
+
+  if(isNativeAPIReady && ytNativePlayer && typeof ytNativePlayer.loadVideoById === 'function') {
+      ytNativePlayer.loadVideoById(id); ytNativePlayer.playVideo();
+  } else { pendingVideoToLoad = id; }
+}
+
+function closeModal(){
+  if (history.state && history.state.modalOpen) {
+      history.back(); // Triggers popstate natively, which runs closeModalInternal()
+  } else {
+      closeModalInternal();
+  }
+}
+
+function closeModalInternal(){
+  const isFS = document.fullscreenElement || document.webkitFullscreenElement;
+  if(isFS){if(document.exitFullscreen) document.exitFullscreen();else if(document.webkitExitFullscreen) document.webkitExitFullscreen();}
+  
+  document.getElementById('modal').classList.remove('open'); document.body.style.overflow='';
+  if(ytNativePlayer && typeof ytNativePlayer.stopVideo === 'function') ytNativePlayer.stopVideo();
+  clearInterval(ticker); clearTimeout(hider); playing=false; ctrlVisible=false; pendingVideoToLoad = null;
+}
+
+// Listen to browser/native system Back action
+window.addEventListener('popstate', (event) => {
+    const modal = document.getElementById('modal');
+    if (modal && modal.classList.contains('open')) {
+        closeModalInternal();
+    }
+});
+
+function toggleFS(e){ if(e) e.stopPropagation(); const el=document.getElementById('pa'); const isFS = document.fullscreenElement || document.webkitFullscreenElement; if(!isFS){if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();}else{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();} }
+function updateFSIcon() {const isFS = document.fullscreenElement || document.webkitFullscreenElement; fsi.innerHTML = isFS ? I.fsExit : I.fsEnter;} document.addEventListener('fullscreenchange', updateFSIcon); document.addEventListener('webkitfullscreenchange', updateFSIcon);
+document.addEventListener('keydown',e=>{
+  const open=document.getElementById('modal').classList.contains('open'); if(!open)return;
+  if(e.key==='Escape')closeModal(); if(e.key===' '){e.preventDefault();togglePlay();} if(e.key==='ArrowRight'){e.preventDefault();skipFast(10);} if(e.key==='ArrowLeft'){e.preventDefault();skipFast(-10);}
+});
+
+// Run Initializations
+syncThemeAndLanguage();
+// Listen to storage events to sync language & theme in real-time
+window.addEventListener('storage', () => {
+    syncThemeAndLanguage();
+    applyFilters();
+});
+</script>
+</body>
+</html>
