@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ISKCON Ekadashi Planner</title>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;500;600;800&family=Noto+Sans+Devanagari:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+        /* =========================================
+           THEME VARIABLES
+           ========================================= */
+        :root { 
+            --primary: #FF9933; 
+            --secondary: #4a2c2a; 
+            --bg-color: #FAFAFA; 
+            --card-bg: #ffffff; 
+            --text-color: #2b2b2b; 
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.05); 
+            --powerful-shadow: 0 10px 30px rgba(255, 153, 51, 0.25); 
+            --transition-speed: 0.3s;
+            --radius-lg: 20px;
+        }[data-theme="dark"] { 
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #121212; 
+            --card-bg: #1e1e1e; 
+            --text-color: #ececec; 
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.4); 
+            --powerful-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color); 
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; 
+            color: var(--text-color); 
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* --- App Header --- */
+        .navbar { 
+            background: linear-gradient(90deg, #E65100, var(--primary), #FF7043); 
+            background-size: 200% auto; 
+            animation: gradientMove 4s ease infinite; 
+            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.4); 
+            padding: 15px 20px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1040;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .back-btn { color: white; font-size: 1.3rem; text-decoration: none; display: flex; align-items: center; }
+        .back-btn:active { transform: scale(0.9); }
+        .nav-title { color: white; font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin: 0; text-transform: uppercase; }
+
+        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
+
+        /* --- Alert Banner --- */
+        .alert-banner {
+            display: none;
+            background: var(--card-bg);
+            border-left: 5px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--ui-shadow);
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeIn 0.4s ease;
+        }
+        .alert-banner.active { display: flex; }
+        .alert-info h4 { font-size: 0.85rem; opacity: 0.8; font-weight: 500; margin-bottom: 4px; }
+        .alert-info h2 { font-size: 1.2rem; color: var(--primary); font-weight: 800; text-transform: uppercase;}
+        
+        .go-btn {
+            background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(255, 153, 51, 0.4); transition: 0.2s;
+        }
+        .go-btn:active { transform: scale(0.9); box-shadow: none; }
+
+        /* --- Calendar Card --- */
+        .calendar-card {
+            background: var(--card-bg); border-radius: var(--radius-lg); padding: 20px;
+            box-shadow: var(--ui-shadow); margin-bottom: 24px; border: 1px solid rgba(255,153,51,0.1);
+        }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-header button {
+            background: rgba(255,153,51,0.1); color: var(--primary); border: none; width: 40px; height: 40px;
+            border-radius: 12px; font-size: 1rem; cursor: pointer; transition: var(--transition-speed); font-weight: 800;
+        }
+        .cal-header button:active { transform: scale(0.9); background: var(--primary); color: white; }
+        .cal-header h2 { font-size: 1.15rem; font-weight: 800; color: var(--text-color); font-family: 'Cinzel', serif;}
+
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px 4px; text-align: center; }
+        .cal-day-name { font-size: 0.8rem; font-weight: 700; color: var(--text-color); opacity: 0.7; padding-bottom: 5px; }
+        .cal-cell {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 1rem;
+            border-radius: 12px; cursor: pointer; font-weight: 600; color: var(--text-color);
+            border: 2px solid transparent; transition: 0.2s;
+        }
+        .cal-cell.empty { cursor: default; }
+
+        /* Highlight Today */
+        .cal-cell.is-today { border-color: var(--primary); color: var(--primary); font-weight: 800; }
+        
+        /* Highlight Ekadashi */
+        .cal-cell.has-event {
+            background: linear-gradient(135deg, var(--primary), #FF7043); color: #ffffff; font-weight: 800;
+            box-shadow: 0 4px 10px rgba(255, 153, 51, 0.4); border: none;
+        }
+        .cal-cell.has-event:active { transform: scale(0.9); }
+
+        /* --- Selected Details --- */
+        .selected-section {
+            background: var(--card-bg); border-radius: var(--radius-lg); padding: 15px;
+            box-shadow: var(--ui-shadow); border: 1px solid rgba(255,153,51,0.1);
+            display: none; align-items: center; gap: 15px; cursor: pointer; animation: fadeIn 0.3s ease;
+        }
+        .selected-section.active { display: flex; }
+        .selected-img { width: 65px; height: 65px; border-radius: 14px; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 1px solid rgba(255,153,51,0.2);}
+        .selected-info { flex-grow: 1; }
+        .selected-info h3 { color: var(--text-color); font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
+        .selected-info p { color: var(--primary); font-size: 0.85rem; font-weight: 600; }
+
+        /* --- Custom Modal --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(5px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-card {
+            background: var(--card-bg); width: 100%; max-width: 360px; border-radius: 24px;
+            overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: scale(0.8) translateY(30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 153, 51, 0.2);
+        }
+        .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+
+        .modal-img { width: 100%; height: 200px; object-fit: cover; }
+        .modal-content { padding: 25px; text-align: center; }
+        
+        .modal-date {
+            display: inline-block; background: rgba(255, 153, 51, 0.1); color: var(--primary);
+            padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px;
+        }
+        .modal-title { color: var(--text-color); font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; font-family: 'Cinzel', serif; text-transform: uppercase;}
+        .modal-desc { color: var(--text-color); opacity: 0.85; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; font-weight: 500;}
+
+        .modal-info-msg {
+            background: rgba(255, 153, 51, 0.1); border: 1px dashed rgba(255,153,51,0.5);
+            color: var(--primary); padding: 14px; border-radius: 14px; font-size: 0.85rem;
+            margin-bottom: 20px; font-weight: 700; display: none; 
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), #E65100); color: white;
+            text-decoration: none; padding: 14px; border-radius: 16px; font-weight: 800;
+            display: block; width: 100%; box-shadow: 0 6px 15px rgba(255, 153, 51, 0.3);
+            margin-bottom: 12px; transition: 0.2s; display: none;
+        }
+        .btn-close-custom {
+            background: transparent; color: var(--text-color); border: 1px solid rgba(150,150,150,0.3);
+            padding: 14px; border-radius: 16px; font-weight: 700; width: 100%; cursor: pointer; transition: 0.2s;
+        }
+        .btn-primary-custom:active, .btn-close-custom:active { transform: scale(0.95); box-shadow: none; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+<link rel="me" href="https://www.blogger.com/profile/04955977495579791927" />
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+<!-- --><style type="text/css">@import url(//www.blogger.com/static/v1/v-css/navbar/3334278262-classic.css);
+div.b-mobile {display:none;}
+</style>
+
+</head>
+<body><script type="text/javascript">
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener('load',
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent('onload', function(){ object[attribute] = val; });
+      }
+    }
+  </script>
+<div id="navbar-iframe-container"></div>
+<script type="text/javascript" src="https://apis.google.com/js/platform.js"></script>
+<script type="text/javascript">
+      gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
+        if (gapi.iframes && gapi.iframes.getContext) {
+          gapi.iframes.getContext().openChild({
+              url: 'https://www.blogger.com/navbar/8501854697501053504?origin\x3dhttps://adem99.blogspot.com',
+              where: document.getElementById("navbar-iframe-container"),
+              id: "navbar-iframe"
+          });
+        }
+      });
+    </script>
+
+    <nav class="navbar">
+        <!-- Changed go:home to index.html -->
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h1 class="nav-title" id="ui-page-title">Ekadashi Planner</h1>
+    </nav>
+
+    <div class="container">
+        <!-- Upcoming Ekadashi Banner -->
+        <div id="alertBanner" class="alert-banner">
+            <div class="alert-info">
+                <h4 id="ui-alert-subtitle">Upcoming Fast,</h4>
+                <h2 id="alertName">Ekadashi Name</h2>
+            </div>
+            <a href="#" id="alertGoBtn" class="go-btn"><i class="fas fa-book-open"></i></a>
+        </div>
+
+        <!-- Calendar UI -->
+        <div class="calendar-card">
+            <div class="cal-header">
+                <button id="btnPrev"><i class="fas fa-chevron-left"></i></button>
+                <h2 id="monthYearDisplay">Month Year</h2>
+                <button id="btnNext"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="cal-grid" id="calWeekdays"></div>
+            <div class="cal-grid" id="calDays"></div>
+        </div>
+
+        <!-- Selected Ekadashi Card -->
+        <div id="selectedSection" class="selected-section">
+            <img id="selectedImg" src="" alt="App Logo" class="selected-img">
+            <div class="selected-info">
+                <h3 id="selectedTitle">Ekadashi Name</h3>
+                <p id="selectedDate"><i class="far fa-calendar-alt"></i> Date</p>
+            </div>
+            <i class="fas fa-chevron-right" style="color: var(--primary); font-size: 1.2rem;"></i>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closePopup()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <img id="modalImg" src="" alt="Ekadashi" class="modal-img">
+            <div class="modal-content">
+                <div class="modal-date" id="modalDate">Date</div>
+                <h2 class="modal-title" id="modalTitle">Ekadashi Name</h2>
+                <p class="modal-desc" id="modalDesc">Description goes here...</p>
+                
+                <div id="modalInfoMsg" class="modal-info-msg">
+                    <i class="fas fa-hourglass-half"></i> <span id="ui-info-msg">Full details accessible 1 day before fast.</span>
+                </div>
+                
+                <a href="#" id="modalGoBtn" class="btn-primary-custom">Read Mahatmya</a>
+                <button id="modalCloseBtn" class="btn-close-custom" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 🌟 1. IMAGE CONFIGURATION 🌟
+        // =========================================================================
+        
+        const APP_LOGO_URL = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNeXJV3p2JctjSFlHq8BChsU99q_Vepbdsew4o8KAoOMqESXSr-hUPtwWB-QFaRQ1rCA7UmGDdlM5QLscOZipj0LiWbHhkhVaW8-KZUMceluYqTGFJygMEEIsOPD47CSEj0kJvLOdiT1odq6QIHcOJvCvT-lR5LhiYBuW-adAXutB2bQJIdpRDIVbrgh8/s640/1000228181.jpg";
+
+        const EKADASHI_IMAGES = {
+            "e_saphala": "https://your-link/saphala.jpg",
+            "e_putrada": "https://your-link/putrada.jpg",
+            "e_shattila": "https://your-link/shattila.jpg",
+            "e_bhaimi": "https://your-link/bhaimi.jpg",
+            "e_vijaya": "https://your-link/vijaya.jpg",
+            "e_amalaki": "https://your-link/amalaki.jpg",
+            "e_papmoch": "https://your-link/papamochani.jpg",
+            "e_kamada": "https://your-link/kamada.jpg",
+            "e_varuthi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhEoxYei9hdWuy1iZ5jylDsmlmGsCEAYcTPj9vUFiA2BTf0tVQR41BB7AY27gtMq3dANy4HgNKOF0ZfniiDDr01sT5LpiXfmsElRNNmf7s-Teo3HESOgv0RQiyxVq1Or_FDcvOXTEE19UDK5jQoSnd8Tu_YfHYApBc84EpqVN6Udk82z262g1lA_v0WK3U/s1200/1000228439.png",
+            "e_mohini": "https://your-link/mohini.jpg",
+            "e_apara": "https://your-link/apara.jpg",
+            "e_nirjala": "https://your-link/nirjala.jpg",
+            "e_yogini": "https://your-link/yogini.jpg",
+            "e_sayana": "https://your-link/sayana.jpg",
+            "e_kamika": "https://your-link/kamika.jpg",
+            "e_pavitra": "https://your-link/pavitropana.jpg",
+            "e_annada": "https://your-link/annada.jpg",
+            "e_parsva": "https://your-link/parshva.jpg",
+            "e_indira": "https://your-link/indira.jpg",
+            "e_papanku": "https://your-link/papankusha.jpg",
+            "e_rama": "https://your-link/rama.jpg",
+            "e_utthana": "https://your-link/utthana.jpg",
+            "e_utpanna": "https://your-link/utpanna.jpg",
+            "e_mokshada": "https://your-link/mokshada.jpg",
+            "e_padmini": "https://your-link/padmini.jpg", // Adhik Maas
+            "e_parama": "https://your-link/parama.jpg"     // Adhik Maas
+        };
+
+        // =========================================================================
+        // 🌟 2. LANGUAGE DICTIONARY 🌟
+        // =========================================================================
+        const langData = {
+            en: { 
+                page_title: "Ekadashi Planner", today_is: "Today is Fasting Day,", tom_is: "Upcoming Fast Tomorrow,", info_msg: "Full details accessible 1 day before fast.", read_mahatmya: "Read Mahatmya", close: "Close",
+                days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                months:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                desc: "Fasting on this sacred day brings immense spiritual merit, purifies the soul, and brings one closer to Lord Krishna.",
+                e_saphala: "Saphala Ekadashi", e_putrada: "Putrada Ekadashi", e_shattila: "Shat Tila Ekadashi", e_bhaimi: "Bhaimi Ekadashi", e_vijaya: "Vijaya Ekadashi", e_amalaki: "Amalaki Ekadashi", e_papmoch: "Papamochani Ekadashi", e_kamada: "Kamada Ekadashi", e_varuthi: "Varuthini Ekadashi", e_mohini: "Mohini Ekadashi", e_apara: "Apara Ekadashi", e_nirjala: "Nirjala Ekadashi", e_yogini: "Yogini Ekadashi", e_sayana: "Sayana Ekadashi", e_kamika: "Kamika Ekadashi", e_pavitra: "Pavitropana Ekadashi", e_annada: "Annada Ekadashi", e_parsva: "Parshva Ekadashi", e_indira: "Indira Ekadashi", e_papanku: "Pashankusha Ekadashi", e_rama: "Rama Ekadashi", e_utthana: "Utthana Ekadashi", e_utpanna: "Utpanna Ekadashi", e_mokshada: "Mokshada Ekadashi", e_padmini: "Padmini Ekadashi", e_parama: "Parama Ekadashi"
+            },
+            hi: { 
+                page_title: "एकादशी कैलेंडर", today_is: "आज एकादशी का व्रत है,", tom_is: "कल का व्रत,", info_msg: "पूरी जानकारी व्रत से 1 दिन पहले उपलब्ध होगी।", read_mahatmya: "महात्म्य पढ़ें", close: "बंद करें",
+                days:["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"],
+                months:["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"],
+                desc: "इस पवित्र दिन उपवास रखने से अपार आध्यात्मिक पुण्य मिलता है, आत्मा शुद्ध होती है, और व्यक्ति भगवान कृष्ण के करीब आता है।",
+                e_saphala: "सफला एकादशी", e_putrada: "पुत्रदा एकादशी", e_shattila: "षटतिला एकादशी", e_bhaimi: "भैमी एकादशी", e_vijaya: "विजया एकादशी", e_amalaki: "आमलकी एकादशी", e_papmoch: "पापमोचनी एकादशी", e_kamada: "कामदा एकादशी", e_varuthi: "वरुथिनी एकादशी", e_mohini: "मोहिनी एकादशी", e_apara: "अपरा एकादशी", e_nirjala: "निर्जला एकादशी", e_yogini: "योगिनी एकादशी", e_sayana: "शयन एकादशी", e_kamika: "कामिका एकादशी", e_pavitra: "पवित्रोपना एकादशी", e_annada: "अन्नदा एकादशी", e_parsva: "पार्श्व एकादशी", e_indira: "इंदिरा एकादशी", e_papanku: "पापांकुशा एकादशी", e_rama: "रमा एकादशी", e_utthana: "उत्थाना एकादशी", e_utpanna: "उत्पन्ना एकादशी", e_mokshada: "मोक्षदा एकादशी", e_padmini: "पद्मिनी एकादशी", e_parama: "परमा एकादशी"
+            },
+            mr: { 
+                page_title: "एकादशी दिनदर्शिका", today_is: "आज एकादशीचा उपवास आहे,", tom_is: "उद्याचा उपवास,", info_msg: "संपूर्ण माहिती उपवासाच्या १ दिवस आधी उपलब्ध होईल.", read_mahatmya: "माहात्म्य वाचा", close: "बंद करा",
+                days:["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
+                months:["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "दिसंबर"],
+                desc: "या पवित्र दिवशी उपवास केल्याने अफाट आध्यात्मिक पुण्य मिळते, आत्मा शुद्ध होतो आणि व्यक्ती भगवान श्रीकृष्णाच्या जवळ जाते.",
+                e_saphala: "सफला एकादशी", e_putrada: "पुत्रदा एकादशी", e_shattila: "षटतिला एकादशी", e_bhaimi: "भैमी एकादशी", e_vijaya: "विजया एकादशी", e_amalaki: "आमलकी एकादशी", e_papmoch: "पापमोचनी एकादशी", e_kamada: "कामदा एकादशी", e_varuthi: "वरुथिनी एकादशी", e_mohini: "मोहिनी एकादशी", e_apara: "अपरा एकादशी", e_nirjala: "निर्जला एकादशी", e_yogini: "योगिनी एकादशी", e_sayana: "शयन एकादशी", e_kamika: "कामिका एकादशी", e_pavitra: "पवित्रोपना एकादशी", e_annada: "अन्नदा एकादशी", e_parsva: "पार्श्व एकादशी", e_indira: "इंदिरा एकादशी", e_papanku: "पापांकुशा एकादशी", e_rama: "रमा एकादशी", e_utthana: "उत्थाना एकादशी", e_utpanna: "उत्पन्ना एकादशी", e_mokshada: "मोक्षदा एकादशी", e_padmini: "पद्मिनी एकादशी", e_parama: "परमा एकादशी"
+            }
+        };
+
+        // =========================================================================
+        // 🌟 3. CORE LOGIC 🌟
+        // =========================================================================
+        // Changed AppCreator24 internal intents (go:e_xxx) to local standard html files (e_xxx.html)
+        const ekadasiData =[
+            { "date": "2024-01-07", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2024-01-21", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2024-02-06", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2024-02-20", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2024-03-06", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2024-03-20", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2024-04-05", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2024-04-19", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2024-05-04", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2024-05-19", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2024-06-02", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2024-06-18", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2024-07-02", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2024-07-17", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2024-07-31", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2024-08-16", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2024-08-29", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2024-09-14", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2024-09-28", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2024-10-14", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2024-10-28", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2024-11-12", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2024-11-26", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2024-12-11", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2024-12-26", "name_key": "e_saphala", "link": "e_saphala.html" },
+            { "date": "2025-01-10", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2025-01-25", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2025-02-09", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2025-02-24", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2025-03-10", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2025-03-25", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2025-04-08", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2025-04-23", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2025-05-08", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2025-05-23", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2025-06-06", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2025-06-21", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2025-07-06", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2025-07-20", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2025-08-04", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2025-08-19", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2025-09-03", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2025-09-17", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2025-10-02", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2025-10-17", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2025-11-01", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2025-11-15", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2025-11-30", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2025-12-15", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2025-12-30", "name_key": "e_putrada", "link": "e_putrada.html" },
+            { "date": "2026-01-14", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2026-01-29", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2026-02-13", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2026-02-27", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2026-03-15", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2026-03-29", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2026-04-13", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2026-04-27", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2026-05-13", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2026-05-27", "name_key": "e_padmini", "link": "e_padmini.html" }, { "date": "2026-06-11", "name_key": "e_parama", "link": "e_parama.html" }, { "date": "2026-06-25", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2026-07-11", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2026-07-25", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2026-08-09", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2026-08-24", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2026-09-07", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2026-09-22", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2026-10-06", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2026-10-22", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2026-11-05", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2026-11-21", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2026-12-04", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2026-12-20", "name_key": "e_mokshada", "link": "e_mokshada.html" },
+            { "date": "2027-01-03", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2027-01-19", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2027-02-02", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2027-02-17", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2027-03-04", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2027-03-18", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2027-04-02", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2027-04-17", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2027-05-02", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2027-05-16", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2027-06-01", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2027-06-15", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2027-06-30", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2027-07-14", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2027-07-30", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2027-08-12", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2027-08-28", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2027-09-11", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2027-09-26", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2027-10-11", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2027-10-26", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2027-11-10", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2027-11-24", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2027-12-09", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2027-12-23", "name_key": "e_saphala", "link": "e_saphala.html" },
+            { "date": "2028-01-08", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2028-01-22", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2028-02-07", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2028-02-21", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2028-03-07", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2028-03-21", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2028-04-06", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2028-04-20", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2028-05-05", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2028-05-20", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2028-06-03", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2028-06-18", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2028-07-02", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2028-07-18", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2028-08-01", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2028-08-17", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2028-08-30", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2028-09-15", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2028-09-29", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2028-10-14", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2028-10-29", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2028-11-13", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2028-11-28", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2028-12-12", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2028-12-27", "name_key": "e_putrada", "link": "e_putrada.html" }
+        ];
+
+        let currentLang = 'en';
+        let texts = langData.en;
+        let eventsMap = new Map();
+        
+        function getISTMidnight(dateObj = new Date()) {
+            const utcTime = dateObj.getTime() + (dateObj.getTimezoneOffset() * 60000);
+            const istTime = new Date(utcTime + (330 * 60000));
+            istTime.setHours(0, 0, 0, 0); 
+            return istTime;
+        }
+
+        function getISTDateString(offsetDays = 0, baseDate = new Date()) {
+            const istTime = getISTMidnight(baseDate);
+            istTime.setDate(istTime.getDate() + offsetDays);
+            const y = istTime.getFullYear();
+            const m = String(istTime.getMonth() + 1).padStart(2, '0');
+            const d = String(istTime.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        const initialIST = getISTMidnight();
+        let currentMonth = initialIST.getMonth();
+        let currentYear = initialIST.getFullYear();
+
+        const DOM = {
+            pageTitle: document.getElementById('ui-page-title'),
+            calWeekdays: document.getElementById('calWeekdays'),
+            alertSubtitle: document.getElementById('ui-alert-subtitle'),
+            alertBanner: document.getElementById('alertBanner'),
+            alertName: document.getElementById('alertName'),
+            alertGoBtn: document.getElementById('alertGoBtn'),
+            monthYearDisplay: document.getElementById('monthYearDisplay'),
+            calDays: document.getElementById('calDays'),
+            btnPrev: document.getElementById('btnPrev'),
+            btnNext: document.getElementById('btnNext'),
+            selectedSection: document.getElementById('selectedSection'),
+            selectedImg: document.getElementById('selectedImg'),
+            selectedTitle: document.getElementById('selectedTitle'),
+            selectedDate: document.getElementById('selectedDate'),
+            modalOverlay: document.getElementById('modalOverlay'),
+            modalImg: document.getElementById('modalImg'),
+            modalDate: document.getElementById('modalDate'),
+            modalTitle: document.getElementById('modalTitle'),
+            modalDesc: document.getElementById('modalDesc'),
+            modalInfoMsg: document.getElementById('modalInfoMsg'),
+            modalGoBtn: document.getElementById('modalGoBtn'),
+            uiInfoMsg: document.getElementById('ui-info-msg')
+        };
+
+        function syncThemeAndLanguage() {
+            const isDark = localStorage.getItem('theme') === 'dark';
+            if (isDark) document.body.setAttribute('data-theme', 'dark');
+            else document.body.removeAttribute('data-theme');
+
+            let savedLang = localStorage.getItem('lang') || 'en';
+            if(savedLang.toLowerCase().includes('hi')) savedLang = 'hi';
+            else if(savedLang.toLowerCase().includes('mr')) savedLang = 'mr';
+            else savedLang = 'en';
+
+            currentLang = savedLang;
+            texts = langData[currentLang];
+
+            DOM.pageTitle.textContent = texts.page_title;
+            DOM.modalGoBtn.textContent = texts.read_mahatmya;
+            document.getElementById('modalCloseBtn').textContent = texts.close;
+            DOM.modalDesc.textContent = texts.desc;
+            DOM.uiInfoMsg.textContent = texts.info_msg;
+
+            DOM.calWeekdays.innerHTML = '';
+            texts.days.forEach(day => {
+                const div = document.createElement('div');
+                div.className = 'cal-day-name';
+                div.textContent = day;
+                DOM.calWeekdays.appendChild(div);
+            });
+        }
+
+        function init() {
+            syncThemeAndLanguage();
+            
+            eventsMap.clear();
+            ekadasiData.forEach(event => {
+                let specificImage = EKADASHI_IMAGES[event.name_key];
+                let isPlaceholder = specificImage && specificImage.includes("your-link");
+                let finalImage = (specificImage && specificImage.trim() !== "" && !isPlaceholder) ? specificImage : APP_LOGO_URL;
+
+                eventsMap.set(event.date, {
+                    ...event,
+                    localizedName: texts[event.name_key],
+                    image: finalImage 
+                });
+            });
+
+            checkAlertBanner();
+            renderCalendar(currentMonth, currentYear);
+            
+            DOM.btnPrev.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                DOM.selectedSection.classList.remove('active');
+                renderCalendar(currentMonth, currentYear);
+            });
+
+            DOM.btnNext.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                DOM.selectedSection.classList.remove('active');
+                renderCalendar(currentMonth, currentYear);
+            });
+        }
+
+        function checkAlertBanner() {
+            const todayStr = getISTDateString(0); 
+            const tomStr = getISTDateString(1);   
+
+            let activeEvent = eventsMap.get(todayStr);
+            let status = activeEvent ? "today" : "";
+
+            if (!activeEvent) {
+                activeEvent = eventsMap.get(tomStr);
+                status = activeEvent ? "tomorrow" : "";
+            }
+
+            if (activeEvent) {
+                DOM.alertName.textContent = activeEvent.localizedName;
+                DOM.alertGoBtn.href = activeEvent.link;
+                DOM.alertBanner.classList.add('active');
+                DOM.alertSubtitle.textContent = status === "today" ? texts.today_is : texts.tom_is;
+            } else {
+                DOM.alertBanner.classList.remove('active');
+            }
+        }
+
+        function renderCalendar(month, year) {
+            DOM.monthYearDisplay.textContent = `${texts.months[month]} ${year}`;
+            DOM.calDays.innerHTML = '';
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const todayStr = getISTDateString(0);
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'cal-cell empty';
+                DOM.calDays.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-cell';
+                cell.textContent = day;
+
+                const y = year;
+                const m = String(month + 1).padStart(2, '0');
+                const d = String(day).padStart(2, '0');
+                const cellDateStr = `${y}-${m}-${d}`;
+                
+                if(cellDateStr === todayStr) cell.classList.add('is-today');
+
+                const eventForDay = eventsMap.get(cellDateStr);
+                if (eventForDay) {
+                    cell.classList.add('has-event');
+                    cell.addEventListener('click', () => showSelectedSection(eventForDay, d, m, y));
+                }
+                DOM.calDays.appendChild(cell);
+            }
+        }
+
+        function showSelectedSection(eventData, d, m, y) {
+            DOM.selectedImg.src = APP_LOGO_URL; 
+            DOM.selectedTitle.textContent = eventData.localizedName;
+            DOM.selectedDate.innerHTML = `<i class="far fa-calendar-alt"></i> ${parseInt(d)} ${texts.months[parseInt(m)-1]} ${y}`;
+            
+            DOM.selectedSection.classList.add('active');
+            setTimeout(() => DOM.selectedSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+            DOM.selectedSection.onclick = () => openPopup(eventData, d, m, y);
+        }
+
+        function openPopup(eventData, d, m, y) {
+            DOM.modalImg.src = eventData.image; 
+            DOM.modalTitle.textContent = eventData.localizedName;
+            DOM.modalDate.textContent = `${parseInt(d)} ${texts.months[parseInt(m)-1]} ${y}`;
+
+            const todayIST = getISTMidnight();
+            const eventIST = getISTMidnight(new Date(y, parseInt(m)-1, d));
+            const diffDays = Math.round((eventIST.getTime() - todayIST.getTime()) / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0 || diffDays === 1) {
+                DOM.modalGoBtn.style.display = 'block';
+                DOM.modalGoBtn.href = eventData.link;
+                DOM.modalInfoMsg.style.display = 'none'; 
+            } else {
+                DOM.modalGoBtn.style.display = 'none';
+                DOM.modalInfoMsg.style.display = 'block'; 
+            }
+
+            DOM.modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup() {
+            DOM.modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
