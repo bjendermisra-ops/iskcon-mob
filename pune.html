@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FF9933">
+    <title>ISKCON Pune Temples</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #FF9933; --primary-dark: #D35400; --secondary: #4E342E; --bg-body: #FFF8F0; --bg-surface: rgba(255, 255, 255, 0.95); --text-main: #2D2D2D; --text-light: #666666; --radius-lg: 20px; --shadow-card: 0 10px 30px rgba(0,0,0,0.06); --shadow-float: 0 15px 35px rgba(255, 153, 51, 0.35); --transition-speed: 0.3s; --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        body.dark-mode { --bg-body: #0F0F0F; --bg-surface: rgba(30, 30, 30, 0.95); --text-main: #F5F5F5; --text-light: #A0A0A0; --secondary: #FFB74D; --shadow-card: 0 10px 30px rgba(0,0,0,0.6); --shadow-float: 0 15px 40px rgba(255, 153, 51, 0.25); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); padding-bottom: 90px; overflow-x: hidden; user-select: none; transition: background-color var(--transition-speed), color var(--transition-speed); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 153, 51, 0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: rgba(255, 153, 51, 0.3); }
+
+        header { background: var(--bg-surface); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 800; padding: 15px 15px 20px 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; animation: slideDownHeader 0.6s var(--spring-easing) forwards; transform: translateY(-100%); border-bottom: 1px solid rgba(255, 153, 51, 0.1); }
+        @keyframes slideDownHeader { to { transform: translateY(0); } }
+        
+        .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .btn-nav-back, .btn-action-icon { background: #FFF3E0; color: var(--primary-dark); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: 0.3s var(--spring-easing); box-shadow: 0 4px 10px rgba(255,153,51,0.2); position: relative; overflow: hidden; }
+        body.dark-mode .btn-nav-back, body.dark-mode .btn-action-icon { background: #2A2A2A; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .btn-nav-back:hover, .btn-action-icon:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 15px rgba(255,153,51,0.4); }
+        .btn-nav-back:active, .btn-action-icon:active { transform: scale(0.85); }
+        
+        .app-title { cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: transform 0.2s; }
+        .app-title:active { transform: scale(0.96); }
+        .app-title h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 800; color: var(--secondary); text-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: color var(--transition-speed); }
+        .app-title p { margin: 0; font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; transition: color var(--transition-speed); }
+        
+        .search-container { position: relative; width: 100%; margin-bottom: 16px; display: flex; align-items: center; }
+        .search-container .search-icon { position: absolute; left: 18px; color: var(--primary); font-size: 1.1rem; transition: 0.3s; z-index: 2; pointer-events: none; }
+        .search-input { width: 100%; padding: 14px 46px 14px 46px; border-radius: 50px; border: 2px solid transparent; background: rgba(0,0,0,0.04); font-size: 1rem; transition: 0.3s; color: var(--text-main); font-weight: 500; }
+        body.dark-mode .search-input { background: rgba(255,255,255,0.05); color: #FFF; }
+        .search-input:focus { outline: none; border-color: var(--primary); background: var(--bg-surface); box-shadow: 0 8px 25px rgba(255,153,51,0.25); transform: scale(1.02); }
+        .search-input:focus ~ .search-icon { transform: scale(1.2); color: var(--primary-dark); }
+        .clear-search-btn { position: absolute; right: 18px; background: rgba(0,0,0,0.1); color: var(--text-main); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer; opacity: 0; transform: scale(0.5); pointer-events: none; transition: 0.3s var(--spring-easing); z-index: 2; }
+        body.dark-mode .clear-search-btn { background: rgba(255,255,255,0.2); color: #FFF; }
+        .clear-search-btn.show { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .clear-search-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
+        .clear-search-btn:active { transform: scale(0.9); }
+        
+        .filter-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; animation: slideInRight 0.8s ease-out forwards; }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .chip { border: none; padding: 8px 20px; border-radius: 30px; background: rgba(0,0,0,0.06); color: var(--text-light); font-weight: 600; font-size: 0.9rem; flex-shrink: 0; cursor: pointer; transition: 0.3s var(--spring-easing); position: relative; overflow: hidden; display: flex; align-items: center; gap: 6px; }
+        body.dark-mode .chip { background: rgba(255,255,255,0.08); color: #BBB; }
+        .chip:hover { background: rgba(255, 153, 51, 0.15); color: var(--primary-dark); }
+        .chip.active { background: var(--primary); color: #fff; box-shadow: 0 6px 15px rgba(255, 153, 51, 0.4); transform: translateY(-3px) scale(1.05); }
+        
+        .container { max-width: 1200px; margin: 25px auto; padding: 0 15px; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; perspective: 1000px; }
+        
+        /* Shimmer Loading Skeleton */
+        .shimmer-card { background: var(--bg-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; height: 450px; display: flex; flex-direction: column; border: 1px solid rgba(150,150,150,0.08); }
+        .shimmer-bg { background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.06) 75%); background-size: 200% 100%; animation: shimmerAnim 1.5s infinite; }
+        body.dark-mode .shimmer-bg { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmerAnim 1.5s infinite; }
+        @keyframes shimmerAnim { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .shimmer-img { height: 260px; width: 100%; }
+        .shimmer-content { padding: 22px; flex-grow: 1; display: flex; flex-direction: column; gap: 15px; }
+        .shimmer-line { height: 20px; border-radius: 10px; width: 80%; }
+        .shimmer-line.short { width: 40%; }
+        .shimmer-line.para { height: 12px; width: 100%; margin-top: 10px; }
+        
+        .temple-card { background: var(--bg-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; display: flex; flex-direction: column; position: relative; opacity: 0; transform: translateY(40px) scale(0.95) rotateX(5deg); transition: transform 0.4s var(--spring-easing), box-shadow 0.4s, border-color 0.4s; border: 1px solid rgba(150,150,150,0.08); transform-style: preserve-3d; }
+        .temple-card.in-view { animation: springUpCard 0.6s var(--spring-easing) forwards; }
+        @keyframes springUpCard { to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); } }
+        .temple-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-float); border-color: rgba(255,153,51,0.5); z-index: 10; }
+        
+        .thumb-wrapper { position: relative; height: 260px; background-color: #E0E0E0; overflow: hidden; }
+        body.dark-mode .thumb-wrapper { background-color: #1A1A1A; }
+        .thumb-scroller { display: flex; height: 100%; width: 100%; overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .thumb-scroller::-webkit-scrollbar { display: none; }
+        .thumb-slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; position: relative; overflow: hidden; cursor: pointer; }
+        .thumb-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease-out, opacity 0.4s; opacity: 0; }
+        .thumb-slide img.img-loaded { opacity: 1; }
+        .thumb-slide:hover img { transform: scale(1.15); }
+        
+        .tap-hint { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.6); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; pointer-events: none; backdrop-filter: blur(8px); z-index: 2; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); animation: pulseGlow 2.5s infinite; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+        
+        /* FAVORITE BUTTON (HEART) */
+        .btn-fav { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; transition: 0.3s var(--spring-easing); color: #fff; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-fav:hover { transform: scale(1.1); background: rgba(255,255,255,0.4); }
+        .btn-fav:active { transform: scale(0.9); }
+        .btn-fav.active { color: #FF3B30; background: rgba(255, 255, 255, 0.9); border-color: #FF3B30; animation: heartBeat 0.5s var(--spring-easing); box-shadow: 0 5px 20px rgba(255, 59, 48, 0.4); }
+        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        .view-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.4s ease; cursor: pointer; z-index: 3; }
+        .view-overlay i { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; border: 1px solid rgba(255,255,255,0.6); transform: scale(0.5); transition: 0.5s var(--spring-easing); }
+        .thumb-slide:hover .view-overlay { opacity: 1; }
+        .thumb-slide:hover .view-overlay i { transform: scale(1) rotate(90deg); }
+        
+        .card-details { padding: 22px; flex-grow: 1; display: flex; flex-direction: column; transform: translateZ(20px); }
+        .area-badge { color: var(--primary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px; }
+        .card-title { margin: 0 0 10px; color: var(--secondary); font-size: 1.4rem; font-weight: 800; line-height: 1.2; font-family: 'Playfair Display', serif;}
+        .card-addr { color: var(--text-light); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px; font-weight: 500;}
+        
+        /* FUTURE READY EXTRA INFO (Hidden by default) */
+        .hidden-feature { display: none !important; }
+        .temple-extra-info { background: rgba(255,153,51,0.08); border-radius: 12px; padding: 12px 15px; margin-bottom: 20px; border: 1px solid rgba(255,153,51,0.2); }
+        body.dark-mode .temple-extra-info { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        .extra-row { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; margin-bottom: 8px; color: var(--text-main); font-weight: 600; }
+        .extra-row:last-child { margin-bottom: 0; }
+        .extra-row i { color: var(--primary-dark); font-size: 1rem; width: 16px; margin-top: 2px; }
+
+        .action-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; }
+        .btn { border: none; border-radius: 12px; padding: 12px 5px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s var(--spring-easing); position: relative; overflow: hidden; z-index: 1; }
+        .btn:active { transform: scale(0.92); }
+        .btn-ghost { background: rgba(0,0,0,0.05); color: var(--text-main); border: 1px solid transparent; }
+        body.dark-mode .btn-ghost { background: rgba(255,255,255,0.1); color: #FFF; }
+        .btn-ghost:hover { background: rgba(0,0,0,0.1); transform: translateY(-2px); }
+        body.dark-mode .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+        
+        .btn-fill { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; box-shadow: 0 6px 15px rgba(255, 153, 51, 0.3); animation: pulseMap 3s infinite; }
+        .btn-fill:hover { box-shadow: 0 10px 25px rgba(255, 153, 51, 0.6); transform: translateY(-3px) scale(1.02); }
+        
+        /* Modals & Overlays */
+        .fs-modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.98); backdrop-filter: blur(20px); flex-direction: column; opacity: 0; transition: opacity 0.4s; overflow: hidden; }
+        .fs-modal.active { display: flex; opacity: 1; }
+        .fs-top { position: absolute; top: 0; width: 100%; z-index: 2005; padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); transform: translateY(-20px); opacity: 0; transition: 0.5s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fs-modal.active .fs-top { transform: translateY(0); opacity: 1; }
+        .fs-title { color: white; font-weight: 800; font-size: 1.3rem; font-family: 'Playfair Display', serif; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .fs-close { color: white; font-size: 2.2rem; cursor: pointer; transition: 0.3s; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%; backdrop-filter: blur(5px); }
+        .fs-close:hover { background: rgba(255,153,51,0.5); transform: rotate(90deg); }
+        .fs-close:active { transform: scale(0.8); color: white; }
+        
+        .fs-viewport { flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%; position: relative; touch-action: none; overflow: hidden; }
+        .fs-img { max-width: 100%; max-height: 100%; object-fit: contain; opacity: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.5); touch-action: none; transition: opacity 0.4s ease; transform-origin: center center; }
+        .fs-img.fs-loaded { opacity: 1; }
+        
+        .fs-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(15px); transition: 0.3s var(--spring-easing); z-index: 2010; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        .fs-nav:hover { background: rgba(255,153,51,0.8); border-color: transparent; transform: translateY(-50%) scale(1.1); }
+        .fs-nav:active { background: var(--primary); transform: translateY(-50%) scale(0.9); }
+        .fs-prev { left: 20px; } .fs-next { right: 20px; }
+        
+        .fs-caption { position: absolute; bottom: 40px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 24px; border-radius: 30px; font-size: 1rem; font-weight: 600; backdrop-filter: blur(10px); left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; transition: 0.5s 0.3s var(--spring-easing); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        .fs-modal.active .fs-caption { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        .zoom-hint { position: absolute; top: 90px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; pointer-events: none; z-index: 2020; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); opacity: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .fs-modal.active .zoom-hint { animation: fadeOutHint 4.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s; }
+        @keyframes fadeOutHint { 0% { opacity: 0; transform: translateX(-50%) translateY(-20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 80% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(-10px); } }
+
+        /* Bottom Sheets */
+        .share-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 4000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; backdrop-filter: blur(8px); }
+        .share-overlay.active { opacity: 1; pointer-events: auto; }
+        .share-sheet { background: var(--bg-surface); width: 100%; max-width: 600px; border-radius: 30px 30px 0 0; padding: 20px 24px 30px; transform: translateY(100%); transition: transform 0.5s var(--spring-easing); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; gap: 15px; touch-action: pan-y; position: relative; }
+        body.dark-mode .share-sheet { background: #1A1A1A; border-top: 1px solid rgba(255,255,255,0.08); }
+        .share-overlay.active .share-sheet { transform: translateY(0); }
+        
+        .drag-handle { width: 50px; height: 6px; background: rgba(0,0,0,0.15); border-radius: 10px; margin: 0 auto 15px auto; cursor: grab; }
+        body.dark-mode .drag-handle { background: rgba(255,255,255,0.2); }
+        
+        .share-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .share-header h3 { margin: 0; font-size: 1.3rem; color: var(--secondary); font-weight: 800; font-family: 'Playfair Display'; }
+        .share-close { background: rgba(0,0,0,0.05); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; color: var(--text-main); transition: 0.3s var(--spring-easing); }
+        body.dark-mode .share-close { background: rgba(255,255,255,0.1); color: #fff; }
+        .share-close:hover { background: rgba(255,153,51,0.2); color: var(--primary-dark); transform: rotate(90deg); }
+        .share-close:active { transform: scale(0.85); }
+        
+        .sheet-btn { width: 100%; padding: 18px; border-radius: 18px; border: none; font-size: 1.05rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: 0.3s var(--spring-easing); position: relative; overflow: hidden; }
+        .sheet-btn:hover { transform: translateY(-3px) scale(1.02); }
+        .sheet-btn:active { transform: scale(0.96); }
+        
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: white; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); }
+        .btn-email { background: linear-gradient(135deg, #EA4335, #C62828); color: white; box-shadow: 0 6px 20px rgba(234, 67, 53, 0.3); }
+        .btn-dev { background: linear-gradient(135deg, #4E342E, #2D2D2D); color: white; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+        .btn-copy-sheet { background: rgba(0,0,0,0.06); color: var(--text-main); }
+        body.dark-mode .btn-copy-sheet { background: rgba(255,255,255,0.08); color: #FFF; }
+        .btn-copy-sheet:hover { background: rgba(0,0,0,0.1); }
+        
+        /* Language Sheet Specific */
+        .lang-option { justify-content: flex-start; background: rgba(0,0,0,0.04); color: var(--text-main); border: 2px solid transparent; }
+        body.dark-mode .lang-option { background: rgba(255,255,255,0.05); color: #FFF; }
+        .lang-option.active-lang { border-color: var(--primary); background: rgba(255,153,51,0.1); color: var(--primary-dark); }
+        body.dark-mode .lang-option.active-lang { background: rgba(255,153,51,0.15); color: var(--primary); }
+
+        /* Scroll to Top FAB */
+        .fab-up { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5); z-index: 1000; opacity: 0; transform: translateY(50px) scale(0.5); pointer-events: none; transition: 0.4s var(--spring-easing); border: none; }
+        .fab-up.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .fab-up:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 12px 30px rgba(255, 153, 51, 0.7); }
+        .fab-up:active { transform: scale(0.9); }
+
+        /* Contact Banner */
+        .contact-banner { margin-top: 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-lg); padding: 24px 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: white; box-shadow: 0 10px 30px rgba(255, 153, 51, 0.3); opacity: 0; transform: translateY(40px) scale(0.95); transition: 0.6s var(--spring-easing); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+        .contact-banner::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); animation: spinBg 15s linear infinite; pointer-events: none; }
+        @keyframes spinBg { 100% { transform: rotate(360deg); } }
+        .contact-banner.in-view { opacity: 1; transform: translateY(0) scale(1); }
+        .cb-left { display: flex; align-items: center; gap: 20px; z-index: 1; }
+        .cb-icon { font-size: 2.5rem; background: rgba(255,255,255,0.2); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .cb-text h4 { margin: 0 0 4px 0; font-size: 1.4rem; font-weight: 800; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .cb-text p { margin: 0; font-size: 0.95rem; font-weight: 500; opacity: 0.95; }
+        .btn-cb { background: var(--bg-surface); color: var(--primary-dark); border: none; padding: 16px 30px; border-radius: 30px; font-weight: 800; font-size: 1.05rem; cursor: pointer; white-space: nowrap; box-shadow: 0 8px 25px rgba(0,0,0,0.2); transition: 0.3s var(--spring-easing); z-index: 1; }
+        .btn-cb:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+        .btn-cb:active { transform: scale(0.92); }
+
+        /* Toast */
+        .toast { position: fixed; top: 80px; left: 50%; transform: translate(-50%, -30px); background: rgba(15,15,15,0.95); color: white; padding: 14px 28px; border-radius: 50px; font-size: 1rem; font-weight: 600; opacity: 0; transition: 0.4s var(--spring-easing); pointer-events: none; z-index: 5000; backdrop-filter: blur(15px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); white-space: nowrap; }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .empty-msg { text-align: center; color: var(--text-light); margin-top: 80px; font-weight: 600; font-size: 1.2rem; }
+
+        /* Ripple Animation */
+        .ripple-effect { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple-anim 0.6s ease-out; background-color: rgba(255, 255, 255, 0.4); pointer-events: none; }
+        .btn-ghost .ripple-effect, .chip .ripple-effect { background-color: rgba(0, 0, 0, 0.1); }
+        body.dark-mode .btn-ghost .ripple-effect, body.dark-mode .chip .ripple-effect { background-color: rgba(255, 255, 255, 0.2); }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+        @media (max-width: 768px) {
+            .contact-banner { flex-direction: column; text-align: center; padding: 25px 20px; }
+            .cb-left { flex-direction: column; gap: 12px; }
+            .btn-cb { width: 100%; margin-top: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="header-left">
+                <!-- Updated back link from go:home to index.html -->
+                <button class="btn-nav-back ripple" onclick="window.location.href='index.html'" aria-label="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="app-title ripple" onclick="window.location.href='index.html'">
+                    <h1 data-i18n="appTitle">Pune Temples</h1>
+                    <p><i class="fas fa-home"></i> <span data-i18n="appSub">Tap for App Menu</span></p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-action-icon ripple" onclick="openLanguageSheet()" aria-label="Change Language">
+                    <i class="fas fa-language"></i>
+                </button>
+                <button class="btn-action-icon ripple" onclick="toggleDarkMode()" aria-label="Toggle Theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search Hadapsar, Katraj..." data-i18n-placeholder="searchPlaceholder">
+            <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="filter-scroll" id="filterContainer"></div>
+    </header>
+
+    <main class="container">
+        <div id="gridTarget" class="grid-layout">
+            <!-- Shimmer Effect placeholders to show initially -->
+            <div class="shimmer-card">
+                <div class="shimmer-img shimmer-bg"></div>
+                <div class="shimmer-content">
+                    <div class="shimmer-line short shimmer-bg"></div>
+                    <div class="shimmer-line shimmer-bg"></div>
+                    <div class="shimmer-line para shimmer-bg"></div>
+                    <div class="shimmer-line para shimmer-bg"></div>
+                    <div class="shimmer-line para short shimmer-bg"></div>
+                </div>
+            </div>
+            <div class="shimmer-card">
+                <div class="shimmer-img shimmer-bg"></div>
+                <div class="shimmer-content">
+                    <div class="shimmer-line short shimmer-bg"></div>
+                    <div class="shimmer-line shimmer-bg"></div>
+                    <div class="shimmer-line para shimmer-bg"></div>
+                    <div class="shimmer-line para shimmer-bg"></div>
+                    <div class="shimmer-line para short shimmer-bg"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="emptyState" class="empty-msg" style="display:none">
+            <i class="fas fa-om" style="font-size:3.5rem; margin-bottom:15px; display:block; color:var(--primary); text-shadow: 0 5px 15px rgba(255,153,51,0.4);"></i>
+            <span data-i18n="emptyMsg">No temples found.</span>
+        </div>
+
+        <div class="contact-banner" id="contactBannerTarget">
+            <div class="cb-left">
+                <div class="cb-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="cb-text">
+                    <h4 data-i18n="bannerTitle">Help Us Improve!</h4>
+                    <p data-i18n="bannerDesc">Want to add a new ISKCON Temple to the directory?</p>
+                </div>
+            </div>
+            <button class="btn-cb ripple" onclick="openContactSheet()" data-i18n="contactAdmin">Contact Admin</button>
+        </div>
+    </main>
+
+    <!-- Scroll to Top FAB -->
+    <button id="fabUp" class="fab-up ripple" aria-label="Scroll to top" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Gallery Lightbox -->
+    <div id="galleryModal" class="fs-modal">
+        <div class="fs-top">
+            <span class="fs-title" id="fsTitle">Temple Name</span>
+            <div class="fs-close" onclick="closeGallery()"><i class="fas fa-times"></i></div>
+        </div>
+        
+        <div class="zoom-hint" id="zoomHint"><i class="fas fa-search-plus"></i> <span data-i18n="zoomHint">Double tap or Pinch to Zoom</span></div>
+        
+        <div class="fs-viewport" id="touchSurface">
+            <button class="fs-nav fs-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+            <img id="fsImage" class="fs-img" src="" alt="Full view">
+            <button class="fs-nav fs-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="fs-caption" id="fsCounter">1 / 5</div>
+    </div>
+
+    <!-- Share Sheet -->
+    <div id="customShareSheet" class="share-overlay" onclick="closeShareSheet()">
+        <div class="share-sheet" id="shareSheetBox" onclick="event.stopPropagation()">
+            <div class="drag-handle"></div>
+            <div class="share-header">
+                <h3 data-i18n="shareTitle">Share Temple Details</h3>
+                <button class="share-close" onclick="closeShareSheet()"><i class="fas fa-times"></i></button>
+            </div>
+            <!-- Empty string means let user select contact in WhatsApp -->
+            <button class="sheet-btn btn-whatsapp ripple" onclick="AppBridge.openWhatsApp('', currentShareText)">
+                <i class="fab fa-whatsapp"></i> <span data-i18n="sendWa">Send via WhatsApp</span>
+            </button>
+            <button class="sheet-btn btn-copy-sheet ripple" onclick="shareToClipboard()">
+                <i class="far fa-copy"></i> <span data-i18n="copyDetails">Copy Details</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Contact Admin & Developer Sheet -->
+    <div id="contactAdminSheet" class="share-overlay" onclick="closeContactSheet()">
+        <div class="share-sheet" id="contactSheetBox" onclick="event.stopPropagation()">
+            <div class="drag-handle"></div>
+            <div class="share-header">
+                <h3 data-i18n="contactSheetTitle">Contact Administrator</h3>
+                <button class="share-close" onclick="closeContactSheet()"><i class="fas fa-times"></i></button>
+            </div>
+            <p style="margin-top:0; margin-bottom:15px; color:var(--text-light); font-size:1rem;" data-i18n="contactSheetDesc">
+                Select an option to suggest a temple. We will verify and update the app!
+            </p>
+            <button class="sheet-btn btn-whatsapp ripple" onclick="sendContactWa()">
+                <i class="fab fa-whatsapp"></i> <span data-i18n="contactWa">Message on WhatsApp</span>
+            </button>
+            
+            <!-- Hidden Future Feature: Email Option -->
+            <button class="sheet-btn btn-email ripple hidden-feature" onclick="sendContactEmail()">
+                <i class="fas fa-envelope"></i> <span data-i18n="contactEmail">Send an Email</span>
+            </button>
+            
+            <!-- Updated developer link from go:dev to developer.html -->
+            <button class="sheet-btn btn-dev ripple" onclick="window.location.href='developer.html'">
+                <i class="fas fa-laptop-code"></i> <span data-i18n="contactDev">Contact Developer</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Language Selector Sheet -->
+    <div id="languageSheet" class="share-overlay" onclick="closeLanguageSheet()">
+        <div class="share-sheet" id="langSheetBox" onclick="event.stopPropagation()">
+            <div class="drag-handle"></div>
+            <div class="share-header">
+                <h3>Select Language / भाषा चुनें</h3>
+                <button class="share-close" onclick="closeLanguageSheet()"><i class="fas fa-times"></i></button>
+            </div>
+            <button class="sheet-btn lang-option ripple" id="lang-en" onclick="setLanguage('en')">🇺🇸 English</button>
+            <button class="sheet-btn lang-option ripple" id="lang-hi" onclick="setLanguage('hi')">🇮🇳 हिन्दी (Hindi)</button>
+            <button class="sheet-btn lang-option ripple" id="lang-mr" onclick="setLanguage('mr')">🇮🇳 मराठी (Marathi)</button>
+        </div>
+    </div>
+
+    <div class="toast" id="appToast"><i class="fas fa-check-circle" style="color:#FF9933; margin-right:8px;"></i> <span id="toastMsg" data-i18n="toastCopy">Copied to Clipboard!</span></div>
+
+    <script>
+        /* ============================================================
+           🚀 SMART LANGUAGE & THEME DETECTOR ENGINE 🚀
+           ============================================================ */
+        function detectLanguage() {
+            let rawLang = null;
+            const urlParams = new URLSearchParams(window.location.search);
+            rawLang = urlParams.get('lang') || urlParams.get('language');
+            
+            if (!rawLang) {
+                const langKeys =['appLang', 'lang', 'language', 'selectedLanguage', 'locale', 'currentLang', 'userLang'];
+                for (let key of langKeys) {
+                    let val = localStorage.getItem(key);
+                    if (val) {
+                        rawLang = val;
+                        window.APP_LANG_KEY = key; 
+                        break;
+                    }
+                }
+            }
+            
+            if (rawLang) {
+                rawLang = rawLang.toLowerCase();
+                if (rawLang.includes('hi') || rawLang.includes('hindi') || rawLang === 'hi') return 'hi';
+                if (rawLang.includes('mr') || rawLang.includes('marathi') || rawLang === 'mr') return 'mr';
+            }
+            return 'en'; 
+        }
+
+        function detectTheme() {
+            let rawTheme = null;
+            const themeKeys =['theme', 'appTheme', 'darkMode', 'dark_mode', 'mode', 'nightMode'];
+            for (let key of themeKeys) {
+                let val = localStorage.getItem(key);
+                if (val) {
+                    rawTheme = val;
+                    window.APP_THEME_KEY = key;
+                    break;
+                }
+            }
+            if (rawTheme) {
+                rawTheme = rawTheme.toLowerCase();
+                if (rawTheme === 'dark' || rawTheme === 'true' || rawTheme === '1' || rawTheme.includes('dark')) return 'dark';
+            }
+            return 'light'; 
+        }
+
+        window.APP_LANG_KEY = window.APP_LANG_KEY || 'appLang';
+        window.APP_THEME_KEY = window.APP_THEME_KEY || 'theme';
+
+        /* ============================================================
+           🚀 FAVORITES ENGINE (LOCAL STORAGE) 🚀
+           ============================================================ */
+        let favoriteTemples = JSON.parse(localStorage.getItem('iskconFavorites')) || [];
+
+        function toggleFavorite(event, templeId) {
+            event.stopPropagation(); // Prevent gallery opening
+            const index = favoriteTemples.indexOf(templeId);
+            if (index > -1) {
+                favoriteTemples.splice(index, 1);
+            } else {
+                favoriteTemples.push(templeId);
+            }
+            localStorage.setItem('iskconFavorites', JSON.stringify(favoriteTemples));
+            renderTemples();
+        }
+
+        /* ============================================================
+           🚀 MULTI-LANGUAGE ENGINE & SYNC🚀
+           ============================================================ */
+        const i18n = {
+            en: {
+                appTitle: "Pune Temples", appSub: "Tap for App Menu", searchPlaceholder: "Search Hadapsar, Katraj...",
+                all: "All", favorites: "Favorites", emptyMsg: "No temples found.", tapHint: "Expand", copy: "Copy", map: "Map", share: "Share",
+                sendWa: "Send via WhatsApp", copyDetails: "Copy Details", shareTitle: "Share Temple Details",
+                bannerTitle: "Help Us Improve!", bannerDesc: "Want to add a new ISKCON Temple to the directory?", contactAdmin: "Contact Admin",
+                contactSheetTitle: "Contact Administrator", contactSheetDesc: "Select an option to suggest a temple. We will verify and update the app!",
+                contactWa: "Message on WhatsApp", contactEmail: "Send an Email", contactDev: "Contact Developer",
+                zoomHint: "Double tap or Pinch to Zoom", toastCopy: "Copied to Clipboard!",
+                shareTextGreeting: "Jai Shri Krishna! ✨\n\nCheck out", shareTextAddress: "📍 Address:", shareTextMap: "🗺️ Map:",
+                contactWaMsg: "Hare Krishna Admin! 🙏\n\nI want to suggest an edit / add a new temple to the ISKCON Pune Directory.\n\nDetails:\n",
+                contactEmailSub: "Suggestion for ISKCON App", contactEmailBody: "Hare Krishna Admin,\n\nI found an incorrect location OR I want to add a new temple.\n\nMy Feedback:\n",
+                phoneLabel: "Phone", timeLabel: "Timetable"
+            },
+            hi: {
+                appTitle: "पुणे मंदिर", appSub: "ऐप मेनू के लिए टैप करें", searchPlaceholder: "हडपसर, कात्रज खोजें...",
+                all: "सभी", favorites: "पसंदीदा", emptyMsg: "कोई मंदिर नहीं मिला।", tapHint: "बड़ा करें", copy: "कॉपी", map: "नक्शा", share: "साझा करें",
+                sendWa: "WhatsApp पर भेजें", copyDetails: "विवरण कॉपी करें", shareTitle: "मंदिर का विवरण साझा करें",
+                bannerTitle: "सुधारने में हमारी मदद करें!", bannerDesc: "क्या आप निर्देशिका में एक नया इस्कॉन मंदिर जोड़ना चाहते हैं?", contactAdmin: "एडमिन से संपर्क करें",
+                contactSheetTitle: "एडमिन से संपर्क करें", contactSheetDesc: "मंदिर का सुझाव देने या सुधार के लिए एक विकल्प चुनें। हम इसे अपडेट करेंगे!",
+                contactWa: "WhatsApp पर संदेश भेजें", contactEmail: "ईमेल भेजें", contactDev: "डेवलपर से संपर्क करें",
+                zoomHint: "ज़ूम करने के लिए डबल टैप या पिंच करें", toastCopy: "क्लिपबोर्ड पर कॉपी हो गया!",
+                shareTextGreeting: "जय श्री कृष्ण! ✨\n\nपुणे में इस मंदिर को देखें:", shareTextAddress: "📍 पता:", shareTextMap: "🗺️ नक्शा:",
+                contactWaMsg: "हरे कृष्ण एडमिन! 🙏\n\nमैं इस्कॉन पुणे ऐप में एक नए मंदिर का सुझाव या सुधार देना चाहता हूँ।\n\nविवरण:\n",
+                contactEmailSub: "Suggestion for ISKCON App", contactEmailBody: "हरे कृष्ण एडमिन,\n\nमुझे ऐप में कुछ सुधार करने हैं या नया मंदिर जोड़ना है।\n\nमेरा सुझाव:\n",
+                phoneLabel: "फ़ोन", timeLabel: "समय"
+            },
+            mr: {
+                appTitle: "पुणे मंदिरे", appSub: "अॅप मेनूसाठी टॅप करा", searchPlaceholder: "हडपसर, कात्रज शोधा...",
+                all: "सर्व", favorites: "आवडते", emptyMsg: "कोणतेही मंदिर आढळले नाही.", tapHint: "विस्तार करा", copy: "कॉपी करा", map: "नकाशा", share: "शेअर करा",
+                sendWa: "WhatsApp वर पाठवा", copyDetails: "माहिती कॉपी करा", shareTitle: "मंदिराची माहिती शेअर करा",
+                bannerTitle: "सुधारण्यासाठी आम्हाला मदत करा!", bannerDesc: "तुम्हाला डिरेक्टरीमध्ये नवीन इस्कॉन मंदिर जोडायचे आहे का?", contactAdmin: "अ‍ॅडमिनशी संपर्क साधा",
+                contactSheetTitle: "अ‍ॅडमिनशी संपर्क साधा", contactSheetDesc: "मंदिर सुचवण्यासाठी किंवा दुरुस्तीसाठी पर्याय निवडा. आम्ही पडताळणी करून अपडेट करू!",
+                contactWa: "WhatsApp वर मेसेज करा", contactEmail: "ईमेल पाठवा", contactDev: "डेव्हलपरशी संपर्क साधा",
+                zoomHint: "झूम करण्यासाठी डबल टॅप किंवा पिंच करा", toastCopy: "क्लिपबोर्डवर कॉपी केले!",
+                shareTextGreeting: "जय श्री कृष्ण! ✨\n\nपुण्यातील हे मंदिर पहा:", shareTextAddress: "📍 पत्ता:", shareTextMap: "🗺️ नकाशा:",
+                contactWaMsg: "हरे कृष्ण ॲडमिन! 🙏\n\nमला इस्कॉन पुणे ॲपमध्ये नवीन मंदिर सुचवायचे आहे किंवा दुरुस्ती करायची आहे.\n\nमाहिती:\n",
+                contactEmailSub: "ISKCON App साठी सूचना", contactEmailBody: "हरे कृष्ण ॲडमिन,\n\nमला ॲपमध्ये काही सुधारणा करायची आहे किंवा नवीन मंदिर जोडायचे आहे.\n\nमाझी सूचना:\n",
+                phoneLabel: "फोन", timeLabel: "वेळ"
+            }
+        };
+
+        let currentLang = detectLanguage();
+
+        window.addEventListener('storage', (event) => {
+            const langKeys =['appLang', 'lang', 'language', 'selectedLanguage', 'locale', 'currentLang', 'userLang'];
+            const themeKeys =['theme', 'appTheme', 'darkMode', 'dark_mode', 'mode', 'nightMode'];
+            
+            if (langKeys.includes(event.key) && event.newValue) {
+                let val = event.newValue.toLowerCase();
+                let newLang = 'en';
+                if (val.includes('hi') || val.includes('hindi')) newLang = 'hi';
+                else if (val.includes('mr') || val.includes('marathi')) newLang = 'mr';
+                
+                if(currentLang !== newLang) {
+                    setLanguage(newLang, false);
+                }
+            }
+            if (themeKeys.includes(event.key)) {
+                let val = (event.newValue || '').toLowerCase();
+                let newTheme = (val === 'dark' || val === 'true' || val === '1' || val.includes('dark')) ? 'dark' : 'light';
+                applyTheme(newTheme);
+            }
+        });
+
+        function applyTheme(themeVal) {
+            const icon = document.getElementById('themeIcon');
+            if (themeVal === 'dark') {
+                document.body.classList.add('dark-mode');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                document.body.classList.remove('dark-mode');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        function updateUIText() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(i18n[currentLang][key]) el.innerHTML = i18n[currentLang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if(i18n[currentLang][key]) el.setAttribute('placeholder', i18n[currentLang][key]);
+            });
+        }
+
+        function setLanguage(lang, saveToStorage = true) {
+            currentLang = lang;
+            if(saveToStorage) {
+                localStorage.setItem(window.APP_LANG_KEY, lang);
+                localStorage.setItem('lang', lang);
+                localStorage.setItem('language', lang);
+            }
+            updateUIText();
+            closeLanguageSheet();
+            renderFilterChips(); 
+            renderTemples();
+        }
+
+        function openLanguageSheet() {
+            document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active-lang'));
+            document.getElementById('lang-' + currentLang).classList.add('active-lang');
+            document.getElementById('languageSheet').classList.add('active');
+        }
+        function closeLanguageSheet() { document.getElementById('languageSheet').classList.remove('active'); }
+
+        /* ============================================================
+           🚀 SKETCHWARE / APPCREATOR24 ADVANCED JS BRIDGE 🚀
+           ============================================================ */
+        const AppBridge = {
+            shareText: function(text) {
+                if (typeof Android !== "undefined" && Android.shareText) {
+                    Android.shareText(text);
+                } else if (navigator.share) {
+                    navigator.share({ text: text }).catch(e => console.log(e));
+                } else {
+                    shareToClipboard();
+                }
+                closeShareSheet();
+            },
+            openWhatsApp: function(phone, text) {
+                let phoneParam = phone ? `phone=${phone}&` : '';
+                window.location.href = `whatsapp://send?${phoneParam}text=${encodeURIComponent(text)}`;
+                setTimeout(() => {
+                    if(document.visibilityState === 'visible') {
+                        window.open(`https://api.whatsapp.com/send?${phoneParam}text=${encodeURIComponent(text)}`, '_blank');
+                    }
+                }, 500);
+                closeShareSheet(); closeContactSheet();
+            },
+            sendEmail: function(subject, body) {
+                 if (typeof Android !== "undefined" && Android.sendEmail) {
+                     Android.sendEmail(subject, body);
+                 } else {
+                     window.location.href = `mailto:admin@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                 }
+                 closeContactSheet();
+            },
+            openMap: function(query) {
+                if (typeof Android !== "undefined" && Android.openMap) {
+                    Android.openMap(query);
+                } else {
+                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
+                }
+            }
+        };
+
+        const templesData =[
+            { 
+                id: 1, 
+                name: { en: "ISKCON Hadapsar", hi: "इस्कॉन हडपसर", mr: "इस्कॉन हडपसर" }, 
+                locality: { en: "Hadapsar", hi: "हडपसर", mr: "हडपसर" }, 
+                address: { 
+                    en: "GW2M+X5J, Pune - Solapur Rd, near Kanyadan Mangal Karyalaya, Aru Nagar, Bhosale Nagar, Hadapsar, Pune, Maharashtra 411028",
+                    hi: "GW2M+X5J, पुणे - सोलापुर रोड, कन्यादान मंगल कार्यालय के पास, अरु नगर, भोसले नगर, हडपसर, पुणे, महाराष्ट्र 411028", 
+                    mr: "GW2M+X5J, पुणे - सोलापूर रोड, कन्यादान मंगल कार्यालयाजवळ, अरु नगर, भोसले नगर, हडपसर, पुणे, महाराष्ट्र 411028",
+                }, 
+                mapUrl: "GW2M+X5J, Pune - Solapur Rd, near Kanyadan Mangal Karyalaya, Aru Nagar, Bhosale Nagar, Hadapsar, Pune, Maharashtra 411028",
+                phone: "+91-9876543210", 
+                timetable: { 
+                    en: "Morning 4:30 AM - 1:00 PM | Evening 4:00 PM - 9:00 PM", 
+                    hi: "सुबह 4:30 AM - 1:00 PM | शाम 4:00 PM - 9:00 PM", 
+                    mr: "सकाळी 4:30 AM - 1:00 PM | संध्याकाळी 4:00 PM - 9:00 PM" 
+                },
+                images:[ 
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6USIM28qETy1v-VjEwq4AzLg6P13oywxY3vlPRkDOmdcRmyeLqyPKjspUPnv6gUwivhXGpmXUiViRjLw7t_HzCfUQJgE0CJED3VCDhBLOY9pRhSPU4PZ7Tfe1fNxaZcZW850DZuoPdH6ybBxW-rlP3IPk3_9lwBgGRlxcGuyMNBTylyhi9UDBBm6372cj/s1024/1000198175.webp", 
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsK9kBQzO7BCgKc_Mydhf4BMguzyXcv9Qe2b32C6RiQWh9ABXp5fe3rxbJrXPvDJS8AWb310MUesu1v6RsACiXE-GOEXa5SdqwGxHkuQqQ2sowmfeccCSu8-9jXoQtUOAmescfeCSYiMKGmGbuJZv3KF1RlwXrhZ8a0X1dpohyfBb3tMXt5yZ5Rk-xrPPT/s1024/1000198172.webp",
+                ] 
+            },
+            { 
+                id: 2, 
+                name: { en: "ISKCON NVCC", hi: "इस्कॉन एनवीसीसी", mr: "इस्कॉन एनव्हीसीसी" }, 
+                locality: { en: "Katraj", hi: "कात्रज", mr: "कात्रज" }, 
+                address: { 
+                    en: "ISKCON TEMPLE AND NVCC, Katraj - Kondhwa Rd, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048", 
+                    hi: "इस्कॉन मंदिर और एनवीसीसी, कात्रज - कोंढवा रोड, टिळेकर नगर, कोंढवा बुद्रुक, पुणे, महाराष्ट्र 411048", 
+                    mr: "इस्कॉन मंदिर आणि एनव्हीसीसी, कात्रज - कोंढवा रोड, टिळेकर नगर, कोंढवा बुद्रुक, पुणे, महाराष्ट्र 411048" 
+                }, 
+                mapUrl: "ISKCON TEMPLE AND NVCC, Katraj - Kondhwa Rd, Tilekar Nagar, Kondhwa Budruk, Pune, Maharashtra 411048", 
+                phone: "+91-9876543211", 
+                timetable: { 
+                    en: "Morning 4:30 AM - 1:00 PM | Evening 4:00 PM - 9:00 PM", 
+                    hi: "सुबह 4:30 AM - 1:00 PM | शाम 4:00 PM - 9:00 PM", 
+                    mr: "सकाळी 4:30 AM - 1:00 PM | संध्याकाळी 4:00 PM - 9:00 PM" 
+                },
+                images:[ 
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVp_kcDPM5jX5C_T88wjCDFbGMN1oVMsC5Hh8rCX_6sZ-QrOP_7ilIw0_m23GaRsJ1DOE1hXUOQM4GwCYSUM7MumXFs3nLFaFUClm-hOTs4n7IeE_1rUj16nekyyxxAP1MIMdcClpMi-X52N37qggRgaELmve1THiFvxxS8hU3G9xi3zU_UwxO8Pxosmcb/s768/1000217591.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi57A0vnyVdDCMpXHt0TScfevD94LXOg-VekSAbd4RON2mh8mNzGUcmvXOuuVnPBzQmlnjvt9SC6qu4YzTVh5QEhvRoxzy_jUQXUO7UnF6-fj6x2rFhuVrBo4kMfNFmfRnFH_22xOyVhOthu7C5coG1TymcQKj03kb1AOvRxSF_mpLu6oOaIBfBagwLa-sk/s768/1000217596.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjv9Qk3a9O84g4XSXcJApaQ6RCCEfA6YFxkHa6oWwWHPb3aAE7vZ4gOp7pF0YKg9sUqeMREaa056FIMg9c2BuHKUAELH6eFU1MGUg6ELTlc0HDubbkGi4bTCJuTbzXZL6Fw44Ea5mb5Wvqsszl3HBIyzPGePdG4N0TzDMUfwftruJwWjrbXhwqB4lz8IXZ_/s768/1000217592.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjm4rtwkFmMJ2vnuzT5IFOVRnA2ECD18co-lEgj7lzl_zzMz_hI5Dt80_XuRCvXLgAAll-I7B6aeD-MJLCHtdgICNKL8Oy1Pn5IdN49mmIvZaPnUmQ-TB6cZMHFJB2MFJC_pp1GTOlmpfRwKWF_iZztXP-Gz6_2c1gr-hc2y3yyclg0rOjRgfNX_qrBgPxT/s768/1000217594.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4TaMX5ckM6arnQgqumsjw5rrohtcij-sZkwo3sxtmGpIel0K3waR4_kkfCP-4ZxFRwnbZhWGldoj2lhcCsV3TuEc2Rlt9ArFxjU5qFjG5eLLHiMhxmwkwYel48VdQItZvDB72-fIHYY7rnFZjtqe_4HDRkZe8MICk_b6WAOzcgU9CdYjVXZ4UJZPq75H9/s768/1000217595.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3NcxmDUZDPBjeeNPlt3dHf4unjKpH44SdS7nrsYGuXb_ykCIred4SK_5STac0nh4wcnLbvxryUco4lcLeGZ9VO2OgTKOvCzWgmk2BSvL9nXkPceH318NUyfSTKDAAQv7nauTKPjEF1VPvjJopFSFpNYvF4uSYWA6AFeUMUt_oF_3tedCpOXaKaH97lB63/s768/1000217593.webp",
+                ] 
+            },
+            { 
+                id: 3, 
+                name: { en: "Sri Sri Radha Kunjabihari", hi: "श्री श्री राधा कुंजबिहारी", mr: "श्री श्री राधा कुंजबिहारी" }, 
+                locality: { en: "Camp", hi: "कैंप", mr: "कॅम्प" }, 
+                address: { 
+                    en: "ISKCON Pune Camp, 4, Colonel Tarapore Rd, beside Dastoor Boys School, Camp, Pune, Maharashtra 411001", 
+                    hi: "इस्कॉन पुणे कैंप, 4, कर्नल तारापोर रोड, दस्तूर बॉयज़ स्कूल के पास, कैंप, पुणे, महाराष्ट्र 411001", 
+                    mr: "इस्कॉन पुणे कॅम्प, 4, कर्नल तारापोर रोड, दस्तूर बॉईज स्कूलच्या बाजूला, कॅम्प, पुणे, महाराष्ट्र 411001",
+                }, 
+                mapUrl: "ISKCON Pune Camp, 4, Colonel Tarapore Rd, beside Dastoor Boys School, Camp, Pune, Maharashtra 411001", 
+                phone: "+91-9876543212", 
+                timetable: { 
+                    en: "Morning 4:30 AM - 1:00 PM | Evening 4:00 PM - 9:00 PM", 
+                    hi: "सुबह 4:30 AM - 1:00 PM | शाम 4:00 PM - 9:00 PM", 
+                    mr: "सकाळी 4:30 AM - 1:00 PM | संध्याकाळी 4:00 PM - 9:00 PM" 
+                },
+                images:[ 
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzbnksoi2PqGbTH-Q8g6XDy-wVIMzLEpxSx0buhFEOtIzE2_ST0Q0C9QrcpXiv8G4itzS8zv96KDA3Sm0r39ZHIwe39uqEwh7rE8lVHnhkyw1kNIUSewrIOsW3-TtT8jUD6ICOX6vv8W9Vz7rifMyiPImDya8DxnOoJ79hXUYZ65RUfhKW9k_3H_08OyzY/s768/1000217606.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhOTHXzNqNsmeSIkRyTlV-_OC9paIHYOyNqFEqdJOEEnQjRCYjq_nAC5pdrOoHA7fq7q6Gjcr7jf0yhssl9ru0AB86D1O6nAApX3j_BTe4pa5H3MnLlzgGwaMPSBqPJlTINm73tT9LCNg-1C0JNcIqjH9lFM2us7ovRDpY5bd5jPx36aiF_N9f6GFjE0Pmw/s768/1000217603.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhiZ14_t8sgFTA7n9gtYMAHlrcahE1GprfMrCOyW0f0WxlSMAwP7v91IWTEcSTlUOknVVtjxgAa1A9szq0NthVNDZ6PiMNbGRc1TYtbX6dlw5015LEOLOrMDcWv3XM7mjDdt2x0gqo9mLCsXzi9fNfS-xhqR3bn-yQf91sFATTibAd-xBFYEc0zytkKYno4/s768/1000217605.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6VbaVPioDnKeCYNU1Ew5MPxjc-x-gOBN3iKn6g1LTm2C-oULhKmOnecNYM8jk3uPltlv5u7olHzrUVzfle2B-3FZ8yxKTFbQLng8pJAg4vGNs3SyN8kxgiaeBaCqXPR6pSlTBNjLndu6Z0NLw6VeA4fI2etaEChl7UhhFK4lsAxvIj0p8HaGKem8tz_8F/s640/1000217604.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGlS9Zo2fuwvW35Zf8TN95R5FzGPKWBZeZg9r_t0h9VwO6QgffQ3t3wizO-jYK3288_k3529FcCWpu-2mJVup24JmDGeTtK8NlvC5h_t8FscB8HUQkeYq4eVbddEeWJrUM-JfK9kn_VCmVeYSGkQLvBJ61BLRybSobLyDZNp6vBm0t48VlAyjrGbph8MWL/s768/1000217602.webp",
+                ] 
+            },
+            { 
+                id: 4, 
+                name: { en: "ISKCON Pimpri Chinchwad", hi: "इस्कॉन पिंपरी चिंचवड़", mr: "इस्कॉन पिंपरी चिंचवड" }, 
+                locality: { en: "Ravet", hi: "रावेत", mr: "रावेत" }, 
+                address: { 
+                    en: "survey, 189/3A, Bhakti Vedant, MQ34+G5P sri govindh dham, Swamy marg, sector 29, Ganesh Nagar, Ravet, Pimpri-Chinchwad, Maharashtra 412101", 
+                    hi: "सर्वे, 189/3ए, भक्ति वेदांत, श्री गोविंद धाम, स्वामी मार्ग, सेक्टर 29, गणेश नगर, रावेत, पिंपरी-चिंचवड़, महाराष्ट्र 412101", 
+                    mr: "सर्वे, 189/3ए, भक्ती वेदांत, श्री गोविंद धाम, स्वामी मार्ग, सेक्टर 29, गणेश नगर, रावेत, पिंपरी-चिंचवड, महाराष्ट्र 412101" 
+                }, 
+                mapUrl: "survey, 189/3A, Bhakti Vedant, MQ34+G5P sri govindh dham, Swamy marg, sector 29, Ganesh Nagar, Ravet, Pimpri-Chinchwad, Maharashtra 412101", 
+                phone: "+91-9876543213", 
+                timetable: { 
+                    en: "Morning 4:30 AM - 1:00 PM | Evening 4:00 PM - 9:00 PM", 
+                    hi: "सुबह 4:30 AM - 1:00 PM | शाम 4:00 PM - 9:00 PM", 
+                    mr: "सकाळी 4:30 AM - 1:00 PM | संध्याकाळी 4:00 PM - 9:00 PM" 
+                },
+                images:[ 
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGv8frncndlPjqkScEQAhwb2Ph_v8x6g8zLrmwQ1CAGbfeiXd06D3HzRdmMNpwqQ3gcBFu2E2XbhSckm5pTo5Jl-PyYMshJ0Zd3Zd8Adl18-wMWgMk9NI-oii9GpcN1GncebblkmaeVOyK0pkGi3My1wZusTMD1dp3XuIpxTTanlyR9klCbs50sT6R3in2/s768/1000217597.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2_WhWmn7KmBYG0YqYXIJPO5LyTNo05C23o7Df3vJ7yTP6B2zz7AsJwZPduETzUPcruYZLDXglCuiZPlkKC0kIP_fB_j5OUmSARJSndd99pXQYLM5GspkzTxpxfJIn-LfTzoabSkf_BXd4L1f6vuPDQ1K65Ns5j5DdSThPTtbAcI2oBQRc9mdsoeltGwY1/s294/1000217601.jpg",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPzHxZ9hZkYsQRTx5Sgu-yi_bo2oV2anMqHBkVzRhyphenhyphenHdhwgm-6Ej163YpvWFtkIxMAYF-rlQCg_ZHO2UrbZr3-UYhzp-F6Dhr8hmFfXN5WRAyRYdTWU3jw70kHZvI7GBiMob5Wm-5eDk3zvmOOjQ7meOLx63gsA95f7z8vytMqOm9DbrUrtVLsF21dHBFS/s768/1000217600.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgqwZon7bWc5e8hn2ujbPsrCK7MtYycyCGBrcLvzrYskD2rUZqpGH4-Gh38BdsL5SrkWaroKhnX2KKZJd8Jb3Yv9ByUzyykshG8B-az5DASoih6Rs1Zhn1S_CYZcaMkBA0G5gtbfU7dzYzmPDrYUAoUt3M1o91aLIEeJFqX5z4YCR7zacoLRYjQUDbPev4r/s768/1000217598.webp",
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiVYvhDa5yKDB3Zqdip7UFyCS191p6AF23oG2WGnn6Ted4RzIyE_o3kdxwH84E0zDuZMjXJgjo447sZG_k894XElsL5v_dAbwwU9-8-6aL05J5O7SAgXVtMVExN494oaO3VlMh2Z5cVnVX5_-dA6x-6OrAgdr-dS7Sry8EfGdV0jFVkFL08eqCL8dGYH1if/s768/1000217599.webp"
+                ] 
+            },
+        ];
+
+        let currentState = { filter: 'All', search: '', galleryOpen: false, currentTempleId: null, imgIndex: 0 };
+        let currentShareText = "";
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); scrollObserver.unobserve(entry.target); } });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialTheme = detectTheme();
+            if(initialTheme === 'dark') applyTheme('dark');
+
+            updateUIText();
+            renderFilterChips(); 
+            
+            setTimeout(() => {
+                renderTemples(); 
+            }, 600);
+
+            setupTouchGestures();
+            setupSheetSwipeDown();
+
+            scrollObserver.observe(document.getElementById('contactBannerTarget'));
+            
+            const searchInp = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            searchInp.addEventListener('input', (e) => { 
+                currentState.search = e.target.value.toLowerCase().trim(); 
+                if(currentState.search.length > 0) clearBtn.classList.add('show');
+                else clearBtn.classList.remove('show');
+                renderTemples(); 
+            });
+
+            // Setup FAB Scroll
+            window.addEventListener('scroll', () => {
+                const fab = document.getElementById('fabUp');
+                if (window.scrollY > 300) fab.classList.add('show');
+                else fab.classList.remove('show');
+            });
+        });
+
+        function clearSearch() {
+            const searchInp = document.getElementById('searchInput');
+            searchInp.value = "";
+            currentState.search = "";
+            document.getElementById('clearSearchBtn').classList.remove('show');
+            searchInp.focus();
+            renderTemples();
+        }
+
+        function renderFilterChips() {
+            const chipContainer = document.getElementById('filterContainer');
+            const uniqueKeys =['All', 'Favorites', ...new Set(templesData.map(t => t.locality.en))];
+            
+            chipContainer.innerHTML = uniqueKeys.map(key => {
+                let displayName = '';
+                let iconStr = '';
+                if (key === 'All') displayName = i18n[currentLang].all;
+                else if (key === 'Favorites') { 
+                    displayName = i18n[currentLang].favorites; 
+                    iconStr = '<i class="fas fa-heart" style="color:#FF3B30"></i>';
+                }
+                else displayName = templesData.find(t => t.locality.en === key).locality[currentLang];
+                
+                return `<button class="chip ripple ${currentState.filter === key ? 'active' : ''}" onclick="setFilter(this, '${key}')">${iconStr} ${displayName}</button>`;
+            }).join('');
+            applyRippleEffect();
+        }
+
+        function setFilter(el, areaKey) {
+            currentState.filter = areaKey;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active'); renderTemples();
+        }
+
+        function renderTemples() {
+            const grid = document.getElementById('gridTarget');
+            const empty = document.getElementById('emptyState');
+            
+            const filtered = templesData.filter(t => {
+                if (currentState.filter === 'Favorites' && !favoriteTemples.includes(t.id)) return false;
+                
+                const matchArea = (currentState.filter === 'All' || currentState.filter === 'Favorites') || t.locality.en === currentState.filter;
+                
+                const matchSearch = t.name[currentLang].toLowerCase().includes(currentState.search) || 
+                                    t.locality[currentLang].toLowerCase().includes(currentState.search) || 
+                                    t.address[currentLang].toLowerCase().includes(currentState.search);
+                return matchArea && matchSearch;
+            });
+
+            if(filtered.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; } 
+            else { empty.style.display = 'none'; }
+
+            grid.innerHTML = filtered.map((temple) => {
+                const isFav = favoriteTemples.includes(temple.id);
+                
+                const thumbSlides = temple.images.map((img, i) => `
+                    <div class="thumb-slide" onclick="openGallery(${temple.id}, ${i})">
+                        <div class="view-overlay"><i class="fas fa-search-plus"></i></div>
+                        <img src="${img}" loading="lazy" onload="this.classList.add('img-loaded')" alt="${temple.name[currentLang]}">
+                    </div>
+                `).join('');
+
+                const nameSafe = temple.name[currentLang].replace(/'/g, "\\'");
+                const addressSafe = temple.address[currentLang].replace(/'/g, "\\'");
+
+                return `
+                <article class="temple-card tilt-card">
+                    <div class="thumb-wrapper">
+                        <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, ${temple.id})" aria-label="Favorite">
+                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                        <div class="thumb-scroller">${thumbSlides}</div>
+                        <span class="tap-hint"><i class="fas fa-expand"></i> ${i18n[currentLang].tapHint}</span>
+                    </div>
+                    <div class="card-details">
+                        <span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${temple.locality[currentLang]}</span>
+                        <h3 class="card-title">${temple.name[currentLang]}</h3>
+                        <p class="card-addr">${temple.address[currentLang]}</p>
+                        
+                        <!-- FUTURE READY: Extra Information Container -->
+                        <div class="hidden-feature temple-extra-info">
+                            <div class="extra-row"><i class="fas fa-phone-alt"></i> <span>${temple.phone}</span></div>
+                            <div class="extra-row"><i class="fas fa-clock"></i> <span>${temple.timetable[currentLang]}</span></div>
+                        </div>
+                        
+                        <!-- Actions Grid -->
+                        <div class="action-row">
+                            <button class="btn btn-ghost ripple" onclick="copyAddress('${addressSafe}')"><i class="far fa-copy"></i> ${i18n[currentLang].copy}</button>
+                            <button class="btn btn-ghost ripple" onclick="triggerShare('${nameSafe}', '${addressSafe}', '${temple.mapUrl}')"><i class="fas fa-share-alt"></i> ${i18n[currentLang].share}</button>
+                            <button class="btn btn-fill ripple" onclick="AppBridge.openMap('${temple.mapUrl}')"><i class="fas fa-directions"></i> ${i18n[currentLang].map}</button>
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+            
+            document.querySelectorAll('.temple-card').forEach(card => scrollObserver.observe(card));
+            applyRippleEffect(); 
+            initTiltEffect();
+        }
+
+        // =======================
+        // ADVANCED ZOOM ENGINE & 3D TILT
+        // =======================
+        let imgScale = 1, imgPanX = 0, imgPanY = 0, isPanning = false;
+        
+        function setImgTransform() {
+            const imgEl = document.getElementById('fsImage');
+            imgEl.style.transform = `translate(${imgPanX}px, ${imgPanY}px) scale(${imgScale})`;
+            imgEl.style.transition = isPanning ? 'none' : '0.3s var(--spring-easing)';
+        }
+
+        function resetZoom() {
+            imgScale = 1; imgPanX = 0; imgPanY = 0; isPanning = false;
+            setImgTransform();
+        }
+
+        function openGallery(templeId, index) { 
+            currentState.currentTempleId = templeId; 
+            currentState.imgIndex = index; 
+            currentState.galleryOpen = true; 
+            document.getElementById('fsTitle').textContent = templesData.find(t => t.id === templeId).name[currentLang]; 
+            updateGalleryImage(); 
+            document.getElementById('galleryModal').classList.add('active'); 
+        }
+        
+        function closeGallery() { 
+            document.getElementById('galleryModal').classList.remove('active'); 
+            currentState.galleryOpen = false; 
+            resetZoom();
+        }
+        
+        function moveSlide(step) { 
+            const total = templesData.find(t => t.id === currentState.currentTempleId).images.length; 
+            currentState.imgIndex = (currentState.imgIndex + step + total) % total; 
+            updateGalleryImage(); 
+        }
+
+        function updateGalleryImage() {
+            resetZoom();
+            const temple = templesData.find(t => t.id === currentState.currentTempleId);
+            const imgEl = document.getElementById('fsImage');
+            
+            imgEl.classList.remove('fs-loaded');
+            setTimeout(() => { 
+                imgEl.src = temple.images[currentState.imgIndex]; 
+                imgEl.onload = () => { imgEl.classList.add('fs-loaded'); }; 
+            }, 50);
+            
+            document.getElementById('fsCounter').textContent = `${currentState.imgIndex + 1} / ${temple.images.length}`;
+        }
+
+        function setupTouchGestures() { 
+            const surface = document.getElementById('touchSurface');
+            let start = {x: 0, y: 0}, startX = 0, initialDistance = 0, lastTap = 0;
+
+            surface.addEventListener('touchstart', e => {
+                if (!currentState.galleryOpen) return;
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    initialDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    isPanning = true;
+                } else if (e.touches.length === 1) {
+                    start = { x: e.touches[0].clientX - imgPanX, y: e.touches[0].clientY - imgPanY };
+                    startX = e.touches[0].screenX;
+                    isPanning = true;
+                }
+            }, { passive: false });
+
+            surface.addEventListener('touchmove', e => {
+                if (!currentState.galleryOpen) return;
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const currentDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    imgScale = Math.min(Math.max(1, imgScale * (currentDist / initialDistance)), 5);
+                    initialDistance = currentDist;
+                    setImgTransform();
+                } else if (e.touches.length === 1 && imgScale > 1) {
+                    e.preventDefault();
+                    imgPanX = e.touches[0].clientX - start.x;
+                    imgPanY = e.touches[0].clientY - start.y;
+                    setImgTransform();
+                }
+            }, { passive: false });
+
+            surface.addEventListener('touchend', e => {
+                if (!currentState.galleryOpen) return;
+                isPanning = false;
+                setImgTransform();
+
+                if (imgScale <= 1 && e.changedTouches.length > 0) {
+                    const endX = e.changedTouches[0].screenX;
+                    if (endX < startX - 50) moveSlide(1);
+                    if (endX > startX + 50) moveSlide(-1);
+                }
+
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    if (imgScale > 1) { 
+                        resetZoom(); 
+                    } else { 
+                        imgScale = 2.5; imgPanX = 0; imgPanY = 0; setImgTransform(); 
+                    }
+                }
+                lastTap = currentTime;
+            }, { passive: false });
+        }
+
+        // SWIPE DOWN TO CLOSE SHEETS
+        function setupSheetSwipeDown() {
+            const sheets =[document.getElementById('shareSheetBox'), document.getElementById('contactSheetBox'), document.getElementById('langSheetBox')];
+            sheets.forEach(sheet => {
+                let startY = 0, currentY = 0, isDragging = false;
+                
+                sheet.addEventListener('touchstart', (e) => {
+                    startY = e.touches[0].clientY;
+                    isDragging = true;
+                    sheet.style.transition = 'none';
+                }, {passive: true});
+                
+                sheet.addEventListener('touchmove', (e) => {
+                    if(!isDragging) return;
+                    currentY = e.touches[0].clientY - startY;
+                    if(currentY > 0) {
+                        sheet.style.transform = `translateY(${currentY}px)`;
+                    }
+                }, {passive: true});
+                
+                sheet.addEventListener('touchend', (e) => {
+                    if(!isDragging) return;
+                    isDragging = false;
+                    sheet.style.transition = 'transform 0.5s var(--spring-easing)';
+                    if(currentY > 100) {
+                        sheet.parentElement.click(); 
+                        setTimeout(() => { sheet.style.transform = ''; }, 300);
+                    } else {
+                        sheet.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+        }
+
+        // PREMIUM 3D TILT EFFECT
+        function initTiltEffect() {
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return; 
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    card.style.transform = `perspective(1000px) scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) scale(1) rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+        }
+
+        // =======================
+        // OTHER LOGIC 
+        // =======================
+
+        function toggleDarkMode() { 
+            document.body.classList.toggle('dark-mode'); 
+            const isDark = document.body.classList.contains('dark-mode');
+            const icon = document.getElementById('themeIcon'); 
+            icon.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon'); 
+            localStorage.setItem(window.APP_THEME_KEY, isDark ? 'dark' : 'light'); 
+            
+            localStorage.setItem('theme', isDark ? 'dark' : 'light'); 
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+        }
+
+        function triggerShare(name, address, mapUrl) { 
+            const langData = i18n[currentLang];
+            currentShareText = `${langData.shareTextGreeting} ${name}\n${langData.shareTextAddress} ${address}\n\n${langData.shareTextMap} https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapUrl)}`; 
+            document.getElementById('customShareSheet').classList.add('active'); 
+        }
+
+        function closeShareSheet() { 
+            document.getElementById('customShareSheet').classList.remove('active'); 
+            setTimeout(() => { document.getElementById('shareSheetBox').style.transform = ''; }, 300);
+        }
+        function openContactSheet() { document.getElementById('contactAdminSheet').classList.add('active'); }
+        function closeContactSheet() { 
+            document.getElementById('contactAdminSheet').classList.remove('active'); 
+            setTimeout(() => { document.getElementById('contactSheetBox').style.transform = ''; }, 300);
+        }
+
+        function sendContactWa() { AppBridge.openWhatsApp('+910000000000', i18n[currentLang].contactWaMsg); }
+        function sendContactEmail() { AppBridge.sendEmail(i18n[currentLang].contactEmailSub, i18n[currentLang].contactEmailBody); }
+
+        function shareToClipboard() { copyAddress(currentShareText); closeShareSheet(); }
+
+        function copyAddress(text) { 
+            if (navigator.clipboard) navigator.clipboard.writeText(text); 
+            else { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); } 
+            
+            const toast = document.getElementById('appToast'); 
+            toast.classList.add('show'); 
+            setTimeout(() => toast.classList.remove('show'), 3000); 
+        }
+
+        function applyRippleEffect() { document.querySelectorAll('.ripple').forEach(btn => { btn.addEventListener('click', e => { const circle = document.createElement("span"); const d = Math.max(btn.clientWidth, btn.clientHeight); circle.style.width = circle.style.height = `${d}px`; circle.style.left = `${e.clientX - btn.getBoundingClientRect().left - d/2}px`; circle.style.top = `${e.clientY - btn.getBoundingClientRect().top - d/2}px`; circle.classList.add("ripple-effect"); const old = btn.querySelector('.ripple-effect'); if(old) old.remove(); btn.appendChild(circle); }); }); }
+    </script>
+</body>
+</html>
