@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>About Us - ISKCON Hadapsar</title>
+    
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           🚀 ULTRA-PREMIUM ENTERPRISE STYLES
+           ========================================= */
+        :root {
+            --primary: #FF9933;       
+            --primary-dark: #E65100;
+            --primary-glow: rgba(255, 153, 51, 0.6);
+            --bg-color: #F8FAFC;      
+            --card-bg: rgba(255, 255, 255, 0.7);       
+            --text-color: #0f172a;       
+            --text-muted: #64748b;
+            --ui-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            --ui-hover-shadow: 0 30px 60px -15px rgba(255, 153, 51, 0.25);
+            --powerful-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --transition-speed: 0.4s;
+            --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+            --glass-blur: blur(20px);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #FF9933; 
+            --primary-dark: #CC5500;
+            --primary-glow: rgba(255, 153, 51, 0.4);
+            --bg-color: #0b0f19; 
+            --card-bg: rgba(17, 24, 39, 0.6); 
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --ui-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+            --ui-hover-shadow: 0 30px 60px -15px rgba(255, 153, 51, 0.15);
+            --powerful-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* 🔴 GLOBAL STYLES & ANIMATED BACKGROUND */
+        body { 
+            background-color: var(--bg-color); 
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 153, 51, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(230, 81, 0, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif; 
+            color: var(--text-color); 
+            transition: all var(--transition-speed) ease-in-out; 
+            margin: 0; 
+            padding-bottom: 50px;
+            -webkit-tap-highlight-color: transparent; 
+            overflow-x: hidden;
+        }
+
+        /* 🔴 SCROLL PROGRESS BAR (NEON GLOW) */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; width: 0%; height: 4px;
+            background: linear-gradient(90deg, #FFD54F, #FF9933, #FF3D00);
+            z-index: 9999; box-shadow: 0 0 15px var(--primary-glow), 0 0 5px white;
+            transition: width 0.1s;
+        }
+
+        /* 🔴 TOP NAVBAR (APPLE GLASS EFFECT) */
+        .top-nav {
+            background: rgba(255, 153, 51, 0.85);
+            backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            padding: 18px 20px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 4px 30px rgba(230, 81, 0, 0.3);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        [data-theme="dark"] .top-nav {
+            background: rgba(230, 81, 0, 0.7);
+        }
+        .back-btn {
+            color: white; font-size: 1.4rem; text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.2);
+            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+        }
+        .back-btn:active { transform: scale(0.85) translateX(-5px); background: rgba(255, 255, 255, 0.4); }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; color: white; font-size: 1.35rem;
+            font-weight: 700; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+        }
+
+        /* 🔴 HERO SECTION (MAJESTIC LEVEL) */
+        .about-hero {
+            position: relative; height: 380px;
+            border-radius: 0 0 50px 50px; overflow: hidden;
+            box-shadow: var(--powerful-shadow); margin-bottom: 50px;
+        }
+        .about-hero img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.8) contrast(1.1) saturate(1.3);
+            transform: scale(1.05);
+            animation: slowZoom 20s infinite alternate;
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+            padding-bottom: 40px; text-align: center;
+        }
+        .hero-logo {
+            width: 100px; height: 100px; border-radius: 50%; 
+            border: 3px solid var(--primary);
+            margin-bottom: 15px; background: white; z-index: 2; padding: 3px;
+            /* Majestic Pulse Animation */
+            box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.7);
+            animation: divinePulse 2.5s infinite;
+        }
+        @keyframes divinePulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(255, 153, 51, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 153, 51, 0); }
+        }
+
+        /* 🔴 CONTENT CARDS (GLASSMORPHISM PRO) */
+        .info-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 28px; padding: 35px 25px; margin: 0 20px 30px 20px;
+            box-shadow: var(--ui-shadow); border: var(--glass-border);
+            position: relative; overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--ui-hover-shadow);
+        }
+        .info-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+            border-radius: 28px 0 0 28px;
+        }
+        .info-title {
+            font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary), #FFD54F);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+        }
+        .info-title i { -webkit-text-fill-color: var(--primary); font-size: 1.6rem; filter: drop-shadow(0 4px 6px rgba(255,153,51,0.3)); }
+        .info-text {
+            font-size: 1rem; line-height: 1.8; color: var(--text-color);
+            text-align: justify; font-weight: 400; opacity: 0.95;
+        }
+
+        /* 🔴 SUNDAY FEAST (VIP GOLD CARD EFFECT) */
+        .sunday-card {
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.15), rgba(230, 81, 0, 0.05));
+            border: 1px solid rgba(255, 153, 51, 0.5);
+            box-shadow: 0 15px 35px rgba(255, 153, 51, 0.2);
+            position: relative;
+        }
+        /* Moving Shine Effect */
+        .sunday-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-20deg); animation: shineSweep 6s infinite;
+        }
+        @keyframes shineSweep {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+        .sunday-card::before {
+            content: '\f0f4'; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; right: -10px; bottom: -20px; font-size: 130px;
+            color: rgba(255, 153, 51, 0.08); transform: rotate(-15deg); z-index: 0;
+        }
+        .sunday-content { position: relative; z-index: 2; }
+        .highlight-text {
+            display: inline-block; background: linear-gradient(90deg, #E65100, #FF9933); color: white;
+            padding: 6px 16px; border-radius: 30px; font-size: 0.85rem;
+            font-weight: 800; margin-bottom: 15px; text-transform: uppercase;
+            box-shadow: 0 6px 15px rgba(255, 153, 51, 0.5); letter-spacing: 1px;
+        }
+
+        /* 🔴 FOUNDER SECTION (MAJESTIC RESPECT AURA) */
+        .founder-box {
+            display: flex; align-items: center; gap: 20px;
+            background: linear-gradient(135deg, rgba(255,153,51,0.1), rgba(0,0,0,0.02));
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(255,153,51,0.3);
+            margin-top: 30px; box-shadow: inset 0 0 20px rgba(255,153,51,0.05);
+            position: relative; overflow: hidden;
+        }
+        .founder-img {
+            width: 85px; height: 85px; border-radius: 50%;
+            object-fit: cover; object-position: top center;
+            border: 3px solid var(--primary); 
+            box-shadow: 0 8px 25px rgba(255,153,51,0.5);
+            background: white; padding: 2px; position: relative; z-index: 2;
+        }
+        .founder-name { font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.15rem; color: var(--text-color); margin: 0;}
+        .founder-sub { font-size: 0.85rem; color: var(--text-muted); margin: 4px 0 0 0; font-weight: 500; }
+
+        /* 🔴 CORPORATE CONTACT BARS (CRED APP STYLE) */
+        .contact-wrapper {
+            margin-top: 25px; display: flex; flex-direction: column; gap: 15px;
+        }
+        .contact-person {
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 18px; padding: 16px 20px; display: flex;
+            align-items: center; justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
+        }
+        [data-theme="dark"] .contact-person { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .contact-person:hover { transform: scale(1.02); border-color: var(--primary); box-shadow: 0 8px 20px rgba(255,153,51,0.15); }
+        
+        .person-info { display: flex; align-items: center; gap: 15px; }
+        .person-info i {
+            font-size: 1.3rem; color: var(--primary); background: rgba(255,153,51,0.15);
+            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; box-shadow: inset 0 0 10px rgba(255,153,51,0.2);
+        }
+        .person-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text-color); }
+        
+        .action-btns { display: flex; gap: 12px; }
+        .action-btn {
+            width: 45px; height: 45px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; color: white !important;
+            font-size: 1.2rem; text-decoration: none; box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .action-btn:hover { transform: translateY(-3px) scale(1.1); }
+        .action-btn:active { transform: scale(0.9); }
+        .btn-call { background: linear-gradient(135deg, #2563eb, #1e40af); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4); }
+        .btn-wa { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
+
+        /* 🔴 PREMIUM FEATURE LIST */
+        .feature-list { list-style:none; padding-left:0; margin-top:25px; }
+        .feature-list li {
+            margin-bottom:15px; display: flex; align-items: center;
+            background: rgba(150,150,150,0.05); padding: 14px 18px;
+            border-radius: 14px; border: 1px solid rgba(150,150,150,0.1);
+            transition: transform 0.3s ease;
+        }
+        .feature-list li:hover { transform: translateX(5px); background: rgba(255,153,51,0.05); border-color: rgba(255,153,51,0.2); }
+        .feature-list i { color:var(--primary); margin-right:15px; font-size: 1.4rem; filter: drop-shadow(0 2px 4px rgba(255,153,51,0.4)); }
+
+        /* 🔴 COMMUNITY JOIN CTA (HEARTBEAT) */
+        .community-cta { text-align: center; padding: 25px 15px 10px 15px; margin-top: 25px; border-top: 1px dashed rgba(150,150,150,0.3); }
+        .btn-community {
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; 
+            color: #fff !important; padding: 15px 35px;
+            border-radius: 40px; text-decoration: none; width: 100%; max-width: 280px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            animation: pulse-heart 2s infinite;
+        }
+        @keyframes pulse-heart {
+            0% { transform: scale(1); box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); }
+        }
+        .btn-community:active { animation: none; transform: scale(0.95); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <!-- Changed go:home to index.html -->
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h1 class="page-title" data-i18n="navTitle">About ISKCON Hadapsar</h1>
+    </div>
+
+    <!-- Hero Image Section -->
+    <div class="about-hero">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEl4fFheeQljSLtRMh5Gnq3c3j6xqwSfX3YeN4pI02ebfKmtwsFXLauHOMBNdClFdgXpkaV2j5gJFwxDBMDcUVi-fonSaA8qFPnpaMPlO6u305qP0rcPqGa4iufh-W5bIXbMLIHYjApRlZhF2uw8CFb65UikYDB42pU9Iu2xW1hRSiA2gGzqvaxP9V1APd/s1080/1000096371.webp" alt="ISKCON Temple">
+        <div class="hero-overlay">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh89ueri3DvWfVUmM76dyYJSTCLcDC6oYuAT3j-ezAKl5iDeJ97q28vt2MR39RJwL8BGI91we6F4DRj-u7j1EE2NPyQRwFs0HfYcB4HjxZ9VoeUQWGR7GdARSdow00uHqEehsr6gOVDFG15mntfIdNuOrQ_fxAZHCjMWU9kEjzaUMhuN52vsKMA6Tb9Dtx3/s256/1000096788.png" class="hero-logo" alt="Logo">
+            <h2 style="font-family:'Cinzel', serif; color:white; margin:0; font-size: 2.4rem; font-weight:900; text-shadow:0 4px 20px rgba(0,0,0,0.9); letter-spacing: 1px;" data-i18n="heroTitle">Hare Krishna Movement</h2>
+            <p style="color:#ffb74d; margin:8px 0 0 0; font-size:1.1rem; font-family: 'Space Grotesk', sans-serif; font-weight:700; letter-spacing:3px; text-transform: uppercase; text-shadow:0 2px 10px rgba(0,0,0,0.9);" data-i18n="heroSub">Pune, Maharashtra</p>
+        </div>
+    </div>
+
+    <!-- SUNDAY LOVE FEAST INVITATION -->
+    <div class="info-card sunday-card" data-aos="fade-up" data-aos-duration="800">
+        <div class="sunday-content">
+            <span class="highlight-text"><i class="fas fa-crown text-warning me-1"></i> <span data-i18n="sundayTag">Every Sunday</span></span>
+            <h3 class="info-title"><i class="fas fa-drum"></i> <span data-i18n="sundayTitle">Sunday Love Feast</span></h3>
+            <p class="info-text" data-i18n="sundayText">
+                Experience the ultimate spiritual bliss! Join us every Sunday for ecstatic Kirtan, enlightening Bhagavad Gita classes, and unlimited delicious Karma-free Prasadam. Everyone is welcome to join the celebration!
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission Card -->
+    <div class="info-card" data-aos="fade-up" data-aos-duration="900">
+        <h3 class="info-title"><i class="fas fa-dharmachakra"></i> <span data-i18n="missionTitle">Our Mission</span></h3>
+        <p class="info-text" data-i18n="missionText">
+            ISKCON (International Society for Krishna Consciousness), also known as the Hare Krishna movement, is a spiritual society founded to propagate the teachings of the Bhagavad Gita and Srimad Bhagavatam. 
+            <br><br>
+            Our Hadapsar center is dedicated to spreading spiritual peace, Harinam Sankirtan, and Vedic education in society. We invite everyone to experience the pure bliss of devotion, beautiful Darshan, and Karma-free Prasadam.
+        </p>
+
+        <!-- Founder Info -->
+        <div class="founder-box">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5hkIkyF3HrD_o7LWrUnrjvPOfjm-o1z6601td6eaheMQLLEC3nJZwaIv9Pf8HKB4zdQ7sa84aNvoOfclcDcEQGCV920rXQmUVHNxbtS-R1SeV6sfXp6ur-7L6ZRK7XmweCNA7f0JBwadltetcwQb9yA33NwL7x2UjdnZXVTfo8x4LePy3ka_u0fo7nnU/s577/1000228679.png" class="founder-img" alt="Prabhupada">
+            <div>
+                <h4 class="founder-name" data-i18n="founderName">His Divine Grace</h4>
+                <p class="founder-sub" data-i18n="founderSub">A.C. Bhaktivedanta Swami Prabhupada<br>Founder-Acharya of ISKCON</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALL BOOKING SECTION -->
+    <div class="info-card" data-aos="fade-up" data-aos-duration="1000">
+        <h3 class="info-title"><i class="fas fa-building"></i> <span data-i18n="hallTitle">Govinda's Banquet & Hall</span></h3>
+        <p class="info-text" data-i18n="hallText">
+            We offer a premium, highly ventilated hall for all your auspicious events. Perfect for Weddings, Birthdays, Anniversaries, and Corporate Gatherings. Pure vegetarian Krishna Prasadam catering is available.
+        </p>
+        
+        <ul class="feature-list">
+            <li><i class="fas fa-fan"></i> <span data-i18n="hallFeature1">Spacious & Well-Ventilated (Fan-Cooled)</span></li>
+            <li><i class="fas fa-utensils"></i> <span data-i18n="hallFeature2">Pure Veg Prasadam Catering</span></li>
+            <li><i class="fas fa-holly-berry"></i> <span data-i18n="hallFeature3">Decoration & Lighting Services</span></li>
+        </ul>
+
+        <!-- Enhanced Corporate Contact Actions -->
+        <div style="margin-top:30px;">
+            <h5 data-i18n="contactInfo" style="font-family:'Space Grotesk',serif; font-size:1.1rem; font-weight:700; color:var(--primary); margin-bottom:15px; letter-spacing:0.5px; text-transform:uppercase;">For Bookings & Inquiries</h5>
+            
+            <div class="contact-wrapper">
+                <!-- Person 1 -->
+                <div class="contact-person">
+                    <div class="person-info">
+                        <i class="fas fa-user-tie"></i>
+                        <span class="person-name" data-i18n="contact1">Digvijay Arjundas</span>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:+919978984699" class="action-btn btn-call"><i class="fas fa-phone-alt"></i></a>
+                        <a href="https://wa.me/919978984699" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- Person 2 -->
+                <div class="contact-person">
+                    <div class="person-info">
+                        <i class="fas fa-phone-volume"></i>
+                        <span class="person-name" data-i18n="contact2">Temple Office</span>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:+919209551462" class="action-btn btn-call"><i class="fas fa-phone-alt"></i></a>
+                        <a href="https://wa.me/919209551462" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- Person 3 -->
+                <div class="contact-person">
+                    <div class="person-info">
+                        <i class="fas fa-user-tie"></i>
+                        <span class="person-name" data-i18n="contact3">Ashray Giriraj Prabhu</span>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:+919922763603" class="action-btn btn-call"><i class="fas fa-phone-alt"></i></a>
+                        <a href="https://wa.me/919922763603" class="action-btn btn-wa"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Features & Community -->
+    <div class="info-card" data-aos="fade-up" data-aos-duration="1100">
+        <h3 class="info-title"><i class="fas fa-mobile-screen"></i> <span data-i18n="appTitle">About This App</span></h3>
+        <p class="info-text" data-i18n="appText">
+            This official application was crafted to bring the temple directly to your fingertips, ensuring you stay connected with Krishna consciousness anywhere in the world.
+        </p>
+        
+        <ul class="feature-list">
+            <li><i class="fas fa-check-circle text-success"></i> <span data-i18n="f1"><b>Live Darshan:</b> Stream daily deity Darshan.</span></li>
+            <li><i class="fas fa-check-circle text-success"></i> <span data-i18n="f2"><b>Digital Japa:</b> Track your daily chanting.</span></li>
+            <li><i class="fas fa-check-circle text-success"></i> <span data-i18n="f3"><b>Ekadashi Alerts:</b> Never miss a fasting day.</span></li>
+            <li><i class="fas fa-check-circle text-success"></i> <span data-i18n="f4"><b>Secure Donations:</b> Instant 80G tax receipts.</span></li>
+        </ul>
+
+        <div class="community-cta">
+            <h5 data-i18n="communityTitle" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text-color); margin-bottom: 8px;">Join Our Community</h5>
+            <p data-i18n="communityText" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Get daily Darshan, spiritual quotes, and festival updates directly on your phone.</p>
+            <a href="https://wa.me/910000000000" target="_blank" class="btn-community">
+                <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> WhatsApp Group
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize Premium Animations
+        AOS.init({ once: true, offset: 30, easing: 'ease-out-cubic' });
+
+        // Scroll Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        };
+
+        // Complete A-Z Translation Dictionary (PRESERVED)
+        const translations = {
+            en: {
+                navTitle: "About ISKCON Hadapsar",
+                heroTitle: "Hare Krishna Movement",
+                heroSub: "Pune, Maharashtra",
+                sundayTag: "Every Sunday",
+                sundayTitle: "Sunday Love Feast",
+                sundayText: "Experience the ultimate spiritual bliss! Join us every Sunday for ecstatic Kirtan, enlightening Bhagavad Gita classes, and unlimited delicious Karma-free Prasadam. Everyone is welcome to join the celebration!",
+                missionTitle: "Our Mission",
+                missionText: "ISKCON (International Society for Krishna Consciousness), also known as the Hare Krishna movement, is a spiritual society founded to propagate the teachings of the Bhagavad Gita and Srimad Bhagavatam.<br><br>Our Hadapsar center is dedicated to spreading spiritual peace, Harinam Sankirtan, and Vedic education in society. We invite everyone to experience the pure bliss of devotion, beautiful Darshan, and Karma-free Prasadam.",
+                founderName: "His Divine Grace",
+                founderSub: "A.C. Bhaktivedanta Swami Prabhupada<br>Founder-Acharya of ISKCON",
+                appTitle: "About This App",
+                appText: "This official application was crafted to bring the temple directly to your fingertips, ensuring you stay connected with Krishna consciousness anywhere in the world.",
+                f1: "<b>Live Darshan:</b> Stream daily deity Darshan.",
+                f2: "<b>Digital Japa:</b> Track your daily chanting.",
+                f3: "<b>Ekadashi Alerts:</b> Never miss a fasting day.",
+                f4: "<b>Secure Donations:</b> Instant 80G tax receipts.",
+                hallTitle: "Govinda's Banquet & Hall",
+                hallText: "We offer a premium, highly ventilated hall for all your auspicious events. Perfect for Weddings, Birthdays, Anniversaries, and Corporate Gatherings. Pure vegetarian Krishna Prasadam catering is available.",
+                hallFeature1: "Spacious & Well-Ventilated (Fan-Cooled)",
+                hallFeature2: "Pure Veg Prasadam Catering",
+                hallFeature3: "Decoration & Lighting Services",
+                contactInfo: "For Bookings & Inquiries:",
+                contact1: "Digvijay Arjundas",
+                contact2: "Temple Office",
+                contact3: "Ashray Giriraj Prabhu",
+                communityTitle: "Join Our Community",
+                communityText: "Get daily Darshan, spiritual quotes, and festival updates directly on your phone.",
+                devTitle: "System Architect",
+                devText: "The technical brain behind the ISKCON Hadapsar digital ecosystem. Engineered to scale flawlessly for over <b>50,000+ Daily Active Devotees</b>.<br><br>Powered by a custom-built zero-latency architecture utilizing Real-time Firebase parameters & ultra-fast Blogger API content delivery—ensuring pure devotion without a single lag.",
+                devBtn: "Let's Connect"
+            },
+            hi: {
+                navTitle: "इस्कॉन हडपसर के बारे में",
+                heroTitle: "हरे कृष्ण आंदोलन",
+                heroSub: "पुणे, महाराष्ट्र",
+                sundayTag: "हर रविवार",
+                sundayTitle: "संडे लव फीस्ट (रविवार विशेष)",
+                sundayText: "परम आध्यात्मिक आनंद का अनुभव करें! हर रविवार को हमारे साथ जुड़ें अद्भुत संकीर्तन, भगवद गीता प्रवचन और स्वादिष्ट कर्म-मुक्त प्रसादम के लिए। इस उत्सव में सभी का स्वागत है!",
+                missionTitle: "हमारा मिशन",
+                missionText: "इस्कॉन (अंतर्राष्ट्रीय कृष्णभावनामृत संघ) की स्थापना भगवद गीता और श्रीमद् भागवतम के उपदेशों का प्रचार करने के लिए की गई है।<br><br>हमारा हडपसर केंद्र समाज में आध्यात्मिक शांति, हरिनाम संकीर्तन और वैदिक शिक्षा फैलाने के लिए समर्पित है। हम सभी को सुंदर दर्शन और कर्म-मुक्त प्रसादम का अनुभव करने के लिए आमंत्रित करते हैं।",
+                founderName: "हिज़ डिवाइन ग्रेस",
+                founderSub: "ए.सी. भक्तिवेदांत स्वामी प्रभुपाद<br>इस्कॉन के संस्थापक-आचार्य",
+                appTitle: "इस ऐप के बारे में",
+                appText: "यह आधिकारिक एप्लिकेशन मंदिर को सीधे आपकी उंगलियों तक लाने के लिए बनाया गया है, जिससे आप कहीं भी कृष्ण भावनामृत से जुड़े रह सकें।",
+                f1: "<b>लाइव दर्शन:</b> दैनिक भगवान के दर्शन करें।",
+                f2: "<b>डिजिटल जप:</b> अपने दैनिक जप को ट्रैक करें।",
+                f3: "<b>एकादशी अलर्ट:</b> उपवास का दिन कभी न चूकें।",
+                f4: "<b>सुरक्षित दान:</b> 80G कर रसीद प्राप्त करें।",
+                hallTitle: "गोविंदा बैंक्वेट और हॉल",
+                hallText: "हम आपके सभी शुभ कार्यक्रमों के लिए एक प्रीमियम और हवादार हॉल प्रदान करते हैं। शादी, जन्मदिन, सालगिरह और अन्य समारोहों के लिए सर्वोत्तम। शुद्ध शाकाहारी कृष्ण प्रसादम कैटरिंग उपलब्ध है।",
+                hallFeature1: "विशाल और हवादार (पंखे की सुविधा)",
+                hallFeature2: "शुद्ध शाकाहारी प्रसादम कैटरिंग",
+                hallFeature3: "सजावट और प्रकाश व्यवस्था",
+                contactInfo: "बुकिंग और पूछताछ के लिए:",
+                contact1: "दिग्विजय अर्जुनदास",
+                contact2: "मंदिर कार्यालय",
+                contact3: "आश्रय गिरिराज प्रभु",
+                communityTitle: "हमारे समुदाय से जुड़ें",
+                communityText: "अपने फोन पर सीधे दैनिक दर्शन, आध्यात्मिक विचार और उत्सव के अपडेट प्राप्त करें।",
+                devTitle: "सिस्टम आर्किटेक्ट",
+                devText: "इस्कॉन हडपसर डिजिटल इकोसिस्टम के पीछे का तकनीकी दिमाग। <b>50,000+ दैनिक सक्रिय भक्तों</b> के लिए निर्बाध रूप से काम करने के लिए डिज़ाइन किया गया।",
+                devBtn: "आइए जुड़ें"
+            },
+            mr: {
+                navTitle: "इस्कॉन हडपसर बद्दल",
+                heroTitle: "हरे कृष्ण चळवळ",
+                heroSub: "पुणे, महाराष्ट्र",
+                sundayTag: "दर रविवारी",
+                sundayTitle: "संडे लव्ह फीस्ट (रविवार विशेष)",
+                sundayText: "परम आध्यात्मिक आनंदाचा अनुभव घ्या! दर रविवारी आमच्यासोबत सामील व्हा - अद्भुत संकीर्तन, भगवद्गीता प्रवचन आणि अमर्यादित स्वादिष्ट कर्म-मुक्त प्रसादासाठी. या उत्सवात सर्वांचे स्वागत आहे!",
+                missionTitle: "आमचे ध्येय",
+                missionText: "इस्कॉन (आंतरराष्ट्रीय कृष्णभावनामृत संघ) ची स्थापना भगवद्गीता आणि श्रीमद भागवतम् च्या शिकवणीचा प्रचार करण्यासाठी केली गेली आहे.<br><br>आमचे हडपसर केंद्र समाजात आध्यात्मिक शांती, हरिनाम संकीर्तन आणि वैदिक शिक्षण देण्यासाठी समर्पित आहे. आम्ही सर्वांना सुंदर दर्शन आणि कर्म-मुक्त प्रसादाचा अनुभव घेण्यासाठी आमंत्रित करतो.",
+                founderName: "हिज डिव्हाईन ग्रेस",
+                founderSub: "ए.सी. भक्तिवेदांत स्वामी प्रभुपाद<br>इस्कॉनचे संस्थापक-आचार्य",
+                appTitle: "या ॲपबद्दल",
+                appText: "हे अधिकृत ॲप्लिकेशन मंदिर थेट तुमच्या बोटांच्या टोकावर आणण्यासाठी तयार केले आहे, ज्यामुळे तुम्ही जगात कुठेही कृष्णभावनेशी जोडलेले राहाल.",
+                f1: "<b>थेट दर्शन:</b> दररोज भगवंतांचे दर्शन घ्या.",
+                f2: "<b>डिजिटल जप:</b> तुमच्या दैनंदिन जपाचा मागोवा घ्या.",
+                f3: "<b>एकादशी अलर्ट:</b> उपवासचा दिवस कधीही चुकवू नका.",
+                f4: "<b>सुरक्षित देणगी:</b> त्वरित 80G कर पावती.",
+                hallTitle: "गोविंदा बँक्वेट आणि हॉल",
+                hallText: "आम्ही तुमच्या सर्व शुभ कार्यांसाठी प्रीमियम आणि हवेशीर हॉल देतो. विवाह, वाढदिवस, वर्धापन दिन आणि इतर कार्यक्रमांसाठी उत्तम. शुद्ध शाकाहारी कृष्ण प्रसादम केटरिंग उपलब्ध आहे.",
+                hallFeature1: "प्रशस्त आणि हवेशीर (पंखे उपलब्ध)",
+                hallFeature2: "शुद्ध शाकाहारी प्रसादम केटरिंग",
+                hallFeature3: "सजावट आणि प्रकाश व्यवस्था",
+                contactInfo: "बुकिंग आणि चौकशीसाठी:",
+                contact1: "दिग्विजय अर्जुनदास",
+                contact2: "मंदिर कार्यालय",
+                contact3: "आश्रय गिरिराज प्रभू",
+                communityTitle: "आमच्या समुदायात सामील व्हा",
+                communityText: "तुमच्या फोनवर थेट दररोजचे दर्शन, आध्यात्मिक विचार आणि उत्सवांचे अपडेट्स मिळवा.",
+                devTitle: "सिस्टीम आर्किटेक्ट",
+                devText: "इस्कॉन हडपसर डिजिटल इकोसिस्टमच्या मागचे तांत्रिक मेंदू. <b>५०,०००+ दैनंदिन सक्रिय भक्तांसाठी</b> अखंडपणे कार्य करण्यासाठी डिझाइन केलेले.",
+                devBtn: "संपर्क करा"
+            }
+        };
+
+        // Sync Theme & Language (PRESERVED)
+        function syncAppCreatorData() {
+            try {
+                let currentTheme = localStorage.getItem('theme') || 'light';
+                if(currentTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+                else document.body.removeAttribute('data-theme');
+
+                let currentLang = localStorage.getItem('lang') || 'en';
+                if(!['en', 'hi', 'mr'].includes(currentLang)) currentLang = 'en';
+
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    let key = el.getAttribute('data-i18n');
+                    if(translations[currentLang] && translations[currentLang][key]) {
+                        el.innerHTML = translations[currentLang][key];
+                    }
+                });
+            } catch(e) { console.error("Sync Error:", e); }
+        }
+
+        document.addEventListener('DOMContentLoaded', syncAppCreatorData);
+        window.addEventListener('storage', syncAppCreatorData);
+    </script>
+</body>
+</html>
