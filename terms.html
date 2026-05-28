@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Terms & Conditions - ISKCON Hadapsar</title>
+    
+    <!-- Bootstrap & Premium Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           🛠️ ENTERPRISE PREMIUM STYLES
+           ========================================= */
+        :root {
+            --primary: #FF9933;       
+            --secondary: #4a2c2a;     
+            --bg-color: #f4f5f7;      
+            --card-bg: #ffffff;       
+            --text-color: #1e293b;       
+            --text-muted: #64748b;
+            --danger-color: #ef4444;
+            --border-color: #e2e8f0;
+            --ui-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
+        
+        [data-theme="dark"] {
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b; 
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger-color: #f87171;
+            --border-color: #334155;
+            --ui-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Poppins', sans-serif; 
+            color: var(--text-color); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+            margin: 0; 
+            padding-bottom: 40px;
+            -webkit-tap-highlight-color: transparent; 
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Custom Corporate Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* 🔴 READING PROGRESS BAR */
+        .progress-container {
+            width: 100%; height: 4px; background: rgba(0,0,0,0.1); position: fixed; top: 68px; z-index: 1001;
+        }
+        .progress-bar {
+            height: 4px; background: #ffffff; width: 0%; box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        /* 🔴 TOP NAVBAR */
+        .top-nav {
+            background: linear-gradient(90deg, #d84315, var(--primary), #ef6c00);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(230, 81, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .back-btn {
+            color: white; font-size: 1.3rem; text-decoration: none; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .back-btn:active { transform: scale(0.85); background: rgba(255,255,255,0.4); }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; color: white; font-size: 1.3rem; font-weight: 700; margin: 0; letter-spacing: 0.5px;
+        }
+
+        /* 🔴 GRAND HEADER */
+        .policy-header {
+            background: linear-gradient(135deg, #111827 0%, #374151 100%);
+            padding: 110px 20px 60px 20px; 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary);
+        }
+        .header-bg-glow {
+            position: absolute; top: 0; left: 50%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 153, 51, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%); pointer-events: none;
+        }
+        .header-title {
+            font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; color: #ffcc80; margin: 0 0 10px 0; position: relative; z-index: 1; text-transform: uppercase;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6); letter-spacing: 2px;
+        }
+        .header-subtitle {
+            font-size: 1rem; color: #9ca3af; position: relative; z-index: 1; font-weight: 400; letter-spacing: 1px;
+        }
+
+        /* 🔴 LEGAL METADATA BADGES */
+        .legal-metadata {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 20px; position: relative; z-index: 1;
+        }
+        .meta-badge {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #d1d5db; padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; font-family: monospace;
+            backdrop-filter: blur(4px); display: flex; align-items: center; gap: 6px;
+        }
+        .meta-badge i { color: var(--primary); }
+
+        /* 🔴 MAIN CONTENT CONTAINER */
+        .policy-container {
+            max-width: 900px;
+            margin: -30px auto 40px auto;
+            position: relative;
+            z-index: 2;
+            padding: 0 15px;
+        }
+
+        /* 🔴 LEGAL SECTION CARDS */
+        .legal-section-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--ui-shadow);
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .legal-section-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(255, 153, 51, 0.15);
+            border-color: rgba(255, 153, 51, 0.3);
+        }
+
+        .p-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+            border-bottom: 2px solid rgba(255, 153, 51, 0.15);
+            padding-bottom: 12px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-number {
+            background: rgba(255, 153, 51, 0.1); color: var(--primary);
+            width: 32px; height: 32px; display: flex; justify-content: center; align-items: center;
+            border-radius: 8px; font-size: 1rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        }
+
+        .p-text {
+            font-size: 0.95rem; line-height: 1.8; color: var(--text-color); margin-bottom: 0; text-align: justify; font-weight: 400; opacity: 0.9;
+        }
+
+        /* 🔴 WARNING BOX */
+        .strict-warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.02));
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0 10px 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
+        }
+        .strict-warning-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: repeating-linear-gradient(45deg, #ef4444, #ef4444 10px, #2b2b2b 10px, #2b2b2b 20px);
+        }
+
+        .strict-warning-box h4 {
+            color: var(--danger-color); font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; margin-bottom: 12px;
+            display: flex; align-items: center; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .strict-warning-box p {
+            margin: 0; font-size: 0.9rem; color: var(--text-color); font-weight: 500; line-height: 1.7;
+        }
+
+        .legal-highlight {
+            background: rgba(255, 153, 51, 0.08);
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary);
+            margin-top: 15px;
+        }
+
+        /* 🔴 MINIMAL CORPORATE TECH SUPPORT CARD */
+        .support-footer-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 40px 0 20px 0;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--ui-shadow);
+        }
+        .support-footer-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .support-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .tech-tags-small {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .tech-tags-small span {
+            display: flex; align-items: center; gap: 5px;
+        }
+        .action-btn-outline {
+            background: transparent;
+            color: var(--primary) !important;
+            border: 2px solid var(--primary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .action-btn-outline:hover {
+            background: var(--primary);
+            color: white !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation with Reading Progress Bar -->
+    <div class="top-nav">
+        <!-- Changed go:Home to index.html -->
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h1 class="page-title">Terms & Conditions</h1>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <!-- Grand Header -->
+    <header class="policy-header">
+        <div class="header-bg-glow"></div>
+        <h1 class="header-title"><i class="fas fa-file-contract me-2"></i> Legal Terms</h1>
+        <p class="header-subtitle">Strict Usage Policy & Intellectual Property Rights</p>
+        
+        <div class="legal-metadata">
+            <span class="meta-badge"><i class="fas fa-code-commit"></i> Doc ID: ISK-TOS-V4.2</span>
+            <span class="meta-badge"><i class="fas fa-calendar-check"></i> Effective: 2026 Edition</span>
+            <span class="meta-badge"><i class="fab fa-google-play"></i> Play Store Verified</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="policy-container">
+
+        <!-- Introduction Card -->
+        <div class="legal-section-card" data-aos="fade-up" style="background: linear-gradient(to right, var(--card-bg), rgba(255,153,51,0.05)); border-left: 4px solid var(--primary);">
+            <p class="p-text" style="font-weight: 500;"><b>Hare Krishna!</b> By downloading, installing, accessing, or using the <b>ISKCON Hadapsar</b> application, you acknowledge that you have read, understood, and agree to be bound by these strict Terms and Conditions forming a legally binding agreement. If you do not agree with any part of these terms, you must discontinue use and uninstall the application immediately.</p>
+        </div>
+
+        <!-- Section 1: Strict Anti-Piracy & Code Protection -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">1</div> Intellectual Property & Code Protection</h2>
+            <p class="p-text">The entire architecture, UI/UX design, source code, database parameters (Firebase/Blogger API), and backend frameworks of this application have been <b>custom-engineered exclusively</b> by our System Architect. All trademarks, logos, and spiritual content remain the property of ISKCON.</p>
+
+            <div class="strict-warning-box">
+                <h4><i class="fas fa-radiation-alt me-2"></i> ZERO TOLERANCE POLICY</h4>
+                <p>
+                    <b>Strictly Prohibited:</b> Any attempt to reverse engineer, decompile, extract source code, clone the UI, scrape API endpoints, or distribute modified (modded/cracked) versions of this app is <b>strictly illegal</b>. <br><br>
+                    This application's codebase is heavily protected under global Copyright and Intellectual Property Laws (including DMCA). Unauthorized code extraction or server tampering will result in immediate IP blacklisting and severe legal/criminal action against the offender.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 2: Server Security -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">2</div> Server & API Integrity</h2>
+            <p class="p-text">Our backend servers handle thousands of devotees globally in real-time. You agree not to use any automated bots, scripts, emulators, or bypass tools to artificially generate traffic, send fake requests, or disrupt the Live Darshan & Server infrastructure. Any DDoS attempts or API manipulation will be auto-detected by our cloud security protocols and legally reported to cyber authorities.</p>
+        </div>
+
+        <!-- Section 3: User Generated Content (PLAY STORE STRICT COMPLIANCE) -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">3</div> User Conduct & Objectionable Content Policy</h2>
+            <p class="p-text">This is a highly sacred spiritual platform. To maintain the purity of the community, we enforce a strict <b>Zero-Tolerance Policy</b> against objectionable content and abusive users.</p>
+            <div class="legal-highlight">
+                <p class="p-text" style="font-size: 0.9rem;">
+                    <b>• No Abusive Content:</b> Uploading, sharing, or typing offensive, defamatory, explicit, or inappropriate content is strictly banned.<br>
+                    <b>• Account Suspension:</b> Any user found violating community standards, manipulating donation receipts, or creating disturbances will be <b>permanently banned and blocked</b> without prior notice.<br>
+                    <b>• Reporting:</b> Users can report any inappropriate behavior directly to the admin through the support email provided in the Privacy Policy.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 4: Donations & Transactions -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">4</div> Donations, Payments & Refunds</h2>
+            <p class="p-text">All donations made through the application for Temple Seva, Anna Daan, or Book Distribution are strictly voluntary and <b>non-refundable</b>. Once a transaction is processed successfully, it cannot be reversed. It is the user's absolute responsibility to verify the transaction details and PAN Card information (for 80G tax exemption receipts) before completing the payment.</p>
+        </div>
+
+        <!-- Section 5: Third-Party Content -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">5</div> Third-Party Links & Content</h2>
+            <p class="p-text">The app integrates services like YouTube for Live Darshan, Google Maps for navigation, and external gateways for e-commerce. We are not responsible for the independent terms, privacy policies, conditions, or service interruptions caused by these third-party platforms.</p>
+        </div>
+
+        <!-- Section 6: Disclaimer of Warranties -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">6</div> Disclaimer of Warranties & Liability</h2>
+            <p class="p-text">The application and all its services are provided on an <b>"AS IS" and "AS AVAILABLE"</b> basis. While we strive for perfection, we do not warrant that the app will be uninterrupted, 100% error-free, or entirely secure from targeted cyber threats. In no event shall the developers, temple management, or affiliates be held liable for any direct, indirect, or incidental damages arising from your use or inability to use the application.</p>
+        </div>
+
+        <!-- Section 7: Jurisdiction -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">7</div> Governing Law & Jurisdiction</h2>
+            <p class="p-text">These Terms and Conditions shall be governed by and construed in accordance with the laws of India. Any disputes or legal proceedings arising out of the use of this application shall be subject to the exclusive jurisdiction of the competent courts located in <b>Pune, Maharashtra, India</b>.</p>
+        </div>
+        
+        <!-- Section 8: Privacy & Data Linkage -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">8</div> Privacy Policy & Data Linkage</h2>
+            <p class="p-text">Your use of this application is also governed by our strictly enforced Privacy Policy, which dictates how we handle Ad Networks, local storage, and Data Deletion protocols. By accepting these terms, you simultaneously consent to the data practices outlined in our official Privacy Policy module.</p>
+        </div>
+
+        <!-- Section 9: App Updates & Termination -->
+        <div class="legal-section-card" data-aos="fade-up">
+            <h2 class="p-section-title"><div class="section-number">9</div> Updates, Modifications & Termination</h2>
+            <p class="p-text">We reserve the absolute right to update, modify, or terminate the application services, UI modules, or these Terms at our sole discretion without prior notice. Continued usage of the application post-update signifies your irrevocable acceptance of the revised architectural changes and terms.</p>
+        </div>
+
+        <!-- 🚀 MINIMAL CORPORATE TECH SUPPORT SECTION 🚀 -->
+        <div class="support-footer-card" data-aos="zoom-in">
+            <h3><i class="fas fa-shield-alt text-success"></i> Technical Maintenance</h3>
+            <p class="support-text">
+                This digital infrastructure is custom-engineered and securely maintained by <b>Santosh</b> (App Engineering Team) to ensure a seamless experience.
+            </p>
+            
+            <div class="tech-tags-small">
+                <span><i class="fas fa-copyright"></i> Legally Protected</span>
+                <span><i class="fas fa-server"></i> Cloud Optimized</span>
+            </div>
+
+            <!-- Changed go:Contact to contact.html -->
+            <a href="contact.html" class="action-btn-outline">
+                <i class="fas fa-headset"></i> Contact Tech Support
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Bootstrap & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Animations
+        AOS.init({ once: true, offset: 20, easing: 'ease-out-cubic' });
+
+        // Dark Mode Logic (Syncs with app's theme seamlessly)
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+
+        // Reading Progress Bar Script
+        window.onscroll = function() { updateProgressBar() };
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+    </script>
+</body>
+</html>
