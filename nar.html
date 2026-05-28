@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Namaste Narasimhaya</title>
+    
+    <!-- Using exact Fonts & Icons from your Home Page -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;800&family=Noto+Sans+Devanagari:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Exact Theme Variables from your Home Page */
+        :root { 
+            --primary: #FF9933; 
+            --secondary: #4a2c2a; 
+            --bg-color: #FAFAFA; 
+            --card-bg: #ffffff; 
+            --text-color: #2b2b2b; 
+            --border-color: rgba(0,0,0,0.1);
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            --transition-speed: 0.3s;
+            --base-font-size: 18px; /* For Aarti text adjustment */
+        }
+        
+        [data-theme="dark"] { 
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #121212; 
+            --card-bg: #1e1e1e; 
+            --text-color: #ececec; 
+            --border-color: rgba(255,255,255,0.1);
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            padding-top: 65px; /* Space for header */
+            padding-bottom: 20px;
+        }
+
+        /* Matches your App's Header Gradient */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 55px;
+            background: linear-gradient(90deg, #E65100, var(--primary), #FF7043);
+            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.4);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1040;
+            color: white;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
+        .icon-btn {
+            background: none; border: none; color: white;
+            font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            text-decoration: none; /* Added for anchor tag */
+        }
+        .icon-btn:active { transform: scale(0.85); }
+
+        .font-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white; font-weight: 800; font-size: 0.85rem;
+            border-radius: 6px; width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .font-btn:active { background: white; color: var(--primary); transform: scale(0.9); }
+
+        /* Content Styling */
+        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
+
+        .stanza-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px; margin-bottom: 20px;
+            box-shadow: var(--ui-shadow);
+            transition: background-color var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        .stanza-num {
+            text-align: center; color: var(--primary); font-weight: 800;
+            margin-bottom: 15px; font-size: calc(var(--base-font-size) * 0.85);
+            font-family: 'Cinzel', serif;
+        }
+
+        .verse {
+            text-align: center; font-size: var(--base-font-size);
+            line-height: 1.6; margin-bottom: 20px; font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .meaning {
+            text-align: justify; font-size: calc(var(--base-font-size) * 0.85);
+            line-height: 1.5; color: var(--text-color); opacity: 0.85;
+            border-top: 1px dashed var(--border-color); padding-top: 15px;
+            font-weight: 400;
+        }
+
+        /* Native Language Modal */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 18px; width: 85%; max-width: 320px; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            padding: 18px; font-weight: 800; font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color); color: var(--primary);
+            text-align: center; font-family: 'Cinzel', serif;
+        }
+
+        .lang-option {
+            padding: 16px 20px; cursor: pointer; font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color); text-align: center; font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .lang-option:last-child { border-bottom: none; }
+        
+        .active-lang {
+            color: var(--primary); background: rgba(255, 153, 51, 0.1);
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- App Header -->
+    <header>
+        <div class="header-left">
+            <!-- Changed go:home to index.html -->
+            <a href="index.html" class="icon-btn" aria-label="Back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="header-title" id="ui-title">नृसिंह आरती</div>
+        </div>
+        <div class="header-right">
+            <button class="font-btn" onclick="changeFontSize(-2)">A-</button>
+            <button class="font-btn" onclick="changeFontSize(2)">A+</button>
+            
+            <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+                <i class="fas fa-sun"></i>
+            </button>
+
+            <button class="icon-btn" onclick="openLangModal()" aria-label="Translate">
+                <i class="fas fa-language"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container" id="content-container"></main>
+
+    <!-- Language Selector Modal -->
+    <div class="modal-overlay" id="langModal" onclick="closeLangModal(event)">
+        <div class="modal-content">
+            <div class="modal-title">Select Language</div>
+            <div class="lang-option" onclick="changeLanguage('en')" id="btn-en">🇬🇧 English</div>
+            <div class="lang-option" onclick="changeLanguage('hi')" id="btn-hi">🇮🇳 हिन्दी (Hindi)</div>
+            <div class="lang-option" onclick="changeLanguage('mr')" id="btn-mr">🚩 मराठी (Marathi)</div>
+        </div>
+    </div>
+
+    <script>
+        // Aarti Database
+        const aartiData = {
+            hi: {
+                title: "नृसिंह आरती",
+                stanzas: [
+                    { verse: "नमस्ते नृसिंहाय<br>प्रह्लादाह्लाद दायिने।<br>हिरण्यकशिपोर्वक्षः<br>शिलाटंक नखालये॥", meaning: "मैं नृसिंह भगवान् को प्रणाम करता हूँ जो प्रह्लाद महाराज को आनन्द प्रदान करने वाले हैं तथा जिनके नख दैत्यराज हिरण्यकशिपु के पाषाण सदृश वक्षस्थल के ऊपर छेनी के समान हैं।" },
+                    { verse: "इतो नृसिंहः परतो नृसिंहो<br>यतो यतो यामि ततो नृसिंहः।<br>बहिर्नृसिंहो हृदये नृसिंहो<br>नृसिंहमादिं शरणं प्रपद्ये॥", meaning: "नृसिंह भगवान् यहाँ है और वहाँ भी हैं। मैं जहाँ कहीं भी जाता हूँ वहाँ नृसिंह भगवान् हैं। वे हृदय में हैं और बाहर भी हैं। मैं नृसिंह भगवान् की शरण लेता हूँ जो समस्त पदार्थों के स्रोत तथा परम आश्रय हैं।" },
+                    { verse: "तव कर-कमल-वरे नखम् अद्भुत-शृङ्गम्<br>दलित-हिरण्यकशिपु-तनु-भृङ्गम्<br>केशव धृत-नरहरिरूप जय जगदीश हरे॥", meaning: "हे केशव! हे जगत्पते! हे हरि! आपने नरसिंह का रूप धारण किया है आपकी जय हो। जिस प्रकार कोई अपने नाखूनों से भ्रमर को आसानी से कुचल सकता है उसी प्रकार भ्रमर सदृश दैत्य हिरण्यकशिपु का शरीर आपके सुन्दर कर-कमलों के नुकीले नाखूनों से चीर डाला गया है।" }
+                ]
+            },
+            en: {
+                title: "Narasimha Aarti",
+                stanzas: [
+                    { verse: "namas te narasimhaya<br>prahladahlada-dayine<br>hiranyakasipor vaksah-<br>sila-tanka-nakhalaye", meaning: "I offer my obeisances to Lord Narasimha, who gives joy to Prahlada Maharaja and whose nails are like chisels on the stone like chest of the demon Hiranyakasipu." },
+                    { verse: "ito nrsimhah parato nrsimho<br>yato yato yami tato nrsimhah<br>bahir nrsimho hrdaye nrsimho<br>nrsimham adim saranam prapadye", meaning: "Lord Nrsimha is here and also there. Wherever I go Lord Nrsimha is there. He is in the heart and is outside as well. I surrender to Lord Nrsimha, the origin of all things and the supreme refuge." },
+                    { verse: "tava kara-kamala-vare nakham adbhuta-srngam<br>dalita-hiranyakasipu-tanu-bhrngam<br>kesava dhrta-narahari-rupa jaya jagadisa hare", meaning: "O Kesava! O Lord of the universe! O Lord Hari, who have assumed the form of half-man, half-lion. All glories to You! Just as one can easily crush a wasp between one's fingernails, so in the same way the body of the wasp like demon Hiranyakasipu has been ripped apart by the wonderful pointed nails on Your beautiful lotus hands." }
+                ]
+            },
+            mr: {
+                title: "नृसिंह आरती",
+                stanzas: [
+                    { verse: "नमस्ते नृसिंहाय<br>प्रह्लादाह्लाद दायिने।<br>हिरण्यकशिपोर्वक्षः<br>शिलाटंक नखालये॥", meaning: "मी भगवान नृसिंहांना प्रणाम करतो, जे भक्त प्रल्हादाला आनंद देतात आणि ज्यांची नखे राक्षस हिरण्यकशिपूच्या दगडासारख्या छातीवर छिन्नीसारखी आहेत." },
+                    { verse: "इतो नृसिंहः परतो नृसिंहो<br>यतो यतो यामि ततो नृसिंहः।<br>बहिर्नृसिंहो हृदये नृसिंहो<br>नृसिंहमादिं शरणं प्रपद्ये॥", meaning: "भगवान नृसिंह येथे आहेत आणि तेथेही आहेत. मी जिथे जातो तिथे भगवान नृसिंह आहेत. ते हृदयात आहेत आणि बाहेरही आहेत. मी भगवान नृसिंहांना शरण जातो, जे सर्व गोष्टींचे उगम आणि परम आश्रय आहेत." },
+                    { verse: "तव कर-कमल-वरे नखम् अद्भुत-शृङ्गम्<br>दलित-हिरण्यकशिपु-तनु-भृङ्गम्<br>केशव धृत-नरहरिरूप जय जगदीश हरे॥", meaning: "हे केशव! हे जगदीश्वरा! हे हरी! आपण नरसिंहाचे रूप धारण केले आहे, आपला जयजयकार असो. ज्याप्रमाणे एखादी व्यक्ती आपल्या नखांनी भुंग्याला सहज चिरडू शकते, त्याचप्रमाणे भुंग्यासारख्या राक्षस हिरण्यकशिपूचे शरीर आपल्या सुंदर कमळासारख्या हातांच्या तीक्ष्ण नखांनी फाडून टाकले आहे." }
+                ]
+            }
+        };
+
+        // --- THEME LOGIC (Synced with Home Page key 'theme') ---
+        function applyTheme() {
+            const themeBtn = document.getElementById('theme-btn');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.removeAttribute('data-theme');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            applyTheme();
+        }
+
+        // --- FONT SIZE LOGIC ---
+        let currentFontSize = localStorage.getItem('aartiFontSize') ? parseInt(localStorage.getItem('aartiFontSize')) : 18;
+
+        function applyFontSize() {
+            document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+            localStorage.setItem('aartiFontSize', currentFontSize);
+        }
+
+        function changeFontSize(step) {
+            currentFontSize += step;
+            if(currentFontSize < 14) currentFontSize = 14; 
+            if(currentFontSize > 34) currentFontSize = 34; 
+            applyFontSize();
+        }
+
+        // --- LANGUAGE LOGIC (Synced with Home Page key 'lang') ---
+        function renderContent(langCode) {
+            const data = aartiData[langCode];
+            document.getElementById('ui-title').innerText = data.title;
+
+            let htmlContent = '';
+            data.stanzas.forEach((stanza, index) => {
+                htmlContent += `
+                    <div class="stanza-card">
+                        <div class="stanza-num">${langCode === 'en' ? 'Verse' : 'श्लोक'} - ${index + 1}</div>
+                        <div class="verse">${stanza.verse}</div>
+                        <div class="meaning"><b>${langCode === 'en' ? 'Meaning:' : 'भावार्थ:'}</b> ${stanza.meaning}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('content-container').innerHTML = htmlContent;
+
+            document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active-lang'));
+            document.getElementById('btn-' + langCode).classList.add('active-lang');
+            
+            localStorage.setItem('lang', langCode); 
+        }
+
+        // --- MODAL CONTROLS ---
+        const modal = document.getElementById('langModal');
+        function openLangModal() { modal.style.display = 'flex'; }
+        function closeLangModal(event) { if (event.target === modal) modal.style.display = 'none'; }
+        function changeLanguage(langCode) {
+            renderContent(langCode);
+            modal.style.display = 'none';
+        }
+
+        // --- INITIALIZE EVERYTHING ON LOAD ---
+        window.onload = () => {
+            applyTheme();
+            applyFontSize();
+            
+            let savedLang = localStorage.getItem('lang') || 'en'; 
+            if (!aartiData[savedLang]) savedLang = 'en'; 
+            
+            renderContent(savedLang);
+        };
+    </script>
+
+</body>
+</html>
