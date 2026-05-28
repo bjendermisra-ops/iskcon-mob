@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Under Enhancement - ISKCON</title>
+    
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           🛠️ PREMIUM STYLES (MAINTENANCE PAGE)
+           ========================================= */
+        :root {
+            --primary: #FF9933;       
+            --secondary: #4a2c2a;     
+            --bg-color: #FAFAFA;      
+            --card-bg: #ffffff;       
+            --text-color: #2b2b2b;       
+            --ui-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --powerful-shadow: 0 15px 35px rgba(255, 153, 51, 0.25);
+            --transition-speed: 0.3s;
+            --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+            --glass-blur: blur(20px);
+        }
+        [data-theme="dark"] {
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #0d0402; 
+            --card-bg: #1e1e1e; 
+            --text-color: #ececec;
+            --ui-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --powerful-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 153, 51, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(230, 81, 0, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; 
+            color: var(--text-color); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+            margin: 0; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        a { text-decoration: none; }
+
+        /* Sleek Navbar */
+        .top-navbar { 
+            background: rgba(230, 81, 0, 0.85);
+            backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            padding: 14px 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            flex-shrink: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="dark"] .top-navbar {
+            background: rgba(20, 8, 4, 0.85);
+        }
+        
+        .nav-left { display: flex; align-items: center; gap: 12px; }
+        .back-btn { 
+            color: white; font-size: 1.4rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: 0.2s; cursor: pointer; border: none; background: rgba(255,255,255,0.15); padding: 0;
+            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .back-btn:active { transform: scale(0.9) translateX(-4px); background: rgba(255,255,255,0.25); }
+        .page-title { color: white; font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 800; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px; }
+        
+        /* Main Content Container */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 3D GPU-Accelerated Particles Background */
+        .bg-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .particle { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--primary) 0%, transparent 70%); opacity: 0.15; animation: floatUp 8s infinite linear; will-change: transform; }
+        .p1 { width: 120px; height: 120px; left: -20px; top: 20%; animation-duration: 6s; }
+        .p2 { width: 180px; height: 180px; right: -40px; top: 50%; animation-duration: 9s; background: radial-gradient(circle, #D81B60 0%, transparent 70%); }
+        .p3 { width: 90px; height: 90px; left: 40%; bottom: -10px; animation-duration: 7s; background: radial-gradient(circle, #1976D2 0%, transparent 70%); }
+        @keyframes floatUp { 0% { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0; } 20% { opacity: 0.25; } 80% { opacity: 0.25; } 100% { transform: translate3d(0, -150px, 0) scale(1.2); opacity: 0; } }
+
+        /* Spiritual Mandala Rotating Background Aura */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ff9933' fill-opacity='0.04' d='M50 0a50 50 0 1 0 0 100A50 50 0 0 0 50 0zm0 10a40 40 0 1 1 0 80 40 40 0 0 1 0-80zm0 10a30 30 0 1 0 0 60 30 30 0 0 0 0-60zm0 10a20 20 0 1 1 0 40 20 20 0 0 1 0-40zm0 10a10 10 0 1 0 0 20 10 10 0 0 0 0-20z'/%3E%3C/svg%3E");
+            background-size: cover;
+            animation: spinMandala 40s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes spinMandala {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Icon Animation Group */
+        .status-icon-box {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 25px;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .glow-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,153,51,0.25) 0%, transparent 70%);
+            animation: pulseGlow 2.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.85); opacity: 0.5; }
+            100% { transform: scale(1.35); opacity: 1; }
+        }
+
+        .main-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            filter: drop-shadow(0 4px 15px rgba(255,153,51,0.5));
+            animation: gentleFloat 3.5s ease-in-out infinite;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Twin Synchronized Interlocking Gears */
+        .gear-icon-primary {
+            position: absolute;
+            bottom: 12px;
+            right: 18px;
+            font-size: 2.1rem;
+            color: #8E24AA;
+            animation: spinGearCW 6s linear infinite;
+            z-index: 4;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+            background: var(--card-bg);
+            border-radius: 50%;
+            padding: 3px;
+        }
+        
+        .gear-icon-secondary {
+            position: absolute;
+            bottom: 35px;
+            right: -2px;
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            animation: spinGearCCW 5s linear infinite;
+            z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            background: var(--card-bg);
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes spinGearCW {
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes spinGearCCW {
+            100% { transform: rotate(-360deg); }
+        }
+
+        /* Typography */
+        .status-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            line-height: 1.25;
+            z-index: 2;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .status-desc {
+            font-size: 0.98rem;
+            font-weight: 500;
+            opacity: 0.85;
+            max-width: 440px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Premium Buttons */
+        .btn-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 85%;
+            max-width: 320px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), #E65100);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            border: none;
+            box-shadow: 0 8px 25px rgba(255, 153, 51, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .btn-primary-custom:hover {
+            box-shadow: 0 12px 30px rgba(255, 153, 51, 0.6);
+            transform: scale3d(1.02, 1.02, 1.02) translateY(-2px);
+        }
+
+        .btn-primary-custom:active {
+            transform: scale3d(0.96, 0.96, 0.96);
+            box-shadow: 0 4px 10px rgba(255, 153, 51, 0.4);
+        }
+
+        .btn-secondary-custom {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 13px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.98rem;
+            border: 2px solid rgba(255, 153, 51, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: var(--ui-shadow);
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(255, 153, 51, 0.15);
+            transform: scale3d(1.02, 1.02, 1.02) translateY(-2px);
+        }
+
+        .btn-secondary-custom:active {
+            background: rgba(150, 150, 150, 0.1);
+            transform: scale3d(0.96, 0.96, 0.96);
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Particles Background -->
+<div class="bg-particles">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+</div>
+
+<!-- Top Navbar -->
+<div class="top-navbar">
+    <div class="nav-left">
+        <!-- Back Navigation specifically for WebView -->
+        <button onclick="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+        <h1 class="page-title" data-key="nav_title">Please Wait</h1>
+    </div>
+</div>
+
+<!-- Main Status Content -->
+<div class="main-content">
+    
+    <div class="status-icon-box">
+        <div class="glow-circle"></div>
+        <i class="fas fa-vihara main-icon"></i>
+        <!-- Twin Interlocking Synchronized Gears -->
+        <i class="fas fa-cog gear-icon-primary"></i>
+        <i class="fas fa-cog gear-icon-secondary"></i>
+    </div>
+
+    <h2 class="status-title" data-key="status_head">Divine Feature Upgrading</h2>
+    
+    <p class="status-desc" data-key="status_desc">
+        Our digital sevaks are currently enhancing this section to serve you better. It will be available very soon. Thank you for your patience!
+    </p>
+
+    <div class="btn-group-custom">
+        <!-- Option 1: Go Back (AppCreator24 / Standard Web safe) -->
+        <button onclick="javascript:history.back()" class="btn-primary-custom">
+            <i class="fas fa-arrow-left"></i> <span data-key="btn_back">Go Back</span>
+        </button>
+
+        <!-- Option 2: Go to Home (Redirects to index.html for GitHub) -->
+        <a href="index.html" class="btn-secondary-custom">
+            <i class="fas fa-home"></i> <span data-key="btn_home">Return to Home</span>
+        </a>
+    </div>
+
+</div>
+
+<!-- External Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // ==========================================
+    // 🌍 MULTI-LANGUAGE SYSTEM
+    // ==========================================
+    const langData = {
+        en: {
+            nav_title: "Please Wait",
+            status_head: "Divine Feature Upgrading",
+            status_desc: "Our digital sevaks are currently enhancing this section to serve you better. It will be available very soon. Thank you for your patience!",
+            btn_back: "Go Back",
+            btn_home: "Return to Home"
+        },
+        hi: {
+            nav_title: "कृपया प्रतीक्षा करें",
+            status_head: "सुविधा अपग्रेड हो रही है",
+            status_desc: "हमारे डिजिटल सेवक इस अनुभाग को बेहतर बनाने के लिए काम कर रहे हैं। यह बहुत जल्द उपलब्ध होगा। आपके धैर्य के लिए धन्यवाद!",
+            btn_back: "पीछे जाएँ",
+            btn_home: "होम पर लौटें"
+        },
+        mr: {
+            nav_title: "कृपया प्रतीक्षा करा",
+            status_head: "वैशिष्ट्य अपग्रेड होत आहे",
+            status_desc: "आमचे डिजिटल सेवक हा विभाग अधिक चांगला बनवण्यासाठी काम करत आहेत. हे खूप लवकर उपलब्ध होईल. तुमच्या संयमाबद्दल धन्यवाद!",
+            btn_back: "मागे जा",
+            btn_home: "होम वर परत जा"
+        }
+    };
+
+    function applyLanguage() {
+        const lang = localStorage.getItem('lang') || 'en';
+        const texts = langData[lang];
+        
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.getAttribute('data-key');
+            if(texts[key]) el.innerHTML = texts[key];
+        });
+    }
+
+    // ==========================================
+    // 🌙 THEME LOGIC
+    // ==========================================
+    function applyTheme() {
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        } else {
+            document.body.removeAttribute('data-theme');
+        }
+    }
+
+    // Run on Load
+    window.onload = () => {
+        applyLanguage();
+        applyTheme();
+    };
+
+    // Real-time Tab Synchronization for responsive experience
+    window.addEventListener('storage', () => {
+        applyLanguage();
+        applyTheme();
+    });
+
+</script>
+</body>
+</html>
