@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Tulasi Aarti</title>
+    
+    <!-- Using exact Fonts & Icons from your Home Page -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;800&family=Noto+Sans+Devanagari:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Exact Theme Variables from your Home Page */
+        :root { 
+            --primary: #FF9933; 
+            --secondary: #4a2c2a; 
+            --bg-color: #FAFAFA; 
+            --card-bg: #ffffff; 
+            --text-color: #2b2b2b; 
+            --border-color: rgba(0,0,0,0.1);
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            --transition-speed: 0.3s;
+            --base-font-size: 18px; /* For Aarti text adjustment */
+        }
+        
+        [data-theme="dark"] { 
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #121212; 
+            --card-bg: #1e1e1e; 
+            --text-color: #ececec; 
+            --border-color: rgba(255,255,255,0.1);
+            --ui-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            padding-top: 65px; /* Space for header */
+            padding-bottom: 20px;
+        }
+
+        /* Matches your App's Header Gradient */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 55px;
+            background: linear-gradient(90deg, #E65100, var(--primary), #FF7043);
+            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.4);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1040;
+            color: white;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
+        .icon-btn {
+            background: none; border: none; color: white;
+            font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            text-decoration: none; /* For anchor tag */
+        }
+        .icon-btn:active { transform: scale(0.85); }
+
+        .font-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white; font-weight: 800; font-size: 0.85rem;
+            border-radius: 6px; width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .font-btn:active { background: white; color: var(--primary); transform: scale(0.9); }
+
+        /* Content Styling */
+        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
+
+        .stanza-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px; margin-bottom: 20px;
+            box-shadow: var(--ui-shadow);
+            transition: background-color var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        .stanza-num {
+            text-align: center; color: var(--primary); font-weight: 800;
+            margin-bottom: 15px; font-size: calc(var(--base-font-size) * 0.85);
+            font-family: 'Cinzel', serif;
+        }
+
+        .verse {
+            text-align: center; font-size: var(--base-font-size);
+            line-height: 1.6; margin-bottom: 20px; font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .meaning {
+            text-align: justify; font-size: calc(var(--base-font-size) * 0.85);
+            line-height: 1.5; color: var(--text-color); opacity: 0.85;
+            border-top: 1px dashed var(--border-color); padding-top: 15px;
+            font-weight: 400;
+        }
+
+        /* Native Language Modal */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 2000; justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 18px; width: 85%; max-width: 320px; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            padding: 18px; font-weight: 800; font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color); color: var(--primary);
+            text-align: center; font-family: 'Cinzel', serif;
+        }
+
+        .lang-option {
+            padding: 16px 20px; cursor: pointer; font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color); text-align: center; font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .lang-option:last-child { border-bottom: none; }
+        
+        .active-lang {
+            color: var(--primary); background: rgba(255, 153, 51, 0.1);
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- App Header -->
+    <header>
+        <div class="header-left">
+            <!-- Changed go:home to index.html -->
+            <a href="index.html" class="icon-btn" aria-label="Back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="header-title" id="ui-title">तुलसी आरती</div>
+        </div>
+        <div class="header-right">
+            <button class="font-btn" onclick="changeFontSize(-2)">A-</button>
+            <button class="font-btn" onclick="changeFontSize(2)">A+</button>
+            
+            <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <button class="icon-btn" onclick="openLangModal()" aria-label="Translate">
+                <i class="fas fa-language"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container" id="content-container"></main>
+
+    <!-- Language Selector Modal -->
+    <div class="modal-overlay" id="langModal" onclick="closeLangModal(event)">
+        <div class="modal-content">
+            <div class="modal-title">Select Language</div>
+            <div class="lang-option" onclick="changeLanguage('en')" id="btn-en">🇬🇧 English</div>
+            <div class="lang-option" onclick="changeLanguage('hi')" id="btn-hi">🇮🇳 हिन्दी (Hindi)</div>
+            <div class="lang-option" onclick="changeLanguage('mr')" id="btn-mr">🚩 मराठी (Marathi)</div>
+        </div>
+    </div>
+
+    <script>
+        // Tulasi Aarti Database
+        const aartiData = {
+            hi: {
+                title: "तुलसी आरती",
+                stanzas: [
+                    { verse: "नमो नमः तुलसी कृष्णप्रेयसी।<br>राधा-कृष्ण-सेवा पाब एइ अभिलाषी॥", meaning: "भगवान् श्रीकृष्ण की प्रियतमा हे तुलसी देवी! मैं आपको बारम्बार प्रणाम करता हूँ। मेरी एकमात्र इच्छा है कि मैं श्रीश्रीराधाकृष्ण की प्रेममयी सेवा प्राप्त कर सकूँ।" },
+                    { verse: "ye तोमार शरण लय, तार वाञ्छा पूर्ण हय।<br>कृपा करि कर'तोरे वृन्दावनवासी॥", meaning: "जो कोई भी आपकी शरण लेता है उसकी कामनाएँ पूर्ण होती हैं। उस पर आप अपनी कृपा करती हैं और उसे वृन्दावनवासी बना देती हैं।" },
+                    { verse: "मोर एइ अभिलाष, विलासकुंजे दिओ वास।<br>नयने हेरिबो सदा युगल-रूप-राशि॥", meaning: "मेरी यही अभिलाषा है कि आप मुझे भी वृन्दावन के कुंजों में निवास करने की अनुमति दें, जिससे मैं श्रीराधाकृष्ण की सुन्दर लीलाओं का सदैव दर्शन कर सकूँ।" },
+                    { verse: "एइ निवेदन धर, सखीर अनुगत कर।<br>सेवा-अधिकार दिये कर निज दासी॥", meaning: "आपके चरणों में मेरा यही निवेदन है कि मुझे किसी ब्रजगोपी की अनुचरी बना दीजिए तथा सेवा का अधिकार देकर मुझे आपकी निज दासी बनने का अवसर दीजिए।" },
+                    { verse: "दीन कृष्णदासे कय, एइ येन मोर हय।<br>श्रीराधा-गोविन्द-प्रेमे सदा येन भासि॥", meaning: "अति दीन कृष्णदास आपसे प्रार्थना करता है, “मैं सदा सर्वदा श्रीश्रीराधागोविन्द के प्रेम में डूबा रहूँ।”" },
+                    { verse: "तुलसी प्रदक्षिणा मन्त्र<br><br>यानि कानि च पापानि ब्रह्महत्यादिकानि च।<br>तानि-तानि प्रणश्यन्ति प्रदक्षिण: पदे-पदे॥", meaning: "श्रीमती तुलसी देवी की परिक्रमा करने से प्रत्येक पद पर ब्रह्महत्यापर्यन्त सभी पापों का नाश होता है।" },
+                    { verse: "श्री तुलसी प्रणाम<br><br>वृन्दायै तुलसी देव्यै प्रियायै केशवस्य च।<br>विष्णुभक्तिप्रदे देवी सत्यवत्यै नमो नमः॥", meaning: "हे वृन्दे, हे तुलसी देवी, आप भगवान् केशव की प्रिया हैं। हे कृष्णभक्ति प्रदान करने वाली सत्यवती देवी, आपको मेरा बारम्बार प्रणाम है।" }
+                ]
+            },
+            en: {
+                title: "Tulasi Aarti",
+                stanzas: [
+                    { verse: "namo namaḥ tulasī kṛṣṇa-preyasī namo namaḥ<br>rādhā-kṛṣṇa-sevā pābo ei abilāṣī", meaning: "O Tulasi, beloved of Krsna, I bow before you again and again. My desire is to obtain the service of Sri Sri Radha-Krsna." },
+                    { verse: "ye tomāra śaraṇa loy, tara vāñchā pūrṇa hoy<br>kṛpā kori' koro tāre vṛndāvana-vāsi", meaning: "Whoever takes shelter of you has his wishes fulfilled. Bestowing your mercy on him, you make him a resident of Vrndavana." },
+                    { verse: "mora ei abhilāṣa, vilāsa kuñje dio vāsa<br>nayana heribo sadā yugala-rūpa-rāśi", meaning: "My desire is that you will also grant me a residence in the pleasure groves of Sri Vrndavana-dhama. Thus, within my vision I will always behold the beautiful pastimes of Radha and Krsna." },
+                    { verse: "ei nivedana dhara, sakhīra anugata koro<br>sevā-adhikāra diye koro nīja dāsī", meaning: "I beg you to make me a follower of the cowherd damsels of Vraja. Please give me the privilege of devotional service and make me your own maidservant." },
+                    { verse: "dīna kṛṣṇa-dāse koy, ei yena mora hoy<br>śrī-rādhā-govinda-preme sadā yena bhāsi", meaning: "Dina Krsnadasa prays, 'May I always swim in the love of Sri Radha and Govinda'." },
+                    { verse: "Śrī Tulasī Pradakṣiṇa Mantra<br><br>yāni kāni ca pāpāni brahma-hatyādikāni ca<br>tāni tāni praṇaśyanti pradakṣiṇaḥ pade pade", meaning: "By the circumambulation of Srimati Tulasi Devi all the sins that one may have committed are destroyed at every step, even the sin of killing a brahmana." },
+                    { verse: "Śrī Tulasī Praṇāma<br><br>vṛndāyai tulasī-devyai<br>priyāyai keśavasya ca<br>viṣṇu-bhakti-prade devi<br>satyavatyai namo namaḥ", meaning: "I offer my repeated obeisances unto Vṛndā, Śrīmatī Tulasī Devī, who is very dear to Lord Keśava. O goddess, you bestow devotional service to Kṛṣṇa, and you possess the highest truth." }
+                ]
+            },
+            mr: {
+                title: "तुलसी आरती",
+                stanzas: [
+                    { verse: "नमो नमः तुलसी कृष्णप्रेयसी।<br>राधा-कृष्ण-सेवा पाब एइ अभिलाषी॥", meaning: "भगवान श्रीकृष्णांची प्रियतमा हे तुलसी देवी! मी तुम्हाला वारंवार प्रणाम करतो. मला श्री श्री राधाकृष्णांची प्रेममयी सेवा प्राप्त व्हावी, हीच माझी एकमेव इच्छा आहे." },
+                    { verse: "ye तोमार शरण लय, तार वाञ्छा पूर्ण हय।<br>कृपा करि कर'तोरे वृन्दावनवासी॥", meaning: "जो कोणी तुम्हाला शरण येतो, त्याच्या सर्व इच्छा पूर्ण होतात. तुम्ही त्याच्यावर कृपा करून त्याला वृंदावनवासी बनवता." },
+                    { verse: "मोर एइ अभिलाष, विलासकुंजे दिओ वास।<br>नयने हेरिबो सदा युगल-रूप-राशि॥", meaning: "माझी हीच इच्छा आहे की तुम्ही मला वृंदावनातील कुंजवनात वास्तव्य करण्याची अनुमती द्यावी, जेणेकरून मी माझ्या डोळ्यांनी सदैव श्रीराधाकृष्णांच्या सुंदर लीलांचे दर्शन घेऊ शकेन." },
+                    { verse: "एइ निवेदन धर, सखीर अनुगत कर।<br>सेवा-अधिकार दिये कर निज दासी॥", meaning: "तुमच्या चरणी माझी हीच प्रार्थना आहे की मला व्रजगोपींची अनुचरी बनवा आणि सेवेचा अधिकार देऊन मला तुमची दासी बनण्याची संधी द्या." },
+                    { verse: "दीन कृष्णदासे कय, एइ येन मोर हय।<br>श्रीराधा-गोविन्द-प्रेमे सदा येन भासि॥", meaning: "अत्यंत दीन कृष्णदास प्रार्थना करतो की, 'मी सदैव श्री श्री राधा-गोविंदांच्या प्रेमात तल्लीन राहावे.'" },
+                    { verse: "तुलसी प्रदक्षिणा मन्त्र<br><br>यानि कानि च पापानि ब्रह्महत्यादिकानि च।<br>तानि-तानि प्रणश्यन्ति प्रदक्षिण: पदे-पदे॥", meaning: "श्रीमती तुलसी देवींची प्रदक्षिणा केल्याने प्रत्येक पावलावर ब्रह्महत्येसारख्या महापापांसह सर्व पापांचा नाश होतो." },
+                    { verse: "श्री तुलसी प्रणाम<br><br>वृन्दायै तुलसी देव्यै प्रियायै केशवस्य च।<br>विष्णुभक्तिप्रदे देवी सत्यवत्यै नमो नमः॥", meaning: "हे वृंदे, हे तुलसी देवी, आपण भगवान केशवांच्या अत्यंत प्रिय आहात. भगवान श्रीकृष्णांची भक्ती प्रदान करणाऱ्या हे सत्यवती देवी, मी तुम्हाला वारंवार प्रणाम करतो." }
+                ]
+            }
+        };
+
+        // --- THEME LOGIC (Synced with Home Page key 'theme') ---
+        function applyTheme() {
+            const themeBtn = document.getElementById('theme-btn');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.removeAttribute('data-theme');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            applyTheme();
+        }
+
+        // --- FONT SIZE LOGIC ---
+        let currentFontSize = localStorage.getItem('aartiFontSize') ? parseInt(localStorage.getItem('aartiFontSize')) : 18;
+
+        function applyFontSize() {
+            document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+            localStorage.setItem('aartiFontSize', currentFontSize);
+        }
+
+        function changeFontSize(step) {
+            currentFontSize += step;
+            if(currentFontSize < 14) currentFontSize = 14; 
+            if(currentFontSize > 34) currentFontSize = 34; 
+            applyFontSize();
+        }
+
+        // --- LANGUAGE LOGIC (Synced with Home Page key 'lang') ---
+        function renderContent(langCode) {
+            const data = aartiData[langCode];
+            document.getElementById('ui-title').innerText = data.title;
+
+            let htmlContent = '';
+            data.stanzas.forEach((stanza, index) => {
+                htmlContent += `
+                    <div class="stanza-card">
+                        <div class="stanza-num">${langCode === 'en' ? 'Verse' : 'श्लोक'} - ${index + 1}</div>
+                        <div class="verse">${stanza.verse}</div>
+                        <div class="meaning"><b>${langCode === 'en' ? 'Meaning:' : 'भावार्थ:'}</b> ${stanza.meaning}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('content-container').innerHTML = htmlContent;
+
+            document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active-lang'));
+            document.getElementById('btn-' + langCode).classList.add('active-lang');
+            
+            localStorage.setItem('lang', langCode); 
+        }
+
+        // --- MODAL CONTROLS ---
+        const modal = document.getElementById('langModal');
+        function openLangModal() { modal.style.display = 'flex'; }
+        function closeLangModal(event) { if (event.target === modal) modal.style.display = 'none'; }
+        function changeLanguage(langCode) {
+            renderContent(langCode);
+            modal.style.display = 'none';
+        }
+
+        // --- INITIALIZE EVERYTHING ON LOAD ---
+        window.onload = () => {
+            applyTheme();
+            applyFontSize();
+            
+            let savedLang = localStorage.getItem('lang') || 'en'; 
+            if (!aartiData[savedLang]) savedLang = 'en'; 
+            
+            renderContent(savedLang);
+        };
+    </script>
+
+</body>
+</html>
