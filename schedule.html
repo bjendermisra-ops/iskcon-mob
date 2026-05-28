@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#F37E1C">
+    <title>Daily Schedule</title>
+
+    <!-- Google Fonts & Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           DESIGN SYSTEM & CSS VARIABLES 
+           ========================================= */
+        :root { 
+            --primary: #F37E1C; /* The Exact Orange */
+            --primary-gradient: linear-gradient(135deg, #FF9100, #FF6D00);
+            --bg-body: #FDFBF7; 
+            --card-white: #ffffff; 
+            --text-dark: #333333;
+            --text-gray: #7d7d7d;
+            --timeline-line: #E0E0E0;
+            --timeline-ring: #CECECE;
+            --font-en: 'Poppins', sans-serif;
+            --font-local: 'Mukta', 'Tiro Devanagari Hindi', sans-serif;
+            --card-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            --toast-bg: #333333;
+            --toast-text: #ffffff;
+        }
+
+        /* DARK MODE OVERRIDES (Triggered by data-theme="dark") */
+        [data-theme="dark"] {
+            --bg-body: #121212; 
+            --card-white: #1e1e1e; 
+            --text-dark: #f5f5f5;
+            --text-gray: #aaaaaa;
+            --timeline-line: #333333;
+            --timeline-ring: #444444;
+            --card-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            --toast-bg: #ffffff;
+            --toast-text: #333333;
+        }
+
+        body { 
+            background-color: var(--bg-body); 
+            font-family: var(--font-en); 
+            margin: 0; padding: 0;
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.4s ease;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 500px; /* Constrained for App view */
+            background: var(--bg-body);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            transition: background-color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER (ORANGE) --- */
+        .header {
+            background: var(--primary);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-back {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:active { transform: scale(0.95); }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Rounded Language Pill (EN/HI/MR) */
+        .lang-badge {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle i { font-size: 0.9rem; }
+
+        .lang-badge:active, .theme-toggle:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+
+        /* --- BLACK STATUS CARD --- */
+        .hero-status {
+            background: linear-gradient(180deg, #2A2A2A, #1A1A1A);
+            margin: 20px;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 2px;
+        }
+        .dot-green { background: #4CAF50; box-shadow: 0 0 8px #4CAF50; }
+        .dot-red { background: #FF5252; box-shadow: 0 0 8px #FF5252; }
+
+        .status-main {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .status-sub {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+        }
+
+        /* Countdown UI in Status Card */
+        .status-countdown {
+            font-family: var(--font-en);
+            margin-top: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            color: #FFB74D;
+        }
+
+        /* --- TIMELINE (Daily Program) --- */
+        .section-title {
+            color: var(--primary);
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin: 0 20px 20px 20px;
+            padding-left: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            padding-left: 35px; /* Space for the vertical line */
+            padding-right: 20px;
+            padding-bottom: 40px;
+        }
+
+        /* The Vertical Grey Line */
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            bottom: 30px;
+            width: 3px;
+            background: var(--timeline-line);
+            z-index: 1;
+            transition: background-color 0.4s ease;
+        }
+
+        /* --- CARDS (White/Dark Mode Adaptive) --- */
+        .event-card {
+            background: var(--card-white);
+            border-radius: 16px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: var(--card-shadow);
+            z-index: 2;
+            transition: all 0.4s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .event-card-content {
+            flex-grow: 1;
+        }
+
+        /* The Dot on the Line */
+        .timeline-point {
+            position: absolute;
+            left: -24px; /* On the line */
+            top: 25px; /* Aligned with Time */
+            width: 15px; height: 15px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            border: 4px solid var(--timeline-ring); /* Default Grey Ring */
+            z-index: 3;
+            transition: all 0.4s ease;
+        }
+
+        /* Text Styles */
+        .t-time {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .t-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+            transition: color 0.4s ease;
+        }
+        .t-desc {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            transition: color 0.4s ease;
+        }
+
+        /* Active State */
+        .event-card.active .timeline-point { 
+            border-color: var(--primary); 
+            background: var(--primary); 
+            box-shadow: 0 0 0 0 rgba(243, 126, 28, 0.7);
+            animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .event-card.active { 
+            border-left: 4px solid var(--primary); 
+            transform: scale(1.02);
+        }
+
+        /* Pulse Animation for Live Event */
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(243, 126, 28, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(243, 126, 28, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 126, 28, 0); }
+        }
+
+        /* Toast Message Engine */
+        .toast-msg {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-msg.show {
+            bottom: 30px;
+            opacity: 1;
+        }
+        
+        /* Error Toast Variant */
+        .toast-error {
+            background: #D32F2F !important;
+            color: white !important;
+        }
+
+        /* Hide logic for regional fonts */
+        body.font-hindi .t-name, body.font-hindi .status-main,
+        body.font-marathi .t-name, body.font-marathi .status-main { 
+            font-family: var(--font-local); 
+        }
+
+    </style>
+</head>
+<body onload="bootLoader()">
+
+<div class="mobile-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+        <div class="btn-back" onclick="goHome()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="header-title" id="lbl_page_title">SCHEDULE</div>
+        <div class="header-actions">
+            <div class="theme-toggle" id="btn_theme_toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="icon_theme"></i>
+            </div>
+            <div class="lang-badge" id="btn_lang_toggle" onclick="manualLangSwitch()">EN</div>
+        </div>
+    </header>
+
+    <!-- BLACK STATUS CARD -->
+    <div class="hero-status">
+        <div class="status-main" id="lbl_status">
+            Loading...
+        </div>
+        <div class="status-sub" id="lbl_status_sub">Checking temple time...</div>
+        <div class="status-countdown" id="lbl_countdown" style="display: none;"></div>
+    </div>
+
+    <!-- DAILY PROGRAM TITLE -->
+    <h3 class="section-title" id="lbl_section_title">Daily Program</h3>
+
+    <!-- TIMELINE LIST -->
+    <div class="timeline-wrapper" id="container_schedule">
+        <div class="timeline-line"></div>
+        <!-- Javascript Injects Cards Here -->
+    </div>
+
+    <!-- Toast Message Container -->
+    <div class="toast-msg" id="sys_toast">Message</div>
+
+</div>
+
+<script>
+
+    /* ========================================================
+       1. POWERFUL "OMNI" LANGUAGE DETECTOR (Upgraded for Sync)
+       ======================================================== */
+    let appLang = 'en'; // Default
+    let isInitialLoad = true; // For auto-scroll
+
+    function detectGlobalLanguage() {
+        // STRICT RULE 1: Read from exact key 'lang' first for perfect Home Page sync
+        const explicitLang = localStorage.getItem('lang');
+        if(explicitLang === 'en' || explicitLang === 'hi' || explicitLang === 'mr') {
+            return explicitLang;
+        }
+
+        // Rule 2: Fallback to existing powerful Omni Detector
+        const keysToScan =['language', 'app_language', 'selectedLang', 'googtrans', 'site_lang'];
+        let foundValue = '';
+
+        keysToScan.forEach(key => {
+            let val = localStorage.getItem(key);
+            if(val) foundValue += val.toLowerCase() + " ";
+        });
+
+        for(let i=0; i<localStorage.length; i++) {
+            let val = localStorage.getItem(localStorage.key(i));
+            if(val) foundValue += val.toLowerCase() + " ";
+        }
+
+        if(foundValue.includes('marathi') || foundValue.includes('mr-in') || foundValue.includes('mr')) {
+            return 'mr';
+        } 
+        else if(foundValue.includes('hindi') || foundValue.includes('hi-in') || foundValue.includes('hi')) {
+            return 'hi';
+        }
+        else {
+            return 'en';
+        }
+    }
+
+    /* ========================================================
+       1.5. THEME ENGINE (New Dark Mode Sync System)
+       ======================================================== */
+    let currentTheme = 'light';
+
+    function initTheme() {
+        // STRICT RULE 2: Read from exact key 'theme'
+        const savedTheme = localStorage.getItem('theme');
+        if(savedTheme === 'dark') {
+            currentTheme = 'dark';
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('icon_theme').className = 'fas fa-sun';
+        } else {
+            currentTheme = 'light';
+            document.body.removeAttribute('data-theme');
+            document.getElementById('icon_theme').className = 'fas fa-moon';
+        }
+    }
+
+    function toggleTheme() {
+        if(currentTheme === 'light') {
+            currentTheme = 'dark';
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('icon_theme').className = 'fas fa-sun';
+            localStorage.setItem('theme', 'dark');
+            showToast(appLang === 'hi' ? 'डार्क मोड चालू' : appLang === 'mr' ? 'डार्क मोड चालू' : 'Dark Mode Enabled');
+        } else {
+            currentTheme = 'light';
+            document.body.removeAttribute('data-theme');
+            document.getElementById('icon_theme').className = 'fas fa-moon';
+            localStorage.setItem('theme', 'light');
+            showToast(appLang === 'hi' ? 'लाइट मोड चालू' : appLang === 'mr' ? 'लाइट मोड चालू' : 'Light Mode Enabled');
+        }
+    }
+
+    /* ========================================================
+       1.8. REAL-TIME STORAGE SYNC (Cross-Tab Support)
+       ======================================================== */
+    // STRICT RULE 3: Listen to storage changes from Home Page
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'lang') {
+            if(e.newValue === 'en' || e.newValue === 'hi' || e.newValue === 'mr') {
+                appLang = e.newValue;
+                applyLanguageFont();
+                renderUI();
+                updateTime();
+            }
+        } else if (e.key === 'theme') {
+            if(e.newValue === 'dark' || e.newValue === 'light') {
+                if(e.newValue === 'dark') {
+                    currentTheme = 'dark';
+                    document.body.setAttribute('data-theme', 'dark');
+                    document.getElementById('icon_theme').className = 'fas fa-sun';
+                } else {
+                    currentTheme = 'light';
+                    document.body.removeAttribute('data-theme');
+                    document.getElementById('icon_theme').className = 'fas fa-moon';
+                }
+            }
+        }
+    });
+
+    /* ========================================================
+       2. DATA ENGINE (Dictionaries)
+       ======================================================== */
+    const UI_TEXT = {
+        en: { 
+            title: "SCHEDULE", program: "Daily Program", badge: "EN", 
+            closed: "TEMPLE CLOSED", open: "TEMPLE OPEN", 
+            subOpen: "Darshan is Available", subClosedEve: "Opens Today 4:15 PM", subClosedMorn: "Opens Tomorrow 4:30 AM",
+            nextEvent: "Next: "
+        },
+        hi: { 
+            title: "दर्शन समय", program: "दैनिक कार्यक्रम", badge: "HI", 
+            closed: "मंदिर बंद है", open: "मंदिर खुला है", 
+            subOpen: "दर्शन अभी उपलब्ध है", subClosedEve: "आज शाम 4:15 खुलेगा", subClosedMorn: "कल सुबह 4:30 खुलेगा",
+            nextEvent: "अगला: "
+        },
+        mr: { 
+            title: "दर्शन वेळापत्रक", program: "दैनंदिन कार्यक्रम", badge: "MR", 
+            closed: "मंदिर बंद आहे", open: "मंदिर उघडे आहे", 
+            subOpen: "दर्शन चालू आहे", subClosedEve: "आज सायं. 4:15 ला उघडेल", subClosedMorn: "उद्या पहाटे 4:30 ला उघडेल",
+            nextEvent: "पुढील: "
+        }
+    };
+
+    // Correct Data matching ISKCON Standards
+    const EVENTS =[
+        { t: "04:30 AM", h: 4.5, 
+          en: { n: "Mangal Aarti", d: "First Darshan" }, 
+          hi: { n: "मंगल आरती", d: "पहला दर्शन" }, 
+          mr: { n: "मंगल आरती", d: "दिवसाचे पहिले दर्शन" } },
+          
+        { t: "05:15 AM", h: 5.25, 
+          en: { n: "Tulasi Aarti", d: "Worship Service" }, 
+          hi: { n: "तुलसी आरती", d: "तुलसी पूजन" }, 
+          mr: { n: "तुळशी आरती", d: "तुळशी पूजा" } },
+
+        { t: "07:30 AM", h: 7.5, 
+          en: { n: "Guru Puja", d: "Spriritual Master Puja" }, 
+          hi: { n: "गुरु पूजा", d: "गुरु वंदना" }, 
+          mr: { n: "गुरू पूजा", d: "गुरू वंदना" } },
+
+        { t: "08:30 AM", h: 8.5, 
+          en: { n: "Darshan Aarti", d: "Full Decoration View" }, 
+          hi: { n: "दर्शन आरती", d: "शृंगार दर्शन" }, 
+          mr: { n: "दर्शन आरती", d: "शृंगार दर्शन" } },
+
+        { t: "12:30 PM", h: 12.5, 
+          en: { n: "Raj Bhoga Aarti", d: "Noon Offering" }, 
+          hi: { n: "राज भोग आरती", d: "दोपहर भोग" }, 
+          mr: { n: "राज भोग आरती", d: "दुपारची आरती" } },
+
+        { t: "01:00 PM", h: 13, 
+          en: { n: "Temple Closes", d: "Afternoon Rest" }, 
+          hi: { n: "मंदिर विश्राम", d: "दर्शन बंद" }, 
+          mr: { n: "मंदिर बंद (विश्राम)", d: "विश्रांतीची वेळ" } },
+
+        { t: "04:15 PM", h: 16.25, 
+          en: { n: "Utthapana Aarti", d: "Temple Re-opens" }, 
+          hi: { n: "उत्थापन आरती", d: "मंदिर खुलता है" }, 
+          mr: { n: "उत्थापन आरती", d: "मंदिर पुन्हा उघडते" } },
+
+        { t: "07:00 PM", h: 19, 
+          en: { n: "Sandhya Aarti", d: "Gaura Aarti" }, 
+          hi: { n: "संध्या आरती", d: "गौरा आरती" }, 
+          mr: { n: "संध्या आरती", d: "गौर आरती" } },
+
+        { t: "08:30 PM", h: 20.5, 
+          en: { n: "Shayana Aarti", d: "Last Darshan" }, 
+          hi: { n: "शयन आरती", d: "अंतिम दर्शन" }, 
+          mr: { n: "शयन आरती", d: "शेवटचे दर्शन" } },
+          
+        { t: "09:00 PM", h: 21, 
+          en: { n: "Temple Closes", d: "Good Night" }, 
+          hi: { n: "मंदिर बंद", d: "शुभ रात्री" }, 
+          mr: { n: "मंदिर बंद", d: "शुभ रात्री" } }
+    ];
+
+    /* ========================================================
+       3. INIT & LOGIC
+       ======================================================== */
+    function applyLanguageFont() {
+        document.body.className = ''; 
+        if(appLang === 'hi') document.body.classList.add('font-hindi');
+        else if(appLang === 'mr') document.body.classList.add('font-marathi');
+    }
+
+    function bootLoader() {
+        // Run Language Detector
+        appLang = detectGlobalLanguage(); 
+        applyLanguageFont();
+        
+        // Initialize Theme (Rule 2 Sync)
+        initTheme();
+
+        renderUI();
+        
+        // Start Clock & Countdown
+        updateTime();
+        setInterval(updateTime, 1000);
+    }
+
+    function goHome() {
+        // Safe Back to Local Index File
+        if(window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "index.html";
+        }
+    }
+
+    // Toggle Button (Updates LocalStorage as per Rule 4)
+    function manualLangSwitch() {
+        if(appLang === 'en') appLang = 'mr'; 
+        else if(appLang === 'mr') appLang = 'hi';
+        else appLang = 'en';
+
+        // STRICT RULE 4: Update 'lang' key correctly
+        localStorage.setItem('lang', appLang);
+        // Fallbacks for older systems
+        localStorage.setItem('language', appLang); 
+        
+        applyLanguageFont();
+        renderUI();
+        updateTime();
+        
+        let msg = appLang === 'hi' ? 'भाषा बदली गई' : appLang === 'mr' ? 'भाषा बदलली' : 'Language Changed';
+        showToast(msg);
+    }
+
+    function renderUI() {
+        const text = UI_TEXT[appLang];
+        
+        // 1. Static Labels
+        document.getElementById('lbl_page_title').innerText = text.title;
+        document.getElementById('lbl_section_title').innerText = text.program;
+        document.getElementById('btn_lang_toggle').innerText = text.badge;
+
+        // 2. Build Timeline Cards
+        const container = document.getElementById('container_schedule');
+        // Clear previous entries but KEEP the vertical line line
+        const lineHTML = '<div class="timeline-line"></div>';
+        let eventsHTML = '';
+
+        EVENTS.forEach((item, index) => {
+            const langData = item[appLang]; 
+            eventsHTML += `
+            <div class="event-card" id="card_${index}">
+                <div class="timeline-point" id="dot_${index}"></div>
+                <div class="event-card-content">
+                    <div class="t-time">${item.t}</div>
+                    <div class="t-name">${langData.n}</div>
+                    <div class="t-desc">${langData.d}</div>
+                </div>
+            </div>`;
+        });
+
+        container.innerHTML = lineHTML + eventsHTML;
+    }
+
+    /* Powerful Feature: Toast Message Engine */
+    let toastTimeout;
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('sys_toast');
+        toast.innerText = message;
+        
+        if(isError) toast.classList.add('toast-error');
+        else toast.classList.remove('toast-error');
+        
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3500);
+    }
+
+    function updateTime() {
+        const d = new Date();
+        const curH = d.getHours() + (d.getMinutes() / 60) + (d.getSeconds() / 3600); // More precise for seconds
+
+        const text = UI_TEXT[appLang];
+        const statusEl = document.getElementById('lbl_status');
+        const statusSubEl = document.getElementById('lbl_status_sub');
+        const countdownEl = document.getElementById('lbl_countdown');
+
+        /* OPEN/CLOSE LOGIC 
+           Open: 4.5 -> 13.0
+           Open: 16.25 -> 21.0 
+        */
+        let isOpen = false;
+        let isMorning = (curH >= 4.5 && curH < 13);
+        let isEvening = (curH >= 16.25 && curH < 21);
+        
+        if (isMorning || isEvening) isOpen = true;
+
+        if(isOpen) {
+            statusEl.innerHTML = `<span class="status-dot dot-green"></span> ${text.open}`;
+            statusSubEl.innerText = text.subOpen;
+        } else {
+            statusEl.innerHTML = `<span class="status-dot dot-red"></span> ${text.closed}`;
+            
+            // Deciding the subtitle based on "Next Open Slot"
+            if(curH >= 13 && curH < 16.25) {
+                statusSubEl.innerText = text.subClosedEve; 
+            } else {
+                statusSubEl.innerText = text.subClosedMorn;
+            }
+        }
+
+        /* HIGHLIGHT ACTIVE EVENT & NEXT EVENT COUNTDOWN */
+        let activeIndex = -1;
+        let nextEventIndex = 0;
+        
+        // Find Active and Next Event
+        for (let i = 0; i < EVENTS.length; i++) {
+            if (curH >= EVENTS[i].h) {
+                activeIndex = i;
+            } else {
+                // First event that is greater than current time is the next event
+                nextEventIndex = i;
+                break; 
+            }
+        }
+
+        // If all events today are done, next event is tomorrow's first event
+        if (curH >= EVENTS[EVENTS.length - 1].h) {
+            nextEventIndex = 0;
+        }
+
+        // --- Calculate Powerful Live Countdown ---
+        let nextH = EVENTS[nextEventIndex].h;
+        let timeDiff = nextH - curH;
+        
+        // If next event is tomorrow, add 24 hours to calculation
+        if (nextEventIndex === 0 && curH > 1) {
+            timeDiff = (24 - curH) + nextH;
+        }
+
+        let remHrs = Math.floor(timeDiff);
+        let remMins = Math.floor((timeDiff - remHrs) * 60);
+        let remSecs = Math.floor((((timeDiff - remHrs) * 60) - remMins) * 60);
+
+        // Pad with zeroes
+        let sHrs = remHrs.toString().padStart(2, '0');
+        let sMins = remMins.toString().padStart(2, '0');
+        let sSecs = remSecs.toString().padStart(2, '0');
+
+        let nextEventName = EVENTS[nextEventIndex][appLang].n;
+        countdownEl.style.display = 'inline-block';
+        countdownEl.innerText = `${text.nextEvent} ${nextEventName} (${sHrs}h ${sMins}m ${sSecs}s)`;
+
+        // Reset All Active Cards
+        document.querySelectorAll('.event-card').forEach(el => el.classList.remove('active'));
+
+        if(activeIndex > -1) {
+            const activeCard = document.getElementById('card_' + activeIndex);
+            if(activeCard) {
+                activeCard.classList.add('active');
+                
+                // Powerful Feature: Auto Scroll to active event only on first load
+                if(isInitialLoad) {
+                    setTimeout(() => {
+                        activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                    isInitialLoad = false;
+                }
+            }
+        } else if (activeIndex === -1 && isInitialLoad) {
+            // If before 4:30 AM, scroll to first event
+            isInitialLoad = false;
+        }
+    }
+
+</script>
+</body>
+</html>
