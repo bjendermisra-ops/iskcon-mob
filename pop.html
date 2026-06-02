@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#080604">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ISKCON | Padyatra Live Devotee Portal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Leaflet Map CSS for Real-time GPS Tracker -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --saffron:#FF9933; --saffron-d:#D4710A; --saffron-glow:rgba(255,153,51,.28);
+      --bg:#080604; --panel:#141209; --card:#1c1912;
+      --border:rgba(255,153,51,.12); --border-hard:rgba(255,153,51,.22);
+      --danger:#FF3B3B; --success:#2ECC71; --warn:#FFB300;
+      --muted:#5a5040; --text-dim:#6b5e48; --text-mid:#a8936e;
+      --gold-g: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+    }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background-color: var(--bg); background-image: radial-gradient(circle at top, #1c140c 0%, #080604 100%); }
+    .gradient-bg { background: linear-gradient(135deg, #d97706 0%, #78350f 100%); }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0f0e0c; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #d97706; border-radius: 4px; }
+    .font-devanagari { font-family: 'Noto Serif Devanagari', serif; }
+
+    /* ─── PROGRESSIVE IMAGE LOADING EFFECT ─── */
+    .progressive-img {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out;
+      filter: blur(10px);
+    }
+    .progressive-img.loaded {
+      opacity: 1;
+      filter: blur(0);
+    }
+    .img-loading-shimmer {
+      position: relative;
+      overflow: hidden;
+      background: #1c1912;
+    }
+    .img-loading-shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255, 153, 51, 0.08), transparent);
+      animation: imageShimmer 1.6s infinite;
+    }
+    @keyframes imageShimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    /* ─── FLOATING REACTIONS ─── */
+    .float-emoji {
+      position: absolute; bottom: 0; right: 6px; font-size: 1.8rem; opacity: 0;
+      pointer-events: none; animation: floatUp 2.5s ease-out forwards;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); z-index: 50; will-change: transform, opacity;
+    }
+    @keyframes floatUp {
+      0%   { opacity:1; transform:translateY(0) scale(.6) rotate(-8deg); }
+      30%  { opacity:1; transform:translateY(-65px) scale(1.2) rotate(6deg); }
+      70%  { opacity:.7; transform:translateY(-150px) scale(1) rotate(-3deg); }
+      100% { opacity:0; transform:translateY(-240px) scale(.7) rotate(8deg); }
+    }
+
+    /* ─── RECONNECT BANNER ─── */
+    #reconnect-banner { position:fixed; top:0; left:0; right:0; background:rgba(255,179,0,.95); color:#000; text-align:center; padding:10px 16px; font-size:.85rem; font-weight:700; z-index:9990; display:none; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
+    #reconnect-banner.show { display:flex; animation:slideDown 0.3s ease; }
+    @keyframes slideDown { from{transform:translateY(-100%);} to{transform:translateY(0);} }
+    .rspin { width:16px; height:16px; border:2px solid rgba(0,0,0,.2); border-top-color:#000; border-radius:50%; animation:spinCW .7s linear infinite; flex-shrink:0; }
+    @keyframes spinCW { to{transform:rotate(360deg);} }
+
+    /* ─── YOUTUBE STEALTH WRAPPER ─── */
+    .yt-stealth-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .yt-stealth-wrapper iframe,
+    .yt-stealth-wrapper > div[id^="yt-"] {
+      position: absolute;
+      top: -10%;
+      left: -5%;
+      width: 110%;
+      height: 120%;
+      border: none;
+      pointer-events: none;
+    }
+    .yt-click-capture {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      cursor: pointer;
+      background: transparent;
+    }
+    .yt-bottom-mask { position: absolute; bottom: 0; left: 0; right: 0; height: 12%; background: #000; z-index: 8; }
+    .yt-top-mask { position: absolute; top: 0; left: 0; right: 0; height: 12%; background: #000; z-index: 8; }
+
+    /* ─── DAILY DARSHAN GALLERY ─── */
+    .darshan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (min-width: 640px) { .darshan-grid { grid-template-columns: repeat(3, 1fr); } }
+    .darshan-card {
+      border-radius: 12px; overflow: hidden; background: #0a0a08;
+      border: 1px solid rgba(255,153,51,0.08);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .darshan-card:active { transform: scale(0.97); }
+    .darshan-card img { width:100%; height: 110px; object-fit: cover; display: block; }
+    .darshan-card-info { padding: 6px 8px 8px; }
+    .darshan-date-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,153,51,0.1); border: 1px solid rgba(255,153,51,0.15);
+      color: #f59e0b; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 20px;
+      margin-bottom: 4px; letter-spacing: 0.3px;
+    }
+    .date-group-header-user {
+      grid-column: 1/-1;
+      background: linear-gradient(90deg, rgba(234,88,12,0.12), transparent);
+      border-left: 2px solid #ea580c;
+      padding: 5px 10px;
+      border-radius: 0 8px 8px 0;
+      font-size: 10px; font-weight: 800; color: #f59e0b;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      margin: 4px 0 2px;
+    }
+
+    .card-cover-tag {
+      position: absolute; top: 6px; left: 6px;
+      background: rgba(245,158,11,0.85);
+      color: #000; font-size: 7px; font-weight: 900;
+      padding: 2px 6px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    #immersive-fullscreen-overlay { background: #000; }
+    .fs-yt-stage { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+
+    .unmute-prompt {
+      position: absolute;
+      bottom: 70px; left: 50%; transform: translateX(-50%);
+      background: rgba(255,153,51,0.95);
+      color: #000; font-size: 11px; font-weight: 800;
+      padding: 8px 16px; border-radius: 30px;
+      z-index: 25; cursor: pointer;
+      animation: slideUpPrompt 0.3s ease;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; border: none;
+      box-shadow: 0 4px 15px rgba(255,153,51,0.4);
+    }
+    @keyframes slideUpPrompt { from{transform:translateX(-50%) translateY(10px); opacity:0;} to{transform:translateX(-50%) translateY(0); opacity:1;} }
+
+    #gallery-lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+      z-index: 2100; display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    #gallery-lightbox.open { display: flex; }
+    #lightbox-img { max-width: 95vw; max-height: 75vh; border-radius: 8px; object-fit: contain; }
+    #lightbox-caption { color: #f59e0b; font-size: 12px; font-weight: 600; margin-top: 12px; text-align: center; max-width: 85vw; }
+    #lightbox-date { color: #6b5e48; font-size: 10px; margin-top: 4px; }
+
+    .react-tap { transition: transform 0.1s; }
+    .react-tap:active { transform: scale(0.85); }
+
+    #toast-area { position:fixed; bottom:5px; right:5px; z-index:2200; space-y:8px; pointer-events:none; }
+    .toast-item {
+      display: flex; align-items: center; padding: 10px 14px;
+      background: rgba(20,18,9,0.95); border: 1px solid rgba(255,153,51,0.2);
+      border-radius: 10px; color: #f59e0b; font-size: 11px; font-weight: 700;
+      gap: 8px; margin-top: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: all 0.3s; transform: translateY(4px); opacity: 0;
+    }
+    .toast-item.show { transform: translateY(0); opacity: 1; }
+
+    /* Interactive Leaflet Map Box sizing */
+    #modal-live-map {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 153, 51, 0.15);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="text-gray-100 antialiased overflow-x-hidden">
+
+  <div id="reconnect-banner">
+    <div class="rspin"></div>
+    <span id="reconnect-text">Server se jod raha hai...</span>
+  </div>
+
+  <!-- Gallery Lightbox -->
+  <div id="gallery-lightbox" onclick="closeLightbox()">
+    <button class="absolute top-4 right-4 text-white text-2xl font-bold z-10 w-10 h-10 rounded-full bg-black/60 flex items-center justify-center" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="">
+    <div id="lightbox-caption"></div>
+    <div id="lightbox-date"></div>
+  </div>
+
+  <!-- ─── NAV ─── -->
+  <nav class="bg-stone-950/80 backdrop-blur-xl border-b border-orange-500/10 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="go:home" class="mr-3 w-10 h-10 rounded-xl bg-stone-900 border border-orange-500/20 flex items-center justify-center text-orange-400 hover:text-white hover:bg-stone-850 active:scale-95 transition-all shadow-[0_2px_8px_rgba(217,119,6,0.15)]" title="Back to App Menu">
+            <i class="fas fa-arrow-left text-sm"></i>
+          </a>
+          <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white shadow-lg shadow-orange-600/25 border border-white/10 relative overflow-hidden" id="logo-holder">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghml256V-E8rI4THin2xkDlBcswj_wIKIPAH77Lr5YyiPAGYY-ewIwZZyMtHt7eQ4PZn4AIkIpWZnMnX7UwjsoKnHeJCfXr4SDB2jJdZonvxGfhTxYk5f1XrDfXFffWVUnyWSLhlknue9_FBwf6b7HlbQYswgInLKhOTWhSxsn_yMFgGky-xknLxsf9QU/s1376/1000228359.png" class="w-full h-full object-cover" alt="Logo">
+          </div>
+          <span class="ml-3 font-extrabold text-base md:text-lg text-orange-400 tracking-wide font-devanagari" id="nav-title">ISKCON Padyatra</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="toggleAmbientMusic()" id="ambient-music-btn" class="w-9 h-9 rounded-lg bg-stone-900 border border-orange-500/10 flex items-center justify-center text-orange-400 hover:text-white transition-all mr-1">
+            <i class="fas fa-music text-xs"></i>
+          </button>
+          <span id="connection-status-badge" class="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-900/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1" id="connection-status-dot"></span> <span id="connection-status-text">Live Sync</span>
+          </span>
+          <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-stone-900 border border-white/5 text-orange-200 text-xs rounded-lg block p-1.5 font-medium">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="mr">मराठी</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- ─── WHATSAPP GROUP PROMINENT COMMUNITY WIDGET ─── -->
+    <div class="bg-gradient-to-r from-emerald-950/40 via-stone-900/80 to-emerald-950/40 border-2 border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+      <div class="absolute -right-12 -top-12 w-28 h-28 rounded-full bg-emerald-500/10 blur-xl pointer-events-none"></div>
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-start md:items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-emerald-500 to-emerald-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-900/30">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="space-y-1">
+            <span class="inline-flex items-center bg-emerald-600/20 text-emerald-400 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-emerald-500/20" id="community-badge-text">Official Community</span>
+            <h3 class="font-devanagari font-bold text-base md:text-lg text-orange-300" id="community-title-text">हमारे मुख्य व्हाट्सएप ग्रुप में शामिल हों</h3>
+            <p class="text-xs text-stone-400 font-devanagari" id="community-desc-text">दैनिक लाइव अपडेट्स, मंगल आरती दर्शन, मार्ग और महाप्रसाद वितरण की सभी खबरें तुरंत प्राप्त करें।</p>
+          </div>
+        </div>
+        <div>
+          <a href="https://chat.whatsapp.com/GwQtHyoAMJJGcSX5SVsuIV?s=cl&p=a&mlu=2" target="_blank" class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg transition-all transform active:scale-95">
+            <i class="fab fa-whatsapp text-lg"></i>
+            <span id="community-btn-text">ग्रुप जॉइन करें</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DAILY SRILA PRABHUPADA MESSAGE WIDGET ─── -->
+    <div class="bg-[#141209] border border-orange-500/10 p-4 rounded-xl flex items-start gap-3 shadow-inner">
+      <div class="w-10 h-10 rounded-full bg-orange-950/40 border border-orange-500/20 flex items-center justify-center text-orange-400 flex-shrink-0 text-lg">
+        <i class="fas fa-quote-left"></i>
+      </div>
+      <div>
+        <span class="text-[9px] uppercase tracking-wider text-orange-500 font-bold block mb-0.5" id="prabhupada-quote-title">Srila Prabhupada Daily Quote</span>
+        <p class="text-xs text-orange-100/90 italic leading-relaxed font-devanagari animate-pulse" id="prabhupada-quote-text">Loading holy words...</p>
+      </div>
+    </div>
+
+    <!-- ─── LIVE BROADCAST AREA ─── -->
+    <div id="unified-live-broadcast-area" class="hidden"></div>
+
+    <!-- ─── HERO BANNER ─── -->
+    <div class="gradient-bg rounded-2xl p-6 md:p-8 text-white shadow-2xl relative overflow-hidden border border-orange-400/20">
+      <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+        <svg width="240" height="240" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path></svg>
+      </div>
+      <div class="relative z-10 max-w-2xl">
+        <span class="bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="hero-badge">ISKCON Initiative</span>
+        <h1 class="text-2xl md:text-4xl font-extrabold mt-3 leading-tight tracking-wide font-devanagari" id="hero-title">Browse Global Devotional Journeys</h1>
+        <p class="text-orange-100 mt-2 text-xs md:text-sm" id="hero-desc">Experience real-time updates, geographical routes, coordinates and daily darshan from spiritual foot-marathons around the globe.</p>
+      </div>
+    </div>
+
+    <!-- ─── REAL-TIME MOVEMENT/CONTRIBUTION DASHBOARD ─── -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-stone-950/60 p-4 rounded-xl border border-orange-500/10 shadow-lg">
+      <div class="bg-stone-900/40 p-3 rounded-lg border border-white/5 text-center">
+        <span class="text-xl">📚</span>
+        <span id="global-stat-books" class="block text-lg font-bold text-orange-400 mt-1">—</span>
+        <span class="text-[9px] text-stone-400 uppercase tracking-wider font-semibold font-devanagari" id="stat-books">Books Distributed</span>
+      </div>
+      <div class="bg-stone-900/40 p-3 rounded-lg border border-white/5 text-center">
+        <span class="text-xl">😋</span>
+        <span id="global-stat-prasadam" class="block text-lg font-bold text-orange-400 mt-1">—</span>
+        <span class="text-[9px] text-stone-400 uppercase tracking-wider font-semibold font-devanagari" id="stat-prasadam">Prasadam Served</span>
+      </div>
+      <div class="bg-stone-900/40 p-3 rounded-lg border border-white/5 text-center">
+        <span class="text-xl">🚶</span>
+        <span id="global-stat-distance" class="block text-lg font-bold text-orange-400 mt-1">—</span>
+        <span class="text-[9px] text-stone-400 uppercase tracking-wider font-semibold font-devanagari" id="stat-distance">Distance Covered</span>
+      </div>
+      <div class="bg-stone-900/40 p-3 rounded-lg border border-white/5 text-center">
+        <span class="text-xl">🙌</span>
+        <span id="global-stat-towns" class="block text-lg font-bold text-orange-400 mt-1">—</span>
+        <span class="text-[9px] text-stone-400 uppercase tracking-wider font-semibold font-devanagari" id="stat-towns">Towns Reached</span>
+      </div>
+    </div>
+
+    <!-- ─── FILTERS ─── -->
+    <div class="bg-stone-900/40 backdrop-blur-md p-4 rounded-xl border border-orange-500/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-md">
+      <div class="relative flex-1">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fas fa-search text-orange-800"></i></span>
+        <input type="text" id="user-search-input" oninput="renderUserPadyatras()" placeholder="Search Padyatra by name, city, country..." class="pl-10 pr-4 py-2.5 w-full bg-stone-950/80 border border-white/5 rounded-lg text-xs text-orange-100 placeholder-stone-600 focus:outline-none focus:ring-1 focus:ring-orange-500">
+      </div>
+      <div class="flex items-center space-x-2 overflow-x-auto">
+        <button onclick="setUserFilter('all')" id="tab-all" class="px-4 py-2.5 rounded-lg text-xs font-semibold bg-orange-600 text-white whitespace-nowrap">All Padyatras</button>
+        <button onclick="setUserFilter('live')" id="tab-live" class="px-4 py-2.5 rounded-lg text-xs font-semibold bg-stone-950 text-orange-400 border border-orange-950 hover:bg-stone-900 whitespace-nowrap">🔴 Live Only</button>
+        <button onclick="setUserFilter('favorites')" id="tab-fav" class="px-4 py-2.5 rounded-lg text-xs font-semibold bg-stone-950 text-orange-400 border border-orange-950 hover:bg-stone-900 whitespace-nowrap flex items-center space-x-1">
+          <span>⭐ Favorites</span>
+          <span id="fav-count" class="bg-orange-800 text-orange-100 text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── PADYATRA LISTINGS ─── -->
+    <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-orange-300 flex items-center font-devanagari" id="heading-padyatra-list">🚶 Active & Upcoming Padyatras</h2>
+        <span id="padyatras-found-count" class="text-xs font-semibold text-orange-800">0 journeys active</span>
+      </div>
+      <div id="padyatras-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- ─── 🎂 LOKANATH SWAMI VYASA PUJA TRIBUTE WALL (Birthday Dedicated Widget) ─── -->
+    <div class="bg-gradient-to-br from-stone-950 via-[#18120a] to-stone-950 border-2 border-orange-500/30 rounded-2xl p-5 md:p-6 shadow-2xl space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-900/20 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full gradient-bg flex items-center justify-center text-white text-xl shadow-lg flex-shrink-0">
+            <i class="fas fa-birthday-cake"></i>
+          </div>
+          <div>
+            <h2 id="vyasa-wall-title" class="font-devanagari font-bold text-base md:text-lg text-orange-300">🎂 श्रील लोकनाथ स्वामी महाराज व्यास-पूजा श्रद्धा-दीवार</h2>
+            <p class="text-xs text-stone-400 leading-relaxed font-devanagari" id="vyasa-wall-sub">दुनियाभर के भक्तों द्वारा महाराज जी के उत्तम स्वास्थ्य और दीर्घायु के लिए भेजे गए संदेश</p>
+          </div>
+        </div>
+        <span id="total-tributes-badge" class="bg-orange-950 text-orange-400 border border-orange-900/30 text-[10px] font-bold px-2.5 py-1 rounded">0 Tributes</span>
+      </div>
+
+      <!-- Tribute Submit Form -->
+      <div class="bg-stone-900/40 p-4 rounded-xl border border-white/5 space-y-3">
+        <span class="text-[10px] text-orange-500 font-bold uppercase tracking-wider block font-devanagari" id="lbl-submit-tribute">अपना श्रद्धा संदेश भेजें (Submit Tribute)</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <input type="text" id="tribute-sender-name" placeholder="Your Name / आपका नाम *" class="p-2.5 bg-stone-950 border border-orange-900/15 rounded text-stone-200">
+          <input type="text" id="tribute-location" placeholder="Your Location / आपका शहर, देश *" class="p-2.5 bg-stone-950 border border-orange-900/15 rounded text-stone-200">
+        </div>
+        <textarea id="tribute-message" rows="2" placeholder="Write your heartfelt message here... / महाराज जी के लिए अपनी प्रार्थनाएं और शुभकामनाएं लिखें... *" class="w-full text-xs p-2.5 bg-stone-950 border border-orange-900/15 rounded text-stone-200"></textarea>
+        <button onclick="submitHeartfeltTribute()" class="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-amber-600 text-black font-black text-xs px-6 py-2.5 rounded-xl uppercase tracking-wider transition-all transform active:scale-95" id="btn-submit-tribute">
+          संदेश भेजें (Send Message)
+        </button>
+      </div>
+
+      <!-- Scrolling approved Tributes Feed -->
+      <div id="tributes-feed-scroll" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── DETAILED PADYATRA MODAL ─── -->
+  <div id="padyatra-detail-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 bg-black/80" onclick="closeModal()"></div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
+      <div class="inline-block align-bottom bg-[#0c0a06] rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-orange-500/10">
+        <div class="relative gradient-bg px-6 py-6 text-white">
+          <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full bg-black/20">×</button>
+          <span id="modal-badge" class="bg-white/20 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Live</span>
+          <h3 class="text-xl md:text-2xl font-black mt-1 font-devanagari" id="modal-title-text">Padyatra Title</h3>
+          <p class="text-orange-100 text-xs mt-1" id="modal-leader-text">Coordinator</p>
+        </div>
+        <div class="p-6 space-y-6">
+          
+          <!-- Live GPS OPEN-STREET MAP EMBED -->
+          <div id="modal-gps-map-box" class="space-y-2.5 hidden">
+            <span class="inline-flex items-center bg-red-600 text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider animate-pulse font-devanagari">
+              <span class="w-1.5 h-1.5 rounded-full bg-white mr-1.5"></span> रीयल-टाइम जीपीएस मानचित्र (Live GPS Map Tracker)
+            </span>
+            <div id="modal-live-map"></div>
+          </div>
+
+          <!-- Live Location Card -->
+          <div id="modal-live-box" class="bg-gradient-to-r from-red-950/20 via-orange-950/20 to-stone-950/20 border-2 border-red-600/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden hidden">
+            <div class="absolute -right-16 -top-16 w-32 h-32 rounded-full bg-red-600/10 blur-xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="space-y-2">
+                <span class="inline-flex items-center bg-red-600 text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider animate-pulse">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white mr-1.5"></span> Exact Live Location
+                </span>
+                <h4 class="font-extrabold text-orange-400 text-lg tracking-wide font-devanagari" id="modal-live-landmark">Spot Name</h4>
+                <div class="flex items-center space-x-2 text-xs text-stone-400 bg-black/40 px-3 py-1.5 rounded-lg w-max border border-white/5">
+                  <i class="fas fa-clock text-red-500 animate-pulse"></i>
+                  <span id="modal-live-countdown-lbl" class="mr-1">Leaving in:</span>
+                  <span class="font-black text-red-500" id="modal-live-countdown" data-countdown-id="" data-time="">Calculating...</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 md:self-end">
+                <a id="modal-live-map-btn" href="#" target="_blank" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs px-4 py-2.5 rounded-xl font-bold shadow-md transition-transform active:scale-95 whitespace-nowrap">
+                  <i class="fas fa-map-marked-alt"></i> <span id="modal-live-map-text">Get Navigation</span>
+                </a>
+                <a id="modal-live-phone-btn" href="#" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs px-4 py-2.5 rounded-xl font-bold shadow-md transition-transform active:scale-95 whitespace-nowrap">
+                  <i class="fas fa-phone-alt"></i> <span id="modal-live-phone-text">Call Coordinator</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ZERO-DELAY GEOFENCING CROWD tracker -->
+          <div id="geofencing-presence-box" class="bg-stone-950 p-4 rounded-xl border border-emerald-500/20 space-y-3 shadow-inner hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-emerald-500 font-devanagari" id="lbl-geofence-head">🚶 मैं संकीर्तन रथ के साथ हूँ (Devotees Check-In)</span>
+              <span id="on-ground-counter-badge" class="bg-emerald-950 text-emerald-400 text-[10px] px-2 py-0.5 rounded font-bold border border-emerald-900/30">0 Present</span>
+            </div>
+            <p class="text-[10px] text-stone-400 leading-relaxed font-devanagari">रथ के ५०० मीटर के दायरे में उपस्थित भक्त ही खुद को यहाँ चेक-इन कर सकते हैं। संकीर्तन में आपकी शारीरिक उपस्थिति दर्ज करें!</p>
+            <button onclick="handleGeofenceOnGroundCheckIn()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-xs transition-colors flex items-center justify-center gap-1.5" id="btn-geofence-checkin">
+              <i class="fas fa-street-view"></i> <span id="lbl-checkin-btn-text">चेक-इन करें (Verify & Check-In)</span>
+            </button>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold uppercase text-orange-500 mb-1" id="modal-lbl-desc">About Journey</h4>
+            <p class="text-xs text-orange-100/80 leading-relaxed font-devanagari" id="modal-desc-text">Description...</p>
+          </div>
+
+          <!-- LOCAL STATISTICS BOX inside detailed modal -->
+          <div class="bg-[#110e0a] border border-orange-500/10 p-4 rounded-xl space-y-3">
+            <h4 class="text-xs font-bold uppercase text-orange-400 font-devanagari" id="local-stat-heading-lbl">📊 इस पदयात्रा की कुल उपलब्धियां (Padyatra Stats)</h4>
+            <div class="grid grid-cols-3 gap-3 text-center text-xs">
+              <div class="bg-stone-900/50 p-2.5 rounded border border-white/5">
+                <span class="text-[9px] text-stone-400 font-bold block" id="local-stat-books-lbl">Books Sold</span>
+                <span id="modal-stat-books" class="text-white font-bold text-sm">—</span>
+              </div>
+              <div class="bg-stone-900/50 p-2.5 rounded border border-white/5">
+                <span class="text-[9px] text-stone-400 font-bold block" id="local-stat-prasadam-lbl">Prasadam</span>
+                <span id="modal-stat-prasadam" class="text-white font-bold text-sm">—</span>
+              </div>
+              <div class="bg-stone-900/50 p-2.5 rounded border border-white/5">
+                <span class="text-[9px] text-stone-400 font-bold block" id="local-stat-distance-lbl">Distance (KM)</span>
+                <span id="modal-stat-distance" class="text-white font-bold text-sm">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold uppercase text-orange-500 mb-2" id="modal-lbl-route">Route Progression</h4>
+            <div id="modal-route-timeline-container" class="overflow-x-auto pb-2 custom-scrollbar scroll-smooth">
+              <div class="flex items-center space-x-2 min-w-max p-1" id="modal-route-timeline"></div>
+            </div>
+          </div>
+
+          <!-- Halt Details -->
+          <div class="bg-stone-950 p-4 rounded-xl border border-orange-500/10 space-y-3 shadow-inner">
+            <h4 class="text-xs font-bold uppercase text-orange-500" id="modal-lbl-halt-details">Halt Details & Travel Durations</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-stone-900/60 p-3 rounded-lg border border-white/5">
+                <span class="text-[10px] text-orange-600 font-bold block" id="modal-lbl-last-halt">Last Halt:</span>
+                <span id="modal-val-last-halt" class="text-white font-semibold font-devanagari">—</span>
+              </div>
+              <div class="bg-stone-900/60 p-3 rounded-lg border border-white/5">
+                <span class="text-[10px] text-orange-600 font-bold block" id="modal-lbl-curr-halt">Current Location:</span>
+                <span id="modal-val-curr-halt" class="text-white font-semibold font-devanagari">—</span>
+              </div>
+              <div class="bg-stone-900/60 p-3 rounded-lg border border-white/5">
+                <span class="text-[10px] text-orange-600 font-bold block" id="modal-lbl-next-halt">Next Stop:</span>
+                <span id="modal-val-next-halt" class="text-white font-semibold font-devanagari">—</span>
+              </div>
+            </div>
+            <div class="bg-stone-900/40 p-3 rounded-lg border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <span class="text-stone-400 font-bold" id="modal-lbl-elapsed">Time Elapsed Since Departure:</span>
+              <span id="modal-val-elapsed" class="text-emerald-500 font-bold">—</span>
+            </div>
+          </div>
+
+          <!-- ─── DAILY DARSHAN GALLERY ─── -->
+          <div>
+            <div class="border-b border-orange-900/30 flex items-center justify-between mb-4">
+              <span class="pb-1 text-xs font-bold text-orange-500 font-devanagari" id="modal-lbl-darshan-highlights">📸 Daily Darshan Highlights</span>
+              <span class="text-[10px] font-semibold text-orange-800" id="modal-photo-counter">0 photos</span>
+            </div>
+            <div id="modal-gallery-info" class="hidden mb-3 p-2 bg-orange-950/10 border border-orange-900/10 rounded-lg text-[10px] text-stone-500 flex items-center gap-2">
+              <i class="fas fa-info-circle text-orange-700"></i>
+              <span>Photos newest first | Tap any photo to enlarge</span>
+            </div>
+            <div id="modal-gallery-container" class="darshan-grid"></div>
+          </div>
+        </div>
+
+        <div class="bg-stone-950 px-6 py-4 flex flex-row-reverse gap-2 border-t border-orange-900/10">
+          <button onclick="closeModal()" class="bg-stone-800 text-orange-100 hover:bg-stone-700 px-4 py-1.5 rounded text-xs font-semibold">Close</button>
+          <a id="modal-whatsapp-dynamic-join" href="https://chat.whatsapp.com/GwQtHyoAMJJGcSX5SVsuIV?s=cl&p=a&mlu=2" target="_blank" class="bg-emerald-600 text-white hover:bg-emerald-700 px-4 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> <span id="whatsapp-join-btn-lbl">Join WhatsApp Group</span>
+          </a>
+          <button id="modal-fav-toggle-btn" onclick="toggleModalFavorite()" class="border border-orange-900/30 text-orange-700 hover:bg-orange-950 px-4 py-1.5 rounded text-xs font-semibold">⭐ Favorite</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ENHANCED SHARE OVERLAY ─── -->
+  <div id="share-overlay" class="fixed inset-0 bg-black/95 z-[2000] hidden justify-center items-center p-4 backdrop-blur-md transition-all duration-300" onclick="closeShareOverlay()">
+    <div class="bg-[#0e0b07] border-2 border-orange-500/50 rounded-3xl p-8 w-full max-w-sm shadow-[0_0_35px_rgba(249,115,22,0.15)] relative overflow-hidden" onclick="event.stopPropagation()">
+      <div class="absolute -right-16 -top-16 w-36 h-36 rounded-full bg-orange-600/10 blur-2xl pointer-events-none"></div>
+      <button onclick="closeShareOverlay()" class="absolute top-4 right-4 text-stone-500 hover:text-orange-400 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full bg-stone-900 border border-orange-500/10 transition-all">×</button>
+      <div class="text-center space-y-4 mb-8">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-b from-orange-500/20 to-amber-600/5 border-2 border-orange-500/40 flex items-center justify-center mx-auto text-orange-500 text-2xl">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <h3 id="share-overlay-title" class="font-devanagari font-bold text-xl text-orange-400 tracking-wide">🙏 दिव्य दर्शन साझा करें</h3>
+        <p id="share-overlay-desc" class="text-xs text-stone-400 max-w-xs mx-auto leading-relaxed">अपने परिवार और प्रियजनों को व्हाट्सएप पर दिव्य पदयात्रा दर्शन का भागीदार बनाएं</p>
+      </div>
+      <div class="space-y-4 relative z-10">
+        <button class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white p-4 rounded-2xl font-bold text-base tracking-wide border border-emerald-400/25 transition-all" onclick="shareVia('whatsapp')">
+          <i class="fab fa-whatsapp text-2xl"></i>
+          <span id="share-btn-text-span">WhatsApp पर भेजें</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── IMMERSIVE FULLSCREEN DARSHAN ─── -->
+  <div id="immersive-fullscreen-overlay" class="fixed inset-0 bg-black z-[1000] flex flex-col hidden overflow-hidden">
+    <div class="h-14 bg-stone-950/90 border-b border-orange-900/10 flex justify-between items-center px-4">
+      <div class="flex items-center space-x-2">
+        <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">● LIVE</span>
+        <h4 id="fs-p-title" class="font-bold text-xs text-orange-400 truncate w-40 sm:w-60 font-devanagari">Padyatra</h4>
+      </div>
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="bg-stone-900 border border-orange-900/20 px-2 py-1 rounded text-[10px] font-bold text-orange-400">
+          <i class="fas fa-eye text-stone-500 mr-1"></i> <span id="fs-viewerCount">—</span>
+        </span>
+        <button onclick="closeFullscreenDarshan()" class="bg-orange-600 text-white font-bold px-3 py-1 rounded text-xs">Minimize</button>
+      </div>
+    </div>
+
+    <div class="flex-1 relative bg-black overflow-hidden">
+      <div class="fs-yt-stage w-full h-full">
+        <div id="yt-fullscreen-player-container" class="w-full h-full"></div>
+        <div id="fs-video-off-overlay" class="absolute inset-0 bg-stone-950 flex flex-col items-center justify-center gap-3 hidden z-30">
+          <div class="om-ring" style="border-color:rgba(255,153,51,0.15);border-top-color:var(--saffron);border-right-color:var(--saffron);"></div>
+          <span class="text-xs text-orange-200 font-bold tracking-wider">Darshan Audio on 🙏</span>
+        </div>
+        <div id="fs-reaction-stage" class="absolute inset-y-0 right-4 w-24 pointer-events-none overflow-hidden z-20"></div>
+      </div>
+    </div>
+
+    <div class="bg-[#141209] border-t border-orange-900/10 p-4 pb-safe flex flex-col gap-3">
+      <div class="flex justify-between items-center text-xs">
+        <div>
+          <span class="text-orange-500 font-bold block text-[10px]" id="fs-lbl-curr">CURRENT STOP:</span>
+          <span id="fs-current-city" class="text-white font-bold text-sm">—</span>
+        </div>
+        <div class="text-right">
+          <span class="text-orange-500 font-bold block text-[10px]" id="fs-lbl-spot">EXACT SPOT:</span>
+          <span id="fs-precise-spot" class="text-stone-300 font-semibold font-devanagari text-xs">—</span>
+        </div>
+      </div>
+
+      <div class="flex justify-center space-x-4 bg-stone-950 p-2 rounded border border-orange-900/15 text-xs">
+        <span>❤️ <span id="fs-cnt-heart" class="font-bold text-white">108</span></span>
+        <span>🙏 <span id="fs-cnt-pray" class="font-bold text-white">256</span></span>
+        <span>🌸 <span id="fs-cnt-flower" class="font-bold text-white">432</span></span>
+        <span>🔔 <span id="fs-cnt-bell" class="font-bold text-white">188</span></span>
+        <span>🌿 <span id="fs-cnt-leaf" class="font-bold text-white">125</span></span>
+      </div>
+
+      <div class="flex justify-between items-center mt-1">
+        <div class="flex space-x-2">
+          <button onclick="sendUserLocalReaction('❤️')" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-lg">❤️</button>
+          <button onclick="sendUserLocalReaction('🙏')" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-lg">🙏</button>
+          <button onclick="sendUserLocalReaction('🌸')" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-lg">🌸</button>
+          <button onclick="sendUserLocalReaction('🔔')" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-lg">🔔</button>
+          <button onclick="sendUserLocalReaction('🌿')" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-lg">🌿</button>
+        </div>
+        <button onclick="openShareOverlay(appState.activeLivePadyatraId)" class="react-tap w-11 h-11 rounded-xl bg-stone-900 border border-orange-900/20 text-orange-400 flex items-center justify-center"><i class="fas fa-share-alt"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-area" class="fixed bottom-5 right-5 z-[2200] space-y-2 pointer-events-none"></div>
+
+  <!-- Ambient Audio Chime Engine -->
+  <audio id="ambient-audio-player" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <!-- OpenStreetMap Leaflet.js Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- WebRTC Agora Client SDK -->
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.18.2.js"></script>
+
+  <!-- YouTube Iframe API -->
+  <script src="https://www.youtube.com/iframe_api" async></script>
+
+  <script>
+    // Dictionary including complete translation terms for newly added modules
+    const dict = {
+      en: {
+        navTitle:"ISKCON Padyatra", heroBadge:"ISKCON Initiative", heroTitle:"Track Live Padyatras Globally",
+        heroDesc:"Find exact coordinates, real-time stopover durations, coordinators and join the spiritual congregational walks.",
+        searchPlaceholder:"Search Padyatra by name, city, country...", tabAll:"All Padyatras",
+        tabLive:"🔴 Live Only", tabFav:"⭐ Favorites", headingPadyatras:"🚶 Active & Upcoming Padyatras",
+        showingCount:"{n} journeys active", recentHighlights:"📸 Recent Highlights",
+        aboutJourney:"About Journey", routeProgression:"Route Progression Map",
+        dailyDarshan:"📸 Daily Darshan Highlights", photosAvailable:"{n} photos",
+        leaderPrefix:"By: ", currentLocation:"Current: ", noPadyatras:"No matching campaigns found.",
+        leavingIn:"Leaves in: ", staysAt:"Staying at ", hours:"h", minutes:"m", seconds:"s", days:"d", expired:"Departed",
+        joiningTitle:"Join Journey Physically", callCoordinator:"Call Coordinator", mapsNavigate:"Get Navigation",
+        nextDestination:"Next Stop: ", exactSpot:"Exact Spot: ", stayAtSpot:"Staying at: ",
+        modalHaltDetailsTitle:"Halt Details & Travel Durations", modalLastHalt:"Last Halt: ",
+        modalCurrentLocation:"Current Location: ", modalNextHalt:"Next Stop: ",
+        modalDepartureDuration:"Time Elapsed Since Departure: ", timeNotAvailable:"In Transit",
+        lblShareOverlayTitle:"🙏 SHARE DARSHAN",
+        lblShareOverlaySub:"Share with family and friends so they can receive blessings too",
+        fsLblCurr:"CURRENT STOP:", fsLblSpot:"EXACT SPOT:", moreText:"More",
+        noDarshanPhotos:"No Daily Darshan photos yet. Check back soon! 🙏",
+        loadingDarshan:"Loading Darshan...",
+        shareHeader: "🙏 Share Divine Darshan",
+        shareSub: "Share this glorious live pilgrimage with your family and loved ones on WhatsApp to make them part of this spiritual journey.",
+        shareBtnText: "Send on WhatsApp",
+        
+        communityBadge:"Official Community",
+        communityTitle:"Join Our Primary WhatsApp Group",
+        communityDesc:"Get instant daily notifications, live Mangala Aarti darshan, route progress, and prasadam updates directly.",
+        communityBtn:"Join Group Now",
+        statBooks:"Books Distributed",
+        statPrasadam:"Prasadam Served",
+        statDistance:"Distance Covered",
+        statTowns:"Towns Reached",
+        quoteTitle:"Srila Prabhupada Daily Quote",
+        syncLiveText:"Live Sync",
+        syncOffText:"Offline Mode",
+        
+        // Dynamic stats localization
+        localStatHead: "📊 Padyatra Contribution Stats",
+        btnGeofenceWalking: "Verify & Check-In",
+        tributeWallTitle: "🎂 H.H. Lokanath Swami Maharaj Vyasa Puja Tribute Wall",
+        tributeWallSub: "Devotees from around the world sending their prayers and wishes to Maharaj",
+        lblSendTribute: "Send Message"
+      },
+      hi: {
+        navTitle:"इस्कॉन पदयात्रा", heroBadge:"इस्कॉन पहल", heroTitle:"वैश्विक पदयात्रा लाइव ट्रैक करें",
+        heroDesc:"सटीक स्थान, रुकने की अवधि, और समन्वयकों से संपर्क करके आध्यात्मिक यात्रा में शामिल हों।",
+        searchPlaceholder:"नाम, शहर, देश द्वारा खोजें...", tabAll:"सभी पदयात्राएं",
+        tabLive:"🔴 केवल लाइव", tabFav:"⭐ पसंदीदा", headingPadyatras:"🚶 सक्रिय और आगामी पदयात्राएं",
+        showingCount:"{n} यात्राएं सक्रिय हैं", recentHighlights:"📸 हाल की झलकियाँ",
+        aboutJourney:"यात्रा के बारे में", routeProgression:"मार्ग प्रगति",
+        dailyDarshan:"📸 दैनिक दर्शन", photosAvailable:"{n} तस्वीरें",
+        leaderPrefix:"मार्गदर्शक: ", currentLocation:"वर्तमान: ", noPadyatras:"कोई पदयात्रा नहीं मिली।",
+        leavingIn:"प्रस्थान: ", staysAt:"पड़ाव: ", hours:"घंटे", minutes:"मिनट", seconds:"सेकंड", days:"दिन", expired:"प्रस्थान हो चुका",
+        joiningTitle:"शारीरिक रूप से शामिल हों", callCoordinator:"समन्वयक से बात करें", mapsNavigate:"मैप्स नेविगेशन",
+        nextDestination:"अगला पड़ाव: ", exactSpot:"सटीक स्थान: ", stayAtSpot:"पड़ाव: ",
+        modalHaltDetailsTitle:"पड़ाव विवरण", modalLastHalt:"पिछला पड़ाव: ",
+        modalCurrentLocation:"वर्तमान स्थान: ", modalNextHalt:"अगला पड़ाव: ",
+        modalDepartureDuration:"बीता हुआ समय: ", timeNotAvailable:"मार्ग में",
+        lblShareOverlayTitle:"🙏 दर्शन शेयर करें",
+        lblShareOverlaySub:"परिवार और मित्रों के साथ साझा करें",
+        fsLblCurr:"वर्तमान शहर:", fsLblSpot:"सटीक स्थान:", moreText:"अधिक",
+        noDarshanPhotos:"अभी कोई दैनिक दर्शन तस्वीर नहीं है। जल्द आएंगी! 🙏",
+        loadingDarshan:"दर्शन लोड हो रहा है...",
+        shareHeader: "🙏 दिव्य दर्शन साझा करें",
+        shareSub: "अपने परिवार और प्रियजनों को व्हाट्सएप (WhatsApp) पर दिव्य पदयात्रा दर्शन का भागीदार बनाएं ताकि वे भी दिव्य यात्रा का आनंद उठा सकें।",
+        shareBtnText: "WhatsApp पर भेजें",
+
+        communityBadge:"आधिकारिक समुदाय",
+        communityTitle:"हमारे मुख्य व्हाट्सएप ग्रुप में शामिल हों",
+        communityDesc:"दैनिक लाइव अपडेट्स, मंगल आरती दर्शन, मार्ग प्रगति और महाप्रसाद की सभी खबरें तुरंत व्हाट्सएप पर प्राप्त करें।",
+        communityBtn:"ग्रुप जॉइन करें",
+        statBooks:"वितरित पुस्तकें",
+        statPrasadam:"प्रसाद वितरण",
+        statDistance:"कुल दूरी",
+        statTowns:"कवर किए गए शहर",
+        quoteTitle:"श्रील प्रभुपाद अमृत संदेश",
+        syncLiveText:"सक्रिय सिंक",
+        syncOffText:"ऑफलाइन मोड",
+
+        localStatHead: "📊 इस पदयात्रा की कुल उपलब्धियां",
+        btnGeofenceWalking: "चेक-इन करें (Verify & Check-In)",
+        tributeWallTitle: "🎂 श्रील लोकनाथ स्वामी महाराज व्यास-पूजा श्रद्धा-दीवार",
+        tributeWallSub: "दुनियाभर के भक्तों द्वारा महाराज जी के उत्तम स्वास्थ्य और दीर्घायु के लिए भेजे गए संदेश",
+        lblSendTribute: "संदेश भेजें"
+      },
+      mr: {
+        navTitle:"इस्कॉन पदयात्रा", heroBadge:"इस्कॉन उपक्रम", heroTitle:"वैश्विक पदयात्रा थेट ट्रॅक करा",
+        heroDesc:"अचूक मुक्काम, थांबण्याची वेळ आणि समन्वयकांशी संपर्क साधून यात्रेत सहभागी व्हा.",
+        searchPlaceholder:"नाव, शहर, देशानुसार शोधा...", tabAll:"सर्व पदयात्रा",
+        tabLive:"🔴 फक्त थेट", tabFav:"⭐ आवडते", headingPadyatras:"🚶 सक्रिय आणि आगामी पदयात्रा",
+        showingCount:"{n} यात्रा सक्रिय आहेत", recentHighlights:"📸 ठळक घडामोडी",
+        aboutJourney:"यात्रेबद्दल", routeProgression:"मार्ग प्रगती",
+        dailyDarshan:"📸 दैनिक दर्शन", photosAvailable:"{n} फोटो",
+        leaderPrefix:"मार्गदर्शक: ", currentLocation:"सध्याचे: ", noPadyatras:"पदयात्रा आढळली नाही.",
+        leavingIn:"प्रस्थान: ", staysAt:"मुक्काम: ", hours:"तास", minutes:"मिनिटे", seconds:"सेकंद", days:"दिन", expired:"प्रस्थान झाले",
+        joiningTitle:"प्रत्यक्ष सहभागी व्हा", callCoordinator:"समन्वयकाशी बोला", mapsNavigate:"नकाशा मार्ग",
+        nextDestination:"पुढील थांबा: ", exactSpot:"अचूक ठिकाण: ", stayAtSpot:"मुक्काम: ",
+        modalHaltDetailsTitle:"मुक्काम तपशील", modalLastHalt:"मागील मुक्काम: ",
+        modalCurrentLocation:"सध्याचे स्थान: ", modalNextHalt:"पुढील थांबा: ",
+        modalDepartureDuration:"प्रस्थानानंतरचा कालावधी: ", timeNotAvailable:"प्रवासात",
+        lblShareOverlayTitle:"🙏 दर्शन शेअर करा",
+        lblShareOverlaySub:"कुटुंब आणि मित्रांसह सामायिक करा",
+        fsLblCurr:"सध्याचे शहर:", fsLblSpot:"अचूक ठिकाण:", moreText:"अधिक",
+        noDarshanPhotos:"अद्याप कोणतेही दैनिक दर्शन फोटो नाहीत. लवकरच येतील! 🙏",
+        loadingDarshan:"दर्शन लोड होत आहे...",
+        shareHeader: "🙏 दिव्य दर्शन शेअर करा",
+        shareSub: "आपल्या कुटुंबाला आणि प्रियजनांना व्हॉट्सॲपवर (WhatsApp) दिव्य पदयात्रा दर्शनाचे भागीदार बनवा आणि या आध्यात्मिक प्रवाहाचा आनंद घ्या.",
+        shareBtnText: "WhatsApp वर पाठवा",
+
+        communityBadge:"अधिकृत समुदाय",
+        communityTitle:"आमच्या मुख्य व्हॉट्सॲप ग्रुपमध्ये सामील व्हा",
+        communityDesc:"दररोजचे थेट अपडेट्स, लाइव्ह मंगला आरती दर्शन, मार्ग आणि महाप्रसाद वितरणच्या सर्व बातम्या थेट मिळवा.",
+        communityBtn:"ग्रुप जॉइन करा",
+        statBooks:"वितरित पुस्तके",
+        statPrasadam:"प्रसाद वितरण",
+        statDistance:"एकूण अंतर",
+        statTowns:"पोहोचलेली शहरे",
+        quoteTitle:"श्रील प्रभुपाद नित्य संदेश",
+        syncLiveText:"थेट जोडणी",
+        syncOffText:"ऑफलाइन मोड",
+
+        localStatHead: "📊 या पदयात्रेचे एकूण योगदान",
+        btnGeofenceWalking: "चेक-इन करा",
+        tributeWallTitle: "🎂 श्रील लोकनाथ स्वामी महाराज व्यास-पूजा श्रद्धा-भिंत",
+        tributeWallSub: "जगभरातील भक्तांनी महाराज यांच्या आरोग्यासाठी पाठवलेले संदेश",
+        lblSendTribute: "संदेश पाठवा"
+      }
+    };
+
+    const prabhupadaQuotes = [
+      {
+        en: "“The Padyatra is a very important preaching program. Walking through villages and performing Harinama Sankirtana brings auspiciousness to the whole world.”",
+        hi: "“पदयात्रा एक अत्यंत महत्वपूर्ण प्रचार कार्यक्रम है। गांवों से गुजरते हुए हरिनाम संकीर्तन करना पूरे विश्व के लिए परम कल्याणकारी है।”",
+        mr: "“पदयात्रा हा एक अत्यंत महत्त्वाचा प्रचार कार्यक्रम आहे. गावोगावी फिरून हरिनाम संकीर्तन करणे संपूर्ण जगासाठी कल्याणकारी आहे.”"
+      },
+      {
+        en: "“This Harinama Sankirtana is so powerful that even without understanding the language, anyone who hears the holy name is purified.”",
+        hi: "“यह हरिनाम संकीर्तन इतना शक्तिशाली है कि भाषा को समझे बिना भी, जो कोई भी इस पवित्र नाम को सुनता है वह पवित्र हो जाता है।”",
+        mr: "“हे हरिनाम संकीर्तन इतके शक्तिशाली आहे की भाषा समजून न घेताही जो कोणी पवित्र नाम ऐकतो तो पवित्र होतो.”"
+      }
+    ];
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgGnN3iktLh8JgzCZMxQMdCwkxFFIz1Tw",
+      authDomain: "video-only-om11.firebaseapp.com",
+      databaseURL: "https://video-only-om11-default-rtdb.firebaseio.com",
+      projectId: "video-only-om11",
+      storageBucket: "video-only-om11.firebasestorage.app",
+      messagingSenderId: "839907917457",
+      appId: "1:839907917457:web:87eb570818adc132370930"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let appState = {
+      currentLanguage: 'en', userFilter: 'all',
+      selectedPadyatraIdForModal: null,
+      padyatras: [], favorites: [],
+      ytPlayers: {}, reactionQueue: [], lastRenderTime: 0,
+      viewerId: 'v_' + Math.random().toString(36).substr(2, 9),
+      viewerRef: null, activeLivePadyatraId: null, isFullscreenActive: false,
+      ytInitialized: {},
+      localReactionCounts: { '❤️': 108, '🙏': 256, '🌸': 432, '🔔': 188, '🌿': 125 },
+      ambientMusicPlaying: false,
+      agoraClient: null,
+      agoraAudioTrack: null,
+      agoraVideoTrack: null,
+      mapInstance: null,
+      mapMarker: null
+    };
+
+    let ytApiReady = false;
+    let ytApiReadyCallbacks = [];
+    let currentlySharingPadyatraId = null;
+    let lastRenderedLiveId = null;
+    let lastRenderedLiveYtId = null;
+
+    if (window.AgoraRTC) {
+      appState.agoraClient = AgoraRTC.createClient({ mode: "live", codec: "h264" });
+    }
+
+    window.onYouTubeIframeAPIReady = function() {
+      ytApiReady = true;
+      ytApiReadyCallbacks.forEach(cb => cb());
+      ytApiReadyCallbacks = [];
+      const liveItem = appState.padyatras.find(p => p.liveState && p.liveState.isLive === true && p.liveState.ytVideoId);
+      if (liveItem) syncDevoteePlayerEngine(liveItem.id, liveItem.liveState);
+    };
+
+    function whenYtReady(cb) {
+      if (ytApiReady) cb();
+      else ytApiReadyCallbacks.push(cb);
+    }
+
+    // Progressive image preloading capability with blur/skeleton loader fallback
+    function executeProgressiveImageLoading(imgElement, srcUrl) {
+      if (!srcUrl) return;
+      imgElement.classList.add('progressive-img');
+      const parent = imgElement.parentElement;
+      if (parent) parent.classList.add('img-loading-shimmer');
+
+      const tempImage = new Image();
+      tempImage.src = srcUrl;
+      tempImage.onload = function() {
+        imgElement.src = srcUrl;
+        imgElement.classList.add('loaded');
+        if (parent) parent.classList.remove('img-loading-shimmer');
+      };
+      tempImage.onerror = function() {
+        imgElement.src = 'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&q=80&w=800';
+        imgElement.classList.add('loaded');
+        if (parent) parent.classList.remove('img-loading-shimmer');
+      };
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadLocalFavorites();
+      localizeUI();
+      renderPrabhupadaQuote();
+
+      // Track online database sync connection status dynamically
+      database.ref('.info/connected').on('value', (snap) => {
+        const badge = document.getElementById('connection-status-badge');
+        const dot = document.getElementById('connection-status-dot');
+        const text = document.getElementById('connection-status-text');
+        const cDict = dict[appState.currentLanguage];
+        if (snap.val() === true) {
+          badge.className = "inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-900/30";
+          dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1";
+          text.textContent = cDict.syncLiveText;
+        } else {
+          badge.className = "inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-900/30";
+          dot.className = "w-1.5 h-1.5 rounded-full bg-amber-500 mr-1";
+          text.textContent = cDict.syncOffText;
+        }
+      });
+
+      // Synchronously track real Padyatras database node
+      database.ref('padyatras').on('value', (snapshot) => {
+        const data = snapshot.val();
+        appState.padyatras = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+        
+        syncDynamicStatsOverview();
+        renderUserPadyatras();
+        
+        if (appState.selectedPadyatraIdForModal) {
+          updateModalInPlace();
+          renderModalPhotos();
+        }
+      });
+
+      // Synchronously track real approved Vyasa Puja tributes
+      database.ref('vyasaPujaTributes').on('value', snap => {
+        renderApprovedVyasaTributes(snap.val() || {});
+      });
+
+      setInterval(() => {
+        const emojis = ['❤️', '🙏', '🌸', '🔔', '🌿'];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        appState.localReactionCounts[randomEmoji] += Math.floor(Math.random() * 2) + 1;
+        updateUIReactionCounters();
+      }, 5000);
+
+      setInterval(updateAllTimers, 1000);
+      requestAnimationFrame(renderReactionsAnimTick);
+
+      // --- NATIVE POPSTATE BACK BUTTON INTERCEPTOR HANDLER ---
+      history.replaceState({ page: 'home' }, "");
+      window.addEventListener('popstate', (event) => {
+        let modalClosed = false;
+
+        const detailModal = document.getElementById('padyatra-detail-modal');
+        if (detailModal && !detailModal.classList.contains('hidden')) {
+          detailModal.classList.add('hidden');
+          appState.selectedPadyatraIdForModal = null;
+          document.body.style.overflow = '';
+          modalClosed = true;
+          // Clear Leaflet instance memory
+          if (appState.mapInstance) {
+            appState.mapInstance.remove();
+            appState.mapInstance = null;
+          }
+        }
+
+        const shareOverlay = document.getElementById('share-overlay');
+        if (shareOverlay && !shareOverlay.classList.contains('hidden')) {
+          shareOverlay.classList.add('hidden');
+          shareOverlay.classList.remove('flex');
+          modalClosed = true;
+        }
+
+        const fsOverlay = document.getElementById('immersive-fullscreen-overlay');
+        if (fsOverlay && !fsOverlay.classList.contains('hidden')) {
+          closeFullscreenDarshanInternal();
+          modalClosed = true;
+        }
+
+        if (modalClosed) {
+          history.pushState({ page: 'home' }, "");
+          showToast("Back", "success");
+        }
+      });
+    });
+
+    // ─── Vyasa Puja approved message renderers ───
+    function renderApprovedVyasaTributes(tributesObj) {
+      const container = document.getElementById('tributes-feed-scroll');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const list = Object.keys(tributesObj).map(k => tributesObj[k]);
+      const approved = list.filter(t => t.status === 'approved');
+
+      document.getElementById('total-tributes-badge').textContent = `${approved.length} Tributes`;
+
+      if (approved.length === 0) {
+        container.innerHTML = `<div class="col-span-1 sm:col-span-3 text-center py-6 text-xs text-stone-500 italic">No approved tributes yet. Be the first to write!</div>`;
+        return;
+      }
+
+      approved.forEach(t => {
+        container.innerHTML += `
+          <div class="bg-stone-900/60 border border-orange-950/20 p-4 rounded-xl space-y-2 flex flex-col justify-between shadow-inner">
+            <p class="text-xs text-stone-300 italic leading-relaxed">"${t.message}"</p>
+            <div class="flex justify-between items-center text-[10px] border-t border-orange-900/10 pt-2 text-orange-400 font-bold">
+              <span>👤 ${t.senderName}</span>
+              <span>📍 ${t.location}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function submitHeartfeltTribute() {
+      const sender = document.getElementById('tribute-sender-name').value.trim();
+      const loc = document.getElementById('tribute-location').value.trim();
+      const msg = document.getElementById('tribute-message').value.trim();
+
+      if (!sender || !loc || !msg) {
+        showToast("Please fill all fields first", "error");
+        return;
+      }
+
+      const payload = {
+        senderName: sender,
+        location: loc,
+        message: msg,
+        status: "pending",
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      };
+
+      database.ref('vyasaPujaTributes').push(payload)
+        .then(() => {
+          showToast("Tribute sent for approval! 🙏", "success");
+          document.getElementById('tribute-sender-name').value = '';
+          document.getElementById('tribute-location').value = '';
+          document.getElementById('tribute-message').value = '';
+        })
+        .catch(() => showToast("Sending failed", "error"));
+    }
+
+    // ─── 100% ACCURATE REALTIME SUMMARY STATISTICS ENGINE ───
+    function syncDynamicStatsOverview() {
+      database.ref('globalStats').once('value', snap => {
+        const dbStats = snap.val();
+        
+        let totalBooks = 0;
+        let totalPrasadam = 0;
+        let totalDistance = 0;
+        let totalTowns = 0;
+
+        if (dbStats) {
+          // If master stats configured, prioritize them directly
+          totalBooks = dbStats.books;
+          totalPrasadam = dbStats.prasadam;
+          totalDistance = dbStats.distance;
+          totalTowns = dbStats.towns;
+        } else {
+          // Fallback to client rollup auto aggregation calculation instantly
+          appState.padyatras.forEach(p => {
+            if (p.stats) {
+              totalBooks += (p.stats.books || 0);
+              totalPrasadam += (p.stats.prasadam || 0);
+              totalDistance += (p.stats.distance || 0);
+            }
+            if (p.route) {
+              totalTowns += p.route.length;
+            }
+          });
+        }
+
+        document.getElementById('global-stat-books').textContent = totalBooks.toLocaleString() + '+';
+        document.getElementById('global-stat-prasadam').textContent = totalPrasadam.toLocaleString() + '+';
+        document.getElementById('global-stat-distance').textContent = totalDistance.toLocaleString() + ' km';
+        document.getElementById('global-stat-towns').textContent = totalTowns.toLocaleString() + '+';
+      });
+    }
+
+    function renderPrabhupadaQuote() {
+      const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 1)) / 86400000);
+      const quoteIndex = dayOfYear % prabhupadaQuotes.length;
+      const quote = prabhupadaQuotes[quoteIndex];
+      const textElement = document.getElementById('prabhupada-quote-text');
+      if (textElement) {
+        textElement.textContent = quote[appState.currentLanguage] || quote['en'];
+      }
+    }
+
+    function toggleAmbientMusic() {
+      const player = document.getElementById('ambient-audio-player');
+      const btn = document.getElementById('ambient-music-btn');
+      if (!player) return;
+      if (appState.ambientMusicPlaying) {
+        player.pause();
+        appState.ambientMusicPlaying = false;
+        btn.classList.remove('bg-orange-600', 'text-white');
+        btn.classList.add('bg-stone-900', 'text-orange-400');
+        showToast("Bhajan Muted", "error");
+      } else {
+        player.volume = 0.35;
+        player.play().then(() => {
+          appState.ambientMusicPlaying = true;
+          btn.classList.remove('bg-stone-900', 'text-orange-400');
+          btn.classList.add('bg-orange-600', 'text-white');
+          showToast("Ambient Bhajan On 🙏", "success");
+        }).catch(() => {
+          showToast("Allow music permission!", "error");
+        });
+      }
+    }
+
+    function loadLocalFavorites() {
+      const saved = localStorage.getItem('iskcon_padyatra_favorites');
+      if (saved) { try { appState.favorites = JSON.parse(saved); } catch(e) {} }
+    }
+    function saveLocalFavorites() {
+      localStorage.setItem('iskcon_padyatra_favorites', JSON.stringify(appState.favorites));
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-area');
+      const el = document.createElement('div');
+      el.className = `toast-item ${type === 'success' ? '' : 'border-red-900/30'}`;
+      el.innerHTML = `<span>${type === 'success' ? '✓' : '✕'}</span><span class="font-semibold">${message}</span>`;
+      container.appendChild(el);
+      setTimeout(() => el.classList.add('show'), 10);
+      setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+    }
+
+    function changeLanguage(langCode) {
+      appState.currentLanguage = langCode;
+      localizeUI();
+      renderPrabhupadaQuote();
+      lastRenderedLiveId = null; 
+      renderUserPadyatras();
+      if (appState.selectedPadyatraIdForModal) openModal(appState.selectedPadyatraIdForModal);
+    }
+
+    function localizeUI() {
+      const cDict = dict[appState.currentLanguage];
+      const setTxt = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      setTxt('nav-title', cDict.navTitle);
+      setTxt('hero-badge', cDict.heroBadge);
+      setTxt('hero-title', cDict.heroTitle);
+      setTxt('hero-desc', cDict.heroDesc);
+      const inp = document.getElementById('user-search-input');
+      if(inp) inp.placeholder = cDict.searchPlaceholder;
+      setTxt('tab-all', cDict.tabAll);
+      setTxt('tab-live', cDict.tabLive);
+      
+      const tabFavEl = document.getElementById('tab-fav');
+      if (tabFavEl) {
+        tabFavEl.innerHTML = `<span>${cDict.tabFav}</span> <span id="fav-count" class="bg-orange-800 text-orange-100 text-[10px] px-1.5 py-0.5 rounded-full font-bold">${appState.favorites.length}</span>`;
+      }
+      
+      setTxt('heading-padyatra-list', '🚶 ' + cDict.headingPadyatras);
+      setTxt('fs-lbl-curr', cDict.fsLblCurr);
+      setTxt('fs-lbl-spot', cDict.fsLblSpot);
+      setTxt('modal-lbl-halt-details', cDict.modalHaltDetailsTitle);
+      setTxt('modal-lbl-last-halt', cDict.modalLastHalt);
+      setTxt('modal-lbl-curr-halt', cDict.modalCurrentLocation);
+      setTxt('modal-lbl-next-halt', cDict.modalNextHalt);
+      setTxt('modal-lbl-elapsed', cDict.modalDepartureDuration);
+      setTxt('modal-lbl-darshan-highlights', cDict.dailyDarshan);
+      setTxt('modal-live-countdown-lbl', cDict.leavingIn);
+      setTxt('modal-live-map-text', cDict.mapsNavigate);
+      setTxt('modal-live-phone-text', cDict.callCoordinator);
+
+      setTxt('share-overlay-title', cDict.shareHeader);
+      setTxt('share-overlay-desc', cDict.shareSub);
+      setTxt('share-btn-text-span', cDict.shareBtnText);
+
+      setTxt('community-badge-text', cDict.communityBadge);
+      setTxt('community-title-text', cDict.communityTitle);
+      setTxt('community-desc-text', cDict.communityDesc);
+      setTxt('community-btn-text', cDict.communityBtn);
+
+      setTxt('stat-books', cDict.statBooks);
+      setTxt('stat-prasadam', cDict.statPrasadam);
+      setTxt('stat-distance', cDict.statDistance);
+      setTxt('stat-towns', cDict.statTowns);
+      setTxt('prabhupada-quote-title', cDict.quoteTitle);
+
+      setTxt('local-stat-heading-lbl', cDict.localStatHead);
+      setTxt('local-stat-books-lbl', cDict.statBooks);
+      setTxt('local-stat-prasadam-lbl', cDict.statPrasadam);
+      setTxt('local-stat-distance-lbl', cDict.statDistance + ' (KM)');
+      setTxt('whatsapp-join-btn-lbl', cDict.communityBtn);
+
+      setTxt('vyasa-wall-title', cDict.tributeWallTitle);
+      setTxt('vyasa-wall-sub', cDict.tributeWallSub);
+      setTxt('btn-submit-tribute', cDict.lblSendTribute);
+    }
+
+    function setUserFilter(filter) {
+      appState.userFilter = filter;
+      const tabs = { all: 'tab-all', live: 'tab-live', favorites: 'tab-fav' };
+      Object.keys(tabs).forEach(k => {
+        const el = document.getElementById(tabs[k]);
+        if (!el) return;
+        el.className = (k === filter)
+          ? "px-4 py-2.5 rounded-lg text-xs font-semibold bg-orange-600 text-white whitespace-nowrap shadow-md"
+          : "px-4 py-2.5 rounded-lg text-xs font-semibold bg-stone-950 text-orange-400 border border-orange-950 hover:bg-stone-900 whitespace-nowrap";
+      });
+      renderUserPadyatras();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  MAIN DEVOTEE PORTAL CARD RENDERER
+    // ═══════════════════════════════════════════════════════════
+    function renderUserPadyatras() {
+      const query = (document.getElementById('user-search-input').value || '').toLowerCase();
+      const container = document.getElementById('padyatras-container');
+      const cDict = dict[appState.currentLanguage];
+
+      const filtered = appState.padyatras.filter(item => {
+        const nameLoc = ((item.name && item.name[appState.currentLanguage]) || (item.name && item.name['en']) || '').toLowerCase();
+        const matchesSearch = nameLoc.includes(query) || (item.currentCity && item.currentCity.toLowerCase().includes(query));
+        if (appState.userFilter === 'live') return matchesSearch && item.liveState && item.liveState.isLive === true;
+        if (appState.userFilter === 'favorites') return matchesSearch && appState.favorites.includes(item.id);
+        return matchesSearch;
+      });
+
+      document.getElementById('padyatras-found-count').textContent = cDict.showingCount.replace('{n}', filtered.length);
+
+      const liveStreamItem = appState.padyatras.find(p => p.liveState && p.liveState.isLive === true);
+      const broadcastArea = document.getElementById('unified-live-broadcast-area');
+
+      if (liveStreamItem) {
+        const liveName = (liveStreamItem.name && liveStreamItem.name[appState.currentLanguage]) || (liveStreamItem.name && liveStreamItem.name['en']) || '';
+        const state = liveStreamItem.liveState;
+        let nextDestinationCity = "None";
+        if (liveStreamItem.route && liveStreamItem.currentCity) {
+          const curIdx = liveStreamItem.route.indexOf(liveStreamItem.currentCity);
+          if (curIdx > -1 && curIdx < liveStreamItem.route.length - 1) nextDestinationCity = liveStreamItem.route[curIdx + 1];
+          else nextDestinationCity = "Destination Reached";
+        }
+
+        if (appState.activeLivePadyatraId !== liveStreamItem.id) {
+          removeDevoteePresence();
+          appState.activeLivePadyatraId = liveStreamItem.id;
+          registerDevoteePresence(liveStreamItem.id);
+        }
+
+        // Standardize stealth layout structure
+        const needsFullRebuild = (lastRenderedLiveId !== liveStreamItem.id) || (lastRenderedLiveYtId !== state.ytVideoId);
+
+        if (needsFullRebuild) {
+          lastRenderedLiveId = liveStreamItem.id;
+          lastRenderedLiveYtId = state.ytVideoId;
+
+          if (appState.ytPlayers[liveStreamItem.id]) {
+            try { appState.ytPlayers[liveStreamItem.id].destroy(); } catch(e){}
+            delete appState.ytPlayers[liveStreamItem.id];
+          }
+          delete appState.ytInitialized[liveStreamItem.id];
+
+          const posterUrl = state.ytVideoId ? `https://img.youtube.com/vi/${state.ytVideoId}/hqdefault.jpg` : "https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&q=80&w=800";
+
+          broadcastArea.innerHTML = `
+            <div class="live-card bg-gradient-to-br from-stone-950 to-amber-950/40 rounded-2xl p-4 md:p-6 text-white shadow-2xl flex flex-col lg:flex-row gap-6 relative overflow-hidden border border-orange-500/10">
+              <div class="flex-1 space-y-3 w-full relative z-10 flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex justify-between items-center">
+                    <span class="bg-red-600 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest animate-pulse inline-flex items-center">
+                      <span class="w-1.5 h-1.5 rounded-full bg-white mr-1.5"></span> LIVE DARSHAN BROADCASTING
+                    </span>
+                    <div class="flex items-center gap-1.5 bg-stone-900 border border-orange-900/10 px-3 py-1 rounded-full font-bold text-xs">
+                      <i class="fas fa-eye text-stone-500"></i>
+                      <span id="viewerCount" class="text-white">—</span>
+                    </div>
+                  </div>
+                  <h2 class="text-lg md:text-xl font-bold text-orange-400 font-devanagari cursor-pointer hover:underline" id="live-card-title-text" onclick="launchFullscreenDarshan('${liveStreamItem.id}')">${liveName}</h2>
+                  <p class="text-xs text-orange-100/70 leading-relaxed font-devanagari" id="live-card-desc-text">${(liveStreamItem.description && liveStreamItem.description[appState.currentLanguage]) || ''}</p>
+                </div>
+
+                <div class="bg-stone-900/80 border border-orange-500/10 p-3 rounded-lg space-y-2 text-xs">
+                  <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div>
+                      <span class="text-orange-500 font-bold" id="live-lbl-curr-span">${cDict.currentLocation}</span>
+                      <span class="text-white font-semibold block" id="live-val-curr-span">${state.currentCity || liveStreamItem.currentCity || '—'}</span>
+                    </div>
+                    <div>
+                      <span class="text-orange-500 font-bold" id="live-lbl-next-span">${cDict.nextDestination}</span>
+                      <span class="text-white font-semibold block" id="live-val-next-span">${nextDestinationCity}</span>
+                    </div>
+                  </div>
+                  <div class="border-t border-orange-900/10 pt-2 text-[11px] space-y-1">
+                    <p><span class="text-orange-500 font-bold" id="live-lbl-spot-span">${cDict.exactSpot}</span> <span class="text-stone-300 font-semibold font-devanagari" id="live-val-spot-span">${state.preciseLandmark || 'Not Specified'}</span></p>
+                    <div id="live-card-countdown-container">
+                      ${state.stayUntilTime ? `
+                        <div class="flex justify-between items-center bg-stone-950 p-1.5 rounded text-[10px] mt-1">
+                          <span class="text-stone-400">${cDict.leavingIn}</span>
+                          <span class="font-bold text-red-500" data-countdown-id="${liveStreamItem.id}" data-time="${state.stayUntilTime}">Calculating...</span>
+                        </div>` : ''}
+                    </div>
+                  </div>
+                  <div class="flex gap-2 pt-2 border-t border-orange-900/10" id="live-card-actions-container">
+                    ${state.coordinatorPhone ? `<a id="live-call-coord-btn" href="tel:${state.coordinatorPhone}" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-center py-1.5 rounded text-[10px] font-bold"><i class="fas fa-phone mr-1"></i> ${cDict.callCoordinator}</a>` : ''}
+                    ${state.googleMapsLink ? `<a id="live-maps-btn" href="${state.googleMapsLink}" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-1.5 rounded text-[10px] font-bold"><i class="fas fa-map-marker-alt mr-1"></i> ${cDict.mapsNavigate}</a>` : ''}
+                  </div>
+                </div>
+
+                <div id="user-audio-off-banner-${liveStreamItem.id}" class="hidden p-2 bg-red-950/40 border border-red-900/30 rounded text-red-400 text-xs font-bold items-center gap-1">
+                  <i class="fas fa-microphone-slash"></i> MIC MUTED BY COORDINATOR 🙏
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-orange-900/10">
+                  <div class="flex space-x-1.5">
+                    <button onclick="sendUserLocalReaction('❤️')" class="react-tap w-10 h-10 rounded-xl bg-stone-950 border border-orange-900/15 text-sm">❤️</button>
+                    <button onclick="sendUserLocalReaction('🙏')" class="react-tap w-10 h-10 rounded-xl bg-stone-950 border border-orange-900/15 text-sm">🙏</button>
+                    <button onclick="sendUserLocalReaction('🌸')" class="react-tap w-10 h-10 rounded-xl bg-stone-950 border border-orange-900/15 text-sm">🌸</button>
+                    <button onclick="sendUserLocalReaction('🔔')" class="react-tap w-10 h-10 rounded-xl bg-stone-950 border border-orange-900/15 text-sm">🔔</button>
+                    <button onclick="sendUserLocalReaction('🌿')" class="react-tap w-10 h-10 rounded-xl bg-stone-950 border border-orange-900/15 text-sm">🌿</button>
+                  </div>
+                  <div class="flex space-x-1">
+                    <button onclick="openShareOverlay('${liveStreamItem.id}')" class="bg-stone-900 border border-orange-900/10 text-orange-400 p-2.5 rounded-lg text-xs font-bold hover:bg-stone-800"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="launchFullscreenDarshan('${liveStreamItem.id}')" class="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold px-4 py-2.5 rounded-lg text-xs uppercase tracking-wider shadow-md">Full Screen</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full lg:w-[420px] aspect-video bg-black rounded-xl overflow-hidden shadow-lg border-2 border-red-600/30 relative cursor-pointer group"
+                   onclick="launchFullscreenDarshan('${liveStreamItem.id}')">
+                
+                <div class="yt-stealth-wrapper w-full h-full" style="background-image: url('${posterUrl}');">
+                  <div id="yt-devotee-player-${liveStreamItem.id}" style="position:absolute;top:-10%;left:-5%;width:110%;height:120%;pointer-events:none;"></div>
+                  <div class="yt-bottom-mask"></div>
+                  <div class="yt-top-mask"></div>
+                  <div class="yt-click-capture" onclick="event.stopPropagation(); launchFullscreenDarshan('${liveStreamItem.id}');"></div>
+                </div>
+
+                <div id="card-darshan-loader-${liveStreamItem.id}" class="darshan-loader" style="border-radius:12px; background: rgba(5,4,3,0.3);">
+                  <div class="om-ring" style="width: 50px; height: 50px;"></div>
+                </div>
+
+                <div id="user-video-off-overlay-${liveStreamItem.id}" class="absolute inset-0 bg-stone-950 z-30 flex flex-col items-center justify-center gap-3 hidden" style="border-radius:12px;">
+                  <div class="om-ring"></div>
+                  <span class="text-xs text-orange-200 font-bold tracking-wider">Darshan Audio on 🙏</span>
+                </div>
+
+                <div id="user-reaction-floating-stage-${liveStreamItem.id}" class="absolute inset-y-0 right-4 w-24 pointer-events-none overflow-hidden z-20"></div>
+
+                <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 text-[10px] font-bold text-orange-400 uppercase tracking-wider">
+                  <i class="fas fa-expand mr-1.5"></i> Fullscreen Darshan
+                </div>
+              </div>
+            </div>
+          `;
+          broadcastArea.classList.remove('hidden');
+
+          setTimeout(() => { syncDevoteePlayerEngine(liveStreamItem.id, state); }, 150);
+        } else {
+          // Sync properties dynamically on live stream card
+          const titleEl = document.getElementById('live-card-title-text');
+          const descEl = document.getElementById('live-card-desc-text');
+          const currValEl = document.getElementById('live-val-curr-span');
+          const nextValEl = document.getElementById('live-val-next-span');
+          const spotValEl = document.getElementById('live-val-spot-span');
+
+          if (titleEl) titleEl.textContent = liveName;
+          if (descEl) descEl.textContent = (liveStreamItem.description && liveStreamItem.description[appState.currentLanguage]) || '';
+          if (currValEl) currValEl.textContent = state.currentCity || liveStreamItem.currentCity || '—';
+          if (nextValEl) nextValEl.textContent = nextDestinationCity;
+          if (spotValEl) spotValEl.textContent = state.preciseLandmark || 'Not Specified';
+
+          syncDevoteePlayerEngine(liveStreamItem.id, state);
+        }
+      } else {
+        lastRenderedLiveId = null; lastRenderedLiveYtId = null;
+        broadcastArea.classList.add('hidden');
+        removeDevoteePresence();
+        appState.activeLivePadyatraId = null;
+        closeFullscreenDarshan();
+      }
+
+      // Populate Padyatras listing cards grid
+      container.innerHTML = '';
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-1 md:col-span-2 lg:col-span-3 bg-stone-900/20 border border-dashed border-orange-900/10 text-center py-12 rounded-xl"><p class="text-xs text-orange-900/40 font-medium">${cDict.noPadyatras}</p></div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const name = (item.name && item.name[appState.currentLanguage]) || (item.name && item.name['en']) || 'Unnamed';
+        const desc = (item.description && item.description[appState.currentLanguage]) || (item.description && item.description['en']) || '';
+        const isFav = appState.favorites.includes(item.id);
+        const hasCoords = item.preciseLandmark && item.stayUntilTime;
+
+        let displayImg = "https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&q=80&w=800";
+        let isCoverBanner = false;
+        if (item.coverBanner && item.coverBanner.url) {
+          displayImg = item.coverBanner.url;
+          isCoverBanner = true;
+        } else if (item.photos && item.photos.length > 0) {
+          const latestPhoto = [...item.photos].sort((a, b) => (b.datetimeMs || 0) - (a.datetimeMs || 0))[0];
+          if (latestPhoto && latestPhoto.url) displayImg = latestPhoto.url;
+        }
+
+        const dailyCount = (item.photos || []).filter(p => p.type === 'daily').length;
+
+        const card = document.createElement('div');
+        card.className = "bg-[#14110b] rounded-xl border border-orange-500/10 overflow-hidden flex flex-col justify-between hover:border-orange-500/30 hover:shadow-[0_0_20px_rgba(245,158,11,0.08)] transition-all duration-300";
+        card.innerHTML = `
+          <div>
+            <div class="h-44 w-full relative overflow-hidden bg-stone-950">
+              <img id="card-img-${item.id}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231c1912'></rect></svg>" alt="" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+              <div class="absolute top-3 left-3 flex gap-1.5">
+                <span class="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">${item.status}</span>
+                ${item.liveState && item.liveState.isLive ? `<span class="bg-orange-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">● LIVE</span>` : ''}
+              </div>
+              ${isCoverBanner ? `<span class="card-cover-tag">🖼️ COVER</span>` : ''}
+              <button onclick="toggleFavorite('${item.id}', event)" class="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 hover:bg-black/80 text-orange-500 transition-all animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="${isFav ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.253.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                </svg>
+              </button>
+              <div class="absolute bottom-3 left-3 text-white">
+                <span class="text-[9px] uppercase tracking-wider text-orange-400 font-bold">${item.currentCountry || ''}</span>
+                <p class="text-xs font-bold mt-0.5">📍 ${cDict.currentLocation} <span class="text-amber-300">${item.currentCity || ''}</span></p>
+              </div>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <h3 onclick="openModal('${item.id}')" class="font-bold text-orange-300 text-sm hover:text-orange-400 cursor-pointer line-clamp-1 font-devanagari flex-1">${name}</h3>
+                ${dailyCount > 0 ? `<span class="stat-chip flex-shrink-0">🌸 ${dailyCount}</span>` : ''}
+              </div>
+              <p class="text-xs text-orange-100/60 line-clamp-2 leading-relaxed font-devanagari">${desc}</p>
+              ${hasCoords ? `
+                <div class="bg-orange-950/20 border border-orange-900/15 rounded-lg p-2.5 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[9px] font-bold text-orange-500 uppercase tracking-wider">${cDict.staysAt}:</span>
+                    <span class="text-[9px] bg-red-900/40 text-red-400 font-bold px-1.5 py-0.5 rounded">STAY TIMER</span>
+                  </div>
+                  <p class="text-xs font-bold text-orange-200 truncate font-devanagari">${item.preciseLandmark}</p>
+                  <div class="text-[10px] text-orange-700/80 flex items-center justify-between pt-1 border-t border-orange-900/10">
+                    <span>${cDict.leavingIn}</span>
+                    <span class="font-bold text-red-500" data-countdown-id="${item.id}" data-time="${item.stayUntilTime}">Calculating...</span>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+          <div class="px-4 pb-4 pt-2 border-t border-orange-900/5 flex items-center justify-between">
+            <span class="text-[10px] text-orange-700">${cDict.leaderPrefix} <span class="text-orange-400 font-bold">${item.leader || ''}</span></span>
+            <div class="flex items-center space-x-1.5">
+              ${item.coordinatorPhone ? `<a href="tel:${item.coordinatorPhone}" class="p-2 bg-stone-950 rounded-full border border-orange-900/10 text-emerald-500 hover:text-emerald-400 text-xs transition-colors"><i class="fas fa-phone-alt"></i></a>` : ''}
+              ${item.googleMapsLink ? `<a href="${item.googleMapsLink}" target="_blank" class="p-2 bg-stone-950 rounded-full border border-orange-900/10 text-blue-500 hover:text-blue-400 text-xs transition-colors"><i class="fas fa-map-marked-alt"></i></a>` : ''}
+              <button onclick="openModal('${item.id}')" class="px-3.5 py-1.5 rounded-lg bg-orange-600/10 hover:bg-orange-600 border border-orange-500/20 hover:border-orange-500 text-orange-400 hover:text-black text-xs font-bold font-devanagari transition-all duration-200 flex items-center gap-1">
+                <span>${cDict.moreText}</span>
+                <i class="fas fa-chevron-right text-[9px] animate-pulse"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+        
+        // Load card thumbnail image with progressive loader
+        const cardImg = document.getElementById(`card-img-${item.id}`);
+        if (cardImg) {
+          executeProgressiveImageLoading(cardImg, displayImg);
+        }
+      });
+
+      updateAllTimers();
+    }
+
+    // ─── HIGH QUALITY PERSISTENT STEALTH YT / WEBRTC PLAYER CONTROLLER ───
+    function syncDevoteePlayerEngine(id, liveState) {
+      const isFs = appState.isFullscreenActive;
+      const containerId = isFs ? 'yt-fullscreen-player-container' : `yt-devotee-player-${id}`;
+      const loaderEl = isFs ? document.getElementById('fs-darshan-loader') : document.getElementById(`card-darshan-loader-${id}`);
+      const videoOffEl = document.getElementById(isFs ? 'fs-video-off-overlay' : `user-video-off-overlay-${id}`);
+
+      if (videoOffEl) videoOffEl.classList.toggle('hidden', !liveState.videoMuted);
+
+      // WebRTC mode dynamic switching
+      if (liveState.mode === 'agora') {
+        const isYtWrapper = document.getElementById(isFs ? 'yt-fullscreen-player-container' : `yt-devotee-player-${id}`);
+        if (isYtWrapper) {
+          isYtWrapper.outerHTML = `<div id="${containerId}" style="width:100%;height:100%;position:relative;"></div>`;
+        }
+        
+        if (appState.ytPlayers[id]) {
+          try { appState.ytPlayers[id].destroy(); } catch(e){}
+          delete appState.ytPlayers[id];
+        }
+
+        // Connect Dynamic Agora SDK player context
+        connectAgoraDevoteeSDKStream(containerId, liveState.appId);
+        if (loaderEl) loaderEl.classList.add('hidden');
+        return;
+      }
+
+      // Fallback Youtube Player
+      let targetSec = liveState.ytTime || 0;
+      if (liveState.timestamp) {
+        const elapsed = (Date.now() - liveState.timestamp) / 1000;
+        targetSec += Math.min(elapsed, 20);
+      }
+
+      if (appState.ytPlayers[id]) {
+        const player = appState.ytPlayers[id];
+        try {
+          if (typeof player.getPlayerState === 'function') {
+            const state = player.getPlayerState();
+            if (liveState.muted) player.mute(); else player.unMute();
+            if (liveState.ytState === 2) { 
+              if (state !== 2) player.pauseVideo(); 
+            } else if (liveState.ytState === 1 || liveState.ytState === undefined) {
+              if (state !== 1 && state !== 3) player.playVideo();
+              if (Math.abs(targetSec - player.getCurrentTime()) > 4) player.seekTo(targetSec, true);
+            }
+          }
+        } catch(e) {}
+        if (loaderEl) loaderEl.classList.add('hidden');
+        return;
+      }
+
+      if (appState.ytInitialized[containerId]) return;
+      appState.ytInitialized[containerId] = true;
+
+      const buildStealthIframe = () => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const parentId = containerId;
+        const stealthParams = [
+          `autoplay=1`,
+          `mute=1`,
+          `controls=0`,
+          `rel=0`,
+          `modestbranding=1`,
+          `playsinline=1`,
+          `iv_load_policy=3`,
+          `disablekb=1`,
+          `fs=0`,
+          `start=${Math.max(0, Math.floor(targetSec - 2))}`,
+          `enablejsapi=1`,
+          `origin=${encodeURIComponent(window.location.origin)}`
+        ].join('&');
+
+        const iframeHtml = `<iframe 
+          id="${parentId}" 
+          src="https://www.youtube-nocookie.com/embed/${liveState.ytVideoId}?${stealthParams}"
+          style="position:absolute;top:-10%;left:-5%;width:110%;height:120%;border:none;pointer-events:none;"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+          allowfullscreen>
+        </iframe>`;
+        container.outerHTML = iframeHtml;
+
+        setTimeout(() => { if (loaderEl) loaderEl.classList.add('hidden'); }, 1000);
+        showUnmutePrompt(id, isFs);
+      };
+
+      if (ytApiReady && window.YT && window.YT.Player) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        if (container.tagName === 'IFRAME') {
+          container.outerHTML = `<div id="${containerId}" style="position:absolute;top:-10%;left:-5%;width:110%;height:120%;pointer-events:none;"></div>`;
+        }
+        try {
+          appState.ytPlayers[id] = new YT.Player(containerId, {
+            height: '100%', width: '100%',
+            videoId: liveState.ytVideoId,
+            playerVars: {
+              autoplay: 1, controls: 0, rel: 0, modestbranding: 1,
+              playsinline: 1, disablekb: 1, fs: 0, iv_load_policy: 3, mute: 1,
+              start: Math.max(0, Math.floor(targetSec - 2))
+            },
+            events: {
+              onReady: (e) => {
+                e.target.mute();
+                e.target.seekTo(targetSec, true);
+                e.target.playVideo();
+                setTimeout(() => { if (loaderEl) loaderEl.classList.add('hidden'); }, 300);
+                showUnmutePrompt(id, isFs);
+              },
+              onStateChange: (e) => {
+                if (e.data === 1 && loaderEl) loaderEl.classList.add('hidden');
+              },
+              onError: () => { buildStealthIframe(); }
+            }
+          });
+        } catch(err) {
+          buildStealthIframe();
+        }
+      } else {
+        buildStealthIframe();
+      }
+    }
+
+    // ─── AGORA SDK INTEGRATION (WEBRTC BROADCAST VIEWER) ───
+    async function connectAgoraDevoteeSDKStream(containerId, appId) {
+      if (!appState.agoraClient) return;
+      try {
+        await appState.agoraClient.leave().catch(()=>{});
+        
+        appState.agoraClient.on("user-published", async (user, mediaType) => {
+          await appState.agoraClient.subscribe(user, mediaType);
+          if (mediaType === "video") {
+            const remoteVideoTrack = user.videoTrack;
+            remoteVideoTrack.play(containerId);
+          }
+          if (mediaType === "audio") {
+            const remoteAudioTrack = user.audioTrack;
+            remoteAudioTrack.play();
+          }
+        });
+
+        await appState.agoraClient.join(appId, "iskcon_live", null, null);
+      } catch(e) {
+        console.error("Agora join failed", e);
+      }
+    }
+
+    function showUnmutePrompt(padId, isFs) {
+      const promptId = isFs ? 'fs-unmute-prompt' : `card-unmute-prompt-${padId}`;
+      if (document.getElementById(promptId)) return;
+
+      const stageEl = isFs
+        ? document.getElementById('immersive-fullscreen-overlay')
+        : document.querySelector(`#yt-devotee-player-${padId}`)?.closest('.yt-stealth-wrapper')?.parentElement;
+
+      if (!stageEl) return;
+
+      const btn = document.createElement('button');
+      btn.id = promptId;
+      btn.className = 'unmute-prompt';
+      btn.innerHTML = '<i class="fas fa-volume-up"></i> 🙏 आवाज़ चालू करें';
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const player = appState.ytPlayers[padId];
+        if (player && typeof player.unMute === 'function') {
+          player.unMute();
+          player.playVideo();
+        }
+        btn.remove();
+        showToast("🎵 Darshan Audio On!", "success");
+      };
+      stageEl.appendChild(btn);
+    }
+
+    // ─── Presence tracking ───
+    function registerDevoteePresence(padId) {
+      try {
+        appState.viewerRef = database.ref(`padyatras/${padId}/liveState/viewers/${appState.viewerId}`);
+        appState.viewerRef.set({ joinedAt: firebase.database.ServerValue.TIMESTAMP });
+        appState.viewerRef.onDisconnect().remove();
+        database.ref(`padyatras/${padId}/liveState/viewers`).on('value', snap => {
+          const c = snap.numChildren() || 0;
+          const v = document.getElementById('viewerCount'); if (v) v.textContent = c;
+          const fv = document.getElementById('fs-viewerCount'); if (fv) fv.textContent = c;
+        });
+      } catch(e) {}
+    }
+
+    function removeDevoteePresence() {
+      if (appState.activeLivePadyatraId) database.ref(`padyatras/${appState.activeLivePadyatraId}/liveState/viewers`).off();
+      if (appState.viewerRef) { appState.viewerRef.remove(); appState.viewerRef = null; }
+    }
+
+    // ─── LOCAL-ONLY REACTION SYSTEM ───
+    function sendUserLocalReaction(emoji) {
+      if (appState.localReactionCounts[emoji] !== undefined) {
+        appState.localReactionCounts[emoji] += 1;
+      }
+      updateUIReactionCounters();
+
+      const activeId = appState.activeLivePadyatraId;
+      if (activeId) spawnEmojiAtContainer(activeId, emoji);
+      
+      if (appState.isFullscreenActive) {
+        const fsStage = document.getElementById('fs-reaction-stage');
+        if (fsStage) {
+          const el = document.createElement('div'); el.className = 'float-emoji'; el.textContent = emoji;
+          el.style.right = (Math.random() * 40) + 'px'; fsStage.appendChild(el);
+          setTimeout(() => el.remove(), 2600);
+        }
+      }
+    }
+
+    function updateUIReactionCounters() {
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setVal('fs-cnt-heart', appState.localReactionCounts['❤️']);
+      setVal('fs-cnt-pray', appState.localReactionCounts['🙏']);
+      setVal('fs-cnt-flower', appState.localReactionCounts['🌸']);
+      setVal('fs-cnt-bell', appState.localReactionCounts['🔔']);
+      setVal('fs-cnt-leaf', appState.localReactionCounts['🌿']);
+    }
+
+    function spawnEmojiAtContainer(padId, emoji) {
+      const container = document.getElementById(`user-reaction-floating-stage-${padId}`);
+      if (!container) return;
+      const el = document.createElement('div'); el.className = 'float-emoji'; el.textContent = emoji;
+      el.style.right = (Math.random() * 50) + 'px'; container.appendChild(el);
+      setTimeout(() => el.remove(), 2600);
+    }
+
+    function renderReactionsAnimTick(timestamp) {
+      if (timestamp - appState.lastRenderTime >= 100) {
+        if (appState.reactionQueue.length > 0) {
+          const item = appState.reactionQueue.shift();
+          spawnEmojiAtContainer(item.padId, item.emoji);
+          if (appState.reactionQueue.length > 30) appState.reactionQueue = appState.reactionQueue.slice(-10);
+        }
+        appState.lastRenderTime = timestamp;
+      }
+      requestAnimationFrame(renderReactionsAnimTick);
+    }
+
+    // ─── Timers ───
+    function updateAllTimers() {
+      const timers = document.querySelectorAll('[data-countdown-id]');
+      const cDict = dict[appState.currentLanguage];
+      timers.forEach(t => {
+        const targetTime = new Date(t.getAttribute('data-time')).getTime();
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+        if (isNaN(targetTime) || diff <= 0) { t.textContent = cDict.expired; t.style.color = '#9a7c5a'; return; }
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        t.textContent = (days > 0 ? `${days}${cDict.days} ` : '') + `${hours}${cDict.hours} ${mins}${cDict.minutes} ${secs}${cDict.seconds}`;
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  DETAILED MODEL DIALOG (With OpenStreetMap Embed)
+    // ═══════════════════════════════════════════════════════════
+    function openModal(id) {
+      appState.selectedPadyatraIdForModal = id;
+      const cDict = dict[appState.currentLanguage];
+      const item = appState.padyatras.find(p => p.id === id);
+      if (!item) return;
+
+      history.pushState({ modalOpen: true, modalType: 'detail', id: id }, "");
+
+      document.getElementById('modal-title-text').textContent = (item.name && item.name[appState.currentLanguage]) || 'Unnamed';
+      document.getElementById('modal-badge').textContent = (item.status || 'Planned').toUpperCase();
+      document.getElementById('modal-leader-text').textContent = `${cDict.leaderPrefix} ${item.leader || ''} | Started: ${item.startDate || ''}`;
+      document.getElementById('modal-desc-text').textContent = (item.description && item.description[appState.currentLanguage]) || '';
+
+      const liveBox = document.getElementById('modal-live-box');
+      if (item.preciseLandmark && item.stayUntilTime) {
+        document.getElementById('modal-live-landmark').textContent = item.preciseLandmark;
+        document.getElementById('modal-live-countdown').setAttribute('data-countdown-id', item.id);
+        document.getElementById('modal-live-countdown').setAttribute('data-time', item.stayUntilTime);
+        document.getElementById('modal-live-map-btn').href = item.googleMapsLink || '#';
+        document.getElementById('modal-live-phone-btn').href = item.coordinatorPhone ? `tel:${item.coordinatorPhone}` : '#';
+        liveBox.classList.remove('hidden');
+      } else { liveBox.classList.add('hidden'); }
+
+      // WhatsApp Dynamic Fallback Redirect Setup
+      const waButton = document.getElementById('modal-whatsapp-dynamic-join');
+      if (waButton) {
+        if (item.whatsappLink && item.whatsappLink.trim() !== "") {
+          waButton.href = item.whatsappLink;
+        } else {
+          waButton.href = "https://chat.whatsapp.com/GwQtHyoAMJJGcSX5SVsuIV?s=cl&p=a&mlu=2";
+        }
+      }
+
+      // Render Individual Local Stats dynamically
+      document.getElementById('modal-stat-books').textContent = item.stats && item.stats.books ? item.stats.books.toLocaleString() : "0";
+      document.getElementById('modal-stat-prasadam').textContent = item.stats && item.stats.prasadam ? item.stats.prasadam.toLocaleString() : "0";
+      document.getElementById('modal-stat-distance').textContent = item.stats && item.stats.distance ? item.stats.distance.toLocaleString() : "0";
+
+      // ─── Leaflet OpenStreetMap Telemetry Integration ───
+      const mapBox = document.getElementById('modal-gps-map-box');
+      const geofenceBox = document.getElementById('geofencing-presence-box');
+      
+      if (item.liveState && item.liveState.gps) {
+        mapBox.classList.remove('hidden');
+        geofenceBox.classList.remove('hidden');
+        
+        // Listen to On-Ground Chariot devotees tracker real-time counter
+        database.ref(`padyatras/${id}/liveState/onGroundViewers`).on('value', snap => {
+          const count = snap.numChildren() || 0;
+          document.getElementById('on-ground-counter-badge').textContent = `${count} Present`;
+        });
+
+        setTimeout(() => {
+          const lat = item.liveState.gps.lat;
+          const lng = item.liveState.gps.lng;
+          
+          if (!appState.mapInstance) {
+            appState.mapInstance = L.map('modal-live-map').setView([lat, lng], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap contributors'
+            }).addTo(appState.mapInstance);
+            
+            appState.mapMarker = L.marker([lat, lng]).addTo(appState.mapInstance)
+              .bindPopup(`<b>${item.name.en} Chariot Location</b><br>Currently moving here.`).openPopup();
+          } else {
+            appState.mapInstance.setView([lat, lng], 14);
+            appState.mapMarker.setLatLng([lat, lng]);
+          }
+        }, 200);
+
+      } else {
+        mapBox.classList.add('hidden');
+        geofenceBox.classList.add('hidden');
+        database.ref(`padyatras/${id}/liveState/onGroundViewers`).off();
+      }
+
+      // Render Progression steps
+      const timeline = document.getElementById('modal-route-timeline');
+      timeline.innerHTML = '';
+      if (item.route) {
+        item.route.forEach((city, index) => {
+          const isCurrent = item.currentCity && city.toLowerCase() === item.currentCity.toLowerCase();
+          const isPast = item.currentCity && item.route.indexOf(item.currentCity) > index;
+          timeline.innerHTML += `
+            <div class="flex items-center space-x-2" ${isCurrent ? 'id="modal-active-city-stop"' : ''}>
+              <div class="flex flex-col items-center">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
+                  isCurrent ? 'bg-red-600 text-white animate-bounce shadow-md border-2 border-white' :
+                  isPast ? 'bg-orange-600/50 text-orange-200' :
+                  'bg-stone-800 text-orange-500 border border-orange-900/10'
+                }">${index + 1}</div>
+                <span class="text-xs mt-1 font-semibold ${isCurrent ? 'text-red-500 font-extrabold font-devanagari' : isPast ? 'text-orange-600 font-devanagari' : 'text-stone-400 font-devanagari'}">${city}</span>
+              </div>
+              ${index < item.route.length - 1 ? `
+                <div class="h-0.5 w-12 bg-stone-800 relative">
+                  <div class="absolute inset-0 bg-orange-600 transition-all duration-500" style="width:${isPast || isCurrent ? '100%' : '0%'}"></div>
+                </div>` : ''}
+            </div>`;
+        });
+      }
+
+      let lastCity = "—", currentCityLabel = item.currentCity || "—", nextCity = "Destination Reached";
+      if (item.route && item.currentCity) {
+        const curIdx = item.route.indexOf(item.currentCity);
+        if (curIdx > 0) lastCity = item.route[curIdx - 1]; else lastCity = "Start Point";
+        if (curIdx > -1 && curIdx < item.route.length - 1) nextCity = item.route[curIdx + 1];
+      }
+      if (item.preciseLandmark) currentCityLabel += ` (${item.preciseLandmark})`;
+      document.getElementById('modal-val-last-halt').textContent = lastCity;
+      document.getElementById('modal-val-curr-halt').textContent = currentCityLabel;
+      document.getElementById('modal-val-next-halt').textContent = nextCity;
+
+      if (item.startDate) {
+        const diffMs = Date.now() - new Date(item.startDate).getTime();
+        if (diffMs > 0) {
+          const days = Math.floor(diffMs / 86400000);
+          const hours = Math.floor((diffMs % 86400000) / 3600000);
+          const mins = Math.floor((diffMs % 3600000) / 60000);
+          let str = ''; if (days > 0) str += `${days}${cDict.days} `; if (hours > 0) str += `${hours}${cDict.hours} `; str += `${mins}${cDict.minutes}`;
+          document.getElementById('modal-val-elapsed').textContent = str;
+          document.getElementById('modal-val-elapsed').className = "text-emerald-500 font-bold";
+        } else {
+          document.getElementById('modal-val-elapsed').textContent = cDict.timeNotAvailable;
+          document.getElementById('modal-val-elapsed').className = "text-stone-500 font-bold";
+        }
+      }
+
+      updateModalFavBtnState();
+      renderModalPhotos();
+      document.body.style.overflow = 'hidden';
+      document.getElementById('padyatra-detail-modal').classList.remove('hidden');
+
+      setTimeout(() => {
+        const activeStop = document.getElementById('modal-active-city-stop');
+        const scrollContainer = document.getElementById('modal-route-timeline-container');
+        if (activeStop && scrollContainer) {
+          scrollContainer.scrollTo({ left: activeStop.offsetLeft - scrollContainer.clientWidth / 2, behavior: 'smooth' });
+        }
+      }, 300);
+    }
+
+    // ─── GPS GEOFENCING Physical Walking Check-In tracker ───
+    function handleGeofenceOnGroundCheckIn() {
+      const id = appState.selectedPadyatraIdForModal;
+      const item = appState.padyatras.find(p => p.id === id);
+      if (!item || !item.liveState || !item.liveState.gps) return;
+
+      const btn = document.getElementById('btn-geofence-checkin');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Verifying Location...';
+
+      if (!navigator.geolocation) {
+         showToast("GPS location support missing", "error");
+         btn.innerHTML = '<i class="fas fa-street-view"></i> Geofence Verify';
+         return;
+      }
+
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const devLat = pos.coords.latitude;
+        const devLng = pos.coords.longitude;
+        const padLat = item.liveState.gps.lat;
+        const padLng = item.liveState.gps.lng;
+
+        // Calculate direct distance using Haversine algorithm Formula
+        const distanceKm = getDistanceBetweenCoordinates(devLat, devLng, padLat, padLng);
+        const distanceMeters = Math.round(distanceKm * 1000);
+
+        if (distanceMeters <= 500) {
+          // Push devotee check-in node into Padyatra real-time list
+          database.ref(`padyatras/${id}/liveState/onGroundViewers/${appState.viewerId}`).set({
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+          }).then(() => {
+            btn.className = "w-full bg-emerald-800 text-white font-black py-2 rounded text-xs cursor-default flex items-center justify-center gap-1.5";
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Checked In! Walking with Chariot';
+            btn.disabled = true;
+            showToast("Sankirtan Check-In Verified! Hare Krishna 🙏", "success");
+          });
+        } else {
+          showToast(`Check-In Failed! You are ${distanceMeters}m away from the Chariot. (Limit: 500m)`, "error");
+          btn.innerHTML = '<i class="fas fa-street-view"></i> Verify Check-In (Within 500m)';
+        }
+      }, (err) => {
+         showToast("GPS Permission Denied", "error");
+         btn.innerHTML = '<i class="fas fa-street-view"></i> Verify Check-In';
+      }, { enableHighAccuracy: true, timeout: 8000 });
+    }
+
+    function getDistanceBetweenCoordinates(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the earth in km
+      const dLat = (lat2 - lat1) * (Math.PI / 180);
+      const dLon = (lon2 - lon1) * (Math.PI / 180); 
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2); 
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      return R * c; 
+    }
+
+    function updateModalInPlace() {
+      const item = appState.padyatras.find(p => p.id === appState.selectedPadyatraIdForModal);
+      if (item && item.preciseLandmark && item.stayUntilTime) {
+        document.getElementById('modal-live-landmark').textContent = item.preciseLandmark;
+        document.getElementById('modal-live-countdown').setAttribute('data-time', item.stayUntilTime);
+      }
+    }
+
+    function renderModalPhotos() {
+      const item = appState.padyatras.find(p => p.id === appState.selectedPadyatraIdForModal);
+      if (!item) return;
+      const container = document.getElementById('modal-gallery-container');
+      const infoEl = document.getElementById('modal-gallery-info');
+      container.innerHTML = '';
+
+      const dailyPhotos = (item.photos || []).filter(p => p.type === 'daily');
+      const sorted = [...dailyPhotos].sort((a, b) => (b.datetimeMs || 0) - (a.datetimeMs || 0));
+
+      document.getElementById('modal-photo-counter').textContent =
+        dict[appState.currentLanguage].photosAvailable.replace('{n}', sorted.length);
+
+      if (sorted.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-2 md:col-span-3 text-center py-10 border border-dashed rounded-xl border-orange-900/15">
+            <div class="text-3xl mb-3">🙏</div>
+            <p class="text-xs text-orange-900/50 font-devanagari">${dict[appState.currentLanguage].noDarshanPhotos}</p>
+          </div>`;
+        if (infoEl) infoEl.classList.add('hidden');
+        return;
+      }
+
+      if (infoEl) infoEl.classList.remove('hidden');
+
+      const grouped = {};
+      sorted.forEach(ph => {
+        const key = ph.date || 'Unknown Date';
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(ph);
+      });
+
+      Object.keys(grouped).forEach(dateKey => {
+        const header = document.createElement('div');
+        header.className = 'date-group-header-user';
+        header.innerHTML = `📅 ${dateKey} <span class="opacity-60 font-normal">(${grouped[dateKey].length} photos)</span>`;
+        container.appendChild(header);
+
+        grouped[dateKey].forEach((ph, pIndex) => {
+          const cardId = `darshan-card-${ph.id || pIndex}`;
+          const imgId = `darshan-img-${ph.id || pIndex}`;
+
+          const card = document.createElement('div');
+          card.id = cardId;
+          card.className = 'darshan-card cursor-pointer';
+          card.onclick = () => openLightbox(ph.url, ph.caption, `${ph.date || ''} ${ph.time || ''}`);
+          card.innerHTML = `
+            <div class="relative overflow-hidden">
+              <img id="${imgId}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231c1912'></rect></svg>" alt="${ph.caption}"
+                   class="w-full h-28 object-cover">
+              <div class="absolute top-2 right-2">
+                <span class="text-[7px] bg-black/70 text-orange-400 px-1.5 py-0.5 rounded font-bold">${ph.time || ''}</span>
+              </div>
+            </div>
+            <div class="darshan-card-info">
+              <div class="darshan-date-badge"><i class="fas fa-calendar-alt"></i> ${ph.date || ''}</div>
+              <p class="text-[10px] text-orange-100/80 font-medium line-clamp-2 leading-tight font-devanagari">${ph.caption}</p>
+            </div>`;
+          container.appendChild(card);
+
+          // Progressive image preloading in gallery modal
+          const targetImg = document.getElementById(imgId);
+          if (targetImg) {
+            executeProgressiveImageLoading(targetImg, ph.url);
+          }
+        });
+      });
+    }
+
+    function openLightbox(url, caption, date) {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-caption').textContent = caption;
+      document.getElementById('lightbox-date').textContent = date;
+      document.getElementById('gallery-lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('gallery-lightbox').classList.remove('open');
+    }
+
+    function closeModal() {
+      const detailModal = document.getElementById('padyatra-detail-modal');
+      if (detailModal && !detailModal.classList.contains('hidden')) {
+        detailModal.classList.add('hidden');
+        appState.selectedPadyatraIdForModal = null;
+        document.body.style.overflow = '';
+        if (appState.mapInstance) {
+          appState.mapInstance.remove();
+          appState.mapInstance = null;
+        }
+        if (history.state && history.state.modalOpen) {
+          history.back();
+        }
+      }
+    }
+
+    function toggleModalFavorite() { if (appState.selectedPadyatraIdForModal) { toggleFavorite(appState.selectedPadyatraIdForModal); updateModalFavBtnState(); } }
+    function updateModalFavBtnState() {
+      const isFav = appState.favorites.includes(appState.selectedPadyatraIdForModal);
+      document.getElementById('modal-fav-toggle-btn').className = isFav
+        ? "border border-orange-500 bg-orange-950/40 text-orange-400 px-4 py-1.5 rounded text-xs font-semibold"
+        : "border border-orange-900/30 text-orange-700 hover:bg-orange-950 px-4 py-1.5 rounded text-xs font-semibold";
+    }
+
+    function toggleFavorite(id, event) {
+      if (event) event.stopPropagation();
+      const idx = appState.favorites.indexOf(id);
+      if (idx > -1) { appState.favorites.splice(idx, 1); showToast("Removed from favorites", "error"); }
+      else { appState.favorites.push(id); showToast("Added to favorites", "success"); }
+      saveLocalFavorites();
+      localizeUI();
+      renderUserPadyatras();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  FULLSCREEN DARSHAN PORTAL (Agora + YouTube Sync integration)
+    // ═══════════════════════════════════════════════════════════
+    function launchFullscreenDarshan(id) {
+      const item = appState.padyatras.find(p => p.id === id);
+      if (!item || !item.liveState) return;
+
+      history.pushState({ modalOpen: true, modalType: 'fullscreen', id: id }, "");
+
+      appState.isFullscreenActive = true;
+      const overlay = document.getElementById('immersive-fullscreen-overlay');
+      overlay.classList.remove('hidden');
+
+      document.getElementById('fs-p-title').textContent = (item.name && item.name[appState.currentLanguage]) || (item.name && item.name['en']) || '';
+      document.getElementById('fs-current-city').textContent = item.liveState.currentCity || item.currentCity || '—';
+      document.getElementById('fs-precise-spot').textContent = item.liveState.preciseLandmark || item.preciseLandmark || 'Not Specified';
+
+      const fsLoader = document.getElementById('fs-darshan-loader');
+      if (fsLoader) fsLoader.classList.remove('hidden');
+
+      if (appState.ytPlayers[id]) {
+        try { appState.ytPlayers[id].destroy(); } catch(e){}
+        delete appState.ytPlayers[id];
+      }
+
+      const fsContainer = document.getElementById('yt-fullscreen-player-container');
+      if (fsContainer) {
+        fsContainer.innerHTML = `<div id="yt-fullscreen-inner" style="position:absolute;top:-10%;left:-5%;width:110%;height:120%;pointer-events:none;"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:12%;background:#000;z-index:8;"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:12%;background:#000;z-index:8;"></div>`;
+      }
+
+      updateUIReactionCounters();
+
+      setTimeout(() => {
+        const lsObj = item.liveState;
+        
+        if (lsObj.mode === 'agora') {
+          const innerEl = document.getElementById('yt-fullscreen-player-container');
+          if (innerEl) innerEl.innerHTML = `<div id="yt-fullscreen-inner" style="width:100%;height:100%;position:relative;"></div>`;
+          connectAgoraDevoteeSDKStream('yt-fullscreen-inner', lsObj.appId);
+          if (fsLoader) fsLoader.classList.add('hidden');
+          return;
+        }
+
+        if (ytApiReady && window.YT && window.YT.Player) {
+          let tSec = lsObj.ytTime || 0;
+          if (lsObj.timestamp) tSec += Math.min((Date.now() - lsObj.timestamp) / 1000, 20);
+
+          appState.ytPlayers[id] = new YT.Player('yt-fullscreen-inner', {
+            height: '100%', width: '100%',
+            videoId: lsObj.ytVideoId,
+            playerVars: { autoplay: 1, controls: 0, rel: 0, modestbranding: 1, playsinline: 1, disablekb: 1, fs: 0, iv_load_policy: 3, mute: 1, start: Math.max(0, Math.floor(tSec)) },
+            events: {
+              onReady: (e) => {
+                e.target.mute();
+                e.target.seekTo(tSec, true);
+                e.target.playVideo();
+                setTimeout(() => { if (fsLoader) fsLoader.classList.add('hidden'); }, 150);
+                showUnmutePrompt(id, true);
+              },
+              onStateChange: (e) => { if (e.data === 1 && fsLoader) fsLoader.classList.add('hidden'); },
+              onError: () => { buildFsIframeFallback(id, item.liveState, tSec, fsLoader); }
+            }
+          });
+        } else {
+          buildFsIframeFallback(id, item.liveState, 0, fsLoader);
+        }
+      }, 50);
+    }
+
+    function buildFsIframeFallback(id, lsObj, tSec, loaderEl) {
+      const fsInner = document.getElementById('yt-fullscreen-inner');
+      if (!fsInner) return;
+      const src = `https://www.youtube-nocookie.com/embed/${lsObj.ytVideoId}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&start=${Math.max(0,Math.floor(tSec))}&enablejsapi=1`;
+      fsInner.outerHTML = `<iframe src="${src}" style="position:absolute;top:-10%;left:-5%;width:110%;height:120%;border:none;pointer-events:none;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope" allowfullscreen></iframe>`;
+      setTimeout(() => { if (loaderEl) loaderEl.classList.add('hidden'); showUnmutePrompt(id, true); }, 1000);
+    }
+
+    function closeFullscreenDarshan() {
+      closeFullscreenDarshanInternal();
+      if (history.state && history.state.modalOpen) {
+        history.back();
+      }
+    }
+
+    function closeFullscreenDarshanInternal() {
+      appState.isFullscreenActive = false;
+      document.getElementById('immersive-fullscreen-overlay').classList.add('hidden');
+      const id = appState.activeLivePadyatraId;
+      if (id) {
+        if (appState.ytPlayers[id]) {
+          try { appState.ytPlayers[id].destroy(); } catch(e){}
+          delete appState.ytPlayers[id];
+        }
+        const p = document.getElementById('fs-unmute-prompt');
+        if (p) p.remove();
+        lastRenderedLiveId = null; 
+        setTimeout(() => renderUserPadyatras(), 50);
+      }
+    }
+
+    // ─── SHARE IMPLEMENTATION WITH ENHANCED LOGIC ───
+    window.openShareOverlay = (id) => {
+      currentlySharingPadyatraId = id || appState.activeLivePadyatraId;
+      localizeUI(); 
+      history.pushState({ modalOpen: true, modalType: 'share' }, "");
+      document.getElementById('share-overlay').classList.remove('hidden');
+      document.getElementById('share-overlay').classList.add('flex');
+    };
+    
+    window.closeShareOverlay = () => {
+      const shareOverlay = document.getElementById('share-overlay');
+      if (shareOverlay && !shareOverlay.classList.contains('hidden')) {
+        shareOverlay.classList.add('hidden');
+        shareOverlay.classList.remove('flex');
+        if (history.state && history.state.modalOpen) {
+          history.back();
+        }
+      }
+    };
+    
+    window.shareVia = (platform) => {
+      const playStoreUrl = "https://play.google.com/store/apps/details?id=iskcon.hadapsar";
+      let padyatraName = "ISKCON Padyatra";
+      if (currentlySharingPadyatraId) {
+        const item = appState.padyatras.find(p => p.id === currentlySharingPadyatraId);
+        if (item) {
+          padyatraName = (item.name && item.name[appState.currentLanguage]) || (item.name && item.name['en']) || "ISKCON Padyatra";
+        }
+      }
+
+      let msg = "";
+      if (appState.currentLanguage === 'hi') {
+        msg = `🚩 *श्रील प्रभुपाद की जय!* 🙏\n*दिव्य लाइव दर्शन आमंत्रण* 🚶✨\n\nआप सभी भक्तों को जानकर अत्यंत हर्ष होगा कि *${padyatraName}* का भव्य लाइव दर्शन प्रारंभ हो चुका है!\n\nघर बैठे इस पावन पदयात्रा और दिव्य हरिनाम संकीर्तन के दर्शन का दिव्य लाभ उठाएं।\n\n👉 *दर्शन करने के लिए नीचे दिए गए लिंक से अभी ऐप डाउनलोड करें:* \n🔗 ${playStoreUrl}\n\n✨ *कृपया इस संदेश को अपने परिवार और मित्रों के साथ साझा करें ताकि वे भी इस दिव्य दर्शन के पुण्य के भागी बन सकें!* 🙏🚩`;
+      } else if (appState.currentLanguage === 'mr') {
+        msg = `🚩 *श्रील प्रभुपाद की जय!* 🙏\n*दिव्य लाइव दर्शन आमंत्रण* 🚶✨\n\nसर्व भक्तांना अत्यंत आनंदाने कळविण्यात येते की *${padyatraName}* चे भव्य लाइव्ह दर्शन सुरू झाले आहे!\n\nघरी बसून या पावन पदयात्रेचे आणि दिव्य हरिनाम संकीर्तनाचे दर्शन घ्या आणि कृपा प्रसादाचे भागीदार व्हा.\n\n👉 *दर्शन घेण्यासाठी खालील लिंकवरून आत्ताच ॲप डाउनलोड करा:* \n🔗 ${playStoreUrl}\n\n✨ *कृपया हा संदेश तुमच्या कुटुंबियांसोबत आणि मित्रांसोबत शेअर करा जेणेकरून त्यांनाही या दिव्य दर्शनाचा लाभ घेता येईल!* 🙏🚩`;
+      } else {
+        msg = `🚩 *Srila Prabhupada Ki Jaya!* 🙏\n*Divine Live Darshan Invitation* 🚶✨\n\nWe are pleased to inform you that the auspicious Live Darshan of *${padyatraName}* has begun!\n\nReceive the divine blessings of this holy foot-pilgrimage and ecstatic Harinama Sankirtana from the comfort of your home.\n\n👉 *To view, download our Mobile App now:* \n🔗 ${playStoreUrl}\n\n✨ *Please share this divine invitation with your family and friends!* 🙏🚩`;
+      }
+
+      const encodedMsg = encodeURIComponent(msg);
+      if (platform === 'whatsapp') { 
+        window.location.href = 'whatsapp://send?text=' + encodedMsg; 
+        closeShareOverlay(); 
+      }
+    };
+  </script>
+</body>
+</html>
