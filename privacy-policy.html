@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Privacy Policy - ISKCON Padyatra</title>
+    
+    <!-- Bootstrap & Premium Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=Poppins:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@700&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           🛠️ ENTERPRISE PREMIUM STYLES
+           ========================================= */
+        :root {
+            --primary: #FF9933;       
+            --secondary: #4a2c2a;     
+            --bg-color: #f4f5f7;      
+            --card-bg: #ffffff;       
+            --text-color: #1e293b;       
+            --text-muted: #64748b;
+            --danger-color: #ef4444;
+            --border-color: #e2e8f0;
+            --ui-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
+        
+        [data-theme="dark"] {
+            --primary: #FF9933; 
+            --secondary: #140804; 
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b; 
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --ui-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Poppins', sans-serif; 
+            color: var(--text-color); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+            margin: 0; 
+            padding-bottom: 40px;
+            -webkit-tap-highlight-color: transparent; 
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Custom Corporate Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* 🔴 READING PROGRESS BAR */
+        .progress-container {
+            width: 100%; height: 4px; background: rgba(0,0,0,0.1); position: fixed; top: 68px; z-index: 1001;
+        }
+        .progress-bar {
+            height: 4px; background: #ffffff; width: 0%; box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        /* 🔴 TOP NAVBAR */
+        .top-nav {
+            background: linear-gradient(90deg, #d84315, var(--primary), #ef6c00);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(230, 81, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .back-btn {
+            color: white; font-size: 1.3rem; text-decoration: none; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .back-btn:active { transform: scale(0.85); background: rgba(255,255,255,0.4); }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; color: white; font-size: 1.3rem; font-weight: 700; margin: 0; letter-spacing: 0.5px;
+        }
+
+        /* 🔴 GRAND HEADER */
+        .policy-header {
+            background: linear-gradient(135deg, #111827 0%, #374151 100%);
+            padding: 110px 20px 60px 20px; 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary);
+        }
+        .header-bg-glow {
+            position: absolute; top: 0; left: 50%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 153, 51, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%); pointer-events: none;
+        }
+        .header-title {
+            font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; color: #ffcc80; margin: 0 0 10px 0; position: relative; z-index: 1; text-transform: uppercase;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6); letter-spacing: 2px;
+        }
+        .header-subtitle {
+            font-size: 1rem; color: #9ca3af; position: relative; z-index: 1; font-weight: 400; letter-spacing: 1px;
+        }
+
+        /* 🔴 LEGAL METADATA BADGES */
+        .legal-metadata {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 20px; position: relative; z-index: 1;
+        }
+        .meta-badge {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #d1d5db; padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; font-family: monospace;
+            backdrop-filter: blur(4px); display: flex; align-items: center; gap: 6px;
+        }
+        .meta-badge i { color: var(--primary); }
+
+        /* 🔴 MAIN CONTENT CONTAINER */
+        .policy-container {
+            max-width: 900px;
+            margin: -30px auto 40px auto;
+            position: relative;
+            z-index: 2;
+            padding: 0 15px;
+        }
+
+        /* 🔴 LEGAL SECTION CARDS */
+        .legal-section-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--ui-shadow);
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .legal-section-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -10px rgba(255, 153, 51, 0.15);
+            border-color: rgba(255, 153, 51, 0.3);
+        }
+
+        .p-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+            border-bottom: 2px solid rgba(255, 153, 51, 0.15);
+            padding-bottom: 12px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-number {
+            background: rgba(255, 153, 51, 0.1); color: var(--primary);
+            width: 32px; height: 32px; display: flex; justify-content: center; align-items: center;
+            border-radius: 8px; font-size: 1rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        }
+
+        .p-text {
+            font-size: 0.95rem; line-height: 1.8; color: var(--text-color); margin-bottom: 0; text-align: justify; font-weight: 400; opacity: 0.9;
+        }
+
+        /* 🔴 WARNING BOX */
+        .strict-warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.02));
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0 10px 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
+        }
+        .strict-warning-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: repeating-linear-gradient(45deg, #ef4444, #ef4444 10px, #2b2b2b 10px, #2b2b2b 20px);
+        }
+
+        .strict-warning-box h4 {
+            color: var(--danger-color); font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; margin-bottom: 12px;
+            display: flex; align-items: center; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .strict-warning-box p {
+            margin: 0; font-size: 0.9rem; color: var(--text-color); font-weight: 500; line-height: 1.7;
+        }
+
+        .legal-highlight {
+            background: rgba(255, 153, 51, 0.08);
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary);
+            margin-top: 15px;
+        }
+
+        /* 🔴 COMPREHENSIVE PROFILE DIRECTORY CARD STYLES */
+        .profile-contact-card {
+            background-color: var(--bg-color);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .profile-contact-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(255, 153, 51, 0.08);
+            transform: translateY(-2px);
+        }
+        .profile-role-badge {
+            background: rgba(255, 143, 0, 0.1);
+            color: var(--deep-orange);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: 10px;
+            margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .profile-actions-divider {
+            border-top: 1px solid var(--border-color);
+            margin-top: 15px;
+            padding-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+        .profile-action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+        .profile-action-link:hover {
+            color: var(--deep-orange);
+        }
+
+        .btn-copy-mini {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 2px 6px;
+        }
+        .btn-copy-mini:hover {
+            color: var(--primary);
+        }
+
+        /* ─── COMPLIANCE TABLE STYLE ─── */
+        .table-responsive {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .ministry-table {
+            width: 100%; border-collapse: collapse; font-size: 0.85rem;
+        }
+        .ministry-table th {
+            background-color: #fff7ed; color: #7c2d12; font-weight: 700; padding: 12px; text-align: left;
+        }
+        .ministry-table td {
+            padding: 12px; border-bottom: 1px solid var(--border-color); color: var(--text-color);
+        }
+        .ministry-table tr:last-child td { border-bottom: none; }
+
+        /* 🔴 MINIMAL CORPORATE TECH SUPPORT CARD */
+        .support-footer-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 40px 0 20px 0;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--ui-shadow);
+        }
+        .support-footer-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .support-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .tech-tags-small {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .tech-tags-small span {
+            display: flex; align-items: center; gap: 5px;
+        }
+        .action-btn-outline {
+            background: transparent;
+            color: #25d366 !important;
+            border: 2px solid #25d366;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.15);
+        }
+        .action-btn-outline:hover {
+            background: #25d366;
+            color: white !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation with Reading Progress Bar -->
+    <div class="top-nav">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <h1 class="page-title" id="nav-title">Privacy Policy</h1>
+        <select id="lang-select-policy" onchange="changeLanguageInPolicy(this.value)" class="ms-auto bg-stone-900 border border-white/10 text-orange-200 text-xs rounded-lg p-1.5 font-medium focus:outline-none" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+            <option value="en" style="background:#1f0802; color:white;">English</option>
+            <option value="hi" style="background:#1f0802; color:white;">हिन्दी</option>
+            <option value="mr" style="background:#1f0802; color:white;">मराठी</option>
+        </select>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <!-- Grand Header -->
+    <header class="policy-header">
+        <div class="header-bg-glow"></div>
+        <h1 class="header-title" id="header-title-text"><i class="fas fa-user-shield me-2"></i> Privacy Policy</h1>
+        <p class="header-subtitle" id="header-subtitle-text">Official Privacy &amp; Data Security Guidelines</p>
+        
+        <div class="legal-metadata">
+            <span class="meta-badge" id="badge-doc-id"><i class="fas fa-code-commit"></i> Doc ID: ISK-PAD-PP-V2.6</span>
+            <span class="meta-badge" id="badge-date"><i class="fas fa-calendar-check"></i> Effective: 2026 Edition</span>
+            <span class="meta-badge"><i class="fab fa-google-play"></i> Play Store Verified</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="policy-container">
+
+        <!-- Introduction Card -->
+        <div class="legal-section-card" style="background: linear-gradient(to right, var(--card-bg), rgba(255,153,51,0.05)); border-left: 4px solid var(--primary);">
+            <p class="p-text" id="welcome-text-msg" style="font-weight: 500;">Welcome to the official <b>ISKCON Padyatra Devotee Portal</b> native mobile application (developed by <b>Dev Santosh</b>, referred to as "the App" or "we"). We are deeply committed to protecting the privacy of our devotees, users, and visitors. This Privacy Policy outlines how we collect, use, process, and protect your information when you use our global pilgrimage tracking application, in strict compliance with Google Play Developer policies.</p>
+        </div>
+
+        <!-- Section 1: Information Processed -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-info-title"><div class="section-number">1</div> Information We Process</h2>
+            <p class="p-text" id="section-info-desc">To provide a highly synchronized, real-time spiritual tracking experience across 130+ countries, our compiled native-hybrid mobile architecture processes the following data:</p>
+            
+            <div class="strict-warning-box">
+                <h4 id="warn-box-head"><i class="fas fa-location-arrow me-2"></i> Precise Location Data (GPS)</h4>
+                <p id="warn-box-desc">
+                    The App accesses precise geographical coordinates (latitude and longitude) to verify physical presence and enable the geofenced check-in features of our system. <br><br>
+                    <b>• Proximity Calculation:</b> Standard Fused Location Provider APIs calculate your physical distance from the Padyatra chariot. Check-in is granted only within the 500m geofence.<br>
+                    <b>• Foreground Only:</b> Coordinates are processed only when the app is active in the foreground and you click the verification button. We do <b>NOT</b> track, collect, or store location history in the background.<br>
+                    <b>• Absolute Safety:</b> Location coordinates are processed transiently for real-time verification and are <b>never</b> saved on our servers or shared with any third party.
+                </p>
+            </div>
+            
+            <div class="legal-highlight">
+                <p class="p-text" id="device-tokens-desc" style="font-size: 0.9rem;">
+                    <b>• Cryptographic Sandbox Device Tokens:</b> To prevent duplicate rate-limiting exploits and maintain high database integrity on our Vyasa Puja Tribute Board, a persistent unique device token is generated on first load and stored in the secure local sandbox storage. This identifier is completely anonymous and cannot be linked to any real-world identity.<br><br>
+                    <b>• Vyasa Puja Tribute Wall (User-Generated Content):</b> Devotees voluntarily offering prayers and birthday wishes to H.H. Lokanath Swami Maharaj submit their Name, Location, and message text. To manage database integrity, these wishes undergo a 10-minute client-side lock period, during which they can be edited only by the original sender, after which they are automatically approved and displayed on the public wall.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 2: System Permissions Table -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-permission-title"><div class="section-number">2</div> System Permissions Transparency</h2>
+            <p class="p-text" id="section-permission-desc">To function correctly and efficiently, our app requests minimal device permissions. We declare the following for complete transparency based on Google Play Store listings:</p>
+            
+            <div class="table-responsive">
+                <table class="permission-table">
+                    <thead>
+                        <tr>
+                            <th id="th-permission">Android Permission</th>
+                            <th id="th-purpose">Purpose &amp; Functional Use Case</th>
+                            <th id="th-policy">Data Processing Policy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-permission">ACCESS_FINE_LOCATION</span></td>
+                            <td id="td-fine-purpose">Allows precise GPS coordinates tracking for geofenced check-in and dynamic Leaflet OSM rendering.</td>
+                            <td id="td-fine-policy">Processed locally in the foreground. No background tracking, saving, or sharing.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-permission">ACCESS_COARSE_LOCATION</span></td>
+                            <td id="td-coarse-purpose">Acts as a fallback to calculate regional distance metrics when GPS signals are weak.</td>
+                            <td id="td-coarse-policy">Processed transiently in real-time. No logs retained.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-permission">POST_NOTIFICATIONS</span></td>
+                            <td id="td-notif-purpose">Delivers real-time push alerts regarding Live Darshan launches or route progressions.</td>
+                            <td id="td-notif-policy">Opt-in only. Devotees can easily enable or disable these alerts via Android settings.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-permission">INTERNET</span></td>
+                            <td id="td-net-purpose">Establishes secure HTTPS connections to load maps, sync stats, and stream darshan.</td>
+                            <td id="td-net-policy">Used purely for secure, real-time edge network communication.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-permission">ACCESS_NETWORK_STATE</span></td>
+                            <td id="td-state-purpose">Detects connection state to trigger a seamless offline fallback mode.</td>
+                            <td id="td-state-policy">No history logged. Used solely for runtime state diagnostics.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p class="p-text" id="no-sensitive-perms-warn" style="font-size: 0.9rem; color: var(--danger-color); font-weight: 700; margin-top: 15px;"><i class="fas fa-shield-halved me-1"></i> Privacy Policy Guarantee: This application does NOT require, collect, or ask for sensitive device permissions like `CAMERA`, `RECORD_AUDIO`, `READ_CONTACTS`, or background location tracking, ensuring a safe and privacy-first devotee experience.</p>
+        </div>
+
+        <!-- Section 3: Cloud Infrastructure & Programmatic Ads -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-ads-title"><div class="section-number">3</div> Cloud Infrastructure &amp; Programmatic Ads</h2>
+            <p class="p-text" id="section-ads-desc">To sustain our high-speed global server hosting, real-time edge databases, and zero-delay CDNs for millions of active concurrent users across 130+ countries, we integrate non-intrusive programmatic advertisement layers. By accepting these Terms, you acknowledge and agree to this hosting model. Devotees may configure secure Private DNS filters if they prefer an un-monetized UI.</p>
+        </div>
+
+        <!-- Section 4: Data Safety, Encryption & Sharing -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-safety-title"><div class="section-number">4</div> Data Safety, Encryption &amp; Sharing</h2>
+            <p class="p-text" id="section-safety-desc">We do not sell, rent, or trade devotee data under any circumstances. All transmissions between the App and our secure Realtime Database are encrypted via industry-standard SSL/TLS protocols. We do not engage in any passive or silent background collection of coordinates, device activities, or network states.</p>
+        </div>
+
+        <!-- Section 5: Data Retention & Deletion Policy -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-retention-title"><div class="section-number">5</div> Data Retention &amp; Deletion Policy</h2>
+            <p class="p-text" id="section-retention-desc">Since our app does not require account creation, there is no permanent user profile to delete. However, if you wish to delete your past submitted Vyasa Puja tributes or contact details from our active databases, you can directly email our administration with the subject "Data Deletion Request". Upon receiving a verifiable request, we will permanently delete your personal data within 24 to 48 hours.</p>
+        </div>
+
+        <!-- Section 6: Contact Us -->
+        <div class="legal-section-card">
+            <h2 class="p-section-title" id="section-contact-title"><div class="section-number">6</div> Contact Us</h2>
+            <p class="p-text" id="section-contact-desc">If you have any questions or data removal requests regarding this Privacy Policy, please contact us at:</p>
+            <p class="p-text" style="font-weight: 600; margin-top: 15px;"><i class="fas fa-envelope me-2 text-warning"></i> <a href="mailto:om12grt@gmail.com" style="color: var(--primary); text-decoration: none;">om12grt@gmail.com</a></p>
+        </div>
+
+        <!-- 🚀 MINIMAL CORPORATE TECH SUPPORT SECTION 🚀 -->
+        <div class="support-footer-card">
+            <h3 id="footer-support-head"><i class="fas fa-shield-alt text-success"></i> Technical App Support</h3>
+            <p class="support-text" id="footer-support-desc">
+                For mobile application technical configurations, database synchronization requests, or system-related inquiries, please connect directly with our chief systems architect via WhatsApp chat.
+            </p>
+            
+            <div class="tech-tags-small">
+                <span><i class="fas fa-copyright"></i> Native Architecture</span>
+                <span><i class="fas fa-server"></i> Cloud Optimized</span>
+                <span><i class="fas fa-network-wired"></i> Zero-Delay CDN</span>
+            </div>
+
+            <!-- WhatsApp Only Dynamic Integration Link -->
+            <a href="https://wa.me/919561160799?text=Hare%20Krishna%20Dev%20Santosh!%20I%20need%20technical%20support%20for%20the%20ISKCON%20Padyatra%20App." target="_blank" class="action-btn-outline" id="btn-wa-support">
+                <i class="fab fa-whatsapp"></i> Chat with Dev Santosh (WhatsApp Only - No Call)
+            </a>
+        </div>
+
+    </main>
+
+    <footer style="text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-light); margin-bottom: 20px;" id="footer-copyright-text">
+        © 2026 ISKCON Padyatra Ministry. All Rights Reserved. <br>
+        Designed &amp; Maintained with devotion.
+    </footer>
+
+    <!-- Bootstrap & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        
+        // ─── SAFE STORAGE WEBVIEW COMPLIANT ENGINE ───
+        const safeStorage = {
+            getItem(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch (e) {
+                    return this[key] || null;
+                }
+            },
+            setItem(key, val) {
+                try {
+                    localStorage.setItem(key, val);
+                } catch (e) {
+                    this[key] = val;
+                }
+            }
+        };
+
+        // 3-Language synchronized UI Translation Dictionary
+        const policyDict = {
+            en: {
+                navTitle: "Privacy Policy",
+                pageTitle: "Privacy Policy",
+                headerSub: "Official Privacy & Data Security Guidelines",
+                badgeDocId: "<i class='fas fa-code-commit'></i> Doc ID: ISK-PAD-PP-V2.6",
+                badgeDate: "<i class='fas fa-calendar-check'></i> Effective: 2026 Edition",
+                welcomeText: "Welcome to the official <b>ISKCON Padyatra Devotee Portal</b> native mobile application (developed by <b>Dev Santosh</b>, referred to as \"the App\" or \"we\"). We are deeply committed to protecting the privacy of our devotees, users, and visitors. This Privacy Policy outlines how we collect, use, process, and protect your information when you use our global pilgrimage tracking application, in strict compliance with Google Play Developer policies.",
+                sectionInfoTitle: "<div class='section-number'>1</div> Information We Process",
+                sectionInfoDesc: "To provide a highly synchronized, real-time spiritual tracking experience across 130+ countries, our compiled native-hybrid mobile architecture processes the following data:",
+                warnBoxHead: "<i class='fas fa-location-arrow me-2'></i> Precise Location Data (GPS)",
+                warnBoxDesc: "The App accesses precise geographical coordinates (latitude and longitude) to verify physical presence and enable the geofenced check-in features of our system. <br><br><b>• Proximity Calculation:</b> Standard Fused Location Provider APIs calculate your physical distance from the Padyatra chariot. Check-in is granted only within the 500m geofence.<br><b>• Foreground Only:</b> Coordinates are processed only when the app is active in the foreground and you click the verification button. We do <b>NOT</b> track, collect, or store location history in the background.<br><b>• Absolute Safety:</b> Location coordinates are processed transiently for real-time verification and are <b>never</b> saved on our servers or shared with any third party.",
+                deviceTokensDesc: "<b>• Cryptographic Sandbox Device Tokens:</b> To prevent duplicate rate-limiting exploits and maintain high database integrity on our Vyasa Puja Tribute Board, a persistent unique device token is generated on first load and stored in the secure local sandbox storage. This identifier is completely anonymous and cannot be linked to any real-world identity.<br><br><b>• Vyasa Puja Tribute Wall (User-Generated Content):</b> Devotees voluntarily offering prayers and birthday wishes to H.H. Lokanath Swami Maharaj submit their Name, Location, and message text. To manage database integrity, these wishes undergo a 10-minute client-side lock period, during which they can be edited only by the original sender, after which they are automatically approved and displayed on the public wall.",
+                sectionPermissionTitle: "<div class='section-number'>2</div> System Permissions Transparency",
+                sectionPermissionDesc: "To function correctly and efficiently, our app requests minimal device permissions. We declare the following for complete transparency based on Google Play Store listings:",
+                thPermission: "Android Permission",
+                thPurpose: "Purpose &amp; Functional Use Case",
+                thPolicy: "Data Processing Policy",
+                tdFinePurpose: "Allows precise GPS coordinates tracking for geofenced check-in and dynamic Leaflet OSM rendering.",
+                tdFinePolicy: "Processed locally in the foreground. No background tracking, saving, or sharing.",
+                tdCoarsePurpose: "Acts as a fallback to calculate regional distance metrics when GPS signals are weak.",
+                tdCoarsePolicy: "Processed transiently in real-time. No logs retained.",
+                tdNotifPurpose: "Delivers real-time push alerts regarding Live Darshan launches or route progressions.",
+                tdNotifPolicy: "Opt-in only. Devotees can easily enable or disable these alerts via Android settings.",
+                tdNetPurpose: "Establishes secure HTTPS connections to load maps, sync stats, and stream darshan.",
+                tdNetPolicy: "Used purely for secure, real-time edge network communication.",
+                tdStatePurpose: "Detects connection state to trigger a seamless offline fallback mode.",
+                tdStatePolicy: "No history logged. Used solely for runtime state diagnostics.",
+                noSensitivePerms: "<i class='fas fa-shield-halved me-1'></i> Privacy Policy Guarantee: This application does NOT require, collect, or ask for sensitive device permissions like `CAMERA`, `RECORD_AUDIO`, `READ_CONTACTS`, or background location tracking, ensuring a safe and privacy-first devotee experience.",
+                sectionAdsTitle: "<div class='section-number'>3</div> Cloud Infrastructure &amp; Programmatic Ads",
+                sectionAdsDesc: "To sustain our high-speed global server hosting, real-time edge databases, and zero-delay CDNs for millions of active concurrent users across 130+ countries, we integrate non-intrusive programmatic advertisement layers. By accepting these Terms, you acknowledge and agree to this hosting model. Devotees may configure secure Private DNS filters if they prefer an un-monetized UI.",
+                sectionSafetyTitle: "<div class='section-number'>4</div> Data Safety, Encryption &amp; Sharing",
+                sectionSafetyDesc: "We do not sell, rent, or trade devotee data under any circumstances. All transmissions between the App and our secure Realtime Database are encrypted via industry-standard SSL/TLS protocols. We do not engage in any passive or silent background collection of coordinates, device activities, or network states.",
+                sectionRetentionTitle: "<div class='section-number'>5</div> Data Retention &amp; Deletion Policy",
+                sectionRetentionDesc: "Since our app does not require account creation, there is no permanent user profile to delete. However, if you wish to delete your past submitted Vyasa Puja tributes or contact details from our active databases, you can directly email our administration with the subject \"Data Deletion Request\". Upon receiving a verifiable request, we will permanently delete your personal data within 24 to 48 hours.",
+                sectionContactTitle: "<div class='section-number'>6</div> Contact Us",
+                sectionContactDesc: "If you have any questions or data removal requests regarding this Privacy Policy, please contact us at:",
+                footerSupportHead: "<i class='fas fa-shield-alt text-success'></i> Technical App Support",
+                footerSupportDesc: "For mobile application technical configurations, database synchronization requests, or system-related inquiries, please connect directly with our chief systems architect via WhatsApp chat.",
+                btnWaSupport: "<i class='fab fa-whatsapp'></i> Chat with Dev Santosh (WhatsApp Only - No Call)",
+                footerCopyright: "© 2026 ISKCON Padyatra Ministry. All Rights Reserved. <br> Designed &amp; Maintained with devotion."
+            },
+            hi: {
+                navTitle: "गोपनीयता नीति",
+                pageTitle: "गोपनीयता नीति",
+                headerSub: "आधिकारिक गोपनीयता और डेटा सुरक्षा दिशानिर्देश",
+                badgeDocId: "<i class='fas fa-code-commit'></i> दस्तावेज़ आईडी: ISK-PAD-PP-V2.6",
+                badgeDate: "<i class='fas fa-calendar-check'></i> प्रभावी: २०२६ संस्करण",
+                welcomeText: "आधिकारिक <b>इस्कॉन पदयात्रा भक्त पोर्टल</b> देशी मोबाइल एप्लिकेशन (विकसित <b>देव संतोष</b>, जिसे \"ऐप\" या \"हम\" कहा जाता है) में आपका स्वागत है। हम अपने भक्तों, उपयोगकर्ताओं और आगंतुकों की गोपनीयता की रक्षा के लिए गहराई से प्रतिबद्ध हैं। यह गोपनीयता नीति बताती है कि जब आप हमारे वैश्विक तीर्थयात्रा ट्रैकिंग एप्लिकेशन का उपयोग करते हैं, तो हम Google Play डेवलपर नीतियों के सख्त अनुपालन में आपकी जानकारी कैसे एकत्र, उपयोग, संसाधित और सुरक्षित करते हैं।",
+                sectionInfoTitle: "<div class='section-number'>1</div> सूचना जो हम संसाधित करते हैं",
+                sectionInfoDesc: "१३०+ देशों में अत्यधिक सिंक्रनाइज़, वास्तविक समय आध्यात्मिक ट्रैकिंग अनुभव प्रदान करने के लिए, हमारी संकलित देशी-हाइब्रिड मोबाइल आर्किटेक्चर निम्नलिखित डेटा को संसाधित करती है:",
+                warnBoxHead: "<i class='fas fa-location-arrow me-2'></i> सटीक स्थान डेटा (जीपीएस)",
+                warnBoxDesc: "ऐप भौतिक उपस्थिति को सत्यापित करने और हमारे सिस्टम के भू-बाड़ वाले चेक-इन सुविधाओं को सक्षम करने के लिए सटीक भौगोलिक निर्देशांक (अक्षांश और देशांतर) तक पहुंचता है। <br><br><b>• निकटता गणना:</b> मानक फ़्यूज्ड लोकेशन प्रदाता एपीआई चलते हुए रथ के वास्तविक जीपीएस डेटा से आपकी दूरी मापते हैं। चेक-इन केवल ५०० मीटर के दायरे में ही स्वीकृत होता है।<br><b>• केवल फोरग्राउंड:</b> निर्देशांक केवल तभी संसाधित होते हैं जब ऐप फोरग्राउंड में सक्रिय हो और आप सत्यापन बटन पर क्लिक करते हैं। हम बैकग्राउंड में लोकेशन इतिहास को ट्रैक नहीं करते।<br><b>• पूर्ण सुरक्षा:</b> स्थान निर्देशांक वास्तविक समय सत्यापन के लिए तुरंत संसाधित होते हैं और इन्हें हमारे सर्वर पर सहेजा या साझा नहीं किया जाता है।",
+                deviceTokensDesc: "<b>• क्रिप्टोग्राफिक सैंडबॉक्स डिवाइस टोकन:</b> डुप्लिकेट सबमिशन को रोकने और हमारे व्यास पूजा ट्रिब्यूट बोर्ड पर उच्च डेटाबेस अखंडता बनाए रखने के लिए, पहली बार लोड होने पर एक सुरक्षित स्थानीय सैंडबॉक्स स्टोरेज में एक अद्वितीय डिवाइस टोकन उत्पन्न और संग्रहीत किया जाता है। यह पहचानकर्ता पूरी तरह से गुमनाम है और इसे किसी भी वास्तविक दुनिया की पहचान से नहीं जोड़ा जा सकता है।<br><br><b>• व्यास पूजा ट्रिब्यूट वॉल (उपयोगकर्ता जनित सामग्री):</b> भक्त जो स्वेच्छा से महाराज जी को अपनी प्रार्थनाएं प्रस्तुत करते हैं, वे अपना नाम, स्थान और संदेश भेजते हैं। डेटाबेस सुरक्षा के लिए, इन संदेशों पर १० मिनट की संपादन विंडो लागू होती है, जिसके बाद वे स्वतः स्वीकृत होकर सार्वजनिक दीवार पर प्रदर्शित हो जाते हैं।",
+                sectionPermissionTitle: "<div class='section-number'>2</div> सिस्टम अनुमतियां पारदर्शिता",
+                sectionPermissionDesc: "सही और कुशलता से काम करने के लिए, हमारा ऐप न्यूनतम डिवाइस अनुमतियों का अनुरोध करता है। हम Google Play Store लिस्टिंग के आधार पर पूर्ण पारदर्शिता के लिए निम्नलिखित घोषणा करते हैं:",
+                thPermission: "एंड्रॉइड अनुमति",
+                thPurpose: "उद्देश्य और कार्यात्मक उपयोग",
+                thPolicy: "डेटा प्रसंस्करण नीति",
+                tdFinePurpose: "भू-बाड़ वाले चेक-इन और गतिशील लीफलेट ओएसएम रेंडरिंग के लिए सटीक जीपीएस निर्देशांक ट्रैकिंग की अनुमति देता है।",
+                tdFinePolicy: "फोरग्राउंड में स्थानीय रूप से संसाधित। कोई बैकग्राउंड ट्रैकिंग, सहेजना या साझा करना नहीं।",
+                tdCoarsePurpose: "जीपीएस सिग्नल कमजोर होने पर क्षेत्रीय दूरी की गणना करने के लिए एक फॉलबैक के रूप में कार्य करता है।",
+                tdCoarsePolicy: "वास्तविक समय में संसाधित। कोई लॉग नहीं रखा जाता।",
+                tdNotifPurpose: "लाइव दर्शन या मार्ग प्रगति के संबंध में वास्तविक समय में पुश अलर्ट प्रदान करता है।",
+                tdNotifPolicy: "केवल भक्त की सहमति से। भक्त एंड्रॉइड सेटिंग्स के माध्यम से इन अलर्ट्स को अक्षम कर सकते हैं।",
+                tdNetPurpose: "मैप लोड करने, आंकड़ों को सिंक करने और दर्शन को स्ट्रीम करने के लिए सुरक्षित HTTPS कनेक्शन स्थापित करता है।",
+                tdNetPolicy: "पूरी तरह से सुरक्षित, वास्तविक समय नेटवर्क संचार के लिए उपयोग किया जाता है।",
+                tdStatePurpose: "कनेक्शन स्थिति का पता लगाता है ताकि कमजोर नेटवर्क में ऑफलाइन फॉलबैक मोड सक्रिय हो सके।",
+                tdStatePolicy: "कोई इतिहास लॉग नहीं किया जाता। केवल रनटाइम निदान के लिए उपयोग किया जाता है।",
+                noSensitivePerms: "<i class='fas fa-shield-halved me-1'></i> गोपनीयता नीति गारंटी: यह एप्लिकेशन संवेदनशील डिवाइस अनुमतियों जैसे `CAMERA`, `RECORD_AUDIO`, `READ_CONTACTS`, या बैकग्राउंड लोकेशन ट्रैकिंग का अनुरोध या संग्रह नहीं करता है, जिससे पूरी तरह से सुरक्षित अनुभव मिलता है।",
+                sectionAdsTitle: "<div class='section-number'>3</div> क्लाउड इंफ्रास्ट्रक्चर और प्रोग्रामेटिक विज्ञापन",
+                sectionAdsDesc: "१३०+ देशों में लाखों भक्तों के भारी ट्रैफिक को संभालने के लिए और हमारे हाई-स्पीड सीडीएन और लाइव ट्रैकिंग सर्वर्स को भक्तों के लिए पूरी तरह से मुफ्त रखने के लिए, हम प्रोग्रामेटिक विज्ञापन परतों को एकीकृत करते हैं। इन शर्तों को स्वीकार करके आप इस होस्टिंग मॉडल से सहमत हैं। यदि भक्त चाहें तो विज्ञापन-मुक्त यूआई के लिए अपने फोन में प्राइवेट डीएनएस सेट कर सकते हैं।",
+                sectionSafetyTitle: "<div class='section-number'>4</div> डेटा सुरक्षा, एन्क्रिप्शन और साझाकरण",
+                sectionSafetyDesc: "हम किसी भी परिस्थिति में भक्तों का डेटा बेचते या साझा नहीं करते हैं। हमारे ऐप और सिक्योर डेटाबेस के बीच सभी संचार उद्योग-मानक SSL/TLS प्रोटोकॉल के माध्यम से पूरी तरह एन्क्रिप्टेड होते हैं। हम किसी भी प्रकार की पृष्ठभूमि (background) गतिविधियों का संग्रह नहीं करते हैं।",
+                sectionRetentionTitle: "<div class='section-number'>5</div> डेटा प्रतिधारण और विलोपन नीति",
+                sectionRetentionDesc: "चूंकि हमारे ऐप में खाता बनाने की आवश्यकता नहीं है, इसलिए कोई स्थायी उपयोगकर्ता प्रोफ़ाइल नहीं है। हालांकि, यदि आप अपने अतीत के व्यास पूजा संदेशों या संपर्क विवरणों को हमारे डेटाबेस से हटाना चाहते हैं, तो आप 'डेटा विलोपन अनुरोध' विषय के साथ हमारे प्रशासन को सीधे ईमेल कर सकते हैं। सत्यापन अनुरोध मिलने पर हम २४ से ४८ घंटों के भीतर आपका डेटा स्थायी रूप से हटा देंगे।",
+                sectionContactTitle: "<div class='section-number'>6</div> हमसे संपर्क करें",
+                sectionContactDesc: "यदि इस गोपनीयता नीति के संबंध में आपके कोई प्रश्न या डेटा विलोपन अनुरोध हैं, तो कृपया हमसे संपर्क करें:",
+                footerSupportHead: "<i class='fas fa-shield-alt text-success'></i> तकनीकी ऐप सहायता",
+                footerSupportDesc: "मोबाइल एप्लिकेशन तकनीकी कॉन्फ़िगरेशन, डेटाबेस सिंक्रनाइज़ेशन अनुरोधों या सिस्टम से संबंधित पूछताछ के लिए, कृपया हमारे मुख्य सिस्टम आर्किटेक्ट से व्हाट्सएप चैट के माध्यम से सीधे जुड़ें।",
+                btnWaSupport: "<i class='fab fa-whatsapp'></i> देव संतोष के साथ चैट करें (केवल व्हाट्सएप - कोई कॉल नहीं)",
+                footerCopyright: "© 2026 इस्कॉन पदयात्रा मंत्रालय। सर्वाधिकार सुरक्षित। <br> भक्ति भाव से डिज़ाइन और संचालित।"
+            },
+            mr: {
+                navTitle: "गोपनीयता धोरण",
+                pageTitle: "गोपनीयता धोरण",
+                headerSub: "अधिकृत गोपनीयता आणि डेटा सुरक्षा मार्गदर्शक तत्त्वे",
+                badgeDocId: "<i class='fas fa-code-commit'></i> दस्तऐवज आयडी: ISK-PAD-PP-V2.6",
+                badgeDate: "<i class='fas fa-calendar-check'></i> प्रभावी: २०२६ आवृत्ती",
+                welcomeText: "अधिकृत <b>इस्कॉन पदयात्रा भक्त पोर्टल</b> मोबाईल ॲप्लिकेशनमध्ये (विकसित <b>देव संतोष</b>, ज्याला \"ॲप\" किंवा \"आम्ही\" म्हटले जाते) आपले स्वागत आहे. आम्ही आमच्या भक्तांच्या आणि अभ्यागतांच्या गोपनीयतेचे रक्षण करण्यासाठी पूर्णपणे कटिबद्ध आहोत. जेव्हा तुम्ही आमच्या जागतिक तीर्थयात्रा ट्रॅकिंग ॲप्लिकेशनचा वापर करता, तेव्हा आम्ही Google Play विकसक धोरणांच्या कडक अनुपालनात तुमची माहिती कशी गोळा, प्रक्रिया आणि सुरक्षित करतो हे या गोपनीयता धोरणात स्पष्ट केले आहे.",
+                sectionInfoTitle: "<div class='section-number'>1</div> माहिती ज्यावर आम्ही प्रक्रिया करतो",
+                sectionInfoDesc: "१३०+ देशांमध्ये अत्यंत अचूक आध्यात्मिक ट्रॅकिंग अनुभव प्रदान करण्यासाठी, आमचे मूळ-हायब्रिड मोबाईल आर्किटेक्चर खालील डेटावर प्रक्रिया करते:",
+                warnBoxHead: "<i class='fas fa-location-arrow me-2'></i> अचूक स्थान डेटा (जीपीएस)",
+                warnBoxDesc: "ॲप शारीरिक उपस्थिती सत्यापित करण्यासाठी आणि आमच्या सिस्टमच्या भौगोलिक मुक्काम वैशिष्ट्यांना सक्षम करण्यासाठी अचूक भौगोलिक निर्देशांक (अक्षांश आणि रेखांश) मिळवतो. <br><br><b>• अंतर गणना:</b> मानक स्थान प्रदाता एपीआय रथाच्या जीपीएस डेटावरून तुमचे अंतर मोजतात. चेक-इन केवळ ५०० मीटरच्या आतच मंजूर होते.<br><b>• फक्त फोरग्राउंड:</b> निर्देशांक केवळ तेव्हाच प्रक्रिया केले जातात जेव्हा ॲप सक्रिय असेल आणि तुम्ही बटणावर क्लिक करता. आम्ही बॅकग्राउंडमध्ये लोकेशन इतिहास ट्रॅक करत नाही.<br><b>• पूर्ण सुरक्षा:</b> स्थान निर्देशांक वास्तविक वेळ पडताळणीसाठी त्वरित प्रक्रिया केले जातात आणि ते आमच्या सर्व्हरवर साठवले किंवा सामायिक केले जात नाहीत.",
+                deviceTokensDesc: "<b>• क्रिप्टोग्राफिक सँडबॉक्स डिव्हाइस टोकन:</b> डुप्लिकेट सबमिशन रोखण्यासाठी आणि आमच्या व्यास पूजा ट्रिब्यूट बोर्डवर उच्च डेटाबेस अखंडता राखण्यासाठी, पहिल्यांदा लोड झाल्यावर एका सुरक्षित स्थानिक सँडबॉक्स स्टोरेजमध्ये एक अद्वितीय डिव्हाइस टोकन तयार केले जाते. हा ओळखकर्ता पूर्णपणे निनावी आहे आणि तो कोणत्याही वास्तविक जगातील ओळखीशी जोडला जाऊ शकत नाही.<br><br><b>• व्यास पूजा ट्रिब्यूट वॉल (वापरकर्ता व्युत्पन्न सामग्री):</b> भक्त जे स्वेच्छेने महाराज यांना प्रार्थना आणि शुभेच्छा संदेश सादर करतात, ते आपले नाव, स्थान आणि संदेश पाठवतात. डेटाबेस सुरक्षिततेसाठी, या संदेशांवर १० मिनिटांची संपादन विंडो लागू होते, ज्यानंतर ते स्वतः मंजूर होऊन सार्वजनिक भिंतीवर प्रदर्शित होतात.",
+                sectionPermissionTitle: "<div class='section-number'>2</div> सिस्टम परवानग्या पारदर्शकता",
+                sectionPermissionDesc: "योग्य आणि कार्यक्षमतेने काम करण्यासाठी, आमचे ॲप किमान डिव्हाइस परवानग्यांची विनंती करते. आम्ही Google Play Store सूचीच्या आधारावर पूर्ण पारदर्शकतेसाठी खालील घोषणा करतो:",
+                thPermission: "एंड्रॉइड परवानगी",
+                thPurpose: "उद्देश आणि कार्यात्मक वापर",
+                thPolicy: "डेटा प्रक्रिया धोरण",
+                tdFinePurpose: "सुलभ चेक-इन आणि लीफलेट ओएसएम रेंडरिंगसाठी अचूक जीपीएस निर्देशांक ट्रॅकिंगला अनुमती देते.",
+                tdFinePolicy: "फोरग्राउंडमध्ये स्थानिक पातळीवर प्रक्रिया. कोणतीही बॅकग्राउंड ट्रॅकिंग, साठवणे किंवा सामायिक करणे नाही.",
+                tdCoarsePurpose: "जीपीएस सिग्नल कमकुवत असताना प्रादेशिक अंतराची गणना करण्यासाठी फॉलबॅक म्हणून कार्य करते.",
+                tdCoarsePolicy: "वास्तविक वेळेत प्रक्रिया. कोणताही इतिहास साठवला जात नाही.",
+                tdNotifPurpose: "थेट दर्शन किंवा मार्ग प्रगती संदर्भात वास्तविक वेळेत पुश अलर्ट प्रदान करते.",
+                tdNotifPolicy: "फक्त भक्ताच्या संमतीने. भक्त सेटिंग्जद्वारे हे अलर्ट बंद करू शकतात.",
+                tdNetPurpose: "मॅप लोड करण्यासाठी, आकडेवारी सिंक करण्यासाठी आणि दर्शन स्ट्रीम करण्यासाठी सुरक्षित HTTPS कनेक्शन स्थापित करते.",
+                tdNetPolicy: "पूर्णपणे सुरक्षित, वास्तविक वेळ नेटवर्क संवादासाठी वापरले जाते.",
+                tdStatePurpose: "कनेक्शन स्थिती शोधते जेणेकरून कमकुवत नेटवर्कमध्ये ऑफलाइन फॉलबॅक मोड सक्रिय होऊ शकेल.",
+                tdStatePolicy: "कोणताही इतिहास लॉग केला जात नाही. केवळ रनटाइम निदानासाठी वापरला जातो.",
+                noSensitivePerms: "<i class='fas fa-shield-halved me-1'></i> गोपनीयता धोरण हमी: हे ॲप्लिकेशन संवेदनशील डिव्हाइस परवानग्या जसे की `CAMERA`, `RECORD_AUDIO`, `READ_CONTACTS`, किंवा बॅकग्राउंड लोकेशन ट्रॅकिंगचा विनंती करत नाही, ज्यामुळे पूर्णपणे सुरक्षित अनुभव मिळतो.",
+                sectionAdsTitle: "<div class='section-number'>3</div> क्लाउड इन्फ्रास्ट्रक्चर आणि प्रोग्रामेटिक जाहिराती",
+                sectionAdsDesc: "१३०+ देशांमधील लाखो भक्तांच्या प्रचंड ट्रॅफिकला सांभाळण्यासाठी आणि आमचे हाय-स्पीड सीडीएन आणि लाइव्ह ट्रॅकिंग सर्व्हर्स भक्तांसाठी पूर्णपणे विनामूल्य ठेवण्यासाठी, आम्ही प्रोग्रामेटिक जाहिरात स्तर समाकलित करतो. या अटी स्वीकारून तुम्ही या मॉडेलशी सहमत आहात. भक्त हवे असल्यास जाहिरात-मुक्त यूआयसाठी फोनमध्ये खाजगी डीएनएस सेट करू शकतात.",
+                sectionSafetyTitle: "<div class='section-number'>4</div> डेटा सुरक्षा, एन्क्रिप्शन आणि सामायिकरण",
+                sectionSafetyDesc: "आम्ही कोणत्याही परिस्थितीत भक्तांचा डेटा विकत किंवा सामायिक करत नाही. आमच्या ॲप आणि डेटाबेस मधील सर्व संपर्क सुरक्षित SSL/TLS प्रोटोकॉलद्वारे पूर्णपणे एन्क्रिप्टेड असतात. आम्ही कोणत्याही प्रकारच्या बॅकग्राउंड उपक्रमांचे संकलन करत नाही.",
+                sectionRetentionTitle: "<div class='section-number'>5</div> डेटा प्रतिधारण आणि विलोपन धोरण",
+                sectionRetentionDesc: "आमच्या ॲपमध्ये खाते तयार करण्याची आवश्यकता नसल्यामुळे, कोणतीही कायमस्वरूपी वापरकर्ता प्रोफाइल नाही. तथापि, जर तुम्हाला तुमचे व्यास पूजा संदेश किंवा संपर्क तपशील आमच्या डेटाबेसमधून काढून टाकायचे असतील, तर तुम्ही थेट आमच्या प्रशासनाला ईमेल करू शकता. पडताळणी विनंती मिळाल्यावर आम्ही २४ ते ४८ तासांत तुमचा डेटा कायमचा काढून टाकू.",
+                sectionContactTitle: "<div class='section-number'>6</div> आमच्याशी संपर्क साधा",
+                sectionContactDesc: "या गोपनीयता धोरणासंदर्भात तुमचे काही प्रश्न किंवा डेटा विलोपन विनंत्या असल्यास, कृपया आमच्याशी संपर्क साधा:",
+                footerSupportHead: "<i class='fas fa-shield-alt text-success'></i> तांत्रिक ॲप सहाय्यता",
+                footerSupportDesc: "मोबाईल ॲप्लिकेशन तांत्रिक कॉन्फिगरेशन, डेटाबेस सिंक्रोनाइझेशन विनंती किंवा सिस्टमशी संबंधित चौकशीसाठी, कृपया आमच्या मुख्य सिस्टम आर्किटेक्टशी थेट व्हॉट्सॲपद्वारे संपर्क साधा.",
+                btnWaSupport: "<i class='fab fa-whatsapp'></i> देव संतोष यांच्याशी चॅट करा (फक्त व्हॉट्सॲप - कॉल करू नये)",
+                footerCopyright: "© 2026 इस्कॉन पदयात्रा मंत्रालय. सर्व हक्क राखीव. <br> भक्ती भावाने डिझाइन आणि संचालित."
+            }
+        };
+
+        let activeLanguage = safeStorage.getItem('padyatra_lang') || 'en';
+
+        // Set default value in dropdown on startup [4]
+        const dropdownEl = document.getElementById('lang-select-policy');
+        if (dropdownEl) {
+            dropdownEl.value = activeLanguage;
+        }
+
+        function changeLanguageInPolicy(lang) {
+            activeLanguage = lang;
+            safeStorage.setItem('padyatra_lang', lang);
+            localizePolicyUI();
+        }
+
+        function localizePolicyUI() {
+            const d = policyDict[activeLanguage];
+            document.getElementById('nav-title').textContent = d.navTitle;
+            document.getElementById('header-title-text').innerHTML = `<i class="fas fa-user-shield me-2"></i> ${d.pageTitle}`;
+            document.getElementById('header-subtitle-text').textContent = d.headerSub;
+            document.getElementById('badge-doc-id').innerHTML = d.badgeDocId;
+            document.getElementById('badge-date').innerHTML = d.badgeDate;
+            document.getElementById('welcome-text-msg').innerHTML = d.welcomeText;
+            document.getElementById('section-info-title').innerHTML = d.sectionInfoTitle;
+            document.getElementById('section-info-desc').textContent = d.sectionInfoDesc;
+            document.getElementById('warn-box-head').innerHTML = d.warnBoxHead;
+            document.getElementById('warn-box-desc').innerHTML = d.warnBoxDesc;
+            document.getElementById('device-tokens-desc').innerHTML = d.deviceTokensDesc;
+            document.getElementById('section-permission-title').innerHTML = d.sectionPermissionTitle;
+            document.getElementById('section-permission-desc').textContent = d.sectionPermissionDesc;
+            document.getElementById('th-permission').textContent = d.thPermission;
+            document.getElementById('th-purpose').textContent = d.thPurpose;
+            document.getElementById('th-policy').textContent = d.thPolicy;
+            document.getElementById('td-fine-purpose').textContent = d.tdFinePurpose;
+            document.getElementById('td-fine-policy').textContent = d.tdFinePolicy;
+            document.getElementById('td-coarse-purpose').textContent = d.tdCoarsePurpose;
+            document.getElementById('td-coarse-policy').textContent = d.tdCoarsePolicy;
+            document.getElementById('td-notif-purpose').textContent = d.tdNotifPurpose;
+            document.getElementById('td-notif-policy').textContent = d.tdNotifPolicy;
+            document.getElementById('td-net-purpose').textContent = d.tdNetPurpose;
+            document.getElementById('td-net-policy').textContent = d.tdNetPolicy;
+            document.getElementById('td-state-purpose').textContent = d.tdStatePurpose;
+            document.getElementById('td-state-policy').textContent = d.tdStatePolicy;
+            document.getElementById('no-sensitive-perms-warn').innerHTML = d.noSensitivePerms;
+            document.getElementById('section-ads-title').innerHTML = d.sectionAdsTitle;
+            document.getElementById('section-ads-desc').textContent = d.sectionAdsDesc;
+            document.getElementById('section-safety-title').innerHTML = d.sectionSafetyTitle;
+            document.getElementById('section-safety-desc').textContent = d.sectionSafetyDesc;
+            document.getElementById('section-retention-title').innerHTML = d.sectionRetentionTitle;
+            document.getElementById('section-retention-desc').textContent = d.sectionRetentionDesc;
+            document.getElementById('section-contact-title').innerHTML = d.sectionContactTitle;
+            document.getElementById('section-contact-desc').textContent = d.sectionContactDesc;
+            document.getElementById('footer-support-head').innerHTML = d.footerSupportHead;
+            document.getElementById('footer-support-desc').textContent = d.footerSupportDesc;
+            document.getElementById('btn-wa-support').innerHTML = d.btnWaSupport;
+            document.getElementById('footer-copyright-text').innerHTML = d.footerCopyright;
+        }
+
+        // Initialize and synchronize layout instantly
+        localizePolicyUI();
+
+        // Dark Mode sync logic with parent Native theme context
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            document.documentElement.style.setProperty('--card-bg', '#1e293b');
+            document.documentElement.style.setProperty('--bg-color', '#0f172a');
+            document.documentElement.style.setProperty('--text-color', '#f8fafc');
+            document.documentElement.style.setProperty('--text-muted', '#94a3b8');
+            document.documentElement.style.setProperty('--border-color', '#334155');
+        }
+
+        // Reading Progress Bar Script
+        window.onscroll = function() { updateProgressBar() };
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+        //]]>
+    </script>
+</body>
+</html>
