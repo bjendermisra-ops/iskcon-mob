@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#4A0E4E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ISKCON Admin | Master Padyatra Studio</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Firebase Compat Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    /* ==========================================
+       १. सीएसएस वेरिएबल्स (थीम और कलर्स - Devotee Portal Consistent)
+       ========================================== */
+    :root {
+      --saffron: #E91E63; /* Radiant Fuchsia/Pink */
+      --saffron-d: #4A0E4E; /* Dark Eggplant Purple */
+      --saffron-glow: rgba(233, 30, 99, 0.25);
+      --bg: #100412; /* Deep violet-black background */
+      --panel: #1D0721; /* Dark magenta-violet panels */
+      --card: #280C2E; /* Dark violet cards */
+      --border: rgba(233, 30, 99, 0.18); 
+      --border-hard: rgba(233, 30, 99, 0.4);
+      --danger: #EC4899; 
+      --success: #10B981; 
+      --warn: #FFB300;
+      --muted: #A38CA4; 
+      --text-dim: #D1B6D3; 
+      --text-mid: #F8E8F9; 
+      --text-main: #FFFFFF; 
+      --input-bg: rgba(26, 7, 28, 0.6);
+      --panel-glass: rgba(26, 7, 28, 0.95);
+      --btn-sec-bg: linear-gradient(180deg, #2E0B32 0%, #150417 100%);
+      --font-scale: 1.0;
+    }
+
+    body.light-mode {
+      --bg: #FDF4FC; /* Soft pink-white canvas */
+      --panel: #FFFFFF; /* Pure white screens */
+      --card: #FFF5FB; /* Subtle pink cards */
+      --border: rgba(74, 14, 78, 0.12);
+      --border-hard: rgba(74, 14, 78, 0.25);
+      --muted: #9E7D9F;
+      --text-dim: #7B527D;
+      --text-mid: #5A2E5C;
+      --text-main: #4A0E4E; /* Deep eggplant violet primary text */
+      --input-bg: #FFFFFF;
+      --panel-glass: rgba(255, 255, 255, 0.98);
+      --btn-sec-bg: linear-gradient(180deg, #FFFFFF 0%, #FBE7F8 100%);
+    }
+
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background-color: var(--bg); 
+      background-image: radial-gradient(circle at top, #2C082E 0%, #0A020B 100%); 
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      color: var(--text-main);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.light-mode {
+      background-image: radial-gradient(circle at top, #FFE6F8 0%, #F5DFF1 100%); 
+    }
+
+    .theme-panel { background-color: var(--panel); border-color: var(--border); border-radius: 28px; }
+    .theme-card { background-color: var(--card); border-color: var(--border); border-radius: 24px; }
+    
+    .theme-input { 
+      background-color: var(--input-bg); 
+      border-color: var(--border-hard); 
+      color: var(--text-main); 
+      border-radius: 9999px; /* Highly-rounded Pill inputs */
+    }
+    textarea.theme-input {
+      border-radius: 22px !important;
+    }
+
+    /* 3D Pill Button Styles */
+    .btn-premium-primary {
+      background: linear-gradient(135deg, #E91E63 0%, #FF6F00 50%, #FFB300 100%);
+      border: 1px solid #FFE082;
+      border-bottom: 4px solid #C2185B;
+      box-shadow: 0 6px 16px rgba(233, 30, 99, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      color: #FFFFFF !important;
+      font-weight: 800;
+      border-radius: 9999px; /* Pill layout */
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .btn-premium-primary:active {
+      transform: translateY(2px) scale(0.98);
+      border-bottom-width: 1px;
+    }
+
+    .btn-premium-secondary {
+      background: var(--btn-sec-bg);
+      border: 1.5px solid var(--border-hard);
+      border-bottom: 4px solid var(--border-hard);
+      box-shadow: 0 4px 12px rgba(74, 14, 78, 0.15);
+      color: var(--saffron) !important;
+      font-weight: 800;
+      border-radius: 9999px;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    body.light-mode .btn-premium-secondary { color: #4A0E4E !important; }
+    .btn-premium-secondary:active { transform: translateY(2px) scale(0.98); border-bottom-width: 1px; }
+
+    .btn-premium-danger {
+      background: linear-gradient(135deg, #EC4899 0%, #C2185B 100%);
+      border: 1.5px solid #FBCFE8;
+      border-bottom: 4px solid #880E4F;
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.3);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      color: #FFFFFF !important;
+      font-weight: 800;
+      border-radius: 9999px;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-premium-danger:active { transform: translateY(2px) scale(0.98); border-bottom-width: 1px; }
+
+    .font-condensed { font-family: 'Barlow Condensed', sans-serif; }
+    
+    /* Dynamic Floating reactions inside Admin Player Stage */
+    .float-reaction {
+      position: absolute; bottom: 0; right: 10px; font-size: 1.5rem; opacity: 0;
+      animation: floatUp 3s ease-out forwards; pointer-events: none;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5)); z-index: 25;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 1; transform: translateY(0) scale(0.7) rotate(-5deg); }
+      30%  { opacity: 1; transform: translateY(-60px) scale(1.2) rotate(5deg); }
+      70%  { opacity: 0.7; transform: translateY(-130px) scale(1) rotate(-3deg); }
+      100% { opacity: 0; transform: translateY(-210px) scale(0.8) rotate(8deg); }
+    }
+    
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #100412; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #E91E63; border-radius: 10px; }
+
+    /* ── UN-CROPPED YOUTUBE PLAYBACK ── */
+    #yt-admin-wrapper {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 15;
+        display: none;
+        background: #000;
+    }
+    #yt-admin-player {
+        width: 100%;
+        height: 100%;
+        pointer-events: auto;
+    }
+
+    body.is-live .live-badge { display: flex; }
+    body.is-muted .console-mute-tag { display: flex; }
+    body.is-video-muted .console-video-mute-tag { display: flex; }
+
+    @media (orientation: landscape) {
+        #studio-console-overlay .app-layout { flex-direction: row !important; }
+        #studio-console-overlay .header { display: none !important; }
+        #studio-console-overlay .stage { flex: 1 !important; height: 100dvh !important; }
+        #studio-console-overlay .deck {
+            width: 260px !important; min-width: 260px !important; height: 100dvh !important; border-top: none !important;
+            border-left: 1px solid rgba(233,30,99,0.18) !important; flex-direction: column !important;
+            justify-content: space-between !important; padding: 16px 12px !important; overflow-y: auto !important;
+        }
+        #studio-console-overlay .landscape-brand { display: flex !important; align-items: center; gap: 8px; margin-bottom: 4px; }
+        #studio-console-overlay .ls-stats { display: flex !important; flex-direction: column; gap: 8px; margin-bottom: 10px;}
+        #studio-console-overlay .btn-row { grid-template-columns: 1fr 1fr !important; grid-template-rows: 44px 56px !important; height: auto !important; }
+        #studio-console-overlay .ctrl-main { grid-column: span 2 !important; font-size: 1.2rem !important; }
+        #studio-console-overlay .reaction-row { flex-wrap: wrap !important; gap: 6px !important; justify-content: center !important; }
+    }
+    #studio-console-overlay .landscape-brand, #studio-console-overlay .ls-stats { display: none; }
+    .gradient-bg { background: linear-gradient(135deg, #D81B60 0%, #EC4899 45%, #FFB300 100%); }
+
+    /* Day mode contrast fictions */
+    body.light-mode .text-theme-main { color: #4A0E4E !important; }
+    body.light-mode .text-theme-mid { color: #5A2E5C !important; }
+    body.light-mode .text-theme-dim { color: #7B527D !important; }
+    body.light-mode .text-pink-300 { color: #5A2E5C !important; }
+    body.light-mode .text-pink-400 { color: #4A0E4E !important; }
+    body.light-mode .text-stone-400 { color: #7B527D !important; }
+  </style>
+</head>
+<body class="text-stone-200 antialiased overflow-x-hidden">
+
+  <!-- ─── UNIFIED LOGIN / Setup barrier overlay ─── -->
+  <div id="auth-overlay" class="fixed inset-0 bg-stone-950/95 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#1D0721] border border-pink-500/20 rounded-[28px] max-w-lg w-full p-6 space-y-6 shadow-2xl relative">
+      
+      <div id="auth-spinner" class="absolute inset-0 bg-[#1D0721]/95 rounded-[28px] z-50 flex flex-col items-center justify-center p-6 space-y-4 hidden">
+        <div class="w-12 h-12 border-4 border-pink-500/20 border-t-pink-500 rounded-full animate-spin"></div>
+        <div class="text-center space-y-1">
+          <span class="text-xs text-pink-400 font-bold tracking-wider block">Connecting with Cloud Database...</span>
+          <p class="text-[10px] text-stone-500 max-w-xs leading-relaxed">If it takes too long, verify your Firebase Realtime Database Security Rules are set to true.</p>
+        </div>
+        <button onclick="cancelSpinnerManualDiagnostics()" class="bg-stone-900 border border-pink-900/20 px-3 py-1 rounded text-[10px] font-bold text-pink-400 hover:bg-stone-850">
+          Cancel & Retry
+        </button>
+      </div>
+
+      <div class="flex border-b border-pink-500/10">
+        <button onclick="switchAuthTab('login')" id="tab-auth-login" class="flex-1 pb-3 text-center border-b-2 border-pink-600 text-pink-400 font-bold text-sm">Login with Access Key</button>
+        <button onclick="switchAuthTab('register')" id="tab-auth-register" class="flex-1 pb-3 text-center border-b-2 border-transparent text-stone-400 font-semibold text-sm">Register New Padyatra Route</button>
+      </div>
+
+      <!-- Auth login -->
+      <div id="auth-login-pane" class="space-y-4">
+        <div class="text-center">
+          <h2 class="text-xl font-bold text-pink-400 font-devanagari">कोऑर्डिनेटर लॉगिन</h2>
+          <p class="text-xs text-theme-dim mt-1">Verify access key to sync with your Padyatra.</p>
+        </div>
+        <div class="space-y-3">
+          <input type="password" id="auth-key-input" placeholder="e.g. ISKCON-PAD-XXXX" class="w-full text-sm p-3 bg-stone-950 border border-pink-900/20 rounded-full text-pink-300 focus:outline-none focus:ring-1 focus:ring-pink-500 placeholder-stone-800">
+          <button onclick="handleLoginAttempt()" class="w-full btn-premium-primary text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider">Unlock Control Room</button>
+        </div>
+      </div>
+
+      <!-- Coordinator registration setup -->
+      <div id="auth-register-pane" class="space-y-4 hidden">
+        <div class="text-center">
+          <h2 class="text-xl font-bold text-pink-400 font-devanagari">नया पंजीकरण</h2>
+          <p class="text-xs text-theme-dim mt-1">Provide all details. System will generate a dynamic unique Access Key passcode.</p>
+        </div>
+        <div class="space-y-4 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar">
+          
+          <!-- English Name -->
+          <div>
+            <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Padyatra Name (English) *</label>
+            <input type="text" id="reg-name-en" placeholder="e.g. Maharashtra Bhakti Padyatra" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">नाम (हिन्दी)</label>
+              <input type="text" id="reg-name-hi" placeholder="हिन्दी नाम" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">नाव (मराठी)</label>
+              <input type="text" id="reg-name-mr" placeholder="मराठी नाव" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Description (English) *</label>
+            <textarea id="reg-desc-en" rows="2" placeholder="Route goals..." class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></textarea>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">विवरण (हिन्दी)</label>
+              <textarea id="reg-desc-hi" rows="2" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></textarea>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">वर्णन (मराठी)</label>
+              <textarea id="reg-desc-mr" rows="2" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></textarea>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Country *</label><input type="text" id="reg-country" placeholder="India" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></div>
+            <div><label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Current City *</label><input type="text" id="reg-city" placeholder="Hadapsar" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></div>
+          </div>
+          <div><label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Route (Comma separated) *</label><input type="text" id="reg-route" placeholder="Hadapsar, Pune, Alandi" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></div>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Phone *</label><input type="tel" id="reg-phone" placeholder="9876543210" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></div>
+            <div><label class="block text-[10px] font-bold text-stone-400 uppercase mb-1">Leader *</label><input type="text" id="reg-leader" placeholder="HH Lokanath Swami" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded text-stone-200"></div>
+          </div>
+        </div>
+        <button onclick="handleRouteRegistration()" class="w-full btn-premium-primary text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider">Register Route & Get Key</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Key Dialog Popup -->
+  <div id="key-dialog" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#1D0721] border-2 border-pink-500 rounded-[28px] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-12 h-12 rounded-full bg-pink-950 border border-pink-500 flex items-center justify-center mx-auto text-pink-500 text-2xl"><i class="fas fa-key"></i></div>
+      <h3 class="text-lg font-bold text-pink-400">Setup Completed!</h3>
+      <p class="text-xs text-theme-dim leading-relaxed">Here is your unique Coordinator Access PIN. Use it to log back in on any device.</p>
+      <div class="bg-stone-950 p-3 rounded-full border border-pink-900/20 flex items-center justify-between">
+        <span id="generated-key-text" class="text-pink-300 font-mono font-bold tracking-widest text-sm">KEY-XXXX</span>
+        <button onclick="copyGeneratedKey()" class="text-xs text-pink-400 hover:underline font-bold">Copy</button>
+      </div>
+      <button onclick="dismissKeyDialog()" class="w-full btn-premium-primary text-white font-bold py-2.5 rounded-full text-xs">Enter Dashboard Room</button>
+    </div>
+  </div>
+
+  <!-- Main Control Room Dashboard -->
+  <div id="dashboard-viewport" class="hidden flex flex-col min-h-screen">
+    <nav class="bg-[#100412] border-b border-pink-900/10 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center min-w-0">
+            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full gradient-bg flex items-center justify-center text-white shadow-lg shadow-pink-600/25 border border-white/10 relative overflow-hidden flex-shrink-0" id="logo-holder">
+              <img src="loknath.png" class="w-full h-full object-cover" alt="Logo" onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghml256V-E8rI4THin2xkDlBcswj_wIKIPAH77Lr5YyiPAGYY-ewIwZZyMtHt7eQ4PZn4AIkIpWZnMnX7UwjsoKnHeJCfXr4SDB2jJdZonvxGfhTxYk5f1XrDfXFffWVUnyWSLhlknue9_FBwf6b7HlbQYswgInLKhOTWhSxsn_yMFgGky-xknLxsf9QU/s1376/1000228359.png';">
+            </div>
+            <div class="ml-2 sm:ml-3 min-w-0">
+              <span class="font-extrabold text-xs sm:text-base md:text-lg text-pink-400 tracking-wide font-devanagari truncate block" id="nav-title">Padyatra Admin Studio</span>
+              <span id="role-badge" class="bg-pink-600 text-white font-black text-[8px] px-1.5 py-0.5 rounded-full tracking-widest uppercase block w-max mt-0.5">COORDINATOR</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-1.5 sm:space-x-3 text-xs flex-shrink-0">
+            <span class="bg-[#1D0721] text-pink-400 border border-pink-900/30 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="hidden sm:inline" id="sync-status-lbl">Live Sync</span>
+            </span>
+            
+            <select id="lang-select-admin" onchange="changeAdminLanguage(this.value)" class="bg-[#1D0721] border border-pink-900/10 text-pink-300 text-[9px] sm:text-[10px] rounded-full block p-1.5 font-semibold focus:outline-none">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="mr">मराठी</option>
+            </select>
+
+            <button onclick="logoutAdmin()" class="bg-[#280C2E] border border-pink-900/20 text-pink-400 px-3 py-2 rounded-full font-bold text-[9px] sm:text-xs flex items-center gap-1 transition-all" id="btn-exit-portal">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="hidden xs:inline" id="lbl-exit-portal">Exit Portal</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 flex-1">
+
+      <!-- ─── MASTER ADMIN GLOBAL MINISTERIAL CONSOLE ─── -->
+      <div id="master-global-cumulative-stats-editor" class="bg-gradient-to-br from-[#100412] to-pink-950/20 border-2 border-pink-500/40 rounded-[28px] p-5 shadow-2xl space-y-4 hidden">
+        <div class="flex items-center gap-2.5 border-b border-pink-900/20 pb-3">
+          <div class="w-9 h-9 rounded-full bg-pink-950/40 flex items-center justify-center text-pink-400 text-lg"><i class="fas fa-globe"></i></div>
+          <div>
+            <h2 class="text-sm font-black text-pink-300 uppercase tracking-wider font-devanagari">वैश्विक मंत्रालय मुख्य सांख्यिकी (Global Ministry Stats Setup)</h2>
+            <p class="text-[10px] text-stone-500">Master Admin: ये आंकड़े दुनिया भर के संचयी ऐतिहासिक उपलब्धियों के लिए सीधे होमपेज पर प्रदर्शित होंगे।</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <label class="block text-[10px] text-stone-400 uppercase mb-1">Global Total Books Distributed</label>
+            <input type="number" id="global-books-input" class="w-full text-xs p-2.5 bg-stone-900 border border-pink-950 rounded-full text-pink-300 font-bold">
+          </div>
+          <div>
+            <label class="block text-[10px] text-stone-400 uppercase mb-1">Global Total Prasadam Served</label>
+            <input type="number" id="global-prasadam-input" class="w-full text-xs p-2.5 bg-stone-900 border border-pink-950 rounded-full text-pink-300 font-bold">
+          </div>
+          <div>
+            <label class="block text-[10px] text-stone-400 uppercase mb-1">Global Total Distance (KM)</label>
+            <input type="number" id="global-distance-input" class="w-full text-xs p-2.5 bg-stone-900 border border-pink-950 rounded-full text-pink-300 font-bold">
+          </div>
+          <div>
+            <label class="block text-[10px] text-stone-400 uppercase mb-1">Global Total Towns Reached</label>
+            <input type="number" id="global-towns-input" class="w-full text-xs p-2.5 bg-stone-900 border border-pink-950 rounded-full text-pink-300 font-bold">
+          </div>
+        </div>
+        <button onclick="saveGlobalMinistryStats()" class="w-full sm:w-auto btn-premium-primary text-white font-black text-[11px] px-6 py-2.5 rounded-full uppercase tracking-wider transition-all">Save Global Core Stats</button>
+      </div>
+
+      <!-- MASTER ADMIN CENTRAL DIRECTORY OVERRIDE PANEL -->
+      <div id="master-admin-directory-panel" class="bg-[#1D0721] border-2 border-pink-500 rounded-[28px] p-4 space-y-3 hidden">
+        <div class="border-b border-pink-900/20 pb-2">
+          <span class="bg-pink-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">Master Administrator Control</span>
+          <h2 class="text-sm font-black text-white font-condensed mt-1">Global Padyatras Central Directory</h2>
+          <p class="text-[10px] text-stone-400">Click manage on any active padyatra below to take over and unlock its specific workspace settings.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="master-directory-grid"></div>
+      </div>
+
+      <!-- ACTIVE CAMPAIGN SESSION SELECTOR / KEY WARNING CARD -->
+      <div class="theme-panel border p-4 flex flex-col gap-4 shadow-xl">
+        <div id="master-selector-wrap" class="hidden flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="space-y-1">
+            <span class="text-[10px] text-pink-500 font-bold uppercase tracking-wider block" id="lbl-active-session">Active Campaign Session</span>
+            <h2 id="active-campaign-title" class="text-base font-black text-white font-condensed">No Padyatra Selected — Please select below</h2>
+          </div>
+          <div class="w-full sm:w-64">
+            <select id="global-padyatra-selector" onchange="selectActivePadyatra(this.value)" class="w-full text-xs p-2.5 bg-[#100412] border border-pink-900/30 rounded-full text-pink-300 font-bold focus:outline-none">
+              <!-- Dynamic options -->
+            </select>
+          </div>
+        </div>
+
+        <div id="coordinator-key-wrap" class="hidden bg-pink-950/10 border border-pink-900/20 rounded-[22px] p-4 space-y-3 relative overflow-hidden">
+          <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-pink-600/10 blur-xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div class="space-y-1.5 flex-1">
+              <span class="text-[10px] text-pink-500 font-black tracking-widest block uppercase" id="lbl-pin-warn-title">⚠️ IMPORTANT: SECURE ACCESS PIN</span>
+              <p class="text-stone-400 leading-relaxed text-[11px]" id="lbl-pin-warn-desc">Please copy and save this PIN securely. It is required to log back into your Padyatra Control Room on any device.</p>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto flex-shrink-0">
+              <div class="flex-1 md:flex-initial bg-stone-950 p-2.5 rounded-full border border-pink-900/15 flex items-center justify-between gap-3 font-mono font-bold tracking-wider text-pink-300 text-center">
+                <span id="coord-pin-display-text">ISKCON-PAD-XXXX</span>
+              </div>
+              <button onclick="copyCoordinatorPin()" class="btn-premium-primary text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md flex items-center gap-1.5 flex-shrink-0" id="btn-copy-pin-warn">
+                <i class="fas fa-copy"></i> <span id="lbl-copy-pin-btn">Copy PIN</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stats widgets (Highly Responsive Grid) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="theme-card p-4 border shadow-md">
+          <p class="text-[9px] text-stone-500 font-bold uppercase" id="lbl-assigned-path">Assigned Path</p>
+          <p id="stat-pad-name" class="text-sm font-bold text-pink-400 truncate mt-1">None</p>
+        </div>
+        <div class="theme-card p-4 border shadow-md">
+          <p class="text-[9px] text-stone-500 font-bold uppercase" id="lbl-precise-landmark">Precise Landmark Set</p>
+          <p id="stat-landmark" class="text-sm font-bold text-emerald-500 truncate mt-1">None</p>
+        </div>
+        <div class="theme-card p-4 border shadow-md">
+          <p class="text-[9px] text-stone-500 font-bold uppercase" id="lbl-departure-timer">Departure Timer Set</p>
+          <p id="stat-stay-timer" class="text-sm font-bold text-blue-400 truncate mt-1">None</p>
+        </div>
+        <div class="theme-card p-4 border shadow-md">
+          <p class="text-[9px] text-stone-500 font-bold uppercase" id="lbl-uploaded-photos">Uploaded Photos</p>
+          <p id="stat-photos-count" class="text-sm font-bold text-purple-400 truncate mt-1">0 Items</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left configuration panels -->
+        <div class="lg:col-span-1 space-y-6">
+          <div class="bg-pink-950/20 p-4 rounded-[22px] border border-pink-500/10 space-y-2">
+            <label class="block text-[10px] font-bold text-pink-400 uppercase" id="lbl-imgbb-key">ImgBB Cloud Key Config</label>
+            <input type="text" id="imgbb-key-input" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded-full text-pink-300" value="548fb47d702b5ade3a1d6bea9c4b6461">
+          </div>
+
+          <!-- AUTO-GPS PANEL -->
+          <div class="theme-panel p-4 border shadow-lg space-y-3">
+            <div class="flex items-center gap-2 border-b border-pink-900/10 pb-2">
+              <i class="fas fa-location-arrow text-emerald-500"></i>
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-devanagari">ऑटो-जीपीएस ट्रैकिंग (Auto-GPS Live Telemetry)</span>
+            </div>
+            <p class="text-[10px] text-theme-dim leading-relaxed">जीपीएस स्थान साझाकरण सक्षम करें। यह पृष्ठभूमि (Background) में फोन लॉक होने पर भी आपकी वास्तविक भौगोलिक स्थिति को प्रति ३0 सेकंड में सिंक करेगा।</p>
+            <button id="btn-gps-toggle" onclick="toggleGpsSharing()" class="w-full bg-[#100412] border border-pink-950 text-pink-400 py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 transition-all">
+              <i class="fas fa-location-arrow"></i> GPS Sharing: OFF
+            </button>
+          </div>
+
+          <!-- CONFIGURE ROUTES + LOCAL STATS -->
+          <div class="theme-panel p-5 border shadow-xl space-y-4">
+            <div class="flex justify-between items-center border-b border-pink-900/10 pb-2">
+              <h3 class="font-bold text-pink-300 text-xs uppercase tracking-wider" id="lbl-heading-route">Configure Route Parameters</h3>
+              <button onclick="triggerOneClickAutoTranslation()" class="text-[10px] bg-pink-950/40 border border-pink-500/20 hover:bg-pink-900/40 text-pink-400 px-3 py-1 rounded-full font-bold">
+                <i class="fas fa-language"></i> Auto-Translate
+              </button>
+            </div>
+            <input type="hidden" id="edit-padyatra-id">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] text-stone-500 uppercase" id="lbl-form-country">Country *</label>
+                <input type="text" id="form-country" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+              </div>
+              <div>
+                <label class="block text-[10px] text-stone-500 uppercase" id="lbl-form-city">Current City *</label>
+                <input type="text" id="form-city" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-stone-500 uppercase" id="lbl-form-route">Route Timeline Path *</label>
+              <input type="text" id="form-route" oninput="parseRoutePathToClicker()" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+              <div id="route-stops-clicker" class="flex flex-wrap gap-1.5 pt-2"></div>
+            </div>
+
+            <div class="bg-pink-950/10 p-3 rounded-[22px] border border-pink-900/10 space-y-3">
+              <span class="text-[10px] font-bold text-pink-500 uppercase tracking-widest block border-b border-pink-900/5 pb-1" id="lbl-landmark-timer-head">📍 Stay Spot Landmark & Timers</span>
+              <div>
+                <label class="block text-[9px] text-stone-400 uppercase" id="lbl-form-landmark">Exact Spot Landmark Name</label>
+                <input type="text" id="form-precise-landmark" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[9px] text-stone-400 uppercase" id="lbl-form-stay-until">Departure Time</label>
+                  <input type="datetime-local" id="form-stay-until" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded-full text-stone-400">
+                </div>
+                <div>
+                  <label class="block text-[9px] text-stone-400 uppercase" id="lbl-form-maps">Maps Link (Night Stay Fallback)</label>
+                  <input type="url" id="form-maps-link" class="w-full text-xs p-2 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+                </div>
+              </div>
+            </div>
+
+            <!-- DYNAMIC SPECIFIC PADYATRA BHAJAN STATS INPUTS -->
+            <div class="bg-stone-950 p-3 rounded-[22px] border border-pink-955/20 space-y-2.5">
+              <span class="text-[10px] font-bold text-pink-500 uppercase tracking-widest block border-b border-pink-900/10 pb-1 font-devanagari">📊 इस पदयात्रा के स्थानीय आंकड़े (Local Stats Tracker)</span>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div>
+                  <label class="block text-[8px] text-stone-400 uppercase mb-0.5">Books Sold</label>
+                  <input type="number" id="form-local-books" class="w-full text-xs p-2 bg-stone-900 border border-pink-955 rounded-full text-pink-300">
+                </div>
+                <div>
+                  <label class="block text-[8px] text-stone-400 uppercase mb-0.5">Prasadam Served</label>
+                  <input type="number" id="form-local-prasadam" class="w-full text-xs p-2 bg-stone-900 border border-pink-955 rounded-full text-pink-300">
+                </div>
+                <div>
+                  <label class="block text-[8px] text-stone-400 uppercase mb-0.5">Distance (KM)</label>
+                  <input type="number" id="form-local-distance" class="w-full text-xs p-2 bg-stone-900 border border-pink-955 rounded-full text-pink-300">
+                </div>
+              </div>
+            </div>
+
+            <!-- SMART SPECIFIC PADYATRA WHATSAPP LINK INPUT -->
+            <div class="bg-stone-950 p-3 rounded-[22px] border border-pink-955/20 space-y-1.5">
+              <label class="block text-[9px] text-pink-500 uppercase font-bold font-devanagari">💬 स्थानीय व्हाट्सएप लिंक (Local WhatsApp Group Link - Optional)</label>
+              <input type="url" id="form-whatsapp-link" placeholder="https://chat.whatsapp.com/..." class="w-full text-xs p-2 bg-stone-900 border border-pink-955 rounded-full text-stone-200 placeholder-stone-850">
+              <p class="text-[8px] text-stone-500">यदि यहाँ कोई लिंक नहीं डाला जाता, तो सिस्टम डिफॉल्ट रूप से आपके मुख्य व्हाट्सएप ग्रुप पर भक्तों को भेजेगा।</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] text-stone-500 uppercase" id="lbl-form-status">Status *</label>
+                <select id="form-status" class="w-full text-xs p-2 bg-[#100412] border border-pink-900/20 rounded-full text-stone-400">
+                  <option value="live">🔴 Live Now</option>
+                  <option value="planned">Planned</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] text-stone-500 uppercase" id="lbl-form-leader">Leader Name *</label>
+                <input type="text" id="form-leader" class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200">
+              </div>
+            </div>
+
+            <button onclick="savePadyatraRouteInfo()" class="w-full btn-premium-primary text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider mb-2" id="btn-save-route">Sync Parameters to Cloud</button>
+
+            <!-- SAFE DANGER ZONE FOR COORDINATORS -->
+            <div id="coordinator-danger-zone" class="border-t border-red-900/30 pt-3 mt-4 hidden">
+              <span class="text-[9px] font-bold text-red-500 uppercase block mb-1.5" id="lbl-danger-zone">Danger Zone</span>
+              <button onclick="deletePadyatraRouteCoordinator()" class="w-full bg-red-950/40 hover:bg-red-900/70 border border-red-900/40 text-red-400 font-bold py-2 rounded-full text-[10px] transition-all flex items-center justify-center gap-1.5" id="btn-delete-padyatra-coordinator">
+                <i class="fas fa-trash-alt"></i> <span id="lbl-delete-btn">Delete My Padyatra Channel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle column: High-Tech Entry to the Broadcast Studio -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="theme-panel p-5 border shadow-xl space-y-4">
+            <div class="flex justify-between items-center border-b border-pink-900/10 pb-3">
+              <div>
+                <h3 class="font-bold text-pink-300 text-sm font-condensed uppercase tracking-wider" id="lbl-broadcaster-title">🔴 Broadcast Console Launchpad</h3>
+                <p class="text-[10px] text-theme-dim" id="lbl-broadcaster-subtitle">Go live on your dedicated route channel using dynamic WebRTC (Agora) or YouTube streaming.</p>
+              </div>
+              <span id="p-studio-status-badge" class="bg-stone-950 text-stone-500 border border-white/5 text-[9px] font-bold px-2.5 py-1 rounded">STUDIO DISCONNECTED</span>
+            </div>
+
+            <div class="p-6 bg-stone-950 rounded-[22px] border border-white/5 text-center space-y-4">
+              <div class="w-16 h-16 rounded-full bg-pink-950/20 border border-pink-500/20 flex items-center justify-center mx-auto text-pink-500 text-xl animate-pulse">
+                <i class="fas fa-tower-broadcast"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-xs font-bold text-stone-200">Dynamic Key Routing Enabled</h4>
+                <p class="text-[10px] text-stone-500 max-w-sm mx-auto">All active metrics, viewers, reactions, and streams are automatically partitioned and scoped to your unique Padyatra dynamic ID.</p>
+              </div>
+              <button onclick="launchBroadcasterStudio()" class="w-full btn-premium-primary text-white font-black py-3 rounded-full text-xs uppercase tracking-widest shadow-lg">
+                Launch Fullscreen Console
+              </button>
+            </div>
+          </div>
+
+          <!-- Photo upload modules -->
+          <div class="theme-panel p-5 border shadow-xl space-y-4">
+            <h3 class="font-bold text-pink-300 text-xs uppercase tracking-wider pb-2 border-b border-pink-900/10" id="lbl-gallery-head">Padyatra Cloud Photo Gallery</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-[10px] text-stone-500 uppercase" id="lbl-gallery-type">Classify Gallery Type *</label>
+                  <select id="media-type" class="w-full text-xs p-2.5 bg-[#100412] border border-pink-900/20 rounded-full text-stone-400 focus:outline-none">
+                    <option value="daily">Daily Darshan Highlight</option>
+                    <option value="live">Cover Banner / Live Feed Photo</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-stone-500 uppercase" id="lbl-gallery-caption">Caption *</label>
+                  <input type="text" id="media-caption" placeholder="Harinama at market..." class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-100 placeholder-stone-850">
+                </div>
+                <div>
+                  <label class="block text-[10px] text-stone-500 uppercase" id="lbl-gallery-file">Select File (Max 100KB) *</label>
+                  <input type="file" id="media-file" accept="image/*" onchange="validateAdminImageFile(this)" class="w-full text-xs p-1 bg-stone-950 border border-pink-900/20 rounded bg-stone-950 text-stone-500">
+                </div>
+
+                <!-- RED WARNING BOX & AUTO-COMPRESSION UTILITY -->
+                <div id="upload-size-warning" class="hidden text-[10px] border border-red-900/40 bg-red-950/20 p-2.5 rounded-[18px] flex flex-col gap-2">
+                  <span id="lbl-size-warn-msg" class="text-red-400 font-bold leading-relaxed">⚠️ Image exceeds 100KB limit! Please compress it.</span>
+                  <button type="button" onclick="triggerClientImageCompression()" class="bg-red-650 hover:bg-red-700 text-white font-black text-[9px] py-1.5 px-3 rounded-full uppercase self-start tracking-wide" id="btn-reduce-size">
+                    Reduce Size (Auto-Compress)
+                  </button>
+                </div>
+
+                <div id="upload-progress-container" class="hidden">
+                  <div class="flex justify-between text-[10px] font-bold text-pink-500"><span class="animate-pulse">Uploading to ImgBB...</span><span id="upload-percent">0%</span></div>
+                  <div class="w-full bg-stone-950 rounded-full h-1"><div id="upload-progress-bar" class="bg-pink-600 h-1 rounded-full" style="width: 0%"></div></div>
+                </div>
+                <button onclick="handleMediaUpload()" class="w-full btn-premium-primary text-white font-bold py-2 rounded-full text-xs" id="btn-upload-photo">Upload Photo</button>
+              </div>
+              <div class="space-y-2">
+                <span class="text-[10px] font-bold text-pink-500 uppercase" id="lbl-assets-tracker">Uploaded Assets Tracker</span>
+                <div id="admin-gallery-preview" class="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ─── FULLSCREEN CONSOLE OVERLAY ─── -->
+  <div id="studio-console-overlay" class="fixed inset-0 bg-[#080808] z-50 flex flex-col hidden overflow-hidden">
+    <div id="toast-container" class="absolute left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center gap-1.5 pointer-events-none" style="bottom: calc(var(--deck-h) + 10px);"></div>
+
+    <div class="app-layout flex flex-col h-full w-full">
+        <!-- HEADER -->
+        <div class="header h-[52px] min-h-[52px] bg-[#111] border-b border-[#242424] flex justify-between items-center px-3.5 z-10 flex-shrink-0 shadow-lg">
+            <div class="brand flex items-center gap-2">
+                <div class="brand-logo font-condensed font-black text-lg text-[#FF9933] tracking-[1.5px] uppercase">☸ ISKCON STUDIO</div>
+                <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+            </div>
+            <div class="header-right flex items-center gap-2">
+                <div id="audio-visualizer-container" class="hidden sm:flex items-center gap-1 bg-[#181818] border border-[#242424] px-2.5 py-1.5 rounded-full">
+                  <i class="fas fa-microphone text-emerald-400 text-[10px]"></i>
+                  <div class="w-16 h-2 bg-stone-950 rounded-full overflow-hidden relative">
+                    <div id="audio-level-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-75" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div class="viewer-pill flex items-center gap-1.5 bg-[#181818] border border-[#242424] px-3 py-1.5 rounded-[20px] font-condensed font-bold text-sm">
+                    <i class="fas fa-eye text-stone-500 text-xs"></i>
+                    <span id="viewCount" class="text-white">0</span>
+                </div>
+                <div class="reactions-pill flex items-center gap-1.5 bg-[#181818] border border-[#242424] px-2.5 py-1.5 rounded-[20px] font-condensed text-sm font-bold text-stone-400">
+                    ❤️ <span class="count text-white" id="totalReactions">0</span>
+                </div>
+                <div class="icon-btn w-9 h-9 bg-[#181818] border border-[#242424] rounded-full grid place-items-center cursor-pointer text-[#aaa] hover:text-white hover:border-[#FF9933]" onclick="openSettings()"><i class="fas fa-cog text-xs"></i></div>
+                <button onclick="minimizeStudioConsole()" class="px-3 py-1.5 bg-stone-900 border border-[#242424] hover:bg-stone-800 text-[#FF9933] font-bold text-xs rounded-lg uppercase tracking-wide">Minimize</button>
+            </div>
+        </div>
+
+        <!-- VIDEO STAGE -->
+        <div class="stage flex-1 bg-black relative overflow-hidden min-h-0 shadow-inner">
+            <div id="local-player" class="w-full h-full object-cover"></div>
+            
+            <div id="yt-admin-wrapper">
+                <div id="yt-admin-player"></div>
+            </div>
+
+            <div class="stage-placeholder absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#0a0a0a] z-[2]" id="stagePlaceholder">
+                <div class="placeholder-icon w-[70px] h-[70px] border-2 border-[#242424] rounded-full grid place-items-center text-3xl text-stone-800 bg-[#111] shadow-md">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="placeholder-text text-stone-600 text-xs font-bold uppercase tracking-wider">Camera loading...</div>
+                <button onclick="handleManualCameraActivationAttempt()" class="bg-pink-650 hover:bg-pink-700 text-black font-black text-[10px] px-3 py-1.5 rounded uppercase mt-2 shadow-md flex items-center gap-1">
+                  <i class="fas fa-camera"></i> Grant Camera Access
+                </button>
+            </div>
+
+            <div class="absolute bottom-16 left-3 bg-black/60 backdrop-blur-md border border-white/5 px-2 py-1 rounded-lg flex items-center gap-1.5 z-30 sm:hidden">
+              <span class="text-[8px] text-stone-400 font-bold uppercase">Mic Signal</span>
+              <div class="w-12 h-1.5 bg-stone-950 rounded-full overflow-hidden">
+                <div id="audio-level-bar-mobile" class="h-full bg-emerald-500 rounded-full" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="console-mute-tag mute-tag"><i class="fas fa-microphone-slash"></i> MIC MUTED (USER)</div>
+            <div class="console-video-mute-tag video-mute-tag"><i class="fas fa-eye-slash"></i> VIDEO OFF (USER)</div>
+            <div class="duration-tag absolute top-3 right-3 bg-black/70 px-2.5 py-1 rounded-[6px] font-condensed text-sm font-bold tracking-wider z-20 border border-white/10 hidden" id="durationTag">00:00</div>
+            <div id="reaction-stage" class="absolute bottom-0 right-2 w-[60px] h-[80%] pointer-events-none overflow-hidden z-20"></div>
+        </div>
+
+        <!-- DECK / CONTROLS -->
+        <div class="deck bg-[#111] border-t border-[#242424] p-3 flex flex-col gap-2.5 shadow-md relative z-30">
+            <div class="landscape-brand">
+                <span class="font-condensed font-black text-sm text-[#FF9933] tracking-wide">☸ ISKCON STUDIO</span>
+                <div class="live-badge text-[0.7rem]"><div class="live-dot"></div> LIVE</div>
+                <button onclick="minimizeStudioConsole()" class="ml-auto px-2 py-1 bg-stone-900 border border-[#242424] text-[#FF9933] font-bold text-[10px] rounded uppercase tracking-wide">Minimize</button>
+            </div>
+            <div class="ls-stats">
+                <div class="viewer-pill justify-center text-xs">
+                    <i class="fas fa-eye"></i> <span id="viewCount2">0</span> watching
+                </div>
+                <div class="reactions-pill justify-center text-xs">
+                    ❤️ <span class="count" id="totalReactions2">0</span> reactions
+                </div>
+            </div>
+
+            <!-- YT Input on Home Page -->
+            <div class="yt-main-wrap flex gap-2 items-center">
+                <input type="text" id="yt_video_id_main" class="yt-main-inp flex-1 bg-[#0a0a0a] border border-[#242424] rounded-lg p-2.5 text-white font-sans text-xs" placeholder="Paste YouTube Link / Live Video URL" oninput="handleYtInputMain()">
+                <button class="yt-clear-btn w-10 h-10 bg-[#181818] border border-[#242424] rounded-lg text-stone-400 grid place-items-center hover:bg-red-950/20 hover:text-[#FF3B3B] hover:border-[#FF3B3B]" onclick="clearYtLinkMain()"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Main Controls -->
+            <div class="btn-row grid grid-cols-4 gap-2.5 h-[60px]">
+                <button id="micBtn" class="ctrl-btn ctrl-sq bg-[#181818] border border-[#242424] rounded-xl text-stone-300 grid place-items-center" onclick="toggleMic()">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button id="vidBtn" class="ctrl-btn ctrl-sq bg-[#181818] border border-[#242424] rounded-xl text-stone-300 grid place-items-center" onclick="toggleVideo()">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button id="liveBtn" class="ctrl-btn ctrl-main bg-gradient-to-r from-amber-400 to-[#FF9933] text-black font-condensed font-black text-xl tracking-widest rounded-xl shadow-lg" onclick="toggleLive()">GO LIVE</button>
+                <button id="camBtn" class="ctrl-btn ctrl-sq bg-[#181818] border border-[#242424] rounded-xl text-stone-300 grid place-items-center" onclick="switchCamera()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+
+            <!-- Reaction Row -->
+            <div class="reaction-row flex items-center justify-around py-1">
+                <span class="react-label text-[10px] text-stone-500 font-bold uppercase tracking-wider">Bhavo ko dekhein →</span>
+                <button class="react-btn bg-none border-none text-2xl" onclick="sendReaction('❤️')">❤️</button>
+                <button class="react-btn bg-none border-none text-2xl" onclick="sendReaction('🙏')">🙏</button>
+                <button class="react-btn bg-none border-none text-2xl" onclick="sendReaction('🌸')">🌸</button>
+                <button class="react-btn bg-none border-none text-2xl" onclick="sendReaction('🔔')">🔔</button>
+                <button class="react-btn bg-none border-none text-2xl" onclick="sendReaction('🌿')">🌿</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- NATIVE PERMISSION DIAGNOSTICS MODAL -->
+  <div id="diagnostics-modal" class="fixed inset-0 bg-black/95 z-[3000] flex justify-center items-center backdrop-blur-md hidden">
+      <div class="bg-[#181818] w-[92%] max-w-[420px] p-6 rounded-2xl border border-pink-500/40 text-center space-y-4">
+          <div class="text-pink-400 text-3xl"><i class="fas fa-stethoscope"></i></div>
+          <h3 class="text-lg font-bold text-white font-condensed tracking-wider uppercase">Padyatra Device Diagnostics</h3>
+          <p class="text-xs text-stone-400 leading-relaxed">We noticed you are running this panel inside a mobile application/webview wrapper.</p>
+          
+          <div class="bg-stone-950 p-4 rounded-lg border border-white/5 space-y-3 text-left text-xs font-mono">
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-stone-500">Security Protocol (HTTPS)</span>
+                <span id="diag-https-status" class="font-bold">Checking...</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-stone-500">User Agent API Support</span>
+                <span id="diag-webrtc-status" class="font-bold">Checking...</span>
+              </div>
+              <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                <span class="text-stone-500">Camera Device</span>
+                <span id="diag-camera-status" class="font-bold">Checking...</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-stone-500">Microphone Device</span>
+                <span id="diag-mic-status" class="font-bold">Checking...</span>
+              </div>
+          </div>
+
+          <div id="webview-instruction-box" class="bg-pink-950/20 text-pink-300 border border-pink-900/40 p-3 rounded-lg text-left text-[11px] leading-relaxed space-y-1 hidden">
+              <strong class="block text-white uppercase"><i class="fas fa-circle-info"></i> AppCreator24 Permission Fix:</strong>
+              <p>यदि कैमरा या माइक लोड नहीं हो रहा है, तो अपने फोन की <strong>Settings -> Apps -> [Your App Name] -> Permissions</strong> में जाएं और Camera तथा Microphone अनुमतियों को "Allow" करें।</p>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="requestAllMediaPermissionsDirectly()" class="flex-1 py-3 btn-premium-primary text-white font-black text-xs uppercase rounded-lg">Trigger Permission Dialog</button>
+            <button onclick="closeDiagnosticsModal()" class="px-4 py-3 bg-stone-900 border border-white/10 text-stone-400 font-bold text-xs rounded-lg hover:text-white">Close</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/90 z-[2000] flex justify-center items-center backdrop-blur-md hidden">
+      <div class="s-card bg-[#181818] w-[92%] max-w-[400px] p-5 rounded-2xl border border-[#242424] max-h-[85vh] overflow-y-auto shadow-2xl">
+          <div class="s-title font-condensed text-base font-black text-[#FF9933] tracking-wide mb-4 flex items-center gap-2 pb-2.5 border-b border-[#242424]"><i class="fas fa-server"></i> Agora Setup (Backup Server)</div>
+          
+          <div id="idInputs" class="space-y-3"></div>
+          
+          <button class="s-save w-full h-12 bg-gradient-to-r from-amber-400 to-[#FF9933] rounded-lg text-black font-condensed font-black text-base tracking-wide mt-4 shadow-lg" onclick="saveConfig()">SAVE SERVER CONFIG</button>
+          <button onclick="closeSettings()" class="w-full mt-2 bg-none border border-[#242424] text-stone-500 py-2.5 rounded-lg text-xs font-semibold hover:bg-stone-900">Cancel</button>
+      </div>
+  </div>
+
+  <!-- CUSTOM CONFIRM MODAL -->
+  <div id="custom-confirm-overlay" class="fixed inset-0 bg-black/85 z-[3000] flex justify-center items-center backdrop-blur-sm hidden">
+      <div class="c-modal bg-[#181818] border border-[#FF9933] rounded-2xl p-6 w-[90%] max-w-[340px] text-center shadow-2xl">
+          <div class="c-title font-condensed text-xl text-[#FF9933] font-bold mb-3"><i class="fas fa-exclamation-triangle"></i> Savdhaan</div>
+          <div class="c-msg text-xs text-stone-300 mb-6 leading-relaxed" id="custom-confirm-msg">Kya aap force action karna chahte hain?</div>
+          <div class="c-btn-row flex gap-3 justify-center">
+              <button class="c-btn c-btn-no flex-1 py-3 border border-[#242424] text-white font-bold rounded-lg text-xs" onclick="closeConfirm()">NAHI</button>
+              <button class="c-btn c-btn-yes flex-1 py-3 bg-[#FF3B3B] text-white font-bold rounded-lg text-xs shadow-lg" id="custom-confirm-yes">HAAN</button>
+          </div>
+      </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 right-5 z-[500] p-4 rounded-lg shadow-lg text-xs font-bold border transition-all duration-300 transform translate-y-4 opacity-0 hidden"></div>
+
+  <!-- WebRTC Agora and YouTube Iframe API Scripts -->
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.18.2.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+    const adminDict = {
+      en: {
+        lblActiveSession: "Active Campaign Session",
+        lblAssignedPath: "Assigned Path",
+        lblPreciseLandmark: "Precise Landmark Set",
+        lblDepartureTimer: "Departure Timer Set",
+        lblUploadedPhotos: "Uploaded Photos",
+        lblImgbbKey: "ImgBB Cloud Key Config",
+        lblHeadingRoute: "Configure Route Parameters",
+        lblFormCountry: "Country *",
+        lblFormCity: "Current City *",
+        lblFormRoute: "Route Timeline Path *",
+        lblLandmarkTimerHead: "📍 Stay Spot Landmark & Timers",
+        lblFormLandmark: "Exact Spot Landmark Name",
+        lblFormStayUntil: "Departure Time",
+        lblFormMaps: "Maps Link",
+        lblFormStatus: "Status *",
+        lblFormLeader: "Leader Name *",
+        btnSaveRoute: "Sync Parameters to Cloud",
+        lblBroadcasterTitle: "🔴 Broadcast Console Launchpad",
+        lblBroadcasterSubtitle: "Go live on your dedicated route channel using dynamic WebRTC (Agora) or YouTube streaming.",
+        lblGalleryHead: "Padyatra Cloud Photo Gallery",
+        lblGalleryType: "Classify Gallery Type *",
+        lblGalleryCaption: "Caption *",
+        lblGalleryFile: "Select File (Max 100KB) *",
+        btnUploadPhoto: "Upload Photo",
+        lblAssetsTracker: "Uploaded Assets Tracker",
+        validationError: "Please fill out all mandatory fields.",
+        saveSuccess: "Padyatra parameters successfully synced to cloud!",
+        pinError: "Invalid Access PIN.",
+        emptyPin: "Passcode PIN field cannot be empty.",
+        apiError: "Upload Failed. Check ImgBB API Key.",
+        apiSuccess: "Photo uploaded and synced successfully!",
+        warningPinTitle: "⚠️ IMPORTANT: SECURE ACCESS PIN",
+        warningPinMessage: "Please copy and save this PIN securely. It is required to log back into your Padyatra Control Room on any device.",
+        copyPinButton: "Copy PIN",
+        lblImgSizeWarn: "⚠️ Image size exceeds 100KB limit! Please compress it.",
+        btnReduceSize: "Reduce Size (Auto-Compress)",
+        reduceSuccess: "Image compressed successfully under 100KB!",
+        reduceFail: "Could not compress image. Try another file.",
+        btnDeleteRoute: "Delete My Padyatra Channel",
+        lblDangerZone: "Danger Zone",
+        deleteConfirmMaster: "⚠️ WARNING: Are you sure you want to permanently delete this entire Padyatra route channel from the database? This cannot be undone.",
+        deleteConfirmCoord: "⚠️ WARNING: Are you absolutely sure you want to delete your Padyatra route channel? Your account, stats, and live room will be permanently removed.",
+        deleteSuccess: "Channel removed successfully."
+      },
+      hi: {
+        lblActiveSession: "सक्रिय अभियान सत्र",
+        lblAssignedPath: "सौंपा गया मार्ग",
+        lblPreciseLandmark: "सटीक स्थान तय है",
+        lblDepartureTimer: "प्रस्थान उलटी गिनती",
+        lblUploadedPhotos: "अपलोड की गई तस्वीरें",
+        lblImgbbKey: "ImgBB क्लाउड कुंजी विन्यास",
+        lblHeadingRoute: "मार्ग मापदंडों को कॉन्फ़िगर करें",
+        lblFormCountry: "देश *",
+        lblFormCity: "वर्तमान शहर *",
+        lblFormRoute: "मार्ग समयरेखा पथ *",
+        lblLandmarkTimerHead: "📍 पड़ाव स्थान का नाम और टाइमर",
+        lblFormLandmark: "सटीक पड़ाव स्थान का नाम",
+        lblFormStayUntil: "प्रस्थान समय",
+        lblFormMaps: "गूगल मैप्स लिंक",
+        lblFormStatus: "स्थिति *",
+        lblFormLeader: "मार्गदर्शक का नाम *",
+        btnSaveRoute: "पैरामीटर क्लाउड से सिंक करें",
+        lblBroadcasterTitle: "🔴 ब्रॉडकास्ट कंसोल लॉन्चपैड",
+        lblBroadcasterSubtitle: "अगोरा WebRTC या यूट्यूब स्ट्रीमिंग का उपयोग करके अपने समर्पित रूट पर लाइव जाएं।",
+        lblGalleryHead: "पदयात्रा क्लाउड फोटो गैलरी",
+        lblGalleryType: "गैलरी प्रकार वर्गीकृत करें *",
+        lblGalleryCaption: "कैप्शन *",
+        lblGalleryFile: "फाइल चुनें (अधिकतम 100KB) *",
+        btnUploadPhoto: "तस्वीर अपलोड करें",
+        lblAssetsTracker: "अपलोड की गई तस्वीरें",
+        validationError: "कृपया सभी आवश्यक फ़ील्ड भरें।",
+        saveSuccess: "पदयात्रा पैरामीटर सफलतापूर्वक क्लाउड से सिंक हो गए हैं!",
+        pinError: "अवैध सुरक्षा पासकोड पिन।",
+        emptyPin: "सुरक्षा पिन फ़ील्ड खाली नहीं हो सकती।",
+        apiError: "अपलोड विफल। ImgBB API कुंजी की जाँच करें।",
+        apiSuccess: "तस्वीर सफलतापूर्वक अपलोड और सिंक हो गई!" ,
+        warningPinTitle: "⚠️ महत्वपूर्ण: सुरक्षित एक्सेस पिन",
+        warningPinMessage: "कृपया इस पिन को कॉपी करके सुरक्षित रख लें। किसी भी डिवाइस पर आपके पदयात्रा कंट्रोल रूम में वापस लॉग इन करने के लिए इसकी आवश्यकता होगी।",
+        copyPinButton: "पिन कॉपी करें",
+        lblImgSizeWarn: "⚠️ छवि का आकार 100KB से अधिक है! कृपया आकार घटाएं।",
+        btnReduceSize: "आकार घटाएं (ऑटो कंप्रेस)",
+        reduceSuccess: "छवि सफलतापूर्वक 100KB के अंदर कंप्रेस की गई!",
+        reduceFail: "छवि कंप्रेस नहीं हो सकी। दूसरी फ़ाइल आज़माएं।",
+        btnDeleteRoute: "मेरा पदयात्रा चैनल हमेशा के लिए हटाएं",
+        lblDangerZone: "खतरे का क्षेत्र",
+        deleteConfirmMaster: "⚠️ चेतावनी: क्या आप वाकई इस पदयात्रा मार्ग को डेटाबेस से हमेशा के लिए हटाना चाहते हैं? यह क्रिया वापस नहीं ली जा सकती।",
+        deleteConfirmCoord: "⚠️ चेतावनी: क्या आप वाकई अपना पदयात्रा चैनल हटाना चाहते हैं? आपका खाता, आंकड़े और लाइव रूम हमेशा के लिए हटा दिए जाएंगे।",
+        deleteSuccess: "चैनल सफलतापूर्वक हटा दिया गया।"
+      },
+      mr: {
+        lblActiveSession: "सक्रिय मोहीम सत्र",
+        lblAssignedPath: "नियुक्त मार्ग",
+        lblPreciseLandmark: "अचूक मुक्काम ठिकाण",
+        lblDepartureTimer: "प्रस्थानाची वेळ",
+        lblUploadedPhotos: "अपलोड केलेले फोटो",
+        lblImgbbKey: "ImgBB क्लाउड की कॉन्िगरेशन",
+        lblHeadingRoute: "मार्ग पॅरामीटर्स कॉन्फिगर करा",
+        lblFormCountry: "देश *",
+        lblFormCity: "सध्याचे शहर *",
+        lblFormRoute: "मार्ग टाइमलाईन पथ *",
+        lblLandmarkTimerHead: "📍 मुक्काम ठिकाण आणि प्रस्थान टाईमर्स",
+        lblFormLandmark: "अचूक मुक्कामाचे ठिकाण",
+        lblFormStayUntil: "प्रस्थानाची वेळ",
+        lblFormMaps: "नकाशा मार्ग दाखवा",
+        lblFormStatus: "स्थिती *",
+        lblFormLeader: "मार्गदर्शकाचे नाव *",
+        btnSaveRoute: "माहिती क्लाउड वर सेव्ह करा",
+        lblBroadcasterTitle: "🔴 कन्सोल लॉन्चपॅड",
+        lblBroadcasterSubtitle: "अगोरा WebRTC किंवा यूट्यूब स्ट्रीमिंग वापरून तुमच्या समर्पित चॅनेलवर थेट लाइव्ह जा.",
+        lblGalleryHead: "पदयात्रा क्लाउड फोटो गॅलरी",
+        lblGalleryType: "गॅलरी प्रकार निवडा *",
+        lblGalleryCaption: "कॅप्शन *",
+        lblGalleryFile: "फाईल निवडा (कमाल 100KB) *",
+        btnUploadPhoto: "फोटो अपलोड करा",
+        lblAssetsTracker: "अपलोड केलेले फोटो",
+        validationError: "कृपया सर्व आवश्यक माहिती भरा.",
+        saveSuccess: "पदयात्रा पॅरामीटर्स यशस्वीरित्या सेव्ह झाले आहेत!",
+        pinError: "अवैध सुरक्षा पासकोड पिन.",
+        emptyPin: "सुरक्षा पिन रिकामी ठेवू शकत नाही.",
+        apiError: "अपलोड अयशस्वी. ImgBB API की तपासा.",
+        apiSuccess: "फोटो यशस्वीरित्या अपलोड झाला!",
+        warningPinTitle: "⚠️ महत्त्वाचे: सुरक्षित ॲक्सेस पिन",
+        warningPinMessage: "कृपया हा पिन कॉपी करून सुरक्षित ठेवा. कोणत्याही डिव्हाइसवर तुमच्या पदयात्रा नियंत्रण कक्षात पुन्हा लॉग इन करण्यासाठी याची आवश्यकता असेल.",
+        copyPinButton: "पिन कॉपी करा",
+        lblImgSizeWarn: "⚠️ फोटोचा आकार 100KB पेक्षा जास्त आहे! कृपया आकार कमी करा.",
+        btnReduceSize: "आकार कमी करा (ऑटो कॉम्प्रेस)",
+        reduceSuccess: "फोटो यशस्वीरित्या 100KB च्या आत कॉम्प्रेस झाला!",
+        reduceFail: "फोटो कॉम्प्रेस होऊ शकला नाही. दुसरी फाईल निवडा.",
+        btnDeleteRoute: "माझे पदयात्रा चॅनेल काढून टाका",
+        lblDangerZone: "धोकादायक क्षेत्र",
+        deleteConfirmMaster: "⚠️ चेतावणी: आपण खरोखरच हा पदयात्रा मार्ग डेटाबेस मधून नेहमीसाठी काढून टाकू इच्छिता? ही क्रिया परत घेतली जाऊ शकत नाही.",
+        deleteConfirmCoord: "⚠️ चेतावणी: आपण खरोखरच आपले पदयात्रा चॅनेल काढून टाकू इच्छिता? आपले खाते आणि सर्व माहिती कायमची हटवली जाईल.",
+        deleteSuccess: "चॅनेल यशस्वीरित्या हटवले गेले."
+      }
+    };
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgGnN3iktLh8JgzCZMxQMdCwkxFFIz1Tw",
+      authDomain: "video-only-om11.firebaseapp.com",
+      databaseURL: "https://video-only-om11-default-rtdb.firebaseio.com",
+      projectId: "video-only-om11",
+      storageBucket: "video-only-om11.firebasestorage.app",
+      messagingSenderId: "839907917457",
+      appId: "1:839907917457:web:87eb570818adc132370930"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const MASTER_ADMIN_KEY = "ISKCON_MASTER_777";
+
+    const S = {
+      sessionKey: "", isMaster: false, assignedPadyatraId: null, padyatras: [],
+      currentAdminLang: 'en',
+      adminSessionId: Math.random().toString(36).substr(2, 9),
+      isLive: false, globalIsLive: false, currentLiveSession: null,
+      client: null, localAudio: null, localVideo: null, isMuted: false, isVideoMuted: false,
+      serverIndex: 0, cameras: [], camIdx: 0, agoraIds: [],
+      durationStart: null, durationTimer: null, totalReactions: 0,
+      mode: localStorage.getItem('iskcon_admin_mode') || 'agora',
+      ytVideoId: localStorage.getItem('iskcon_admin_yt') || null,
+      ytPlayer: null, ytReady: false, ytSyncInterval: null,
+      reactionQueue: [], lastRenderTime: 0,
+      audioVolumeInterval: null, activeUploadBlob: null,
+      gpsWatchActive: false, 
+      imgbbKeysPool: [
+        "548fb47d702b5ade3a1d6bea9c4b6461", "8af2724cf629bbab94cd22d9ea67e85c",
+        "9f82d8c36ad17efab15690b232a9cd8f", "701ae8b2a3d0f00cbcf04e9c71a3962d"
+      ]
+    };
+
+    let renderTimeout = null;
+    let lastRenderTime = 0;
+    const RENDER_THROTTLE_MS = 600;
+
+    if (window.AgoraRTC) {
+      AgoraRTC.setLogLevel(3);
+      S.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedKey = localStorage.getItem('iskcon_padyatra_session_key');
+      if (savedKey) {
+        document.getElementById('auth-key-input').value = savedKey;
+        handleLoginAttempt();
+      }
+    });
+
+    function changeAdminLanguage(lang) {
+      S.currentAdminLang = lang;
+      localizeAdminUI();
+    }
+
+    function localizeAdminUI() {
+      const d = adminDict[S.currentAdminLang];
+      document.getElementById('lbl-active-session').textContent = d.lblActiveSession;
+      document.getElementById('lbl-assigned-path').textContent = d.lblAssignedPath;
+      document.getElementById('lbl-precise-landmark').textContent = d.lblPreciseLandmark;
+      document.getElementById('lbl-departure-timer').textContent = d.lblDepartureTimer;
+      document.getElementById('lbl-uploaded-photos').textContent = d.lblUploadedPhotos;
+      document.getElementById('lbl-imgbb-key').textContent = d.lblImgbbKey;
+      document.getElementById('lbl-heading-route').textContent = d.lblHeadingRoute;
+      document.getElementById('lbl-form-country').textContent = d.lblFormCountry;
+      document.getElementById('lbl-form-city').textContent = d.lblFormCity;
+      document.getElementById('lbl-form-route').textContent = d.lblFormRoute;
+      document.getElementById('lbl-landmark-timer-head').textContent = d.lblLandmarkTimerHead;
+      document.getElementById('lbl-form-landmark').textContent = d.lblFormLandmark;
+      document.getElementById('lbl-form-stay-until').textContent = d.lblFormStayUntil;
+      document.getElementById('lbl-form-maps').textContent = d.lblFormMaps;
+      document.getElementById('form-whatsapp-link').placeholder = "https://chat.whatsapp.com/...";
+      document.getElementById('lbl-form-status').textContent = d.lblFormStatus;
+      document.getElementById('lbl-form-leader').textContent = d.lblFormLeader;
+      document.getElementById('btn-save-route').textContent = d.btnSaveRoute;
+      document.getElementById('lbl-broadcaster-title').textContent = d.lblBroadcasterTitle;
+      document.getElementById('lbl-broadcaster-subtitle').textContent = d.lblBroadcasterSubtitle;
+      document.getElementById('lbl-gallery-head').textContent = d.lblGalleryHead;
+      document.getElementById('lbl-gallery-type').textContent = d.lblGalleryType;
+      document.getElementById('btn-upload-photo').textContent = d.btnUploadPhoto;
+      document.getElementById('lbl-assets-tracker').textContent = d.lblAssetsTracker;
+      document.getElementById('lbl-size-warn-msg').textContent = d.lblImgSizeWarn;
+      document.getElementById('btn-reduce-size').textContent = d.btnReduceSize;
+      document.getElementById('lbl-delete-btn').textContent = d.btnDeleteRoute;
+      document.getElementById('lbl-danger-zone').textContent = d.lblDangerZone;
+      document.getElementById('sync-status-lbl').textContent = d.syncLiveText || "Live Sync";
+    }
+
+    function switchAuthTab(tab) {
+      document.getElementById('tab-auth-login').className = tab === 'login' ? "flex-1 pb-3 text-center border-b-2 border-pink-600 text-orange-400 font-bold text-sm" : "flex-1 pb-3 text-center border-b-2 border-transparent text-stone-400 font-semibold text-sm";
+      document.getElementById('tab-auth-register').className = tab === 'register' ? "flex-1 pb-3 text-center border-b-2 border-pink-600 text-orange-400 font-bold text-sm" : "flex-1 pb-3 text-center border-b-2 border-transparent text-stone-400 font-semibold text-sm";
+      document.getElementById('auth-login-pane').className = tab === 'login' ? "space-y-4" : "space-y-4 hidden";
+      document.getElementById('auth-register-pane').className = tab === 'register' ? "space-y-4" : "space-y-4 hidden";
+    }
+
+    function handleRouteRegistration() {
+      const nameEn = document.getElementById('reg-name-en').value.trim();
+      const nameHi = document.getElementById('reg-name-hi').value.trim() || nameEn;
+      const nameMr = document.getElementById('reg-name-mr').value.trim() || nameEn;
+      const descEn = document.getElementById('reg-desc-en').value.trim();
+      const descHi = document.getElementById('reg-desc-hi').value.trim() || descEn;
+      const descMr = document.getElementById('reg-desc-mr').value.trim() || descEn;
+      const country = document.getElementById('reg-country').value.trim();
+      const city = document.getElementById('reg-city').value.trim();
+      const routeStr = document.getElementById('reg-route').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const leader = document.getElementById('reg-leader').value.trim();
+
+      if (!nameEn || !descEn || !country || !city || !routeStr || !phone || !leader) {
+        showNotification(adminDict[S.currentAdminLang].validationError, "error");
+        return;
+      }
+
+      document.getElementById('auth-spinner').classList.remove('hidden');
+
+      const routeArr = routeStr.split(',').map(r => r.trim()).filter(r => r !== '');
+      const uniquePin = 'ISKCON-PAD-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+      const newId = 'padyatra-' + Date.now();
+
+      const payload = {
+        name: { en: nameEn, hi: nameHi, mr: nameMr },
+        description: { en: descEn, hi: descHi, mr: descMr },
+        currentCountry: country, currentCity: city, route: routeArr,
+        preciseLandmark: "", coordinatorPhone: phone, stayUntilTime: "", googleMapsLink: "",
+        status: "planned", startDate: new Date().toISOString().split('T')[0], leader: leader,
+        accessKey: uniquePin, photos: [], whatsappLink: "",
+        stats: { books: 0, prasadam: 0, distance: 0 },
+        liveState: { isLive: false, reactions: { heart: 0, pray: 0, flower: 0, bell: 0, leaf: 0 } }
+      };
+
+      database.ref('padyatras/' + newId).set(payload)
+        .then(() => {
+          document.getElementById('auth-spinner').classList.add('hidden');
+          document.getElementById('generated-key-text').textContent = uniquePin;
+          document.getElementById('key-dialog').classList.remove('hidden');
+        })
+        .catch(err => {
+          document.getElementById('auth-spinner').classList.add('hidden');
+          showNotification("Firebase error: " + err.message, "error");
+        });
+    }
+
+    function copyGeneratedKey() {
+      navigator.clipboard.writeText(document.getElementById('generated-key-text').textContent).then(() => {
+        showNotification("Access Key copied successfully!");
+      });
+    }
+
+    function dismissKeyDialog() {
+      document.getElementById('key-dialog').classList.add('hidden');
+      document.getElementById('auth-key-input').value = document.getElementById('generated-key-text').textContent;
+      switchAuthTab('login');
+      handleLoginAttempt();
+    }
+
+    function handleLoginAttempt() {
+      const key = document.getElementById('auth-key-input').value.trim();
+      if (!key) { showNotification("Enter PIN key first", "error"); return; }
+
+      document.getElementById('auth-spinner').classList.remove('hidden');
+
+      database.ref('padyatras').once('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        const list = Object.keys(data).map(k => ({ id: k, ...data[k] }));
+        let auth = false;
+
+        if (key === MASTER_ADMIN_KEY) {
+          auth = true; S.isMaster = true; S.assignedPadyatraId = null;
+        } else {
+          const match = list.find(p => p.accessKey === key);
+          if (match) { auth = true; S.isMaster = false; S.assignedPadyatraId = match.id; }
+        }
+
+        document.getElementById('auth-spinner').classList.add('hidden');
+
+        if (auth) {
+          S.sessionKey = key;
+          localStorage.setItem('iskcon_padyatra_session_key', key);
+          document.getElementById('auth-overlay').classList.add('hidden');
+          document.getElementById('dashboard-viewport').classList.remove('hidden');
+          initAdminDashboardView();
+        } else {
+          showNotification("Invalid Passkey PIN.", "error");
+          localStorage.removeItem('iskcon_padyatra_session_key');
+        }
+      });
+    }
+
+    function logoutAdmin() { localStorage.removeItem('iskcon_padyatra_session_key'); location.reload(); }
+
+    function initAdminDashboardView() {
+      const badge = document.getElementById('role-badge');
+      if (badge) badge.textContent = S.isMaster ? "MASTER ADMIN" : "COORDINATOR";
+      localizeAdminUI();
+
+      const masterWrap = document.getElementById('master-selector-wrap');
+      const coordWrap = document.getElementById('coordinator-key-wrap');
+      const coordDanger = document.getElementById('coordinator-danger-zone');
+      const globalStatsEditor = document.getElementById('master-global-cumulative-stats-editor');
+
+      if (S.isMaster) {
+        if (masterWrap) masterWrap.classList.remove('hidden');
+        if (coordWrap) coordWrap.classList.add('hidden');
+        if (coordDanger) coordDanger.classList.add('hidden');
+        if (globalStatsEditor) {
+          globalStatsEditor.classList.remove('hidden');
+          loadGlobalStatsToEditor();
+        }
+      } else {
+        if (masterWrap) masterWrap.classList.add('hidden');
+        if (coordWrap) coordWrap.classList.remove('hidden');
+        if (coordDanger) coordDanger.classList.remove('hidden');
+        if (globalStatsEditor) globalStatsEditor.classList.add('hidden');
+        document.getElementById('coord-pin-display-text').textContent = S.sessionKey;
+      }
+
+      database.ref('padyatras').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        S.padyatras = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+
+        renderMasterAdminCentralDirectoryPanel();
+        populateGlobalCampaignSelector();
+
+        if (S.assignedPadyatraId) {
+          selectActivePadyatra(S.assignedPadyatraId);
+        } else if (!S.isMaster && S.padyatras.length > 0) {
+          const match = S.padyatras.find(p => p.accessKey === S.sessionKey);
+          if (match) selectActivePadyatra(match.id);
+        }
+      });
+    }
+
+    // ─── MASTER GLOBAL MINISTRY REAL STATS CONTROLLERS ───
+    function loadGlobalStatsToEditor() {
+      database.ref('globalStats').once('value', snap => {
+        const stats = snap.val() || { books: 15430, prasadam: 45100, distance: 1850, towns: 108 };
+        document.getElementById('global-books-input').value = stats.books;
+        document.getElementById('global-prasadam-input').value = stats.prasadam;
+        document.getElementById('global-distance-input').value = stats.distance;
+        document.getElementById('global-towns-input').value = stats.towns;
+      });
+    }
+
+    function saveGlobalMinistryStats() {
+      if (!S.isMaster) return;
+      const b = parseInt(document.getElementById('global-books-input').value) || 0;
+      const p = parseInt(document.getElementById('global-prasadam-input').value) || 0;
+      const d = parseInt(document.getElementById('global-distance-input').value) || 0;
+      const t = parseInt(document.getElementById('global-towns-input').value) || 0;
+
+      database.ref('globalStats').set({ books: b, prasadam: p, distance: d, towns: t })
+        .then(() => showNotification("Worldwide Core Stats updated successfully!"))
+        .catch(err => showNotification("Save failed: " + err.message, "error"));
+    }
+
+    // ─── ONE-CLICK AUTO TRANSLATION CLIENT SIDE API ENGINE ───
+    async function triggerOneClickAutoTranslation() {
+      const descEn = document.getElementById('reg-desc-en') ? document.getElementById('reg-desc-en').value : "";
+      let textToTranslate = descEn.trim();
+
+      if (!textToTranslate) {
+        const activeObj = S.padyatras.find(p => p.id === S.assignedPadyatraId);
+        if (activeObj && activeObj.description && activeObj.description.en) {
+          textToTranslate = activeObj.description.en;
+        }
+      }
+
+      if (!textToTranslate) {
+        showNotification("Please fill out Description in English first to translate.", "error");
+        return;
+      }
+
+      showNotification("Auto-translating description...", "success");
+
+      try {
+        const transHi = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|hi`).then(r => r.json());
+        const transMr = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|mr`).then(r => r.json());
+
+        const resHi = transHi?.responseData?.translatedText || textToTranslate;
+        const resMr = transMr?.responseData?.translatedText || textToTranslate;
+
+        const rootId = S.assignedPadyatraId;
+        if (rootId) {
+          const refDesc = database.ref(`padyatras/${rootId}/description`);
+          await refDesc.update({ hi: resHi, mr: resMr });
+          
+          const regDescHi = document.getElementById('reg-desc-hi');
+          const regDescMr = document.getElementById('reg-desc-mr');
+          if (regDescHi) regDescHi.value = resHi;
+          if (regDescMr) regDescMr.value = resMr;
+
+          showNotification("Translating completed & Synced!");
+        } else {
+          document.getElementById('reg-desc-hi').value = resHi;
+          document.getElementById('reg-desc-mr').value = resMr;
+          showNotification("Draft translations completed!");
+        }
+      } catch(e) {
+        showNotification("Translator server temporary unavailable.", "error");
+      }
+    }
+
+    // ─── ROUTE STOP CLICKER GENERATOR AND PROGRESSION ENGINE ───
+    function parseRoutePathToClicker() {
+      const routeVal = document.getElementById('form-route').value.trim();
+      const container = document.getElementById('route-stops-clicker');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!routeVal) return;
+
+      const stops = routeVal.split(',').map(s => s.trim()).filter(s => s !== '');
+      stops.forEach(stop => {
+        const badge = document.createElement('button');
+        badge.type = "button";
+        badge.onclick = () => {
+          document.getElementById('form-city').value = stop;
+          showNotification(`Current stop set to: ${stop}`);
+          highlightActiveStopInClicker(stop);
+        };
+        badge.className = "px-3 py-1.5 bg-[#2E0B32] border border-pink-955/40 rounded-full text-[9px] text-pink-400 font-bold hover:bg-pink-955 hover:text-white transition-colors flex items-center gap-1 shadow-inner";
+        badge.innerHTML = `📍 <span>${stop}</span>`;
+        container.appendChild(badge);
+      });
+    }
+
+    function highlightActiveStopInClicker(city) {
+      const container = document.getElementById('route-stops-clicker');
+      if (!container) return;
+      Array.from(container.children).forEach(btn => {
+        const span = btn.querySelector('span');
+        if (span && span.textContent.toLowerCase() === city.toLowerCase()) {
+          btn.className = "px-3 py-1.5 bg-pink-600 text-white rounded-full text-[9px] font-black flex items-center gap-1";
+        } else {
+          btn.className = "px-3 py-1.5 bg-[#2E0B32] border border-pink-955/40 rounded-full text-[9px] text-pink-400 font-bold hover:bg-[#2E0B32]/80 hover:text-white transition-colors flex items-center gap-1 shadow-inner";
+        }
+      });
+    }
+
+    // ─── INTEGRATED NATIVE ANDROID GPS BRIDGE (Foreground background sync) ───
+    function toggleGpsSharing() {
+      const id = S.assignedPadyatraId;
+      if (!id) {
+        showNotification("Please select a Padyatra first from the global controller", "error");
+        return;
+      }
+
+      // Android Admin Native Bridge Trigger
+      if (window.AndroidAdminBridge && typeof window.AndroidAdminBridge.setGpsSharing === 'function') {
+         window.AndroidAdminBridge.syncActivePadyatraId(id);
+         const nextState = !S.gpsWatchActive;
+         S.gpsWatchActive = nextState;
+         window.AndroidAdminBridge.setGpsSharing(nextState);
+         
+         updateGpsButtonUI(nextState);
+         
+         // GPS चालू होने पर फ़ायरबेस लाइव स्टेट सिंक करना
+         database.ref(`padyatras/${id}/liveState`).update({
+           isLive: nextState,
+           sessionId: nextState ? S.adminSessionId : null
+         });
+
+         showNotification(nextState ? "Native Background GPS Tracking Started! ✅" : "Background GPS Tracking Stopped.");
+         return;
+      }
+
+      // Web Browser Fallback GPS
+      const btn = document.getElementById('btn-gps-toggle');
+      if (S.gpsWatchActive) {
+        navigator.geolocation.clearWatch(S.gpsWatchId);
+        S.gpsWatchId = null;
+        S.gpsWatchActive = false;
+        updateGpsButtonUI(false);
+        database.ref(`padyatras/${id}/liveState/gps`).remove();
+        database.ref(`padyatras/${id}/liveState`).update({ isLive: false, sessionId: null });
+        showNotification("GPS Tracking Stopped", "error");
+      } else {
+        if (!navigator.geolocation) {
+          showNotification("Geolocator GPS not supported by your browser.", "error");
+          return;
+        }
+
+        btn.className = "w-full bg-emerald-600 text-white py-2.5 rounded-full text-xs font-bold transition-all animate-pulse flex items-center justify-center gap-1.5";
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing GPS Sensor...';
+
+        S.gpsWatchId = navigator.geolocation.watchPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          S.gpsWatchActive = true;
+
+          database.ref(`padyatras/${id}/liveState/gps`).set({
+            lat: lat,
+            lng: lng,
+            updatedAt: firebase.database.ServerValue.TIMESTAMP
+          });
+          database.ref(`padyatras/${id}/liveState`).update({ isLive: true, sessionId: S.adminSessionId });
+
+          btn.className = "w-full bg-emerald-600 text-white py-2.5 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md";
+          btn.innerHTML = `<i class="fas fa-location-arrow text-white animate-bounce"></i> GPS: ACTIVE (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+        }, (err) => {
+          showNotification("GPS Permission Denied or timeout occurred.", "error");
+          S.gpsWatchActive = false;
+          updateGpsButtonUI(false);
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+      }
+    }
+
+    function updateGpsButtonUI(active) {
+      const btn = document.getElementById('btn-gps-toggle');
+      if (!btn) return;
+      if (active) {
+        btn.className = "w-full bg-emerald-600 text-white py-2.5 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-950/20";
+        btn.innerHTML = '<i class="fas fa-location-arrow animate-bounce"></i> GPS Tracking: ON (BACKGROUND)';
+      } else {
+        btn.className = "w-full bg-[#100412] border border-pink-950 text-pink-400 py-2.5 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5";
+        btn.innerHTML = '<i class="fas fa-location-arrow"></i> GPS Sharing: OFF';
+      }
+    }
+
+    function renderMasterAdminCentralDirectoryPanel() {
+      const panel = document.getElementById('master-admin-directory-panel');
+      const grid = document.getElementById('master-directory-grid');
+      
+      if (S.isMaster) {
+        panel.classList.remove('hidden');
+        grid.innerHTML = '';
+
+        S.padyatras.forEach(p => {
+          const card = document.createElement('div');
+          card.className = "bg-[#280C2E] p-3 rounded-[22px] border border-pink-900/20 flex flex-col justify-between space-y-2";
+          const isCurrentActive = S.assignedPadyatraId === p.id;
+
+          card.innerHTML = `
+            <div>
+              <h4 class="font-bold text-xs text-pink-400">${p.name.en}</h4>
+              <p class="text-[9px] text-stone-500 font-semibold">Leader: ${p.leader}</p>
+              <p class="text-[9px] text-pink-500 font-mono font-bold mt-1">Access PIN: ${p.accessKey}</p>
+            </div>
+            <div class="flex flex-col gap-1.5 mt-2">
+              <button onclick="selectActivePadyatra('${p.id}')" class="w-full text-center py-1.5 rounded-full text-[10px] font-bold transition-colors ${
+                isCurrentActive ? 'bg-emerald-600 text-white' : 'bg-[#100412] text-pink-300 border border-pink-900/20 hover:bg-stone-850'
+              }">
+                ${isCurrentActive ? ' MANAGING NOW' : ' Manage Padyatra'}
+              </button>
+              <button onclick="deletePadyatraRouteMaster('${p.id}')" class="w-full bg-red-950/40 hover:bg-red-900/75 border border-red-900/30 text-red-400 font-bold py-1.5 rounded-full text-[10px] transition-all flex items-center justify-center gap-1">
+                <i class="fas fa-trash-alt"></i> Delete Route Channel
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } else {
+        panel.classList.add('hidden');
+      }
+    }
+
+    function populateGlobalCampaignSelector() {
+      const selector = document.getElementById('global-padyatra-selector');
+      if (!selector) return;
+      selector.innerHTML = '';
+
+      if (S.isMaster) {
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = "";
+        defaultOpt.textContent = "Select Padyatra to Manage";
+        selector.appendChild(defaultOpt);
+
+        S.padyatras.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.name.en;
+          if (S.assignedPadyatraId === p.id) opt.selected = true;
+          selector.appendChild(opt);
+        });
+        selector.disabled = false;
+      } else {
+        const match = S.padyatras.find(p => p.accessKey === S.sessionKey);
+        if (match) {
+          const opt = document.createElement('option');
+          opt.value = match.id;
+          opt.textContent = match.name.en;
+          selector.appendChild(opt);
+        }
+        selector.disabled = true;
+      }
+    }
+
+    function selectActivePadyatra(id) {
+      if (!id) {
+        S.assignedPadyatraId = null;
+        document.getElementById('edit-padyatra-id').value = '';
+        document.getElementById('active-campaign-title').textContent = "No Padyatra Selected — Please select below";
+        document.getElementById('stat-pad-name').textContent = "None";
+        document.getElementById('stat-landmark').textContent = "None";
+        document.getElementById('stat-stay-timer').textContent = "None";
+        document.getElementById('stat-photos-count').textContent = "0 Items";
+        document.getElementById('admin-gallery-preview').innerHTML = '';
+        return;
+      }
+
+      detachRealtimeLiveStateListeners();
+
+      S.assignedPadyatraId = id;
+      document.getElementById('edit-padyatra-id').value = id;
+
+      const activeObj = S.padyatras.find(p => p.id === id);
+      if (activeObj) {
+        document.getElementById('active-campaign-title').textContent = activeObj.name.en;
+        populateFormWithPadyatra(activeObj);
+        
+        document.getElementById('stat-pad-name').textContent = activeObj.name.en;
+        document.getElementById('stat-landmark').textContent = activeObj.preciseLandmark || "Not Set";
+        document.getElementById('stat-stay-timer').textContent = activeObj.stayUntilTime ? new Date(activeObj.stayUntilTime).toLocaleDateString() : "Not Set";
+        document.getElementById('stat-photos-count').textContent = (activeObj.photos ? activeObj.photos.length : 0) + " Items";
+
+        renderAdminGalleryPreview();
+        attachRealtimeLiveStateListeners(id);
+      }
+    }
+
+    function populateFormWithPadyatra(item) {
+      document.getElementById('edit-padyatra-id').value = item.id;
+      document.getElementById('form-country').value = item.currentCountry || '';
+      document.getElementById('form-city').value = item.currentCity || '';
+      document.getElementById('form-route').value = item.route ? item.route.join(', ') : '';
+      
+      parseRoutePathToClicker();
+      highlightActiveStopInClicker(item.currentCity || '');
+
+      document.getElementById('form-precise-landmark').value = item.preciseLandmark || '';
+      document.getElementById('form-stay-until').value = item.stayUntilTime || '';
+      document.getElementById('form-maps-link').value = item.googleMapsLink || '';
+      document.getElementById('form-status').value = item.status || 'live';
+      document.getElementById('form-leader').value = item.leader || '';
+      
+      document.getElementById('form-local-books').value = (item.stats && item.stats.books) ? item.stats.books : 0;
+      document.getElementById('form-local-prasadam').value = (item.stats && item.stats.prasadam) ? item.stats.prasadam : 0;
+      document.getElementById('form-local-distance').value = (item.stats && item.stats.distance) ? item.stats.distance : 0;
+      
+      document.getElementById('form-whatsapp-link').value = item.whatsappLink || '';
+    }
+
+    function savePadyatraRouteInfo() {
+      const id = S.assignedPadyatraId;
+      const country = document.getElementById('form-country').value.trim();
+      const city = document.getElementById('form-city').value.trim();
+      const routeStr = document.getElementById('form-route').value.trim();
+      const landmark = document.getElementById('form-precise-landmark').value.trim();
+      const departure = document.getElementById('form-stay-until').value;
+      const maps = document.getElementById('form-maps-link').value.trim();
+      const status = document.getElementById('form-status').value;
+      const leader = document.getElementById('form-leader').value.trim();
+      
+      const localBooks = parseInt(document.getElementById('form-local-books').value) || 0;
+      const localPrasadam = parseInt(document.getElementById('form-local-prasadam').value) || 0;
+      const localDistance = parseInt(document.getElementById('form-local-distance').value) || 0;
+
+      const whatsapp = document.getElementById('form-whatsapp-link').value.trim();
+      const d = adminDict[S.currentAdminLang];
+
+      if (!id) {
+        showNotification("Action blocked: Please select a Padyatra campaign session.", "error");
+        return;
+      }
+
+      if (!country || !city || !routeStr || !leader) {
+        showNotification(d.validationError, "error");
+        return;
+      }
+
+      const original = S.padyatras.find(p => p.id === id);
+      const payload = {
+        name: original.name, description: original.description, currentCountry: country, currentCity: city,
+        route: routeStr.split(',').map(r => r.trim()).filter(r => r !== ''), preciseLandmark: landmark,
+        coordinatorPhone: original.coordinatorPhone, stayUntilTime: departure, googleMapsLink: maps,
+        status: status, startDate: original.startDate, leader: leader, accessKey: original.accessKey,
+        photos: original.photos || [], whatsappLink: whatsapp,
+        stats: { books: localBooks, prasadam: localPrasadam, distance: localDistance },
+        liveState: original.liveState || { isLive: false }
+      };
+
+      database.ref('padyatras/' + id).set(payload).then(() => {
+        showNotification(d.saveSuccess);
+      });
+    }
+
+    function deletePadyatraRouteMaster(padyatraId) {
+      const d = adminDict[S.currentAdminLang];
+      window.showConfirm(d.deleteConfirmMaster, () => {
+        database.ref(`padyatras/${padyatraId}`).remove()
+          .then(() => {
+            showNotification(d.deleteSuccess);
+            if (S.assignedPadyatraId === padyatraId) selectActivePadyatra(null);
+          });
+      });
+    }
+
+    function deletePadyatraRouteCoordinator() {
+      const id = S.assignedPadyatraId;
+      const d = adminDict[S.currentAdminLang];
+      if (!id) return;
+
+      window.showConfirm(d.deleteConfirmCoord, () => {
+        detachRealtimeLiveStateListeners();
+        database.ref(`padyatras/${id}`).remove()
+          .then(() => {
+            showNotification(d.deleteSuccess);
+            localStorage.removeItem('iskcon_padyatra_session_key');
+            setTimeout(() => { location.reload(); }, 1000);
+          });
+      });
+    }
+
+    function validateAdminImageFile(input) {
+      const file = input.files[0];
+      const warningBox = document.getElementById('upload-size-warning');
+      const uploadBtn = document.getElementById('btn-upload-photo');
+
+      if (!file) {
+        warningBox.classList.add('hidden');
+        S.activeUploadBlob = null;
+        uploadBtn.disabled = false;
+        return;
+      }
+
+      if (file.size > 100 * 1024) {
+        warningBox.classList.remove('hidden');
+        S.activeUploadBlob = null;
+        uploadBtn.disabled = true;
+        uploadBtn.className = "w-full bg-[#100412] text-stone-500 font-bold py-2 rounded-full text-xs cursor-not-allowed";
+      } else {
+        warningBox.classList.add('hidden');
+        S.activeUploadBlob = file;
+        uploadBtn.disabled = false;
+        uploadBtn.className = "w-full btn-premium-primary text-white font-bold py-2 rounded-full text-xs transition-all";
+      }
+    }
+
+    function triggerClientImageCompression() {
+      const fileInput = document.getElementById('media-file');
+      const file = fileInput.files[0];
+      const d = adminDict[S.currentAdminLang];
+      if (!file) return;
+
+      showNotification("Auto-Compressing... Please wait.", "success");
+
+      compressImageToTargetLimit(file, 100, (compressedBlob) => {
+        if (compressedBlob && compressedBlob.size <= 100 * 1024) {
+          S.activeUploadBlob = compressedBlob;
+          document.getElementById('upload-size-warning').classList.add('hidden');
+          const uploadBtn = document.getElementById('btn-upload-photo');
+          uploadBtn.disabled = false;
+          uploadBtn.className = "w-full btn-premium-primary text-white font-bold py-2 rounded-full text-xs transition-all";
+          showNotification(d.reduceSuccess);
+        } else {
+          showNotification(d.reduceFail, "error");
+        }
+      });
+    }
+
+    function compressImageToTargetLimit(file, targetSizeKB, callback) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function (event) {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDimension = 900;
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let quality = 0.85;
+          function runCompressionIterativeLoop() {
+            canvas.toBlob(function (blob) {
+              if (blob.size <= targetSizeKB * 1024 || quality <= 0.15) {
+                callback(blob);
+              } else {
+                quality -= 0.12;
+                runCompressionIterativeLoop();
+              }
+            }, 'image/jpeg', quality);
+          }
+          runCompressionIterativeLoop();
+        };
+      };
+    }
+
+    async function handleMediaUpload() {
+      const id = S.assignedPadyatraId;
+      const caption = document.getElementById('media-caption').value.trim();
+      const type = document.getElementById('media-type').value;
+      const primaryKey = document.getElementById('imgbb-key-input').value.trim();
+      const fileInput = document.getElementById('media-file');
+      const d = adminDict[S.currentAdminLang];
+
+      if (!id) {
+        showNotification("Upload blocked: Select a Padyatra campaign session first.", "error");
+        return;
+      }
+
+      if (!caption || (!fileInput.files[0] && !S.activeUploadBlob)) {
+        showNotification(d.validationError, "error");
+        return;
+      }
+
+      const fileToUpload = S.activeUploadBlob || fileInput.files[0];
+      if (fileToUpload.size > 100 * 1024) {
+        showNotification(d.lblImgSizeWarn, "error");
+        return;
+      }
+
+      const container = document.getElementById('upload-progress-container');
+      const bar = document.getElementById('upload-progress-bar');
+      const text = document.getElementById('upload-percent');
+
+      container.classList.remove('hidden');
+      bar.style.width = "10%"; text.textContent = "10%";
+
+      let simulatedPercent = 10;
+      const progressTimer = setInterval(() => {
+        if (simulatedPercent < 90) {
+          simulatedPercent += Math.floor(Math.random() * 8) + 2;
+          if (simulatedPercent > 90) simulatedPercent = 90;
+          bar.style.width = `${simulatedPercent}%`;
+          text.textContent = `${simulatedPercent}%`;
+        }
+      }, 150);
+
+      const success = await attemptUploadToImgBBRotation(fileToUpload, primaryKey, id, caption, type);
+      clearInterval(progressTimer);
+
+      if (success) {
+        bar.style.width = "100%"; text.textContent = "100%";
+        showNotification(d.apiSuccess);
+      } else {
+        showNotification(d.apiError, "error");
+      }
+
+      setTimeout(() => {
+        container.classList.add('hidden');
+        fileInput.value = '';
+        document.getElementById('media-caption').value = '';
+        document.getElementById('upload-size-warning').classList.add('hidden');
+        S.activeUploadBlob = null;
+      }, 800);
+    }
+
+    async function attemptUploadToImgBBRotation(blobFile, customKey, id, caption, type) {
+      const rotationKeys = [customKey, ...S.imgbbKeysPool].filter(k => k && k.trim() !== '');
+      for (let i = 0; i < rotationKeys.length; i++) {
+        const activeKey = rotationKeys[i];
+        const formData = new FormData();
+        formData.append('image', blobFile);
+        try {
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=${activeKey}`, { method: 'POST', body: formData });
+          if (!res.ok) throw new Error("Key failed");
+          const resObj = await res.json();
+          if (resObj && resObj.success && resObj.data && resObj.data.url) {
+            const item = S.padyatras.find(p => p.id === id);
+            if (item) {
+              if (!item.photos) item.photos = [];
+              item.photos.push({ id: 'photo-' + Date.now(), url: resObj.data.url, caption, type, date: new Date().toISOString().split('T')[0] });
+              await database.ref(`padyatras/${id}/photos`).set(item.photos);
+              return true;
+            }
+          }
+        } catch(e) {
+          console.warn(`Key failed in slot ${i}. Rotating...`);
+        }
+      }
+      return false;
+    }
+
+    function renderAdminGalleryPreview() {
+      const container = document.getElementById('admin-gallery-preview');
+      container.innerHTML = '';
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+
+      const activeObj = S.padyatras.find(p => p.id === id);
+      if (activeObj && activeObj.photos) {
+        activeObj.photos.forEach(ph => {
+          container.innerHTML += `
+            <div class="relative group h-24 bg-stone-950 border border-white/5 rounded-2xl overflow-hidden shadow-xs">
+              <img src="${ph.url}" alt="" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 flex flex-col justify-between p-2">
+                <span class="text-[8px] bg-pink-600 text-white font-bold px-1.5 py-0.5 rounded-full self-start truncate">${activeObj.name.en}</span>
+                <div class="flex items-center justify-between text-white">
+                  <span class="text-[9px] truncate pr-2">${ph.caption}</span>
+                  <button onclick="deletePhoto('${activeObj.id}', '${ph.id}')" class="text-red-500 hover:text-red-400 font-bold text-xs">×</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      if (container.children.length === 0) {
+        container.innerHTML = `<div class="col-span-2 text-center text-xs text-stone-500 py-6 italic">No photos synced.</div>`;
+      }
+    }
+
+    function deletePhoto(padId, photoId) {
+      if (confirm("Delete this photo?")) {
+        const item = S.padyatras.find(p => p.id === padId);
+        if (item && item.photos) {
+          database.ref(`padyatras/${padId}/photos`).set(item.photos.filter(ph => ph.id !== photoId));
+        }
+      }
+    }
+
+    function cancelSpinnerManualDiagnostics() {
+      document.getElementById('auth-spinner').classList.add('hidden');
+      showNotification("Database connection reset.", "error");
+    }
+
+    function showNotification(msg, type = "success") {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.className = `fixed bottom-5 right-5 z-[500] p-4 rounded-lg shadow-lg text-xs font-bold border transition-all duration-300 transform translate-y-0 opacity-100 ${
+        type === 'error' ? 'bg-red-950/90 border-red-500 text-red-200' : 'bg-stone-900/95 border-pink-500/30 text-pink-400'
+      }`;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.className = "fixed bottom-5 right-5 z-[500] p-4 rounded-lg shadow-lg text-xs font-bold border transition-all duration-300 transform translate-y-4 opacity-0 hidden";
+      }, 3000);
+    }
+
+    let dbStatusRef = null, dbViewersRef = null, dbReactionsTotalRef = null, dbReactionsLatestRef = null, dbConfigRef = null;
+
+    function detachRealtimeLiveStateListeners() {
+      if (dbStatusRef) dbStatusRef.off();
+      if (dbViewersRef) dbViewersRef.off();
+      if (dbReactionsTotalRef) dbReactionsTotalRef.off();
+      if (dbReactionsLatestRef) dbReactionsLatestRef.off();
+      if (dbConfigRef) dbConfigRef.off();
+    }
+
+    function attachRealtimeLiveStateListeners(padyatraId) {
+      dbStatusRef = database.ref(`padyatras/${padyatraId}/liveState`);
+      dbViewersRef = database.ref(`padyatras/${padyatraId}/liveState/viewers`);
+      dbReactionsTotalRef = database.ref(`padyatras/${padyatraId}/liveState/reactions/total`);
+      dbReactionsLatestRef = database.ref(`padyatras/${padyatraId}/liveState/reactions/latest`);
+      dbConfigRef = database.ref(`padyatras/${padyatraId}/liveState/config`);
+
+      dbConfigRef.on('value', snap => {
+        const conf = snap.val() || {};
+        S.agoraIds = conf.agora_ids || ["", "", "", "", ""];
+        if (conf.yt_video_id) {
+          S.mode = 'youtube'; S.ytVideoId = conf.yt_video_id;
+          localStorage.setItem('iskcon_admin_mode', 'youtube');
+          localStorage.setItem('iskcon_admin_yt', S.ytVideoId);
+          const mainYtUrl = document.getElementById('yt_video_id_main');
+          if (mainYtUrl) mainYtUrl.value = `https://youtu.be/${conf.yt_video_id}`;
+          document.getElementById('yt-admin-wrapper').style.display = 'block';
+          document.getElementById('local-player').style.display = 'none';
+          document.getElementById('stagePlaceholder').style.display = 'none';
+          if (ytApiLoaded) window.createYtPlayer(S.ytVideoId);
+        } else {
+          S.mode = 'agora'; S.ytVideoId = null;
+          localStorage.removeItem('iskcon_admin_mode');
+          localStorage.removeItem('iskcon_admin_yt');
+          const mainYtUrl = document.getElementById('yt_video_id_main');
+          if (mainYtUrl) mainYtUrl.value = '';
+        }
+      });
+
+      dbStatusRef.on('value', snap => {
+        const data = snap.val();
+        const btnMainBadge = document.getElementById('p-studio-status-badge');
+        if (data) {
+          S.globalIsLive = !!data.isLive;
+          S.currentLiveSession = data.sessionId;
+          if (btnMainBadge) {
+            btnMainBadge.textContent = S.globalIsLive ? "● LIVE STREAM ACTIVE" : "STUDIO READY";
+            btnMainBadge.className = S.globalIsLive ? "bg-red-950 text-red-400 border border-red-900/30 text-[9px] font-bold px-2.5 py-1 rounded animate-pulse" : "bg-stone-950 text-stone-500 border border-white/5 text-[9px] font-bold px-2.5 py-1 rounded";
+          }
+          const btn = document.getElementById('liveBtn');
+          const ytInput = document.getElementById('yt_video_id_main');
+          if (S.isLive && !S.globalIsLive) {
+            setLiveUI(false); stopDuration();
+            if (S.mode === 'agora' && S.client) S.client.leave().catch(()=>{});
+            clearInterval(S.ytSyncInterval);
+            showToast("🔴 Broadcast Force Stopped!", "err");
+          } else if (S.isLive && S.globalIsLive && S.currentLiveSession !== S.adminSessionId) {
+            setLiveUI(false); stopDuration();
+            if (S.mode === 'agora' && S.client) S.client.leave().catch(()=>{});
+            clearInterval(S.ytSyncInterval);
+            showToast("⚠️ Remote takeover occurred!", "err");
+          }
+          if (S.globalIsLive && S.currentLiveSession !== S.adminSessionId) {
+            if (btn) { btn.style.background = "var(--danger)"; btn.textContent = "LOCKED (OTHER LIVE)"; }
+            if (ytInput) ytInput.disabled = true;
+          } else if (!S.isLive) {
+            if (btn) { btn.style.background = "linear-gradient(135deg, #FFB347, var(--saffron))"; btn.textContent = "GO LIVE"; }
+            if (ytInput) ytInput.disabled = false;
+          }
+        } else {
+          S.globalIsLive = false; S.currentLiveSession = null;
+          if (btnMainBadge) {
+            btnMainBadge.textContent = "STUDIO DISCONNECTED";
+            btnMainBadge.className = "bg-stone-950 text-stone-500 border border-white/5 text-[9px] font-bold px-2.5 py-1 rounded";
+          }
+        }
+      });
+
+      dbViewersRef.on('value', snap => {
+        const count = snap.numChildren() || (snap.val() ? Object.keys(snap.val()).length : 0);
+        setViewCount(count);
+      });
+
+      dbReactionsTotalRef.on('value', snap => {
+        S.totalReactions = snap.val() || 0;
+        const r1 = document.getElementById('totalReactions');
+        const r2 = document.getElementById('totalReactions2');
+        if (r1) r1.textContent = S.totalReactions;
+        if (r2) r2.textContent = S.totalReactions;
+      });
+
+      let lastTs = 0;
+      dbReactionsLatestRef.on('value', snap => {
+        const data = snap.val();
+        if (data && data.emoji && data.ts !== lastTs) {
+          lastTs = data.ts; S.reactionQueue.push(data.emoji);
+        }
+      });
+    }
+
+    function launchBroadcasterStudio() {
+      const id = S.assignedPadyatraId;
+      if (!id) {
+        showNotification("Action blocked: Please select a Padyatra from the central directory.", "error");
+        return;
+      }
+      document.getElementById('studio-console-overlay').classList.remove('hidden');
+      initAgoraCameraPreview();
+    }
+
+    function minimizeStudioConsole() {
+      document.getElementById('studio-console-overlay').classList.add('hidden');
+      stopAudioLevelMetering();
+    }
+
+    async function initAgoraCameraPreview() {
+      if (!window.AgoraRTC) return;
+      if (S.localVideo && S.localAudio) return;
+      try {
+        const audioTrackPromise = AgoraRTC.createMicrophoneAudioTrack({ encoderConfig: "music_standard" });
+        const videoTrackPromise = AgoraRTC.createCameraVideoTrack({
+          encoderConfig: { width: { min: 640, ideal: 1280, max: 1280 }, height: { min: 480, ideal: 720, max: 720 }, frameRate: 24 }
+        }).catch(err => {
+          console.warn("Camera failed. Switching to Audio-Only.", err);
+          return null;
+        });
+
+        const [audioTrack, videoTrack] = await Promise.all([audioTrackPromise, videoTrackPromise]);
+        S.localAudio = audioTrack;
+        if (videoTrack) {
+          S.localVideo = videoTrack; S.localVideo.play("local-player");
+          document.getElementById('stagePlaceholder').style.display = 'none';
+        } else {
+          showToast("🎙️ Audio-Only mode enabled.", "warn");
+        }
+        startAudioLevelMetering();
+        const devices = await AgoraRTC.getDevices();
+        S.cameras = devices.filter(d => d.kind === "videoinput");
+      } catch(e) {
+        showToast("Access Denied on device microphone.", 'err');
+        runPreflightDiagnostics();
+      }
+    }
+
+    function startAudioLevelMetering() {
+      if (!S.localAudio) return;
+      const visualizerContainer = document.getElementById('audio-visualizer-container');
+      if (visualizerContainer) visualizerContainer.classList.remove('hidden');
+      if (S.audioVolumeInterval) clearInterval(S.audioVolumeInterval);
+      S.audioVolumeInterval = setInterval(() => {
+        if (!S.localAudio || S.isMuted) { updateAudioLevelUI(0); return; }
+        try {
+          const rawVolume = S.localAudio.getVolumeLevel();
+          const percentage = Math.min(Math.round(rawVolume * 250), 100);
+          updateAudioLevelUI(percentage);
+        } catch (err) {}
+      }, 100);
+    }
+
+    function updateAudioLevelUI(percent) {
+      const barDesktop = document.getElementById('audio-level-bar');
+      const barMobile = document.getElementById('audio-level-bar-mobile');
+      if (barDesktop) barDesktop.style.width = percent + '%';
+      if (barMobile) barMobile.style.width = percent + '%';
+    }
+
+    function stopAudioLevelMetering() {
+      if (S.audioVolumeInterval) { clearInterval(S.audioVolumeInterval); S.audioVolumeInterval = null; }
+      updateAudioLevelUI(0);
+    }
+
+    function runPreflightDiagnostics() {
+      const isHttps = window.location.protocol === 'https:';
+      const supportsMediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      const httpsEl = document.getElementById('diag-https-status');
+      const webrtcEl = document.getElementById('diag-webrtc-status');
+      const camEl = document.getElementById('diag-camera-status');
+      const micEl = document.getElementById('diag-mic-status');
+
+      httpsEl.textContent = isHttps ? "SECURE (HTTPS) ✅" : "INSECURE (HTTP) ❌";
+      httpsEl.className = isHttps ? "text-emerald-500 font-bold" : "text-red-500 font-bold";
+      webrtcEl.textContent = supportsMediaDevices ? "SUPPORTED ✅" : "BLOCKED ❌";
+      webrtcEl.className = supportsMediaDevices ? "text-emerald-500 font-bold" : "text-red-500 font-bold";
+
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        const hasCam = devices.some(d => d.kind === 'videoinput');
+        const hasMic = devices.some(d => d.kind === 'audioinput');
+        camEl.textContent = hasCam ? "AVAILABLE ✅" : "NOT DETECTED ❌";
+        camEl.className = hasCam ? "text-emerald-500 font-bold" : "text-red-500 font-bold";
+        micEl.textContent = hasMic ? "AVAILABLE ✅" : "NOT DETECTED ❌";
+        micEl.className = hasMic ? "text-emerald-500 font-bold" : "text-red-500 font-bold";
+      }).catch(() => {
+        camEl.textContent = "PERMISSION REQUIRED ❌"; camEl.className = "text-orange-500 font-bold";
+        micEl.textContent = "PERMISSION REQUIRED ❌"; micEl.className = "text-orange-500 font-bold";
+      });
+      document.getElementById('diagnostics-modal').classList.add('open');
+    }
+
+    function closeDiagnosticsModal() { document.getElementById('diagnostics-modal').classList.remove('open'); }
+
+    async function requestAllMediaPermissionsDirectly() {
+      closeDiagnosticsModal();
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+        stream.getTracks().forEach(track => track.stop());
+        showToast("Permissions Approved! ✅", "ok");
+        if (!document.getElementById('studio-console-overlay').classList.contains('hidden')) initAgoraCameraPreview();
+      } catch (e) {
+        showToast("Permissions rejected.", "err");
+        document.getElementById('diagnostics-modal').classList.add('open');
+      }
+    }
+
+    function handleManualCameraActivationAttempt() { requestAllMediaPermissionsDirectly(); }
+
+    function renderReactionsLoop(timestamp) {
+      if (timestamp - S.lastRenderTime >= 80) { 
+        if (S.reactionQueue.length > 0) {
+          const emojiToSpawn = S.reactionQueue.shift();
+          spawnReaction(emojiToSpawn);
+          if (S.reactionQueue.length > 50) S.reactionQueue = S.reactionQueue.slice(-20); 
+        }
+        S.lastRenderTime = timestamp;
+      }
+      requestAnimationFrame(renderReactionsLoop);
+    }
+    requestAnimationFrame(renderReactionsLoop);
+
+    let ytApiLoaded = false;
+    window.onYouTubeIframeAPIReady = function() {
+      ytApiLoaded = true;
+      if (S.mode === 'youtube' && S.ytVideoId) window.createYtPlayer(S.ytVideoId);
+    };
+
+    window.createYtPlayer = function(vidId) {
+      if (!window.YT || !window.YT.Player) return;
+      document.getElementById('yt-admin-wrapper').style.display = 'block';
+      document.getElementById('local-player').style.display = 'none';
+      document.getElementById('stagePlaceholder').style.display = 'none';
+
+      if (S.ytPlayer && typeof S.ytPlayer.loadVideoById === 'function') {
+        try { S.ytPlayer.loadVideoById(vidId); return; } catch(e) {}
+      }
+
+      const container = document.getElementById('yt-admin-player');
+      if (container && container.tagName === 'IFRAME') container.outerHTML = '<div id="yt-admin-player"></div>';
+
+      S.ytPlayer = new YT.Player('yt-admin-player', {
+        height: '100%', width: '100%', videoId: vidId,
+        playerVars: { controls: 1, rel: 0, autoplay: 1, playsinline: 1, mute: 1 },
+        events: {
+          onReady: (e) => { S.ytReady = true; e.target.playVideo(); },
+          onStateChange: () => { if (S.isLive && S.mode === 'youtube') pushYtSync(); }
+        }
+      });
+    };
+
+    function pushYtSync() {
+      const id = S.assignedPadyatraId;
+      if (!id || !S.ytReady || !S.ytPlayer) return;
+      const ytStateSafe = typeof S.ytPlayer.getPlayerState === 'function' ? S.ytPlayer.getPlayerState() : 1;
+      const ytTimeSafe = typeof S.ytPlayer.getCurrentTime === 'function' ? S.ytPlayer.getCurrentTime() : 0;
+      database.ref(`padyatras/${id}/liveState`).update({ ytState: ytStateSafe, ytTime: ytTimeSafe, timestamp: Date.now() });
+    }
+
+    window.handleYtInputMain = async () => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+      if (S.globalIsLive && !S.isLive) return showToast("Another streamer is currently broadcasting.", "warn");
+      if (S.isLive) return showToast("Live active!", "warn");
+      
+      let ytRaw = document.getElementById('yt_video_id_main').value.trim();
+      let finalYtId = null;
+      if (ytRaw) {
+        const m = ytRaw.match(/(?:v=|youtu\.be\/|live\/|embed\/)([a-zA-Z0-9_-]{11})/);
+        if (m) finalYtId = m[1];
+        else if (ytRaw.length === 11) finalYtId = ytRaw; 
+      }
+
+      if (finalYtId) {
+        S.mode = 'youtube'; S.ytVideoId = finalYtId;
+        localStorage.setItem('iskcon_admin_mode', 'youtube');
+        localStorage.setItem('iskcon_admin_yt', finalYtId);
+        window.createYtPlayer(finalYtId);
+        await database.ref(`padyatras/${id}/liveState/config`).update({ yt_video_id: finalYtId });
+        showToast("YouTube Mode Linked successfully! Click GO LIVE.");
+      }
+    };
+
+    window.clearYtLinkMain = async () => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+      if (S.globalIsLive && !S.isLive) return showToast("Another stream active.", "warn");
+      if (S.isLive) return showToast("Cannot change during Live!", "warn"); 
+      
+      document.getElementById('yt_video_id_main').value = '';
+      S.mode = 'agora'; S.ytVideoId = null;
+      localStorage.removeItem('iskcon_admin_mode');
+      localStorage.removeItem('iskcon_admin_yt');
+      document.getElementById('yt-admin-wrapper').style.display = 'none'; 
+      document.getElementById('local-player').style.display = 'block';
+
+      if (S.ytPlayer && typeof S.ytPlayer.stopVideo === 'function') S.ytPlayer.stopVideo();
+      await database.ref(`padyatras/${id}/liveState/config`).update({ yt_video_id: null });
+      showToast("Camera Mode (Agora SDK) Active ✅");
+    };
+
+    window.toggleLive = async () => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+
+      if (S.isLive) {
+        window.showConfirm("Are you sure you want to stop broadcasting?", async () => {
+          try {
+            if (S.mode === 'agora' && S.client) {
+              await S.client.leave();
+            } else {
+              clearInterval(S.ytSyncInterval);
+            }
+            setLiveUI(false); 
+            stopDuration();
+            await database.ref(`padyatras/${id}/liveState`).update({ isLive: false, muted: false, videoMuted: false, sessionId: null });
+            showToast("Stream ended successfully.");
+          } catch(e) { 
+            showToast("Error ending stream: " + e.message, 'err'); 
+          }
+        });
+        return;
+      } else {
+        if (S.globalIsLive && S.currentLiveSession !== S.adminSessionId) {
+          window.showConfirm("⚠️ Another user session is already active. Force take over?", async () => {
+              await database.ref(`padyatras/${id}/liveState`).update({ isLive: false, sessionId: null });
+              showToast("System Reset completed! Click GO LIVE again.");
+          });
+          return;
+        }
+
+        const sIdx = S.serverIndex, appId = S.agoraIds[sIdx];
+        if (S.mode === 'agora' && !appId) return showToast("Insert Agora App ID first!", 'err');
+        if (S.mode === 'youtube' && !S.ytVideoId) return showToast("Link valid YouTube stream!", 'err');
+
+        const btn = document.getElementById('liveBtn');
+        btn.textContent = "Connecting..."; btn.disabled = true;
+
+        try {
+          if (S.mode === 'agora') {
+            await S.client.setClientRole("host");
+            await S.client.join(appId, "iskcon_live", null, null);
+            const publishTracks = [];
+            if (S.localVideo) publishTracks.push(S.localVideo);
+            if (S.localAudio) publishTracks.push(S.localAudio);
+            if (publishTracks.length > 0) await S.client.publish(publishTracks);
+            S.client.enableDualStream().catch(()=>{});
+
+            await database.ref(`padyatras/${id}/liveState`).set({
+              isLive: true, mode: 'agora', serverIndex: S.serverIndex, appId: appId,
+              muted: S.isMuted, videoMuted: S.isVideoMuted, sessionId: S.adminSessionId,
+              startedAt: firebase.database.ServerValue.TIMESTAMP
+            });
+          } else {
+            const safeState = (S.ytPlayer && typeof S.ytPlayer.getPlayerState === 'function') ? S.ytPlayer.getPlayerState() : 1;
+            const safeTime = (S.ytPlayer && typeof S.ytPlayer.getCurrentTime === 'function') ? S.ytPlayer.getCurrentTime() : 0;
+            pushYtSync();
+            S.ytSyncInterval = setInterval(pushYtSync, 1500); 
+
+            await database.ref(`padyatras/${id}/liveState`).set({
+              isLive: true, mode: 'youtube', ytVideoId: S.ytVideoId, ytState: safeState, ytTime: safeTime,
+              timestamp: Date.now(), muted: S.isMuted, videoMuted: S.isVideoMuted, sessionId: S.adminSessionId,
+              startedAt: firebase.database.ServerValue.TIMESTAMP
+            });
+          }
+          setLiveUI(true); startDuration();
+          database.ref(`padyatras/${id}/liveState/isLive`).onDisconnect().set(false);
+          showToast("Stream published successfully!");
+        } catch(e) {
+          showToast("Connection Error: " + (e.message||e), 'err');
+          setLiveUI(false); btn.disabled = false;
+        }
+      }
+    };
+
+    window.toggleMic = () => {
+      const id = S.assignedPadyatraId;
+      S.isMuted = !S.isMuted;
+      if (S.localAudio && S.mode === 'agora') S.localAudio.setEnabled(!S.isMuted);
+      if (S.isLive && id) database.ref(`padyatras/${id}/liveState`).update({ muted: S.isMuted });
+
+      const btn = document.getElementById('micBtn');
+      if (S.isMuted) {
+        btn.classList.add('danger'); btn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        document.body.classList.add('is-muted');
+        showToast("Audio Muted.");
+      } else {
+        btn.classList.remove('danger'); btn.innerHTML = '<i class="fas fa-microphone"></i>';
+        document.body.classList.remove('is-muted');
+        showToast("Audio Active.");
+      }
+    };
+
+    window.toggleVideo = () => {
+      const id = S.assignedPadyatraId;
+      S.isVideoMuted = !S.isVideoMuted;
+      if (S.localVideo && S.mode === 'agora') S.localVideo.setEnabled(!S.isVideoMuted);
+      if (S.isLive && id) database.ref(`padyatras/${id}/liveState`).update({ videoMuted: S.isVideoMuted });
+
+      const btn = document.getElementById('vidBtn');
+      if (S.isVideoMuted) {
+        btn.classList.add('danger'); btn.innerHTML = '<i class="fas fa-video-slash"></i>';
+        document.body.classList.add('is-video-muted');
+        showToast("Video Paused.");
+      } else {
+        btn.classList.remove('danger'); btn.innerHTML = '<i class="fas fa-video"></i>';
+        document.body.classList.remove('is-video-muted');
+        showToast("Video Resumed.");
+      }
+    };
+
+    window.switchCamera = async () => {
+      if (S.mode === 'youtube') return showToast("Camera Switch disabled in YouTube mode.", "warn");
+      if (!S.localVideo) return showToast("No Camera active", "warn");
+      if (S.cameras.length < 2) return showToast("No alternative cameras found", 'warn');
+      const btn = document.getElementById('camBtn'); btn.disabled = true;
+      S.camIdx = (S.camIdx + 1) % S.cameras.length;
+      try {
+        await S.localVideo.setDevice(S.cameras[S.camIdx].deviceId);
+        showToast("Camera changed successfully.");
+      } catch(e) { showToast("Switch failed: " + e.message, 'err'); }
+      btn.disabled = false;
+    };
+
+    window.switchServerContext = async () => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+      const sIdx = document.getElementById('modalServerSelect').value;
+      S.serverIndex = parseInt(sIdx);
+      if (!S.isLive || S.mode !== 'agora') return;
+      const newAppId = S.agoraIds[sIdx];
+      if (!newAppId) return showToast("Server App ID missing!", "err");
+      try {
+        await S.client.leave();
+        await S.client.join(newAppId, "iskcon_live", null, null);
+        const publishTracks = [];
+        if (S.localVideo) publishTracks.push(S.localVideo);
+        if (S.localAudio) publishTracks.push(S.localAudio);
+        if (publishTracks.length > 0) await S.client.publish(publishTracks);
+        await database.ref(`padyatras/${id}/liveState`).update({ serverIndex: S.serverIndex, appId: newAppId });
+        showToast("Server switched successfully.");
+      } catch(e) { showToast("Error: " + e.message, "err"); }
+    };
+
+    window.openSettings = () => {
+      const div = document.getElementById('idInputs');
+      div.innerHTML = `
+          <div class="s-label text-stone-400 text-xs font-bold uppercase mb-1">Active Server Switch</div>
+          <select class="w-full text-xs p-2.5 bg-[#100412] border border-pink-900/20 rounded-full text-stone-200 focus:outline-none mb-3" id="modalServerSelect" style="appearance:auto;" onchange="switchServerContext()">
+              <option value="0" ${S.serverIndex===0?'selected':''}>Server 01 — Main</option>
+              <option value="1" ${S.serverIndex===1?'selected':''}>Server 02</option>
+              <option value="2" ${S.serverIndex===2?'selected':''}>Server 03</option>
+              <option value="3" ${S.serverIndex===3?'selected':''}>Server 04</option>
+              <option value="4" ${S.serverIndex===4?'selected':''}>Server 05</option>
+          </select>
+      `;
+      for (let i = 0; i < 5; i++) {
+        div.innerHTML += `
+            <div class="s-label text-stone-400 text-[10px] font-bold uppercase mt-2 mb-1">Server ${i+1} App ID</div>
+            <input class="w-full text-xs p-2.5 bg-stone-950 border border-pink-900/20 rounded-full text-stone-200 focus:outline-none" id="id_${i}" placeholder="Enter Agora App ID" value="${S.agoraIds[i]||''}">
+        `;
+      }
+      const settingsModal = document.getElementById('settings-modal');
+      if (settingsModal) {
+         settingsModal.classList.remove('hidden');
+         settingsModal.classList.add('open');
+      }
+    };
+
+    window.closeSettings = () => {
+      const settingsModal = document.getElementById('settings-modal');
+      if (settingsModal) {
+         settingsModal.classList.add('hidden');
+         settingsModal.classList.remove('open');
+      }
+    };
+
+    window.saveConfig = async () => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+      const arr = [];
+      for (let i = 0; i < 5; i++) arr.push(document.getElementById(`id_${i}`).value.trim());
+      await database.ref(`padyatras/${id}/liveState/config`).update({ agora_ids: arr });
+      S.agoraIds = arr;
+      const sIdx = document.getElementById('modalServerSelect').value;
+      S.serverIndex = parseInt(sIdx);
+      showToast("Config Saved.");
+      closeSettings();
+    };
+
+    function setLiveUI(live) {
+      S.isLive = live;
+      const btn = document.getElementById('liveBtn');
+      document.body.classList.toggle('is-live', live);
+      if (btn) {
+        btn.disabled = false;
+        if (live) {
+          btn.style.background = "var(--danger)"; btn.textContent = "STOP LIVE";
+        } else {
+          btn.style.background = "linear-gradient(135deg, #FFB347, var(--saffron))"; btn.textContent = "GO LIVE";
+        }
+      }
+    }
+
+    function setViewCount(n) {
+      const v1 = document.getElementById('viewCount'), v2 = document.getElementById('viewCount2');
+      if (v1) v1.textContent = n;
+      if (v2) v2.textContent = n;
+    }
+
+    function startDuration() {
+      S.durationStart = Date.now();
+      S.durationTimer = setInterval(() => {
+        const sec = Math.floor((Date.now() - S.durationStart) / 1000);
+        const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+        const str = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+        const durationTag = document.getElementById('durationTag');
+        if (durationTag) { durationTag.style.display = 'block'; durationTag.textContent = str; }
+      }, 1000);
+    }
+
+    function stopDuration() {
+      clearInterval(S.durationTimer);
+      const durationTag = document.getElementById('durationTag');
+      if (durationTag) { durationTag.style.display = 'none'; durationTag.textContent = '00:00'; }
+    }
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    window.sendReaction = async (emoji) => {
+      const id = S.assignedPadyatraId;
+      if (!id) return;
+      spawnReaction(emoji);
+      try {
+        await database.ref(`padyatras/${id}/liveState/reactions`).update({
+          total: firebase.database.ServerValue.increment(1),
+          latest: { emoji, ts: Date.now() }
+        });
+      } catch(e) { }
+    };
+
+    function spawnReaction(emoji) {
+      const stage = document.getElementById('reaction-stage');
+      if (!stage) return;
+      const el = document.createElement('div'); el.className = 'float-reaction'; el.textContent = emoji;
+      el.style.right = (Math.random() * 40) + 'px'; stage.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }
+
+    document.getElementById('settings-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeSettings();
+    });
+
+    let confirmAction = null;
+    window.showConfirm = (msg, onYes) => {
+      document.getElementById('custom-confirm-msg').textContent = msg;
+      confirmAction = onYes;
+      document.getElementById('custom-confirm-overlay').classList.add('open');
+    };
+    window.closeConfirm = () => {
+      document.getElementById('custom-confirm-overlay').classList.remove('open');
+      confirmAction = null;
+    };
+    document.getElementById('custom-confirm-yes').addEventListener('click', () => {
+      if (confirmAction) confirmAction();
+      closeConfirm();
+    });
+
+    function showToast(msg, type = 'ok') {
+      const c = document.getElementById('toast-container');
+      if (!c) return;
+      const el = document.createElement('div'); el.className = 'toast';
+      const colorMap = { ok: '#00E676', err: '#FF3B3B', warn: '#FF9933' };
+      const iconMap = { ok: 'fa-check-circle', err: 'fa-exclamation-circle', warn: 'fa-exclamation-triangle' };
+      el.style.borderLeft = `3px solid ${colorMap[type]||colorMap.ok}`;
+      el.innerHTML = `<i class="fas ${iconMap[type]||iconMap.ok}" style="color:${colorMap[type]||colorMap.ok};"></i> ${msg}`;
+      c.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+    window.showToast = showToast;
+
+    window.onbeforeunload = () => { if (S.isLive) return "Live active!"; };
+
+    function copyCoordinatorPin() {
+      if (S.sessionKey) {
+        navigator.clipboard.writeText(S.sessionKey).then(() => {
+          showNotification("Access PIN copied successfully!");
+        });
+      }
+    }
+  </script>
+</body>
+</html>
