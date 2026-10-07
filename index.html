@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#FF9933">
+    
+    <!-- Native Mobile App Capabilities & PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <title>Sri Sri Radha Krishna Chandra Temple</title>
+    
+    <!-- Preconnect for Ultra-Fast Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Dancing+Script:wght@700&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <style>
+        /* CSS Variables & Theming */
+        :root { 
+            --primary: #FF9933; 
+            --primary-dark: #E65100;
+            --secondary: #4a2c2a; 
+            --bg-color: #FAFAFA; 
+            --card-bg: #ffffff; 
+            --text-color: #2b2b2b; 
+            --logo-size: 42px; 
+            --slider-height: clamp(300px, 50vw, 360px); 
+            --event-date-size: 2.8rem; 
+            --event-text-size: 1.15rem; 
+            --icon-size: 1.8rem; 
+            --ui-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
+            --powerful-shadow: 0 10px 30px rgba(255, 153, 51, 0.22); 
+            --epic-shadow: 0 12px 35px rgba(216, 27, 96, 0.25); 
+            --transition-speed: 0.3s; 
+            --bs-gutter-x: 1.5rem; 
+            --bs-gutter-y: 0; 
+        }
+        [data-theme="dark"] { 
+            --primary: #FF9933; 
+            --primary-dark: #FF7043;
+            --secondary: #140804; 
+            --bg-color: #121212; 
+            --card-bg: #1e1e1e; 
+            --text-color: #ececec; 
+            --ui-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
+            --powerful-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); 
+            --epic-shadow: 0 12px 35px rgba(216, 27, 96, 0.35); 
+        }
+        
+        /* ======================================================== */
+        /* 🛡️ PURE NATIVE APPLICATION SHIELD & ANTI-COPY LOCK 🛡️ */
+        /* ======================================================== */
+        html {
+            background-color: #0d0402; /* Seamless bottom match with footer */
+            margin: 0;
+            padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none; /* Stops rubber-band web pull */
+        }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Poppins', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif; 
+            color: var(--text-color); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+            padding-bottom: 0 !important; 
+            margin: 0 !important; 
+            -webkit-tap-highlight-color: transparent; 
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
+        }
+        * { 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale; 
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        img, a, button, div, span, p, h1, h2, h3, h4, h5, h6 {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+        }
+        a { text-decoration: none; color: var(--primary); }
+
+        /* Splash Screen */
+        #app-splash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.35s ease; }
+        body.is-loaded #app-splash { opacity: 0; pointer-events: none; }
+        .splash-logo { width: 95px; height: 95px; border-radius: 50%; box-shadow: 0 0 30px rgba(255, 153, 51, 0.5); animation: splashPulse 1.5s infinite alternate; margin-bottom: 18px; border: 3px solid var(--primary); }
+        .splash-text { font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.45rem; color: var(--primary); letter-spacing: 2px; }
+        .splash-spinner { margin-top: 15px; width: 2.6rem; height: 2.6rem; border-width: 0.25em; color: var(--primary); }
+        @keyframes splashPulse { 0% { transform: scale(0.96); box-shadow: 0 0 15px rgba(255,153,51,0.3); } 100% { transform: scale(1.04); box-shadow: 0 0 35px rgba(255,153,51,0.7); } }
+
+        /* Top Navbar */
+        .navbar { background: linear-gradient(90deg, #E65100, var(--primary), #FF7043); background-size: 200% auto; animation: gradientMove 5s ease infinite; box-shadow: 0 4px 15px rgba(255, 153, 51, 0.35); padding: 8px 0; z-index: 1040; position: sticky; top: 0; }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .navbar .container-fluid { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap !important; }
+        .nav-left-group { display: flex; align-items: center; gap: 10px; flex-grow: 1; overflow: hidden; }
+        .nav-right-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .navbar-brand { display: flex; align-items: center; gap: 6px; margin: 0; padding: 0; }
+        .nav-logo-img { width: var(--logo-size); height: var(--logo-size); border-radius: 50%; border: 2px solid white; flex-shrink: 0; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .theme-toggle-btn { background: rgba(255, 255, 255, 0.22); border: 1px solid rgba(255, 255, 255, 0.45); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.25s; box-shadow: 0 2px 8px rgba(0,0,0,0.15);}
+
+        /* Mantra Ticker */
+        .mantra-ticker { background-color: #fff3e0; color: #d84315; padding: 6px 0; overflow: hidden; white-space: nowrap; display: flex; align-items: center; border-bottom: 2px solid rgba(255, 153, 51, 0.3); font-family: 'Cinzel', serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px; }
+        [data-theme="dark"] .mantra-ticker { background-color: #271202; color: #ffb74d; border-bottom: 2px solid rgba(255, 153, 51, 0.2); }
+        .mantra-ticker-content { display: inline-block; white-space: nowrap; animation: textScroll 24s linear infinite; }
+        .ticker-span { padding-right: 40px; }
+        .ticker-span i { font-size: 0.7rem; vertical-align: middle; color: var(--primary); margin: 0 5px; }
+        @keyframes textScroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* Welcome Header Card */
+        .temple-welcome { margin: 14px 15px 0; padding: 15px 18px; border-radius: 20px; position: relative; overflow: hidden; background: linear-gradient(135deg, #5D1049 0%, #8E1B5E 55%, #C2185B 100%); color: #fff; box-shadow: var(--epic-shadow); border: 1px solid rgba(255,255,255,.2); text-align: center; }
+        .temple-welcome::before { content: '🪷'; position: absolute; left: -10px; top: -12px; font-size: 4.8rem; opacity: .12; }
+        .temple-welcome::after { content: '🌸'; position: absolute; right: -8px; bottom: -14px; font-size: 4.8rem; opacity: .12; }
+        .tw-jai { font-size: .78rem; letter-spacing: 2px; color: #FFE082; font-weight: 700; text-transform: uppercase; }
+        .tw-name { font-family: 'Noto Sans Devanagari','Cinzel',serif; font-size: 1.25rem; font-weight: 800; line-height: 1.3; margin: 4px 0; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
+        .tw-loc { font-size: .78rem; font-weight: 600; opacity: .95; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+        .tw-chips { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+        .tw-chip { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); border-radius: 12px; padding: 3px 11px; font-size: .68rem; font-weight: 700; color: #fff; }
+
+        /* Dynamic Hero Slider */
+        .hero-slider { margin: 15px; border-radius: 22px; overflow: hidden; box-shadow: var(--ui-shadow); z-index: 1; border: 2px solid rgba(255,255,255,0.25); }
+        [data-theme="dark"] .hero-slider { border-color: rgba(255,255,255,0.06); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .carousel-item { height: var(--slider-height); background: var(--secondary); overflow: hidden; position: relative; }
+        .carousel-item img { object-fit: cover; height: 100%; width: 100%; filter: brightness(0.9); }
+        
+        .date-slide { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, #FF6F00 0%, #E65100 100%); color: white; text-align: center; padding: 15px; box-sizing: border-box; position: relative; } 
+        .date-slide h1 { font-family: 'Cinzel', serif; font-size: clamp(3.2rem, 11vw, 4.3rem); margin: 0; line-height: 1; text-shadow: 0 8px 18px rgba(0,0,0,0.45); z-index: 2; }
+        .date-slide p { font-size: clamp(0.85rem, 3vw, 1rem); margin: 5px 0 10px 0; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; z-index: 2; }
+        .live-clock { font-family: monospace, sans-serif; background: rgba(0,0,0,0.38); padding: 5px 22px; border-radius: 30px; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); font-size: 1.15rem; letter-spacing: 2px; z-index: 2; }
+        .ekadasi-alert { font-size: clamp(0.82rem, 3.2vw, var(--event-text-size)); font-weight: 700; margin: 6px 0; padding: 8px 14px; background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.45); border-radius: 14px; width: 95%; max-width: 320px; z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .ekadasi-btn { background: #fff; color: #E65100; padding: 7px 22px; border-radius: 25px; font-weight: 800; font-size: 0.82rem; display: inline-flex; align-items: center; justify-content:center; gap: 5px; margin-top: 4px; z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.25); }
+
+        .name-slide { height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 12px; position: relative; overflow: hidden; }
+        .ns-bday { background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%); color: #880e4f; }
+        .ns-anni { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color: #4a148c; }
+        .ns-donate { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #004d40; }
+        .ns-notice { background: linear-gradient(135deg, #FFC371 0%, #FF5F6D 100%); color: #3e2723; }
+        .ns-header { font-family: 'Dancing Script', cursive; font-weight: 800; text-shadow: 0 2px 4px rgba(255,255,255,0.6); line-height: 1.1; z-index: 2; }
+        .name-container { width: 95%; max-height: 85%; background: rgba(255,255,255,0.85); border-radius: 16px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.9); z-index: 2; display: grid; align-content: center; justify-content: center; gap: 6px; }
+        .person-container { background: rgba(255,255,255,0.65); border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6px 5px; }
+        .person-name { font-weight: 800; line-height: 1.2; font-family: 'Poppins', sans-serif; color: inherit;} 
+        .person-role { font-weight: 700; opacity: 0.85; margin-top: 2px; line-height: 1.1;} 
+        .person-address { font-weight: 600; opacity: 0.75; margin-top: 2px; line-height: 1.1;}
+        .carousel-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: rgba(255,255,255,0.85); z-index: 10; border-radius: 0 4px 4px 0; }
+
+        /* Big Glowing Live Darshan Alert Button */
+        #big-live-alert { display: none; }
+        .big-live-btn { display: flex; align-items: center; gap: 15px; background: linear-gradient(135deg, #d32f2f, #ff1744); color: white; padding: 16px 20px; border-radius: 18px; text-decoration: none; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(211, 47, 47, 0.45); animation: bigGlow 1.5s infinite alternate; border: 2px solid rgba(255,255,255,0.25); }
+        @keyframes bigGlow { 0% { box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4); transform: scale(1); } 100% { box-shadow: 0 12px 35px rgba(255, 23, 68, 0.75); transform: scale(1.015); } }
+        .live-pulse-ring { position: absolute; top: 50%; left: 30px; transform: translateY(-50%); width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; animation: ringPulse 1.5s infinite; pointer-events: none; }
+        @keyframes ringPulse { 0% { transform: translateY(-50%) scale(0.8); opacity: 1; } 100% { transform: translateY(-50%) scale(1.6); opacity: 0; } }
+        .bl-text { display: flex; flex-direction: column; } 
+        .bl-title { font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.15rem; margin-bottom: 2px;} 
+        .bl-sub { font-size: 0.78rem; font-weight: 600; opacity: 0.95; }
+
+        /* Dedicated Lightweight Daily Darshan & Seva Card */
+        .daily-darshan-premium-card { margin: 15px; background: linear-gradient(135deg, #FF6F00 0%, #FF9933 50%, #FF8F00 100%); border-radius: 20px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 25px rgba(255, 111, 0, 0.35); text-decoration: none; border: 2px solid rgba(255, 255, 255, 0.3); transition: transform 0.2s ease; position: relative; overflow: hidden; }
+        [data-theme="dark"] .daily-darshan-premium-card { background: linear-gradient(135deg, #c45500 0%, #e65100 100%); box-shadow: 0 8px 25px rgba(230, 81, 0, 0.4); border-color: rgba(255, 255, 255, 0.12); }
+        .daily-darshan-premium-card:active { transform: scale(0.97); }
+        .daily-darshan-premium-card::before { content: '🪷'; position: absolute; right: -8px; top: -15px; font-size: 5rem; opacity: 0.15; pointer-events: none; }
+        .dd-content { display: flex; align-items: center; gap: 15px; width: 100%; z-index: 2; position: relative; }
+        .dd-icon-box { width: 52px; height: 52px; background: rgba(255,255,255,0.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; color: #fff; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.45); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .dd-text-box { flex-grow: 1; display: flex; flex-direction: column; }
+        .dd-text-box h4 { margin: 0; font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 800; color: #fff; letter-spacing: 0.3px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .dd-text-box p { margin: 2px 0 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.95); font-weight: 600; line-height: 1.25; }
+        .dd-btn { background: #fff; color: #E65100; font-size: 0.8rem; font-weight: 800; padding: 7px 15px; border-radius: 20px; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.18); white-space: nowrap; }
+
+        /* Divine Message Card */
+        .gita-daily-thought { background: linear-gradient(135deg, rgba(255, 153, 51, 0.08), rgba(255, 153, 51, 0.02)); border: 1.5px solid rgba(255, 153, 51, 0.2); border-left: 6px solid var(--primary); border-radius: 16px; margin: 12px 15px 18px 15px; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; position: relative; box-shadow: var(--ui-shadow); }
+        [data-theme="dark"] .gita-daily-thought { background: linear-gradient(135deg, rgba(255, 153, 51, 0.08), #1e1e1e); }
+        .g-t-head { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 800; color: var(--primary); margin-bottom: 5px;}
+        .g-t-text { font-size: 0.85rem; font-style: italic; font-weight: 500; color: var(--text-color); opacity: 0.9; line-height: 1.5; }
+
+        /* Feature Cards Grid (Haptic Active Feel) */
+        .feature-card { background: var(--card-bg); border-radius: 18px; padding: 15px 8px; text-align: center; box-shadow: var(--ui-shadow); display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid rgba(150,150,150,0.1); cursor: pointer; position: relative; height: 100%; text-decoration: none; transition: transform 0.15s ease;}
+        .feature-card:active { transform: scale(0.96); }
+        .feature-card i { font-size: var(--icon-size); color: var(--primary); margin-bottom: 8px; transition: 0.2s;} 
+        .feature-card span { font-size: 0.8rem; font-weight: 700; line-height: 1.15; padding: 0 3px; color: var(--text-color); } 
+        .live-dot { position: absolute; top: 12px; right: 28%; width: 10px; height: 10px; background-color: #ff1744; border-radius: 50%; box-shadow: 0 0 0 2px white, 0 0 10px red; animation: livePulseFast 0.8s infinite alternate; } 
+        .new-badge { position: absolute; top: 0px; right: 0px; background: linear-gradient(90deg, #43a047, #66bb6a); color: white; padding: 4px 9px; border-radius: 0 16px 0 12px; font-size: 0.58rem; font-weight: 800; letter-spacing:0.5px;}
+        @keyframes livePulseFast { 0% { opacity: 1; transform: scale(0.85); } 100% { opacity: 0.4; transform: scale(1.35); } }
+
+        /* Ekadashi Calendar & Lyrics Cards */
+        .calendar-premium-card { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #7c3aed, #4c1d95); border-radius: 18px; padding: 16px 20px; margin: 0 15px 15px 15px; text-decoration: none; color: white; box-shadow: 0 8px 25px rgba(124, 58, 237, 0.28); transition: transform 0.15s ease; }
+        .calendar-premium-card:active { transform: scale(0.97); }
+        .cal-icon-wrapper { display: flex; align-items: center; gap: 16px; }
+        .cal-icon { font-size: 2.1rem; color: #ddd6fe; }
+        .cal-text h4 { margin: 0; font-size: 1.05rem; font-weight: 800; font-family: 'Cinzel', serif; color: white; }
+        .cal-text p { margin: 2px 0 0 0; font-size: 0.75rem; color: #ddd6fe; font-weight: 500;}
+
+        .master-lyrics-box { margin: 15px; border-radius: 18px; box-shadow: var(--epic-shadow); background: linear-gradient(135deg, #ad1457 0%, #D81B60 100%); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.15s ease; }
+        .master-lyrics-box:active { transform: scale(0.98); }
+        .lyric-read-action { display: flex; align-items: center; text-decoration: none; padding: 14px 16px; color: white; gap: 14px;}
+        .epic-book-icon { width: 44px; height: 44px; flex-shrink: 0; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: #ffeb3b; border: 1.5px solid rgba(255,235,59,0.5); }
+        .lyric-title { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 800; margin: 0; color: white;}
+        .lyric-sub { font-size: 0.72rem; font-weight: 500; margin-top: 2px; color: rgba(255,255,255,0.92); }
+        .lyrics-bottom-bar { background: rgba(0,0,0,0.22); border-top: 1px solid rgba(255,255,255,0.12); display: flex; padding: 8px 10px; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+        .mini-meta-chip { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 4px 12px; font-size: 0.7rem; font-weight: 600; color: white; }
+
+        /* Address & Navigation Box */
+        .address-box { background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: var(--powerful-shadow); margin: 25px 15px 10px 15px; text-align: center; border: 1.5px solid rgba(255, 153, 51, 0.4); position: relative; overflow: hidden; }
+        .address-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #E65100, var(--primary), #E65100); }
+        .address-text { font-size: 0.95rem; opacity: 0.85; margin-bottom: 20px; line-height: 1.6; font-weight: 500; display: inline-flex; align-items: flex-start; justify-content: center; text-align: center;}
+        .map-btn, .copy-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 14px; border-radius: 16px; font-weight: 800; font-size: 0.9rem; border: none; cursor: pointer; transition: transform 0.15s ease; }
+        .map-btn:active, .copy-btn:active { transform: scale(0.96); }
+        .map-btn { background: linear-gradient(135deg, var(--primary), #FF7043); color: white; box-shadow: 0 6px 18px rgba(255,153,51,0.35);}
+        .copy-btn { background: rgba(255, 153, 51, 0.1); color: var(--primary); border: 2.5px solid var(--primary); }
+
+        /* Premium Footer with Seamless Edge Attachment */
+        .premium-footer { 
+            background: linear-gradient(180deg, #3d1b19 0%, #0d0402 100%); 
+            color: #ffcc80; 
+            padding-top: 0; 
+            position: relative; 
+            margin-top: 40px; 
+            margin-bottom: 0 !important; 
+            padding-bottom: calc(25px + env(safe-area-inset-bottom, 0px)) !important;
+            text-align: center; 
+        }
+        .footer-wave { width: 100%; height: auto; display: block; fill: #3d1b19; margin-top: -30px; }
+        .footer-content { padding: 10px 20px 20px 20px; }
+        .footer-logo-img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--primary); box-shadow: 0 0 35px rgba(255, 153, 51, 0.6); margin-bottom: 18px; background: #fff;}
+        .footer-mantra { font-family: 'Cinzel', 'Noto Sans Devanagari', serif; font-size: 0.98rem; color: #fff; margin-bottom: 25px; line-height: 1.6; opacity: 0.95; }
+        .footer-links { margin-bottom: 25px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+        .footer-links a { color: #ffb74d; font-size: 0.88rem; text-decoration: none; font-weight: 700; opacity: 0.9;}
+        .footer-social { display: flex; justify-content: center; gap: 18px; margin-bottom: 20px; }
+        .f-icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; text-decoration: none;}
+        .footer-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,153,51,0.5), transparent); margin: 20px 0 15px 0; }
+        .copyright { font-size: 0.82rem; opacity: 0.7; margin-bottom: 4px; }
+        .dev-credit-box { display: inline-block; padding: 8px 16px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,153,51,0.2); cursor: pointer; text-decoration: none; }
+        .dev-name { color: var(--primary); font-weight: 700; font-family: 'Dancing Script', cursive; font-size: 1.4rem; margin-left: 5px; }
+
+        /* Offcanvas Sidebar */
+        .offcanvas { background: var(--card-bg); color: var(--text-color); width: 290px !important; border-radius: 0 20px 20px 0; box-shadow: 15px 0 30px rgba(0,0,0,0.2) !important; border-right: 1px solid rgba(255,153,51,0.2); }
+        .offcanvas-header { border-bottom: 1px solid rgba(255, 153, 51, 0.2); padding: 18px 15px; }
+        .menu-item { padding: 12px 14px; display: flex; align-items: center; font-size: 0.95rem; font-weight: 500; color: var(--text-color); border-radius: 12px; margin-bottom: 5px; transition: all 0.2s ease; cursor: pointer; text-decoration: none;}
+        .menu-item i { width: 34px; font-size: 1.15rem; color: var(--primary); text-align: left;}
+        .lang-chips-container { display: flex; gap: 6px; margin-bottom: 12px; background: rgba(150,150,150,0.08); padding: 5px; border-radius: 14px; }
+        .lang-chip { flex: 1; text-align: center; padding: 8px 3px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; cursor: pointer; border: 1.5px solid transparent; color: var(--text-color); opacity: 0.75;}
+        .lang-chip.active { background: var(--card-bg); color: var(--primary); border-color: var(--primary); opacity: 1; box-shadow: 0 4px 10px rgba(255,153,51,0.2); }
+
+        /* Modern Alert Dialog */
+        .adAlertModalOverlayClass { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+        .adAlertModalOverlayClass.show { display: flex; }
+        .support-modal-card { background: var(--card-bg); width: 100%; max-width: 350px; border-radius: 22px; padding: 24px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255, 153, 51, 0.25); }
+        .sm-icon-wrapper { width: 55px; height: 55px; background: linear-gradient(135deg, rgba(255,153,51,0.15), rgba(230,81,0,0.1)); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; margin: 0 auto 14px auto; }
+        .sm-title { font-size: 1.2rem; font-weight: 800; color: var(--text-color); margin-bottom: 10px; font-family: 'Cinzel', serif;} 
+        .sm-desc { font-size: 0.88rem; color: var(--text-color); opacity: 0.88; line-height: 1.5; margin-bottom: 22px; font-weight: 500;}
+        .sm-btn { background: linear-gradient(135deg, var(--primary), #E65100); color: white; border: none; width: 100%; padding: 13px; border-radius: 14px; font-weight: 800; font-size: 0.92rem; cursor: pointer; }
+
+        /* Offline Banner */
+        .offline-banner { display: none; background: linear-gradient(135deg, #d32f2f, #f44336); color: white; text-align: center; padding: 9px 15px; font-size: 0.82rem; font-weight: 700; z-index: 2000; width: 100%; position: sticky; top: 0; } 
+        body.is-offline .offline-banner { display: flex; justify-content: center; align-items: center; }
+
+        /* Hidden Sections (Preserved in code/logic, hidden from display) */
+        .ad-support-card, .support-fab, #video-section-wrap, #lecture-section-wrap { display: none !important; }
+    </style>
+</head>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+
+<!-- Ultra-Fast Loading Splash Screen -->
+<div id="app-splash">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh89ueri3DvWfVUmM76dyYJSTCLcDC6oYuAT3j-ezAKl5iDeJ97q28vt2MR39RJwL8BGI91we6F4DRj-u7j1EE2NPyQRwFs0HfYcB4HjxZ9VoeUQWGR7GdARSdow00uHqEehsr6gOVDFG15mntfIdNuOrQ_fxAZHCjMWU9kEjzaUMhuN52vsKMA6Tb9Dtx3/s256/1000096788.png" alt="Loading" class="splash-logo" draggable="false">
+    <div class="splash-text">HARE KRISHNA</div>
+    <div class="spinner-border splash-spinner" role="status"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.body.classList.add('is-loaded'); }, 200); });
+    window.addEventListener('load', () => { document.body.classList.add('is-loaded'); });
+    setTimeout(() => { document.body.classList.add('is-loaded'); }, 1800);
+</script>
+
+<!-- Offline Status Alert Banner -->
+<div id="offline-banner" class="offline-banner">
+    <i class="fas fa-wifi-slash" style="margin-right:6px;"></i> <span data-key="offline_msg">You are currently offline. Showing cached contents. Keep chanting!</span>
+</div>
+
+<!-- Modern Reusable Dialog Overlay -->
+<div class="adAlertModalOverlayClass" id="adAlertModalOverlay" onclick="closeAdAlertModal(event)">
+    <div class="support-modal-card" id="adAlertModalCard" onclick="event.stopPropagation()">
+        <div class="sm-icon-wrapper" id="adAlertModalIcon"><i class="fas fa-bell"></i></div>
+        <h3 class="sm-title" id="adAlertModalTitle">Hare Krishna! 🙏</h3>
+        <p class="sm-desc" id="adAlertModalDesc"></p>
+        <button class="sm-btn" onclick="closeAdAlertModal(null)">OK</button>
+    </div>
+</div>
+
+<!-- Offcanvas Navigation Sidebar -->
+<div class="offcanvas-backdrop-custom" id="customBackdrop"></div>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="appSidebar">
+    <div class="offcanvas-header d-flex justify-content-between align-items-center">
+        <h5 class="offcanvas-title m-0" style="font-family:'Cinzel',serif; color:var(--primary); font-weight:800; letter-spacing:1px;" data-key="menu_title">Temple Menu</h5>
+        <button type="button" class="btn-close" id="closeSidebarBtn" data-bs-dismiss="offcanvas" aria-label="Close" style="filter: invert(0.6);"></button>
+    </div>
+    <div class="offcanvas-body px-3 pb-5">
+        
+        <!-- Language Selector Chips -->
+        <div class="lang-chips-container shadow-sm">
+            <div class="lang-chip" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</div>
+            <div class="lang-chip" data-lang="hi" onclick="setLanguage('hi')">🇮🇳 हिन्दी</div>
+            <div class="lang-chip" data-lang="mr" onclick="setLanguage('mr')">🚩 मराठी</div>
+        </div>
+        
+        <!-- Menu Navigation Links -->
+        <div class="menu-list mt-3">
+            <a href="home.html" class="menu-item"><i class="fas fa-home"></i> <span data-key="home">Home</span></a>
+            <a href="daily_darshan.html" class="menu-item"><i class="fas fa-images" style="color: #FF9933;"></i> <span data-key="daily_darshan_menu">Daily Darshan & Seva</span></a>
+            <a href="calendar.html" class="menu-item"><i class="far fa-calendar-alt"></i> <span data-key="ekadashi_cal">Ekadashi Calendar</span></a>
+            <a href="dono.html" class="menu-item"><i class="fab fa-whatsapp"></i> <span data-key="donation">Donation</span></a>
+            <a href="chanting.html" class="menu-item"><i class="fas fa-om"></i> <span data-key="japa">Digital Japa</span></a>
+            <a href="mantras.html" class="menu-item"><i class="fas fa-book-journal-whills"></i> <span data-key="lyric_vault">Sacred Lyrics & Prayers</span></a>
+            <a href="pune.html" class="menu-item"><i class="fas fa-gopuram"></i> <span data-key="pune_temples">Pune Temples</span></a>
+            <a href="schedule.html" class="menu-item"><i class="far fa-calendar-check"></i> <span data-key="schedule">Temple Schedule</span></a>
+            <a href="darshan.html" class="menu-item"><i class="fas fa-video"></i> <span data-key="darshan">Live Darshan</span></a>
+            
+            <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(150,150,150,0.3),transparent); margin:15px 0;"></div>
+            <a href="https://chat.whatsapp.com/" target="_blank" class="menu-item"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span data-key="join_wa_community">Join WhatsApp Community</span></a>
+            <a href="contact.html" class="menu-item"><i class="fas fa-phone-alt"></i> <span data-key="contact">Contact</span></a>
+            <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> <span data-key="about">About Temple</span></a>
+            <a href="privacy.html" class="menu-item"><i class="fas fa-shield-alt"></i> <span data-key="privacy">Privacy Policy</span></a>
+            <a href="terms.html" class="menu-item"><i class="fas fa-file-contract"></i> <span data-key="terms">Terms & Conditions</span></a>
+            <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(150,150,150,0.3),transparent); margin:15px 0;"></div>
+            
+            <a href="#" onclick="shareAppNative(); return false;" class="menu-item"><i class="fas fa-share-nodes"></i> <span data-key="share">Share Application</span></a>
+            <a href="dev.html" class="menu-item"><i class="fas fa-heart" style="color:#e91e63;"></i> <span data-key="contact_dev">Contact Developer</span></a>
+            <div class="menu-item" onclick="toggleTheme()"><i class="far fa-moon"></i> <span data-key="dark">Toggle Dark Mode</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Sticky App Navbar -->
+<nav class="navbar">
+    <div class="container-fluid px-3">
+        <div class="nav-left-group">
+            <button class="navbar-toggler shadow-none border-0 p-0 me-1" type="button" id="openSidebarBtn" data-bs-toggle="offcanvas" data-bs-target="#appSidebar">
+                <i class="fas fa-bars text-white" style="font-size:1.4rem;"></i>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh89ueri3DvWfVUmM76dyYJSTCLcDC6oYuAT3j-ezAKl5iDeJ97q28vt2MR39RJwL8BGI91we6F4DRj-u7j1EE2NPyQRwFs0HfYcB4HjxZ9VoeUQWGR7GdARSdow00uHqEehsr6gOVDFG15mntfIdNuOrQ_fxAZHCjMWU9kEjzaUMhuN52vsKMA6Tb9Dtx3/s256/1000096788.png" alt="Logo" class="nav-logo-img" draggable="false"> 
+                <span style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.15rem; color: #ffffff; margin-left: 6px;">श्री श्री राधाकृष्ण चंद्र</span>
+            </a>
+        </div>
+        <div class="nav-right-group">
+            <button class="theme-toggle-btn shadow-sm" onclick="toggleTheme()" id="headerThemeBtn"><i class="fas fa-moon" id="headerThemeIcon"></i></button>
+        </div>
+    </div>
+</nav>
+
+<!-- Hare Krishna Maha-Mantra Ticker -->
+<div class="mantra-ticker" id="mahamantra-banner">
+    <div class="mantra-ticker-content">
+        <span class="ticker-span"><i class="fas fa-sun"></i> Hare Krishna Hare Krishna Krishna Krishna Hare Hare <span style="opacity:0.6;margin:0 10px;">|</span> Hare Rama Hare Rama Rama Rama Hare Hare <i class="fas fa-sun"></i></span>
+        <span class="ticker-span"><i class="fas fa-sun"></i> Hare Krishna Hare Krishna Krishna Krishna Hare Hare <span style="opacity:0.6;margin:0 10px;">|</span> Hare Rama Hare Rama Rama Rama Hare Hare <i class="fas fa-sun"></i></span>
+    </div>
+</div>
+
+<!-- Welcome Header Card (Fully Translated & Multilingual) -->
+<div class="temple-welcome" data-aos="fade-down" data-aos-duration="600">
+    <div class="tw-jai" data-key="tw_jai">॥ जय श्री राधे कृष्ण ॥</div>
+    <div class="tw-name" data-key="tw_name">श्री श्री राधाकृष्ण चंद्र मंदिर</div>
+    <div class="tw-loc"><i class="fas fa-location-dot"></i> <span data-key="tw_loc">15 नंबर, हडपसर, पुणे</span></div>
+    <div class="tw-chips">
+        <span class="tw-chip" data-key="chip_kirtan">कीर्तन</span>
+        <span class="tw-chip" data-key="chip_katha">कथा</span>
+        <span class="tw-chip" data-key="chip_abhishek">अभिषेक</span>
+        <span class="tw-chip" data-key="chip_rajbhog">राजभोग सेवा</span>
+        <span class="tw-chip" data-key="chip_mahaprasad">महाप्रसाद</span>
+    </div>
+</div>
+
+<!-- Dynamic Hero Slider with Clock, Ekadashi, and Announcements -->
+<div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-aos="zoom-in" data-aos-duration="600">
+    <div class="carousel-inner" id="slider-inner" style="height: 100%;">
+        <div class="carousel-item active" style="background:var(--bg-color);">
+            <div class="d-flex justify-content-center align-items-center h-100 flex-column" style="opacity:0.8;">
+                <div class="spinner-border text-warning mb-2 shadow-sm" role="status" style="width: 2.5rem; height: 2.5rem; border: .25em solid currentColor; border-right-color: transparent; border-radius: 50%;"></div>
+                <small style="font-weight:800; font-family:'Cinzel', serif; letter-spacing:1px; color:var(--primary); text-transform:uppercase;">Loading Updates...</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Real-Time Live Darshan Notification Button -->
+<div id="big-live-alert" class="container-fluid px-3 mt-3 mb-2">
+    <a href="darshan.html" class="big-live-btn">
+        <div class="live-pulse-ring"></div>
+        <i class="fas fa-video"></i>
+        <div class="bl-text">
+            <span class="bl-title" data-key="live_now">LIVE DARSHAN NOW</span>
+            <span class="bl-sub" data-key="tap_to_watch">Tap here to join the live broadcast</span>
+        </div>
+        <i class="fas fa-chevron-right ms-auto"></i>
+    </a>
+</div>
+
+<!-- ============================================================== -->
+<!-- 🪷 DEDICATED LIGHTWEIGHT "DAILY DARSHAN & SEVA" OPTION CARD 🪷 -->
+<!-- ============================================================== -->
+<a href="daily_darshan.html" class="daily-darshan-premium-card" data-aos="zoom-in" data-aos-duration="600">
+    <div class="dd-content">
+        <div class="dd-icon-box"><i class="fas fa-images"></i></div>
+        <div class="dd-text-box">
+            <h4 data-key="daily_darshan_head">Daily Darshan & Seva</h4>
+            <p data-key="daily_darshan_sub">Deity Shringar, Rajbhog Seva & Festivals</p>
+        </div>
+        <div class="dd-btn"><span data-key="view_darshan">View Today</span> <i class="fas fa-chevron-right"></i></div>
+    </div>
+</a>
+
+<!-- Gita Daily Thought / Divine Message -->
+<div class="gita-daily-thought" data-aos="fade-in" data-aos-duration="800">
+    <div class="g-t-head"><i class="fas fa-feather-pointed" style="color:var(--primary);"></i> <span data-key="quote_head">Divine Message</span></div>
+    <div class="g-t-text">
+        <span id="divine-text-val" data-key="quote_text">"A person is made by faith. As they believe, so they become."</span> <br>
+        <span id="divine-author-val" style="font-weight:600; font-style:normal; opacity: 0.85;">— Bhagavad Gita</span>
+    </div>
+</div>
+
+<!-- Main Quick Action Cards Grid -->
+<div class="container-fluid px-3 my-2">
+    <div class="row g-2 mb-2" data-aos="fade-up" data-aos-duration="500">
+        <div class="col-6">
+            <a href="dono.html" class="feature-card shadow-sm" style="border: 1px solid rgba(37,211,102, 0.4); background: linear-gradient(to bottom right, var(--card-bg), rgba(37,211,102, 0.05));">
+                <div class="new-badge">SECURE</div><i class="fab fa-whatsapp" style="color:#25D366; font-size:2.2rem; margin-top:8px;"></i><span data-key="donation" class="mt-2" style="font-size:0.85rem;">Donation</span>
+            </a>
+        </div>
+        <div class="col-6">
+            <a href="global_jap.html" class="feature-card shadow-sm" style="border: 1px solid rgba(220, 53, 69, 0.4); background: linear-gradient(to bottom right, var(--card-bg), rgba(220, 53, 69, 0.05)); position:relative;">
+                <div class="live-dot" style="right: 15%; top: 12px;"></div>
+                <div style="position:relative; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #dc3545; padding: 2px; background:white; display:flex; justify-content:center; align-items:center; margin-top:2px;">
+                    <img src="https://iskconnews.org/wp-content/uploads/2022/02/lokanath-swami.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" loading="lazy" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Global Japa" draggable="false">
+                    <i class="fas fa-globe-americas" style="color:#dc3545; font-size:1.5rem; display:none;"></i>
+                </div>
+                <span data-key="global_japa" class="mt-2" style="font-size:0.8rem; font-weight: 800; color: #d32f2f;">Live Global Japa</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- WhatsApp Community & All Pune Temples Grid -->
+    <div class="row g-2 mb-3" data-aos="fade-up" data-aos-duration="600">
+        <div class="col-6">
+            <a href="https://chat.whatsapp.com/" target="_blank" class="feature-card shadow-sm" style="border: 1px solid rgba(37,211,102,0.4); background: linear-gradient(145deg, var(--card-bg) 50%, rgba(37,211,102,0.08) 100%);">
+                <i class="fab fa-whatsapp" style="color:#25D366; font-size:2rem;"></i><span data-key="wa_community" class="mt-2" style="font-size:0.8rem;">Temple WhatsApp</span>
+            </a>
+        </div>
+        <div class="col-6">
+            <a href="pune.html" class="feature-card" style="border: 1px solid rgba(156,39,176,0.3); background: linear-gradient(145deg, var(--card-bg) 50%, rgba(156,39,176,0.06) 100%);">
+                <i class="fas fa-vihara" style="color:#8E24AA; font-size:1.9rem;"></i><span data-key="pune_temples_home" class="mt-2" style="font-size:0.8rem;">All Pune Temples</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Ekadashi Calendar Banner -->
+    <a href="calendar.html" class="calendar-premium-card" data-aos="fade-up" data-aos-duration="650">
+        <div class="cal-icon-wrapper">
+            <i class="far fa-calendar-check cal-icon"></i>
+            <div class="cal-text">
+                <h4 data-key="ekadashi_cal">Ekadashi Calendar</h4>
+                <p data-key="ekadashi_cal_sub">Accurate fasting dates & timings</p>
+            </div>
+        </div>
+        <i class="fas fa-arrow-right text-white"></i>
+    </a>
+
+    <!-- Sacred Lyrics & Prayers Vault -->
+    <div class="master-lyrics-box" data-aos="flip-up" data-aos-duration="700">
+        <a href="mantras.html" class="lyric-read-action">
+            <div class="epic-book-icon"><i class="fas fa-book-open"></i></div>
+            <div class="lyric-text-group">
+                <h4 class="lyric-title" data-key="lyric_vault">Sacred Lyrics & Prayers</h4>
+                <div class="lyric-sub" data-key="lyric_sub">Read all divine mantras, aartis & bhajan lyrics</div>
+            </div>
+        </a>
+        <div class="lyrics-bottom-bar">
+            <a href="man.html" class="mini-meta-chip"><span data-key="a_mangal">Mangal Aarti</span></a>
+            <a href="nar.html" class="mini-meta-chip"><span data-key="a_narasimha">Narasimha</span></a>
+            <a href="tul.html" class="mini-meta-chip"><span data-key="a_tulasi">Tulasi Aarti</span></a>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Links (Schedule, Darshan, Visit) -->
+    <div class="row g-2 mb-3 mt-1" data-aos="fade-up" data-aos-duration="700" id="quick-links-row">
+        <div class="col-4 transition-col" id="col-schedule">
+            <a href="schedule.html" class="feature-card p-2" style="border-bottom: 2.5px solid #2196F3;"><i class="far fa-clock" style="color:#1976D2;"></i><span data-key="schedule">Schedule</span></a>
+        </div>
+        <div class="col-4 transition-col" id="col-darshan">
+            <a href="darshan.html" class="feature-card p-2" style="border-bottom: 2.5px solid #F44336;"><div class="live-dot"></div><i class="fas fa-video" style="color:#D32F2F;"></i><span data-key="darshan">Darshan</span></a>
+        </div>
+        <div class="col-4 transition-col" id="col-visit">
+            <div onclick="scrollToAddress()" class="feature-card p-2" role="button" style="border-bottom: 2.5px solid var(--primary);"><i class="fas fa-map-location-dot" style="color:#F57C00;"></i><span data-key="visit">Visit Us</span></div>
+        </div>
+    </div>
+
+    <!-- Temple Address & Navigation Box (Fully Dynamic Multilingual) -->
+    <div class="address-box mx-n1" id="address-section" data-aos="zoom-in" data-aos-duration="600">
+        <h5 style="font-family:'Cinzel',serif; color:var(--text-color); font-weight:800; margin-bottom:12px; font-size:1.35rem;" data-key="visit_h">Visit Our Temple</h5>
+        <p class="address-text mx-1">
+            <i class="fas fa-location-dot" style="color:var(--primary); margin-right:8px; font-size:1.2rem; margin-top:2px;"></i> 
+            <span data-key="address_full">श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र</span>
+        </p>
+        <div class="row g-3 mt-2">
+            <div class="col-6"><button onclick="copyAddress()" class="copy-btn"><i class="far fa-copy"></i> <span data-key="copy">Copy Address</span></button></div>
+            <div class="col-6"><button onclick="openMap()" class="map-btn"><i class="fas fa-diamond-turn-right"></i> <span data-key="map">Navigate</span></button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Temple Footer (With Seamless Edge Attachment) -->
+<footer class="premium-footer">
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250" preserveAspectRatio="none" style="height:60px;"><path fill-opacity="1" d="M0,96L80,117.3C160,139,320,181,480,181.3C640,181,800,139,960,122.7C1120,107,1280,117,1360,122.7L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+    <div class="footer-content">
+        <div class="footer-logo-area"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh89ueri3DvWfVUmM76dyYJSTCLcDC6oYuAT3j-ezAKl5iDeJ97q28vt2MR39RJwL8BGI91we6F4DRj-u7j1EE2NPyQRwFs0HfYcB4HjxZ9VoeUQWGR7GdARSdow00uHqEehsr6gOVDFG15mntfIdNuOrQ_fxAZHCjMWU9kEjzaUMhuN52vsKMA6Tb9Dtx3/s256/1000096788.png" class="footer-logo-img" alt="Footer Logo" loading="lazy" decoding="async" draggable="false"></div>
+        <p class="footer-mantra" data-key="mantra">Hare Krishna Hare Krishna<br>Krishna Krishna Hare Hare<br><span style="display:inline-block; margin-top:5px; font-weight:800; color:var(--primary); font-size:1.05rem;">Hare Rama Hare Rama<br>Rama Rama Hare Hare</span></p>
+        
+        <div class="footer-social mt-3">
+            <a href="intent://youtube.com/@srisriradhakrsnachandraman9892#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=https://youtube.com/@srisriradhakrsnachandraman9892;end" class="f-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <div class="footer-links mt-3">
+            <a href="privacy.html" data-key="privacy">Privacy Policy</a>
+            <a href="terms.html" data-key="terms">Terms & Conditions</a>
+            <a href="about.html" data-key="about">About Temple</a>
+            <a href="contact.html" data-key="contact">Contact Details</a>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="copyright mt-2" data-key="copyright_text">© 2026 Sri Sri Radha Krishna Chandra Mandir, Hadapsar. All Rights Reserved.</p>
+        <div class="dev-credit-box mt-3 mb-2" onclick="window.location.href='dev.html'" role="button">
+            <div class="dev-credit" data-key="credit" style="font-size: 0.85rem; opacity: 0.9;">Designed & Developed with ❤️ by <span class="dev-name">Santosh</span></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Deferred JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+
+<!-- ======================================================== -->
+<!-- 🛡️ NATIVE APPLICATION SYSTEM SCRIPT (STRICT PROTECTION) 🛡️ -->
+<!-- ======================================================== -->
+<script>
+    (function enforceNativeAppSecurity() {
+        // Disable Right-Click Context Menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        }, { passive: false });
+
+        // Disable Text Selection on Touch/Mouse
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Disable Dragging of Images and Links
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Block Keyboard Inspection Shortcuts (F12, Ctrl+U, Ctrl+C, Ctrl+S, etc.)
+        window.addEventListener('keydown', function(e) {
+            if (e.keyCode === 123 || // F12
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I/J/C
+                (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 65)) // Ctrl+U/S/C/A
+            ) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+
+        // Prevent Mobile Long-Press Callout & Magnifier
+        let touchTimer = null;
+        window.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                // Prevent multi-touch pinch zooming
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', function() {
+            if (touchTimer) clearTimeout(touchTimer);
+        }, { passive: true });
+    })();
+
+    function updateOnlineStatus() { 
+        if (!navigator.onLine) document.body.classList.add('is-offline'); 
+        else document.body.classList.remove('is-offline'); 
+    }
+    window.addEventListener('online', updateOnlineStatus); 
+    window.addEventListener('offline', updateOnlineStatus); 
+    updateOnlineStatus(); 
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebar = document.getElementById('appSidebar'); 
+        const openBtn = document.getElementById('openSidebarBtn'); 
+        const closeBtn = document.getElementById('closeSidebarBtn'); 
+        const backdrop = document.getElementById('customBackdrop');
+        
+        function openSidebar() { sidebar.classList.add('show'); backdrop.classList.add('show'); document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('show'); backdrop.classList.remove('show'); document.body.style.overflow = ''; }
+        
+        if (typeof bootstrap === 'undefined') { 
+            openBtn.removeAttribute('data-bs-toggle'); 
+            closeBtn.removeAttribute('data-bs-dismiss'); 
+            openBtn.addEventListener('click', openSidebar); 
+            closeBtn.addEventListener('click', closeSidebar); 
+            backdrop.addEventListener('click', closeSidebar); 
+        }
+        
+        setTimeout(() => { try { if(typeof AOS !== 'undefined') AOS.init({ once: true, offset: 15, easing: 'ease-out-cubic' }); } catch(e){} }, 600);
+    });
+
+    // Custom Alert Overlay Functions
+    function showCustomAdAlert(title, message, iconClass = 'fa-hands-praying') {
+        document.getElementById('adAlertModalIcon').innerHTML = `<i class="fas ${iconClass}"></i>`;
+        document.getElementById('adAlertModalTitle').innerText = title;
+        document.getElementById('adAlertModalDesc').innerText = message;
+        document.getElementById('adAlertModalOverlay').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeAdAlertModal(e) {
+        if(e && e.target !== document.getElementById('adAlertModalOverlay') && e !== null) return;
+        document.getElementById('adAlertModalOverlay').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function copyAddress() {
+        const lang = localStorage.getItem('lang') || 'en';
+        const addressToCopy = lang === 'en' 
+            ? "Sri Sri Radha Krishna Chandra Temple, 15 Number, Hadapsar, Pune, Maharashtra" 
+            : "श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र";
+        navigator.clipboard.writeText(addressToCopy);
+        const msg = lang === 'en' ? "Temple address copied to clipboard!" : (lang === 'hi' ? "मंदिर का पता कॉपी हो गया है!" : "मंदिराचा पत्ता कॉपी केला आहे!");
+        showCustomAdAlert("Success 🙏", msg, "fa-copy");
+    }
+    
+    function openMap() { 
+        window.location.href = "intent://maps.google.com/maps?q=Sri+Sri+Radha+Krishna+Chandra+Mandir+15+Number+Hadapsar+Pune#Intent;scheme=https;package=com.google.android.apps.maps;S.browser_fallback_url=https://maps.google.com/maps?q=Sri+Sri+Radha+Krishna+Chandra+Mandir+15+Number+Hadapsar+Pune;end";
+    } 
+    
+    function scrollToAddress() { document.getElementById('address-section').scrollIntoView({behavior: 'smooth'}); }
+
+    function shareAppNative() {
+        const lang = localStorage.getItem('lang') || 'en';
+        if (window.AndroidInterface && typeof window.AndroidInterface.shareApp === 'function') {
+            window.AndroidInterface.shareApp(lang);
+        } else if (window.AndroidBridge && typeof window.AndroidBridge.shareApp === 'function') {
+            window.AndroidBridge.shareApp(lang);
+        } else {
+            window.location.href = `https://action_share?lang=${lang}`;
+        }
+    }
+
+    // ==========================================
+    // REWARDED ADS INTERFACE (PRESERVED LOGIC)
+    // ==========================================
+    function setupAdStateAndUI() {
+        const todayDate = new Date().toDateString();
+        const storedDate = localStorage.getItem('iskcon_ad_date');
+        if (storedDate !== todayDate) {
+            localStorage.setItem('iskcon_ad_date', todayDate);
+            localStorage.setItem('iskcon_ad_count', '0');
+        }
+    }
+    function updateAdWidgetUI() {}
+    function requestAdWatch() {
+        if (window.AndroidInterface && typeof window.AndroidInterface.triggerNativeAd === 'function') {
+            window.AndroidInterface.triggerNativeAd();
+        } else {
+            adWatchedSuccess();
+        }
+    }
+    window.adWatchedSuccess = function() {
+        let count = parseInt(localStorage.getItem('iskcon_ad_count') || '0');
+        count = Math.min(count + 1, 5);
+        localStorage.setItem('iskcon_ad_count', count.toString());
+        localStorage.setItem('iskcon_last_ad_time', Date.now().toString());
+    };
+    window.showAdLoadingAlert = function() {
+        showCustomAdAlert("Hare Krishna! 🙏", "Loading ad, please wait a moment... 🙏", "fa-spinner");
+    };
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+    const sliderDbConfig = { apiKey: "AIzaSyDaiyXkiQgyJWAC7QsOcneHl0KU0O4kwgI", authDomain: "iskcon-slider.firebaseapp.com", databaseURL: "https://iskcon-slider-default-rtdb.firebaseio.com", projectId: "iskcon-slider", storageBucket: "iskcon-slider.firebasestorage.app", messagingSenderId: "887649015723", appId: "1:887649015723:web:f64104897972e65ea564ee" };
+    const mainDbConfig = { apiKey: "AIzaSyBfbNzASqzPt4kMP-LlpJasIras7ifTch4", authDomain: "iskcon-hadapsar.firebaseapp.com", databaseURL: "https://iskcon-hadapsar-default-rtdb.firebaseio.com", projectId: "iskcon-hadapsar", appId: "1:231589086724:web:64d8a5d7a136b39db39751" };
+
+    try {
+        const app = initializeApp(sliderDbConfig); 
+        const db = getDatabase(app);
+        const appMain = initializeApp(mainDbConfig, "mainDB");
+        const dbMain = getDatabase(appMain);
+        
+        const liveStatusRef = ref(dbMain, 'live_status/isLive');
+        onValue(liveStatusRef, (snapshot) => {
+            const isLive = snapshot.val();
+            const bigBtn = document.getElementById('big-live-alert');
+            const colSched = document.getElementById('col-schedule');
+            const colDarsh = document.getElementById('col-darshan');
+            const colVisit = document.getElementById('col-visit');
+
+            if(isLive) {
+                if(bigBtn) bigBtn.style.display = 'block';
+                if(colDarsh) colDarsh.classList.add('d-none');
+                if(colSched) { colSched.classList.remove('col-4'); colSched.classList.add('col-6'); }
+                if(colVisit) { colVisit.classList.remove('col-4'); colVisit.classList.add('col-6'); }
+            } else {
+                if(bigBtn) bigBtn.style.display = 'none';
+                if(colDarsh) colDarsh.classList.remove('d-none');
+                if(colSched) { colSched.classList.remove('col-6'); colSched.classList.add('col-4'); }
+                if(colVisit) { colVisit.classList.remove('col-6'); colVisit.classList.add('col-4'); }
+            }
+        });
+
+        window.sliderDataList = []; window.dateWidgetOrder = 1; window.divineMessageData = null;
+        onValue(ref(db, 'slider_settings/date_order'), (snapshot) => { window.dateWidgetOrder = snapshot.val() || 1; if (typeof window.renderMasterSlider === 'function') window.renderMasterSlider(); });
+        onValue(ref(db, 'slider_items'), (snapshot) => { const data = snapshot.val(); window.sliderDataList = []; if (data) { Object.values(data).forEach(item => { window.sliderDataList.push(item); }); } if (typeof window.renderMasterSlider === 'function') window.renderMasterSlider(); });
+        onValue(ref(db, 'divine_message'), (snapshot) => { window.divineMessageData = snapshot.val(); if (typeof window.updateDivineMessageUI === 'function') window.updateDivineMessageUI(); });
+    } catch (e) { console.log("Firebase initialized in fallback mode."); window.renderMasterSlider(); }
+</script>
+
+<script>
+    const ekadasiData = [
+        { "date": "2024-01-07", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2024-01-21", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2024-02-06", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2024-02-20", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2024-03-06", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2024-03-20", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2024-04-05", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2024-04-19", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2024-05-04", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2024-05-19", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2024-06-02", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2024-06-18", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2024-07-02", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2024-07-17", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2024-07-31", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2024-08-16", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2024-08-29", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2024-09-14", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2024-09-28", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2024-10-14", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2024-10-28", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2024-11-12", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2024-11-26", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2024-12-11", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2024-12-26", "name_key": "e_saphala", "link": "e_saphala.html" },
+        { "date": "2025-01-10", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2025-01-25", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2025-02-09", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2025-02-24", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2025-03-10", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2025-03-25", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2025-04-08", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2025-04-23", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2025-05-08", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2025-05-23", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2025-06-06", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2025-06-21", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2025-07-06", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2025-07-20", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2025-08-04", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2025-08-19", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2025-09-03", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2025-09-17", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2025-10-02", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2025-10-17", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2025-11-01", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2025-11-15", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2025-11-30", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2025-12-15", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2025-12-30", "name_key": "e_putrada", "link": "e_putrada.html" },
+        { "date": "2026-01-14", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2026-01-29", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2026-02-13", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2026-02-27", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2026-03-15", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2026-03-29", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2026-04-13", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2026-04-27", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2026-05-13", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2026-05-27", "name_key": "e_padmini", "link": "e_padmini.html" }, { "date": "2026-06-11", "name_key": "e_parama", "link": "e_parama.html" }, { "date": "2026-06-25", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2026-07-11", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2026-07-25", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2026-08-09", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2026-08-24", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2026-09-07", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2026-09-22", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2026-10-06", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2026-10-22", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2026-11-05", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2026-11-21", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2026-12-04", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2026-12-20", "name_key": "e_mokshada", "link": "e_mokshada.html" },
+        { "date": "2027-01-03", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2027-01-19", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2027-02-02", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2027-02-17", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2027-03-04", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2027-03-18", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2027-04-02", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2027-04-17", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2027-05-02", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2027-05-16", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2027-06-01", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2027-06-15", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2027-06-30", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2027-07-14", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2027-07-30", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2027-08-12", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2027-08-28", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2027-09-11", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2027-09-26", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2027-10-11", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2027-10-26", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2027-11-10", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2027-11-24", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2027-12-09", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2027-12-23", "name_key": "e_saphala", "link": "e_saphala.html" },
+        { "date": "2028-01-08", "name_key": "e_putrada", "link": "e_putrada.html" }, { "date": "2028-01-22", "name_key": "e_shattila", "link": "e_shattila.html" }, { "date": "2028-02-07", "name_key": "e_bhaimi", "link": "e_bhaimi.html" }, { "date": "2028-02-21", "name_key": "e_vijaya", "link": "e_vijaya.html" }, { "date": "2028-03-07", "name_key": "e_amalaki", "link": "e_amalaki.html" }, { "date": "2028-03-21", "name_key": "e_papmoch", "link": "e_papmoch.html" }, { "date": "2028-04-06", "name_key": "e_kamada", "link": "e_kamada.html" }, { "date": "2028-04-20", "name_key": "e_varuthi", "link": "e_varuthi.html" }, { "date": "2028-05-05", "name_key": "e_mohini", "link": "e_mohini.html" }, { "date": "2028-05-20", "name_key": "e_apara", "link": "e_apara.html" }, { "date": "2028-06-03", "name_key": "e_nirjala", "link": "e_nirjala.html" }, { "date": "2028-06-18", "name_key": "e_yogini", "link": "e_yogini.html" }, { "date": "2028-07-02", "name_key": "e_sayana", "link": "e_sayana.html" }, { "date": "2028-07-18", "name_key": "e_kamika", "link": "e_kamika.html" }, { "date": "2028-08-01", "name_key": "e_pavitra", "link": "e_pavitra.html" }, { "date": "2028-08-17", "name_key": "e_annada", "link": "e_annada.html" }, { "date": "2028-08-30", "name_key": "e_parsva", "link": "e_parsva.html" }, { "date": "2028-09-15", "name_key": "e_indira", "link": "e_indira.html" }, { "date": "2028-09-29", "name_key": "e_papanku", "link": "e_papanku.html" }, { "date": "2028-10-14", "name_key": "e_rama", "link": "e_rama.html" }, { "date": "2028-10-29", "name_key": "e_utthana", "link": "e_utthana.html" }, { "date": "2028-11-13", "name_key": "e_utpanna", "link": "e_utpanna.html" }, { "date": "2028-11-28", "name_key": "e_mokshada", "link": "e_mokshada.html" }, { "date": "2028-12-12", "name_key": "e_saphala", "link": "e_saphala.html" }, { "date": "2028-12-27", "name_key": "e_putrada", "link": "e_putrada.html" }
+    ];
+
+    window.updateDivineMessageUI = function() {
+        const lang = localStorage.getItem('lang') || 'en';
+        let fallbackText = langData[lang]?.quote_text || '"A person is made by faith. As they believe, so they become."';
+        let fallbackAuthor = lang === 'en' ? "— Bhagavad Gita" : (lang === 'mr' ? "— श्रीमद्भगवद्गीता" : "— श्रीमद्भगवद्गीता");
+        if (window.divineMessageData && window.divineMessageData[lang]) {
+            const data = window.divineMessageData[lang];
+            document.getElementById('divine-text-val').innerHTML = `"${data.text}"`;
+            document.getElementById('divine-author-val').innerHTML = `— ${data.author}`;
+        } else {
+            document.getElementById('divine-text-val').innerHTML = fallbackText;
+            document.getElementById('divine-author-val').innerHTML = fallbackAuthor;
+        }
+    };
+
+    window.renderMasterSlider = function() {
+        const slider = document.getElementById('slider-inner');
+        const lang = localStorage.getItem('lang') || 'en';
+        const texts = langData[lang]; 
+        let allSlides = [];
+
+        function getISTMidnight() { 
+            const d = new Date(); 
+            const utc = d.getTime() + (d.getTimezoneOffset() * 60000); 
+            const ist = new Date(utc + (330 * 60000)); 
+            ist.setHours(0,0,0,0); 
+            return ist; 
+        }
+        const todayIST = getISTMidnight();
+        const tomIST = new Date(todayIST); 
+        tomIST.setDate(tomIST.getDate() + 1);
+
+        function formatISTStr(dateObj) { 
+            const y = dateObj.getFullYear(); 
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+            const d = String(dateObj.getDate()).padStart(2, '0'); 
+            return `${y}-${m}-${d}`; 
+        }
+        
+        const todayStr = formatISTStr(todayIST); 
+        const tomStr = formatISTStr(tomIST);
+
+        const ekadasiToday = ekadasiData.find(e => e.date === todayStr); 
+        const ekadasiTom = ekadasiData.find(e => e.date === tomStr);
+        
+        let alertHTML = ''; 
+        let hasEventClass = ''; 
+        const localeMap = { 'en': 'en-US', 'hi': 'hi-IN', 'mr': 'mr-IN' };
+        
+        if (ekadasiToday) { 
+            alertHTML = `<div class="ekadasi-alert shadow-sm">${texts.today_is} ${texts[ekadasiToday.name_key]}</div><a href="${ekadasiToday.link}" class="ekadasi-btn shadow-sm">${texts.read_more} <i class="fas fa-arrow-right" style="margin-left:4px;"></i></a>`; 
+            hasEventClass = 'has-event'; 
+        } else if (ekadasiTom) { 
+            alertHTML = `<div class="ekadasi-alert shadow-sm">${texts.tom_is} ${texts[ekadasiTom.name_key]}</div><a href="${ekadasiTom.link}" class="ekadasi-btn shadow-sm">${texts.read_more} <i class="fas fa-arrow-right" style="margin-left:4px;"></i></a>`; 
+            hasEventClass = 'has-event'; 
+        }
+        
+        const m = todayIST.toLocaleString(localeMap[lang], {month:'long'});
+
+        allSlides.push({
+            seq: window.dateWidgetOrder || 1,
+            html: `<div class="carousel-item" data-bs-interval="1800"><div class="date-slide ${hasEventClass}"><h1>${todayIST.getDate()}</h1><p class="month-year">${m} ${todayIST.getFullYear()}</p><div id="clock" class="live-clock shadow-lg">--:--:--</div><div>${alertHTML}</div></div></div>`
+        });
+
+        if(window.sliderDataList && window.sliderDataList.length > 0) {
+            let groups = {};
+            window.sliderDataList.forEach(item => {
+                let seq = item.order || 10;
+                let key = `${item.type}_${seq}`;
+                if(!groups[key]) groups[key] = { type: item.type, seq: seq, items: [] };
+                groups[key].items.push(item);
+            });
+
+            Object.values(groups).forEach(group => {
+                if (group.type === 'image') {
+                    group.items.forEach(imgItem => {
+                        let linkHtmlStart = ''; let linkHtmlEnd = '';
+                        if(imgItem.linkAction && imgItem.linkAction !== 'none' && imgItem.linkValue) {
+                            let target = imgItem.linkAction === 'go' ? `${imgItem.linkValue}.html` : imgItem.linkValue;
+                            linkHtmlStart = `<a href="${target}" style="display:block; height:100%; width:100%;">`; 
+                            linkHtmlEnd = `</a>`;
+                        }
+                        let durMs = imgItem.duration ? parseFloat(imgItem.duration) * 1000 : 1800;
+                        allSlides.push({
+                            seq: group.seq,
+                            html: `<div class="carousel-item" data-bs-interval="${durMs}">${linkHtmlStart}
+                                    <div style="position:relative; width:100%; height:100%;">
+                                        <img src="${imgItem.imgUrl}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" draggable="false">
+                                    </div>
+                                   ${linkHtmlEnd}</div>`
+                        });
+                    });
+                }
+            });
+        }
+        
+        allSlides.sort((a, b) => a.seq - b.seq);
+        let finalHTML = '';
+        let firstInterval = 1800;
+
+        allSlides.forEach((slide, index) => {
+            if (index === 0) {
+                slide.html = slide.html.replace('carousel-item', 'carousel-item active');
+                const match = slide.html.match(/data-bs-interval="(\d+)"/);
+                if (match) firstInterval = parseInt(match[1]);
+            }
+            finalHTML += slide.html;
+        });
+
+        slider.innerHTML = finalHTML + `<div id="carouselProgressBar" class="carousel-progress" style="animation: progressFill ${firstInterval}ms linear 1;"></div>`;
+    }
+
+    // 100% Comprehensive Multilingual Dictionary (Pure Standard English, Hindi & Marathi)
+    const langData = {
+        en: { 
+            app_name: "Sri Sri Radha Krishna Chandra Temple",
+            menu_title: "Temple Menu",
+            home: "Home",
+            schedule: "Temple Schedule",
+            darshan: "Live Darshan",
+            contact: "Contact Us",
+            about: "About Temple",
+            share: "Share Application",
+            dark: "Toggle Dark Mode",
+            visit: "Visit Us",
+            see_all: "View All",
+            visit_h: "Visit Our Temple",
+            address_full: "Sri Sri Radha Krishna Chandra Temple, 15 Number, Hadapsar, Pune, Maharashtra",
+            copy: "Copy Address",
+            map: "Get Directions",
+            privacy: "Privacy Policy",
+            terms: "Terms & Conditions",
+            mantra: "Hare Krishna Hare Krishna<br>Krishna Krishna Hare Hare<br>Hare Rama Hare Rama<br>Rama Rama Hare Hare",
+            copyright_text: "© 2026 Sri Sri Radha Krishna Chandra Mandir, Hadapsar. All Rights Reserved.",
+            credit: "Designed & Developed with ❤️ by ",
+            contact_dev: "Contact Developer",
+            offline_msg: "You are currently offline. Showing cached contents. Keep chanting!",
+            today_is: "Today is",
+            tom_is: "Tomorrow is",
+            read_more: "Read Glories",
+            donation: "Donation Seva",
+            japa: "Digital Japa",
+            global_japa: "Live Global Japa",
+            wa_community: "Temple WhatsApp",
+            join_wa_community: "Join WhatsApp Community",
+            pune_temples: "Pune Temples",
+            pune_temples_home: "All Pune Temples",
+            lyric_vault: "Sacred Lyrics & Prayers",
+            lyric_sub: "Read all divine mantras, aartis & bhajan lyrics",
+            a_mangal: "Mangal Aarti",
+            a_narasimha: "Narasimha",
+            a_tulasi: "Tulasi Aarti",
+            quote_head: "Divine Message",
+            quote_text: `"A person is made by faith. As they believe, so they become."`,
+            live_now: "LIVE DARSHAN NOW",
+            tap_to_watch: "Tap here to join the live broadcast",
+            ekadashi_cal: "Ekadashi Calendar",
+            ekadashi_cal_sub: "Accurate fasting dates & timings",
+            daily_darshan_head: "Daily Darshan & Seva",
+            daily_darshan_sub: "Deity Shringar, Rajbhog Seva & Festivals",
+            daily_darshan_menu: "Daily Darshan & Seva",
+            view_darshan: "View Today",
+            tw_jai: "॥ Jai Sri Radhe Krishna ॥",
+            tw_name: "Sri Sri Radha Krishna Chandra Temple",
+            tw_loc: "15 Number, Hadapsar, Pune",
+            chip_kirtan: "Kirtan",
+            chip_katha: "Katha",
+            chip_abhishek: "Abhishek",
+            chip_rajbhog: "Rajbhog Seva",
+            chip_mahaprasad: "Maha Prasad",
+            e_mokshada: "Mokshada Ekadashi", e_saphala: "Saphala Ekadashi", e_putrada: "Putrada Ekadashi", e_shattila: "Shat Tila Ekadashi", e_jaya: "Jaya Ekadashi", e_vijaya: "Vijaya Ekadashi", e_amalaki: "Amalaki Ekadashi", e_papmoch: "Papamochani Ekadashi", e_kamada: "Kamada Ekadashi", e_varuthi: "Varuthini Ekadashi", e_mohini: "Mohini Ekadashi", e_apara: "Apara Ekadashi", e_nirjala: "Nirjala Ekadashi", e_yogini: "Yogini Ekadashi", e_sayana: "Sayana Ekadashi", e_kamika: "Kamika Ekadashi", e_pavitra: "Pavitropana Ekadashi", e_annada: "Annada Ekadashi", e_parivar: "Parivartini Ekadashi", e_indira: "Indira Ekadashi", e_papanku: "Pashankusha Ekadashi", e_rama: "Rama Ekadashi", e_prabod: "Prabodhini Ekadashi", e_utpanna: "Utpanna Ekadashi", e_bhaimi: "Bhaimi Ekadashi", e_parsva: "Parshva Ekadashi", e_utthana: "Utthana Ekadashi", e_padmini: "Padmini Ekadashi", e_parama: "Parama Ekadashi"
+        },
+        hi: { 
+            app_name: "श्री श्री राधाकृष्ण चंद्र मंदिर",
+            menu_title: "मंदिर मेनू",
+            home: "होम",
+            schedule: "समय सारणी",
+            darshan: "लाइव दर्शन",
+            contact: "संपर्क करें",
+            about: "हमारे बारे में",
+            share: "शेयर करें",
+            dark: "डार्क मोड",
+            visit: "पधारें",
+            see_all: "सभी देखें",
+            visit_h: "हमारे मंदिर पधारें",
+            address_full: "श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र",
+            copy: "पता कॉपी करें",
+            map: "रास्ता देखें",
+            privacy: "गोपनीयता नीति",
+            terms: "नियम एवं शर्तें",
+            mantra: "हरे कृष्ण हरे कृष्ण<br>कृष्ण कृष्ण हरे हरे<br>हरे राम हरे राम<br>राम राम हरे हरे",
+            copyright_text: "© 2026 श्री श्री राधाकृष्ण चंद्र मंदिर, हडपसर। सर्वाधिकार सुरक्षित।",
+            credit: "प्यार से डिज़ाइन और विकसित: ",
+            contact_dev: "डेवलपर से संपर्क करें",
+            offline_msg: "आप अभी ऑफ़लाइन हैं। सुरक्षित सामग्री दिखा रहे हैं। हरे कृष्ण जपते रहें!",
+            today_is: "आज है",
+            tom_is: "कल है",
+            read_more: "महात्म्य पढ़ें",
+            donation: "दान सेवा",
+            japa: "डिजिटल माला",
+            global_japa: "लाइव ग्लोबल जप",
+            wa_community: "मंदिर WhatsApp",
+            join_wa_community: "मंदिर WhatsApp ग्रुप से जुड़ें",
+            pune_temples: "पुणे के मंदिर",
+            pune_temples_home: "पुणे के सभी मंदिर",
+            lyric_vault: "भजन लिरिक्स व पाठ",
+            lyric_sub: "यहाँ पढ़ें - सभी आरती, भजन व स्तुति के लिरिक्स",
+            a_mangal: "मंगला आरती",
+            a_narasimha: "नरसिंह आरती",
+            a_tulasi: "तुलसी आरती",
+            quote_head: "दिव्य विचार",
+            quote_text: `"मनुष्य अपने विश्वास से निर्मित होता है। जैसा वह विश्वास करता है, वैसा ही बन जाता है।"`,
+            live_now: "लाइव दर्शन चालू है",
+            tap_to_watch: "लाइव दर्शन से जुड़ने के लिए टैप करें",
+            ekadashi_cal: "एकादशी कैलेंडर",
+            ekadashi_cal_sub: "सभी उपवास तिथियों को सटीक रूप से जानें",
+            daily_darshan_head: "दैनिक दर्शन व सेवा",
+            daily_darshan_sub: "श्री विग्रह शृंगार, राजभोग सेवा व उत्सव",
+            daily_darshan_menu: "दैनिक दर्शन व सेवा",
+            view_darshan: "आज के दर्शन देखें",
+            tw_jai: "॥ जय श्री राधे कृष्ण ॥",
+            tw_name: "श्री श्री राधाकृष्ण चंद्र मंदिर",
+            tw_loc: "15 नंबर, हडपसर, पुणे",
+            chip_kirtan: "कीर्तन",
+            chip_katha: "कथा",
+            chip_abhishek: "अभिषेक",
+            chip_rajbhog: "राजभोग सेवा",
+            chip_mahaprasad: "महाप्रसाद",
+            e_mokshada: "मोक्षदा एकादशी", e_saphala: "सफला एकादशी", e_putrada: "पुत्रदा एकादशी", e_shattila: "षटतिला एकादशी", e_jaya: "जया एकादशी", e_vijaya: "विजया एकादशी", e_amalaki: "आमलकी एकादशी", e_papmoch: "पापमोचनी एकादशी", e_kamada: "कामदा एकादशी", e_varuthi: "वरुथिनी एकादशी", e_mohini: "मोहini एकादशी", e_apara: "अपरा एकादशी", e_nirjala: "निर्जला एकादशी", e_yogini: "योगिनी एकादशी", e_sayana: "शयन एकादशी", e_kamika: "कामिका एकादशी", e_pavitra: "पवित्रोपना एकादशी", e_annada: "अन्नदा एकादशी", e_parivar: "परिवर्तिनी एकादशी", e_indira: "इंदिरा एकादशी", e_papanku: "पापांकुशा एकादशी", e_rama: "रमा एकादशी", e_prabod: "प्रबोधिनी एकादशी", e_utpanna: "उत्पन्ना एकादशी", e_bhaimi: "भैमी एकादशी", e_parsva: "पार्श्व एकादशी", e_utthana: "उत्थाना एकादशी", e_padmini: "पद्मिनी एकादशी", e_parama: "परमा एकादशी"
+        },
+        mr: { 
+            app_name: "श्री श्री राधाकृष्ण चंद्र मंदिर",
+            menu_title: "मंदिर मेनू",
+            home: "मुख्यपृष्ठ",
+            schedule: "वेळापत्रक",
+            darshan: "थेट दर्शन",
+            contact: "संपर्क साधा",
+            about: "आमच्याबद्दल",
+            share: "शेयर करा",
+            dark: "डार्क मोड",
+            visit: "भेट द्या",
+            see_all: "सर्व पहा",
+            visit_h: "आमच्या मंदिरात या",
+            address_full: "श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र",
+            copy: "पत्ता कॉपी करा",
+            map: "नकाशा व रस्ता",
+            privacy: "गोपनीयता धोरण",
+            terms: "अटी व शर्ती",
+            mantra: "हरे कृष्ण हरे कृष्ण<br>कृष्ण कृष्ण हरे हरे<br>हरे राम हरे राम<br>राम राम हरे हरे",
+            copyright_text: "© 2026 श्री श्री राधाकृष्ण चंद्र मंदिर, हडपसर. सर्व हक्क राखीव.",
+            credit: "प्रेमाने डिझाइन आणि विकसित: ",
+            contact_dev: "डेव्हलपरशी संपर्क साधा",
+            offline_msg: "तुम्ही सध्या ऑफलाइन आहात. सेव्ह केलेली माहिती दाखवत आहे. हरे कृष्ण जपत राहा!",
+            today_is: "आज आहे",
+            tom_is: "उद्या आहे",
+            read_more: "अधिक वाचा",
+            donation: "दान सेवा",
+            japa: "डिजिटल माळ",
+            global_japa: "थेट जप",
+            wa_community: "मंदिर WhatsApp",
+            join_wa_community: "मंदिर WhatsApp ग्रुपमध्ये सहभागी व्हा",
+            pune_temples: "पुण्यातील मंदिरे",
+            pune_temples_home: "पुण्यातील सर्व मंदिरे",
+            lyric_vault: "भजन लिरिक्स आणि पठण",
+            lyric_sub: "येथे वाचा - आरती, भजन आणि स्तोत्रे",
+            a_mangal: "मंगला आरती",
+            a_narasimha: "नरसिंह आरती",
+            a_tulasi: "तुळशी आरती",
+            quote_head: "दिव्य विचार",
+            quote_text: `"माणूस त्याच्या विश्वासाने घडतो. तो जसा विश्वास ठेवतो तसाच बनतो."`,
+            live_now: "थेट दर्शन चालू आहे",
+            tap_to_watch: "थेट दर्शनासाठी येथे टॅप करा",
+            ekadashi_cal: "एकादशी कॅलेंडर",
+            ekadashi_cal_sub: "सर्व उपवासाच्या तारखा अचूकपणे पहा",
+            daily_darshan_head: "आजचे दर्शन आणि सेवा",
+            daily_darshan_sub: "श्री विग्रह शृंगार, राजभोग सेवा आणि उत्सव",
+            daily_darshan_menu: "आजचे दर्शन आणि सेवा",
+            view_darshan: "आजचे दर्शन पहा",
+            tw_jai: "॥ जय श्री राधे कृष्ण ॥",
+            tw_name: "श्री श्री राधाकृष्ण चंद्र मंदिर",
+            tw_loc: "15 नंबर, हडपसर, पुणे",
+            chip_kirtan: "कीर्तन",
+            chip_katha: "कथा",
+            chip_abhishek: "अभिषेक",
+            chip_rajbhog: "राजभोग सेवा",
+            chip_mahaprasad: "महाप्रसाद",
+            e_mokshada: "मोक्षदा एकादशी", e_saphala: "सफला एकादशी", e_putrada: "पुत्रदा एकादशी", e_shattila: "षटतिला एकादशी", e_jaya: "जया एकादशी", e_vijaya: "विजया एकादशी", e_amalaki: "आमलकी एकादशी", e_papmoch: "पापमोचनी एकादशी", e_kamada: "कामदा एकादशी", e_varuthi: "वरुथिनी एकादशी", e_mohini: "मोहिनी एकादशी", e_apara: "अपरा एकादशी", e_nirjala: "निर्जला एकादशी", e_yogini: "योगिनी एकादशी", e_sayana: "शयन एकादशी", e_kamika: "कामिका एकादशी", e_pavitra: "पवित्रोपना एकादशी", e_annada: "अन्नदा एकादशी", e_parivar: "परिवर्तिनी एकादशी", e_indira: "इन्दिरा एकादशी", e_papanku: "पापांकुशा एकादशी", e_rama: "रमा एकादशी", e_prabod: "प्रबोधिनी एकादशी", e_utpanna: "उत्पन्ना एकादशी", e_bhaimi: "भैमी एकादशी", e_parsva: "पार्श्व एकादशी", e_utthana: "उत्थाना एकादशी", e_padmini: "पद्मिनी एकादशी", e_parama: "परमा एकादशी"
+        }
+    };
+
+    function updateThemeIcon(isDark) {
+        const icon = document.getElementById('headerThemeIcon');
+        if (icon) { 
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon'; 
+            icon.style.color = isDark ? '#FFD54F' : '#FFF'; 
+        }
+    }
+
+    function toggleTheme() { 
+        const isDark = document.body.getAttribute('data-theme') === 'dark'; 
+        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark'); 
+        localStorage.setItem('theme', isDark ? 'light' : 'dark'); 
+        updateThemeIcon(!isDark);
+    }
+
+    function setLanguage(lang) {
+        localStorage.setItem('lang', lang); 
+        const texts = langData[lang] || langData['en'];
+        
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.getAttribute('data-key');
+            if(texts[key]) { 
+                if(key === 'credit') el.innerHTML = texts[key] + '<span class="dev-name">Santosh</span>'; 
+                else el.innerHTML = texts[key]; 
+            }
+        });
+        
+        document.querySelectorAll('.lang-chip').forEach(chip => {
+            if(chip.getAttribute('data-lang') === lang) chip.classList.add('active');
+            else chip.classList.remove('active');
+        });
+
+        if (typeof window.updateDivineMessageUI === 'function') window.updateDivineMessageUI();
+        window.renderMasterSlider(); 
+    }
+
+    const savedLang = localStorage.getItem('lang') || 'en';
+    setLanguage(savedLang);
+
+    const isDarkTheme = localStorage.getItem('theme') === 'dark';
+    if(isDarkTheme) document.body.setAttribute('data-theme', 'dark');
+    updateThemeIcon(isDarkTheme);
+
+    setInterval(() => { 
+        if(document.getElementById('clock')) { 
+            const lang = localStorage.getItem('lang') || 'en'; 
+            const localeMap = { 'en': 'en-US', 'hi': 'hi-IN', 'mr': 'mr-IN' }; 
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString(localeMap[lang], {timeZone: "Asia/Kolkata"}); 
+        }
+    }, 1000);
+</script>
+</body>
+</html>
