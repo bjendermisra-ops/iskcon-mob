@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPI Test</title>
+<style>
+  body{font-family:sans-serif;padding:16px;max-width:420px;margin:auto}
+  button,a.b{display:block;width:100%;padding:14px;margin:10px 0;border:0;
+    border-radius:10px;background:#E65100;color:#fff;font-size:15px;
+    font-weight:700;text-align:center;text-decoration:none}
+  #log{background:#f3f3f3;padding:10px;border-radius:8px;font-size:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<h3>UPI Payment Test</h3>
+<p>UPI: <b id="upi">radhakrishnachandra@kotak</b></p>
+
+<button onclick="pay('com.phonepe.app')">PhonePe</button>
+<button onclick="pay('com.google.android.apps.nbu.paisa.user')">Google Pay</button>
+<button onclick="pay('net.one97.paytm')">Paytm</button>
+<button onclick="pay()">All UPI Apps</button>
+<a class="b" id="direct">Direct link (backup)</a>
+
+<div id="log">Tap karke test karo...</div>
+
+<script>
+const UPI  = 'radhakrishnachandra@kotak';
+const NAME = 'LOK CHARITABLE TRUST';
+const Q = 'pa=' + encodeURIComponent(UPI) +
+          '&pn=' + encodeURIComponent(NAME) + '&cu=INR';
+
+document.getElementById('direct').href = 'upi://pay?' + Q;
+
+function log(t){ document.getElementById('log').textContent = t; }
+
+function pay(pkg){
+  try { navigator.clipboard.writeText(UPI); } catch(e){}
+  let url;
+  if (pkg && /android/i.test(navigator.userAgent)) {
+    url = 'intent://pay?' + Q + '#Intent;scheme=upi;package=' + pkg + ';end';
+  } else {
+    url = 'upi://pay?' + Q;
+  }
+  log('Opening: ' + url);
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
