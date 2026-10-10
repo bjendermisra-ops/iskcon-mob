@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#080604">
+<title>लाइव दर्शन | श्री श्री राधाकृष्ण चंद्र मंदिर</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --saffron:#FF9933;--saffron-d:#D4710A;--glow:rgba(255,153,51,.28);
+  --bg:#080604;--panel:#141209;--card:#1c1912;
+  --border:rgba(255,153,51,.12);--border-hard:rgba(255,153,51,.24);
+  --danger:#FF3B3B;--success:#2ECC71;--warn:#FFB300;
+  --muted:#5a5040;--dim:#8a7c62;--mid:#c9b48a;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif;
+  --serif:"Noto Serif Devanagari","Noto Sans Devanagari",serif;
+}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;outline:none;margin:0;padding:0}
+html,body{width:100%;height:100%;background:var(--bg);color:#efe3cc;font-family:var(--sans);overflow:hidden;overscroll-behavior:none}
+button{font-family:inherit;touch-action:manipulation;border:none;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes breathe{0%,100%{opacity:.88;transform:scale(1)}50%{opacity:1;transform:scale(1.025)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:none}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes toastIn{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+
+/* ── Banner / Back ── */
+#reconnect-banner{position:fixed;top:0;left:0;right:0;background:rgba(255,179,0,.97);color:#000;text-align:center;padding:10px 16px;font-size:.85rem;font-weight:700;z-index:9990;display:none;align-items:center;justify-content:center;gap:10px}
+#reconnect-banner.show{display:flex;animation:slideDown .3s ease}
+.rspin{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.back-btn{position:fixed;top:16px;left:16px;width:44px;height:44px;border-radius:50%;background:rgba(20,16,8,.78);border:1px solid rgba(255,153,51,.3);color:var(--saffron);display:flex;align-items:center;justify-content:center;z-index:1000;transition:transform .2s}
+.back-btn:active{transform:scale(.88)}
+.back-btn svg{width:22px;height:22px}
+
+/* ── OFFLINE SCREEN ── */
+#screen-offline{position:fixed;inset:0;z-index:100;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:radial-gradient(circle at 50% 0%,#241a0a 0%,var(--bg) 62%)}
+.off-wrap{display:flex;flex-direction:column;align-items:center;padding:74px 18px calc(36px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto}
+.mandala{position:relative;width:150px;height:150px;margin-bottom:20px;flex-shrink:0}
+.mandala i{position:absolute;border-radius:50%;border:1.5px solid rgba(255,153,51,.22)}
+.mandala i:nth-child(1){inset:0;animation:spin 26s linear infinite}
+.mandala i:nth-child(2){inset:16px;border-style:dashed;border-color:rgba(255,153,51,.16);animation:spinr 20s linear infinite}
+.mandala i:nth-child(3){inset:32px;border-color:rgba(255,153,51,.34);animation:spin 14s linear infinite}
+.mandala i::before{content:'✦';position:absolute;top:-7px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--saffron)}
+.lotus{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;animation:breathe 4s ease-in-out infinite}
+.off-temple{font-family:var(--serif);font-weight:700;font-size:1.45rem;line-height:1.5;color:var(--saffron);text-align:center;text-shadow:0 2px 14px rgba(0,0,0,.8)}
+.off-tag{margin:6px 0 20px;font-size:.78rem;font-weight:700;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+.status-card{width:100%;background:var(--card);border:1px solid var(--border-hard);border-radius:18px;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.status-row{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;color:var(--mid)}
+.s-dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.s-dot.live{background:var(--danger);box-shadow:0 0 12px rgba(255,59,59,.8);animation:blink 1.1s ease infinite}
+.status-hint{font-size:.8rem;color:var(--dim);text-align:center;line-height:1.6}
+.mantra{font-family:var(--serif);font-weight:700;font-size:1.55rem;line-height:1.6;color:var(--saffron);text-align:center;margin:26px 0;text-shadow:0 0 24px rgba(255,153,51,.35);animation:breathe 5s ease-in-out infinite}
+.card{width:100%;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:14px;text-align:center}
+.card-label{font-size:.72rem;font-weight:800;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+.bead-num{font-size:3.4rem;font-weight:800;color:#FFD700;line-height:1;text-shadow:0 0 18px rgba(255,153,51,.5);transition:transform .1s}
+.bead-num.pop{transform:scale(1.15)}
+.bead-round{margin:6px 0 14px;font-size:.88rem;font-weight:700;color:var(--success)}
+.bead-btn{width:100%;padding:16px;border-radius:50px;font-size:1.1rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#FF9933,#E65100);border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 24px rgba(230,81,0,.4);transition:transform .12s}
+.bead-btn:active{transform:scale(.95)}
+.bead-reset{margin-top:12px;font-size:.78rem;font-weight:700;color:var(--danger);padding:6px 12px;opacity:.85}
+.shloka-text{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.7;color:#f3dfb8}
+.shloka-mean{margin-top:8px;font-size:.84rem;line-height:1.6;color:var(--mid)}
+.shloka-src{margin-top:6px;font-size:.72rem;color:var(--dim)}
+.off-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.act-btn{height:48px;background:var(--card);border:1px solid var(--border-hard);border-radius:13px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:.88rem;font-weight:700;color:var(--mid);transition:transform .15s}
+.act-btn:active{transform:scale(.96)}
+.act-btn.yt{border-color:var(--danger);color:#ff7b7b;background:rgba(255,59,59,.07)}
+.act-btn.sh{border-color:var(--saffron);color:var(--saffron);background:rgba(255,153,51,.07)}
+.off-note{margin-top:14px;font-size:.78rem;color:var(--dim);text-align:center;line-height:1.6}
+
+/* ── LIVE SCREEN ── */
+#screen-live{position:fixed;inset:0;display:none;flex-direction:column;background:#000;animation:fade .4s ease}
+#video-stage{flex:1;position:relative;overflow:hidden;background:#000;min-height:0}
+#yt-iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000;pointer-events:none}
+#demo-placeholder-img{position:absolute;inset:0;z-index:4;display:none;background:url('https://i.ibb.co/hFM2c9Yy/Untitled-design-20260427-170823-0000.jpg') center/cover no-repeat}
+#demo-placeholder-img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.demo-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5}
+.demo-icon{font-size:3rem;margin-bottom:12px;animation:breathe 3s infinite}
+.demo-text{font-size:1.4rem;font-weight:800;color:#fff;text-shadow:0 2px 10px #000}
+#interaction-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:7;display:none;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+#interaction-overlay.show{display:flex;animation:fade .3s ease}
+.play-circle{width:72px;height:72px;background:var(--saffron);border-radius:50%;display:grid;place-items:center;color:#000;font-size:2rem;padding-left:5px;box-shadow:0 0 22px var(--glow);margin-bottom:12px;animation:breathe 2s infinite}
+.play-text{font-size:1.05rem;font-weight:800;color:#fff;text-shadow:0 2px 4px #000}
+#buf{position:absolute;inset:0;background:rgba(0,0,0,.86);z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+#buf.hide{display:none}
+.buf-spin{width:54px;height:54px;border:3px solid rgba(255,153,51,.15);border-top-color:var(--saffron);border-radius:50%;animation:spin .9s linear infinite}
+.buf-text{font-size:1.05rem;font-weight:800;color:rgba(255,255,255,.92);text-align:center;padding:0 20px}
+.buf-sub{font-size:.78rem;color:rgba(255,255,255,.5);text-align:center;max-width:240px;line-height:1.6}
+#net-badge{position:absolute;top:60px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.72);padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;z-index:9;opacity:0;pointer-events:none;transition:opacity .4s}
+#net-badge.show{opacity:1}
+#net-badge.good{border:1px solid rgba(46,204,113,.3);color:var(--success)}
+#net-badge.fair{border:1px solid rgba(255,179,0,.3);color:var(--warn)}
+#net-badge.poor{border:1px solid rgba(255,59,59,.4);color:var(--danger)}
+.net-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+#video-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:14px;background:linear-gradient(to bottom,rgba(0,0,0,.6) 0%,transparent 30%,transparent 68%,rgba(0,0,0,.82) 100%);z-index:5;pointer-events:none}
+.video-top{display:flex;align-items:flex-start;justify-content:space-between;padding-left:56px;padding-top:2px}
+.live-badge{display:flex;align-items:center;gap:6px;background:var(--danger);padding:5px 13px;border-radius:6px;font-weight:800;font-size:.8rem;letter-spacing:1.5px;color:#fff;box-shadow:0 2px 12px rgba(255,59,59,.5)}
+.live-dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s ease infinite}
+.viewer-pill{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.66);border:1px solid rgba(255,255,255,.15);padding:5px 13px;border-radius:20px;font-weight:800;font-size:.95rem}
+.duration-pill{position:absolute;top:60px;right:12px;background:rgba(0,0,0,.66);padding:4px 12px;border-radius:20px;font-size:.88rem;font-weight:800;letter-spacing:1px;z-index:5;border:1px solid rgba(255,255,255,.1);font-variant-numeric:tabular-nums}
+.audio-banner{position:absolute;top:92px;left:12px;display:none;align-items:center;gap:6px;background:rgba(0,0,0,.82);border:1px solid rgba(255,59,59,.4);color:var(--danger);padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:800;z-index:9}
+.audio-banner.show{display:flex}
+.video-bottom{display:flex;flex-direction:column;gap:4px}
+.video-title{font-weight:800;font-size:1.15rem;color:#fff;text-shadow:0 2px 10px #000;font-family:var(--serif)}
+.video-sub{font-size:.8rem;color:rgba(255,255,255,.72);text-shadow:0 1px 5px #000}
+#float-stage{position:absolute;bottom:0;right:8px;width:60px;height:75%;pointer-events:none;overflow:hidden;z-index:10}
+.float-emoji{position:absolute;bottom:0;right:6px;font-size:1.8rem;opacity:0;animation:floatUp 3.2s cubic-bezier(.08,.82,.17,1) forwards;will-change:transform,opacity}
+@keyframes floatUp{0%{opacity:1;transform:translate3d(0,0,0) scale(.6) rotate(-8deg)}30%{opacity:1;transform:translate3d(0,-65px,0) scale(1.3) rotate(12deg)}70%{opacity:.7;transform:translate3d(0,-160px,0) scale(1) rotate(-8deg)}100%{opacity:0;transform:translate3d(0,-280px,0) scale(.6) rotate(15deg)}}
+body.slow-net .float-emoji{display:none}
+
+/* ── Bottom panel ── */
+.bottom-panel{background:var(--panel);border-top:1px solid var(--border);flex-shrink:0;padding:12px 14px;padding-bottom:max(14px,env(safe-area-inset-bottom));z-index:20;position:relative}
+.ls-header{display:none;flex-direction:column;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:14px}
+.ls-brand{font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--saffron);line-height:1.4}
+.react-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.react-label{font-size:.72rem;font-weight:800;color:var(--dim);letter-spacing:.8px;flex-shrink:0}
+.react-buttons{display:flex;gap:8px}
+.r-btn{width:46px;height:46px;background:rgba(255,153,51,.06);border:1px solid rgba(255,153,51,.18);border-radius:12px;font-size:1.4rem;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .15s}
+.r-btn:active{transform:scale(1.22);background:rgba(255,153,51,.26);border-color:var(--saffron)}
+.counts-strip{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px}
+.count-item{display:flex;align-items:center;gap:5px;font-size:.8rem;color:var(--dim)}
+.count-item span{font-weight:800;color:var(--mid);font-variant-numeric:tabular-nums}
+.action-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── Share sheet ── */
+#share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1100;display:none;justify-content:center;align-items:flex-end;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+#share-overlay.show{display:flex;animation:fade .2s ease}
+.share-card{background:var(--card);border:1px solid var(--saffron);border-bottom:none;border-radius:24px 24px 0 0;padding:22px 20px;width:100%;max-width:480px;animation:slideUp .28s ease}
+.share-handle{width:40px;height:5px;background:var(--border-hard);border-radius:3px;margin:0 auto 18px}
+.share-title{font-weight:800;font-size:1.15rem;color:var(--saffron);margin-bottom:6px;font-family:var(--serif)}
+.share-sub{font-size:.85rem;color:var(--dim);margin-bottom:18px;line-height:1.5}
+.wa-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:15px;border-radius:14px;font-weight:800;font-size:1.05rem;margin-bottom:16px;box-shadow:0 6px 15px rgba(37,211,102,.3);transition:transform .15s}
+.wa-btn:active{transform:scale(.97)}
+.share-row{display:flex;gap:10px}
+.share-input{flex:1;min-width:0;background:#0d0d0d;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--mid);font-size:.82rem}
+.share-copy{height:46px;padding:0 20px;background:var(--saffron);border-radius:10px;color:#000;font-weight:800;font-size:.85rem;flex-shrink:0}
+.share-copy:active{transform:scale(.95)}
+
+/* ── Toast ── */
+#toast-area{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:92vw}
+.toast{background:#1e1b14;border:1px solid rgba(255,255,255,.1);border-radius:40px;padding:10px 20px;font-size:.85rem;font-weight:700;animation:toastIn .3s ease;box-shadow:0 6px 25px rgba(0,0,0,.8);text-align:center}
+
+/* ── Responsive ── */
+@media(max-height:700px){.mandala{width:110px;height:110px;margin-bottom:12px}.lotus{font-size:2rem}.mantra{font-size:1.35rem;margin:18px 0}}
+@media(max-height:580px) and (orientation:portrait){.counts-strip{display:none}}
+@media(orientation:landscape){
+  #screen-live{flex-direction:row}
+  .bottom-panel{width:240px;min-width:240px;height:100dvh;border-top:none;border-left:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;padding:16px 14px;overflow-y:auto}
+  .react-strip{flex-direction:column;align-items:flex-start;gap:10px}
+  .react-buttons{flex-wrap:wrap}
+  .r-btn{width:42px;height:42px}
+  .action-strip{grid-template-columns:1fr}
+  .counts-strip{flex-wrap:wrap;gap:10px;justify-content:flex-start}
+  .ls-header{display:flex}
+}
+@media(max-width:360px){.r-btn{width:40px;height:40px}.mantra{font-size:1.3rem}}
+@media(prefers-reduced-motion:reduce){.mandala i,.lotus,.mantra{animation:none}}
+</style>
+</head>
+<body>
+
+<div id="reconnect-banner"><div class="rspin"></div><span id="reconnect-text">सर्वर से जुड़ रहा है...</span></div>
+
+<a href="index.html" class="back-btn" aria-label="वापस">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+</a>
+
+<!-- ════════ OFFLINE (जब लाइव नहीं है) ════════ -->
+<section id="screen-offline">
+  <div class="off-wrap">
+    <div class="mandala"><i></i><i></i><i></i><span class="lotus">🪷</span></div>
+    <h1 class="off-temple">श्री श्री राधाकृष्ण चंद्र मंदिर</h1>
+    <div class="off-tag">लाइव दर्शन</div>
+
+    <div class="status-card">
+      <div class="status-row"><div class="s-dot" id="offlineDot"></div><span id="offlineStatusText">अभी लाइव दर्शन नहीं है</span></div>
+      <div class="status-hint">जैसे ही लाइव दर्शन शुरू होगा,<br>यह पेज अपने-आप जुड़ जाएगा 🙏</div>
+    </div>
+
+    <div class="mantra">हरे कृष्ण हरे कृष्ण<br>कृष्ण कृष्ण हरे हरे<br>हरे राम हरे राम<br>राम राम हरे हरे</div>
+
+    <div class="card">
+      <div class="card-label">📿 डिजिटल जप माला</div>
+      <div class="bead-num" id="beadNum">0</div>
+      <div class="bead-round" id="beadRound">पूरी माला: 0</div>
+      <button class="bead-btn" data-act="bead">📿 जप के लिए दबाएं</button>
+      <button class="bead-reset" data-act="bead-reset">काउंटर शून्य करें</button>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🌼 आज का श्लोक</div>
+      <div class="shloka-text" id="shText"></div>
+      <div class="shloka-mean" id="shMean"></div>
+      <div class="shloka-src" id="shSrc"></div>
+    </div>
+
+    <div class="off-actions">
+      <a class="act-btn yt" id="ytChannelBtn" href="#" target="_blank" rel="noopener">▶ YouTube चैनल</a>
+      <button class="act-btn sh" data-act="share-open">↗ शेयर करें</button>
+    </div>
+    <div class="off-note" id="offNote"></div>
+  </div>
+</section>
+
+<!-- ════════ LIVE ════════ -->
+<section id="screen-live">
+  <div id="video-stage">
+    <div id="yt-iframe"></div>
+
+    <div id="demo-placeholder-img"><div class="demo-content"><div class="demo-icon">🪷</div><div class="demo-text">दर्शन ऑडियो चालू है 🙏</div></div></div>
+
+    <div id="interaction-overlay" data-act="force-play">
+      <div class="play-circle">▶</div>
+      <div class="play-text">दर्शन शुरू करें 🙏</div>
+    </div>
+
+    <div id="buf">
+      <div class="buf-spin"></div>
+      <div class="buf-text" id="bufText">दर्शन शुरू हो रहा है...</div>
+      <div class="buf-sub" id="bufSub">वीडियो लोड हो रही है, कृपया प्रतीक्षा करें 🙏</div>
+    </div>
+
+    <div id="net-badge" class="good"><div class="net-dot"></div><span id="net-label">नेटवर्क: अच्छा</span></div>
+
+    <div id="video-overlay">
+      <div class="video-top">
+        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+        <div class="viewer-pill">👁 <span id="viewerCount">—</span></div>
+      </div>
+      <div class="video-bottom">
+        <div class="video-title" id="liveVideoTitle">श्री श्री राधाकृष्ण चंद्र दर्शन</div>
+        <div class="video-sub" id="liveVideoSub">श्री श्री राधाकृष्ण चंद्र मंदिर • अभी लाइव</div>
+      </div>
+    </div>
+
+    <div class="audio-banner" id="audioBanner">🔇 ऑडियो बंद है</div>
+    <div class="duration-pill" id="durationPill">00:00</div>
+    <div id="float-stage"></div>
+  </div>
+
+  <div class="bottom-panel">
+    <div class="ls-header">
+      <span class="ls-brand">श्री श्री राधाकृष्ण चंद्र मंदिर</span>
+      <div class="viewer-pill" style="width:fit-content">👁 <span id="viewerCount2">—</span></div>
+      <div class="live-badge" style="width:fit-content;font-size:.7rem;padding:3px 8px"><div class="live-dot"></div> LIVE</div>
+    </div>
+    <div class="react-strip">
+      <span class="react-label">भाव →</span>
+      <div class="react-buttons">
+        <button class="r-btn" data-act="react" data-emoji="❤️">❤️</button>
+        <button class="r-btn" data-act="react" data-emoji="🙏">🙏</button>
+        <button class="r-btn" data-act="react" data-emoji="🌸">🌸</button>
+        <button class="r-btn" data-act="react" data-emoji="🔔">🔔</button>
+        <button class="r-btn" data-act="react" data-emoji="🌿">🌿</button>
+      </div>
+    </div>
+    <div class="counts-strip">
+      <div class="count-item">❤️ <span id="cnt-heart">0</span></div>
+      <div class="count-item">🙏 <span id="cnt-pray">0</span></div>
+      <div class="count-item">🌸 <span id="cnt-flower">0</span></div>
+      <div class="count-item">🔔 <span id="cnt-bell">0</span></div>
+      <div class="count-item">🌿 <span id="cnt-leaf">0</span></div>
+    </div>
+    <div class="action-strip">
+      <a class="act-btn yt" id="ytChannelBtn2" href="#" target="_blank" rel="noopener">▶ Subscribe</a>
+      <button class="act-btn sh" data-act="share-open">↗ शेयर</button>
+    </div>
+  </div>
+</section>
+
+<!-- Share sheet -->
+<div id="share-overlay" data-act="share-close">
+  <div class="share-card" data-act="stop">
+    <div class="share-handle"></div>
+    <div class="share-title">🙏 दर्शन शेयर करें</div>
+    <div class="share-sub">अपने परिवार और मित्रों को भी दर्शन का लाभ मिलेगा</div>
+    <button class="wa-btn" data-act="share-wa">WhatsApp पर भेजें</button>
+    <div class="share-row">
+      <input class="share-input" id="share-link-input" readonly value="">
+      <button class="share-copy" data-act="share-copy">कॉपी</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-area"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* ═══════════ सेटिंग्स (यहीं से बदलें) ═══════════ */
+var CFG = {
+  TEMPLE: 'श्री श्री राधाकृष्ण चंद्र मंदिर',
+  YT_CHANNEL: 'https://youtube.com/@srisriradhakrsnachandraman9892',
+  FALLBACK_SHARE_LINK: 'https://iskcon-mob.vercel.app',  // ऐप का package न मिले तो यही लिंक शेयर होगा
+  NEXT_DARSHAN_NOTE: '',                                   // जैसे: 'दर्शन समय: सुबह 5:15, शाम 7:00'  (खाली = छुपा रहेगा)
+  LEGACY_VIEWER_NODE: true,        // admin पैनल पुराना viewers/ node पढ़ता है तो true रखें
+  LEGACY_REACTION_NODES: false,    // admin पुराना reactions/counts पढ़ता है तो true (बहुत ज़्यादा traffic पर false ही रखें)
+  VIEWER_SHARDS: 10,
+  REACTION_SHARDS: 20
+};
+
+var FB_CFG = {
+  apiKey: "AIzaSyBfbNzASqzPt4kMP-LlpJasIras7ifTch4",
+  authDomain: "iskcon-hadapsar.firebaseapp.com",
+  databaseURL: "https://iskcon-hadapsar-default-rtdb.firebaseio.com",
+  projectId: "iskcon-hadapsar",
+  appId: "1:231589086724:web:64d8a5d7a136b39db39751"
+};
+var FB_REST = FB_CFG.databaseURL;
+
+/* ═══════════ हेल्पर ═══════════ */
+function $(id) { return document.getElementById(id); }
+var store = {
+  get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+function fmt(n) {
+  n = +n || 0;
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace('.0', '') + 'M';
+  if (n >= 1e3) return (n / 1e3).toFixed(1).replace('.0', '') + 'K';
+  return '' + n;
+}
+function p2(n) { return String(n).padStart(2, '0'); }
+function encodeEmoji(e) { return Array.from(e).map(function (c) { return c.codePointAt(0).toString(16); }).join('_'); }
+function loadScript(src) {
+  return new Promise(function (res, rej) {
+    var s = document.createElement('script');
+    s.src = src; s.async = true;
+    s.onload = res; s.onerror = function () { s.remove(); rej(new Error('load ' + src)); };
+    document.head.appendChild(s);
+  });
+}
+function bridge() { return window.AndroidBridge || window.AndroidInterface || null; }
+
+/* ═══════════ स्टेट ═══════════ */
+var S = {
+  isLive: false, db: null, fbPromise: null,
+  liveRef: null, liveCb: null, connRef: null, connCb: null, connTimer: 0,
+  wsOk: false, polling: false, pollTimer: 0, statsTimer: 0,
+  quality: 'good', pollInterval: 5000, offlineInterval: 25000, statsInterval: 20000,
+  offset: 0, lastData: null, adminMuted: false, adminVideoMuted: false,
+  yt: null, ytReady: false, ytLoading: false, pendingYt: null, currentYtId: null,
+  played: false, reloadTimer: 0,
+  viewerId: 'v_' + Math.random().toString(36).slice(2, 11),
+  vShard: Math.floor(Math.random() * CFG.VIEWER_SHARDS),
+  rShard: Math.floor(Math.random() * CFG.REACTION_SHARDS),
+  viewerRegistered: false, statRef: null, legacyRef: null, needRejoin: false,
+  batch: {}, batchTimer: 0, lastCounts: null,
+  durStart: 0, durTimer: 0, wake: null
+};
+
+var EMOJI_IDS = { '❤️': 'cnt-heart', '🙏': 'cnt-pray', '🌸': 'cnt-flower', '🔔': 'cnt-bell', '🌿': 'cnt-leaf' };
+
+/* ═══════════ नेटवर्क मोड ═══════════ */
+function applyNetworkMode() {
+  var b = document.body;
+  if (S.quality === 'poor') { b.classList.add('slow-net'); S.pollInterval = 12000; S.statsInterval = 45000; }
+  else if (S.quality === 'fair') { b.classList.remove('slow-net'); S.pollInterval = 8000; S.statsInterval = 30000; }
+  else { b.classList.remove('slow-net'); S.pollInterval = 5000; S.statsInterval = 20000; }
+}
+function detectNetwork() {
+  var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!c) return;
+  function read() {
+    var t = c.effectiveType || '4g';
+    if (t === 'slow-2g' || t === '2g' || (c.rtt || 0) > 1000) S.quality = 'poor';
+    else if (t === '3g' || (c.rtt || 0) > 400) S.quality = 'fair';
+    else S.quality = 'good';
+    applyNetworkMode();
+  }
+  read();
+  c.addEventListener('change', function () { read(); updateNetBadge(); });
+}
+function updateNetBadge() {
+  var badge = $('net-badge');
+  badge.className = 'show ' + S.quality;
+  $('net-label').textContent = { good: 'नेटवर्क: अच्छा', fair: 'नेटवर्क: ठीक', poor: 'नेटवर्क: धीमा' }[S.quality];
+  clearTimeout(badge._t);
+  if (S.quality === 'good') badge._t = setTimeout(function () { badge.classList.remove('show'); }, 3500);
+}
+
+/* ═══════════ बैनर / टोस्ट ═══════════ */
+function banner(show, text) {
+  if (text) $('reconnect-text').textContent = text;
+  $('reconnect-banner').classList.toggle('show', !!show);
+}
+function toast(msg, type) {
+  var area = $('toast-area'), el = document.createElement('div');
+  var colors = { ok: '#2ECC71', warn: '#FFB300', err: '#FF3B3B' };
+  el.className = 'toast';
+  el.style.borderLeft = '3px solid ' + (colors[type] || colors.ok);
+  el.textContent = (type === 'err' ? '⚠️ ' : '✅ ') + msg;
+  area.appendChild(el);
+  setTimeout(function () { el.remove(); }, 3000);
+}
+
+/* ═══════════ स्टेटस पोलिंग (REST) ═══════════
+   लाइव नहीं है → हल्का REST पोल (कोई WebSocket कनेक्शन नहीं, कोई भारी SDK नहीं)
+   लाइव है      → Firebase WebSocket; वह न चले तो REST fallback           */
+function fetchJSON(path) {
+  var ctl = ('AbortController' in window) ? new AbortController() : null;
+  var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+  return fetch(FB_REST + path, { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .finally(function () { clearTimeout(to); });
+}
+
+function pollLoop() {
+  clearTimeout(S.pollTimer);
+  if (S.polling || S.wsOk || document.hidden) return;
+  S.polling = true;
+  fetchJSON('/live_status.json').then(function (data) {
+    banner(false);
+    handleStatus(data);
+  }).catch(function () {
+    if (S.isLive) banner(true, 'सर्वर से जुड़ रहा है...');
+  }).finally(function () {
+    S.polling = false;
+    if (S.wsOk) return;
+    var base = S.isLive ? S.pollInterval : S.offlineInterval;
+    S.pollTimer = setTimeout(pollLoop, base + Math.random() * base * 0.4);   // jitter: सब यूज़र एक साथ नहीं टकराते
+  });
+}
+
+function handleStatus(data) {
+  if (data && data.isLive === true) {
+    if (!S.isLive) enterLive();
+    applyLiveData(data);
+  } else if (S.isLive) {
+    exitLive();
+  }
+}
+
+/* ═══════════ Firebase (सिर्फ़ लाइव होने पर लोड) ═══════════ */
+function ensureFirebase() {
+  if (S.fbPromise) return S.fbPromise;
+  S.fbPromise = loadScript('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js')
+    .then(function () { return loadScript('https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js'); })
+    .then(function () {
+      if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
+      S.db = firebase.database();
+    })
+    .catch(function (e) { S.fbPromise = null; throw e; });
+  return S.fbPromise;
+}
+
+function attachRealtime() {
+  if (!S.isLive || !S.db) return;
+  S.db.goOnline();
+
+  S.db.ref('.info/serverTimeOffset').once('value').then(function (s) { S.offset = +s.val() || 0; }).catch(function () {});
+
+  if (!S.liveRef) {
+    S.liveRef = S.db.ref('live_status');
+    S.liveCb = function (snap) {
+      S.wsOk = true;
+      clearTimeout(S.pollTimer);
+      banner(false);
+      handleStatus(snap.val());
+    };
+    S.liveRef.on('value', S.liveCb, function () { S.wsOk = false; pollLoop(); });
+  }
+
+  if (!S.connRef) {
+    S.connRef = S.db.ref('.info/connected');
+    S.connCb = function (snap) {
+      if (snap.val() === true) {
+        clearTimeout(S.connTimer);
+        if (S.needRejoin && S.isLive) { S.viewerRegistered = false; registerViewer(); }
+        S.needRejoin = false;
+      } else {
+        S.needRejoin = S.viewerRegistered;
+        clearTimeout(S.connTimer);
+        S.connTimer = setTimeout(function () { if (S.isLive) { S.wsOk = false; pollLoop(); } }, 7000);
+      }
+    };
+    S.connRef.on('value', S.connCb);
+  }
+  registerViewer();
+}
+
+function detachRealtime() {
+  try { if (S.liveRef) S.liveRef.off('value', S.liveCb); } catch (e) {}
+  try { if (S.connRef) S.connRef.off('value', S.connCb); } catch (e) {}
+  S.liveRef = null; S.connRef = null; S.wsOk = false;
+  clearTimeout(S.connTimer);
+}
+
+/* ═══════════ लाइव / ऑफ़लाइन स्क्रीन ═══════════ */
+function enterLive() {
+  S.isLive = true;
+  $('screen-offline').style.display = 'none';
+  $('screen-live').style.display = 'flex';
+  $('offlineDot').classList.add('live');
+  showBuf('दर्शन शुरू हो रहा है...', 'वीडियो लोड हो रही है, कृपया प्रतीक्षा करें 🙏');
+  updateNetBadge();
+  startDuration();
+  wakeOn();
+  ensureYT();
+  ensureFirebase().then(attachRealtime).catch(function () { /* REST fallback चलता रहेगा */ });
+  statsLoop(true);
+}
+
+function exitLive() {
+  S.isLive = false;
+  flushReactions();
+  removeViewer();
+  detachRealtime();
+  clearTimeout(S.statsTimer);
+  clearTimeout(S.reloadTimer);
+  hideBuf();
+  $('interaction-overlay').classList.remove('show');
+  try { if (S.yt && S.yt.stopVideo) S.yt.stopVideo(); } catch (e) {}
+  S.currentYtId = null; S.lastData = null; S.played = false;
+  $('screen-live').style.display = 'none';
+  $('screen-offline').style.display = 'block';
+  $('offlineDot').classList.remove('live');
+  $('float-stage').textContent = '';
+  stopDuration();
+  wakeOff();
+  // ऑफ़लाइन में WebSocket बंद, ताकि कनेक्शन/बिल बचे
+  setTimeout(function () { if (!S.isLive && S.db) { try { S.db.goOffline(); } catch (e) {} } }, 1500);
+  pollLoop();
+}
+
+/* ═══════════ YouTube ═══════════ */
+function ensureYT() {
+  if (S.yt || S.ytLoading) return;
+  if (window.YT && YT.Player) { createPlayer(); return; }
+  S.ytLoading = true;
+  window.onYouTubeIframeAPIReady = createPlayer;
+  loadScript('https://www.youtube.com/iframe_api').catch(function () { S.ytLoading = false; });
+}
+
+function createPlayer() {
+  S.ytLoading = false;
+  if (S.yt) return;
+  S.yt = new YT.Player('yt-iframe', {
+    height: '100%', width: '100%',
+    playerVars: { autoplay: 1, controls: 0, rel: 0, playsinline: 1, modestbranding: 1, mute: 0, disablekb: 1, fs: 0, iv_load_policy: 3 },
+    events: {
+      onReady: function () {
+        S.ytReady = true;
+        var d = S.pendingYt || (S.lastData && S.lastData.mode === 'youtube' ? S.lastData : null);
+        S.pendingYt = null;
+        if (d) applyYtEmbed(d);
+      },
+      onStateChange: function (e) {
+        if (e.data === YT.PlayerState.PLAYING) {
+          S.played = true;
+          $('interaction-overlay').classList.remove('show');
+          hideBuf();
+        }
+        if (e.data === YT.PlayerState.PAUSED && S.lastData && S.lastData.ytState === 1 && S.played) {
+          $('interaction-overlay').classList.add('show');
+        }
+      },
+      onError: function () {
+        toast('वीडियो लोड नहीं हो पाई, फिर कोशिश हो रही है', 'err');
+        hideBuf();
+        S.currentYtId = null;
+        clearTimeout(S.reloadTimer);
+        S.reloadTimer = setTimeout(function () { if (S.isLive && S.lastData) applyYtEmbed(S.lastData); }, 5000);
+      }
+    }
+  });
+}
+
+function forcePlay() {
+  if (S.ytReady && S.yt && S.yt.playVideo) {
+    if (!S.adminMuted) S.yt.unMute();
+    S.yt.playVideo();
+    $('interaction-overlay').classList.remove('show');
+    toast('दर्शन शुरू', 'ok');
+  }
+}
+
+function applyLiveData(data) {
+  S.lastData = data;
+  S.adminMuted = !!data.muted;
+  S.adminVideoMuted = !!data.videoMuted;
+
+  $('audioBanner').classList.toggle('show', S.adminMuted);
+  if (S.ytReady && S.yt && S.yt.mute) { if (S.adminMuted) S.yt.mute(); else S.yt.unMute(); }
+
+  $('demo-placeholder-img').style.display = S.adminVideoMuted ? 'block' : 'none';
+
+  if (data.streamTitle) $('liveVideoTitle').textContent = data.streamTitle;
+  if (data.streamSubtitle) $('liveVideoSub').textContent = data.streamSubtitle;
+
+  if (data.mode === 'youtube' && data.ytVideoId) {
+    applyYtEmbed(data);
+  } else {
+    showBuf('लाइव शुरू होने वाला है...', 'कृपया थोड़ी देर प्रतीक्षा करें 🙏');
+  }
+}
+
+function applyYtEmbed(data) {
+  var videoId = data.ytVideoId;
+  if (!videoId) return;
+  if (!S.ytReady || !S.yt || !S.yt.loadVideoById) { S.pendingYt = data; return; }
+
+  var startSec = Math.floor(data.ytTime || 0);
+  if (data.ytState === 1 && data.ytTimestamp) {
+    var elapsed = ((Date.now() + S.offset) - data.ytTimestamp) / 1000;
+    startSec += Math.max(0, Math.min(elapsed, 15));
+  }
+
+  if (S.currentYtId !== videoId) {
+    S.currentYtId = videoId;
+    S.yt.loadVideoById({ videoId: videoId, startSeconds: startSec });
+    if (S.adminMuted) S.yt.mute(); else S.yt.unMute();
+    showBuf('दर्शन शुरू हो रहा है...', 'वीडियो लोड हो रही है 🙏');
+    clearTimeout(S.reloadTimer);
+    S.reloadTimer = setTimeout(function () {
+      var st = S.yt.getPlayerState ? S.yt.getPlayerState() : -1;
+      if (st !== YT.PlayerState.PLAYING) { $('interaction-overlay').classList.add('show'); hideBuf(); }
+    }, 4000);
+    return;
+  }
+
+  var cur = S.yt.getPlayerState ? S.yt.getPlayerState() : -1;
+  var curTime = S.yt.getCurrentTime ? S.yt.getCurrentTime() : 0;
+
+  if (data.ytState === 2) {
+    if (cur !== 2 && S.yt.pauseVideo) S.yt.pauseVideo();
+    return;
+  }
+  if (data.ytState === 1) {
+    if (cur !== 1 && cur !== 3 && S.yt.playVideo) S.yt.playVideo();
+    if (Math.abs(startSec - curTime) > 2.5 && S.yt.seekTo) S.yt.seekTo(startSec, true);
+  }
+}
+
+function showBuf(t, s) {
+  $('bufText').textContent = t || 'लोड हो रहा है...';
+  $('bufSub').textContent = s || 'कृपया प्रतीक्षा करें...';
+  $('buf').classList.remove('hide');
+}
+function hideBuf() { $('buf').classList.add('hide'); }
+
+/* ═══════════ दर्शक गिनती (sharded counter — O(1) बैंडविड्थ) ═══════════ */
+function registerViewer() {
+  if (S.viewerRegistered || !S.db) return;
+  try {
+    var sv = firebase.database.ServerValue;
+    S.statRef = S.db.ref('stats/viewers/s' + S.vShard);
+    S.statRef.onDisconnect().set(sv.increment(-1));
+    S.statRef.set(sv.increment(1));
+    if (CFG.LEGACY_VIEWER_NODE) {
+      S.legacyRef = S.db.ref('viewers/' + S.viewerId);
+      S.legacyRef.onDisconnect().remove();
+      S.legacyRef.set({ joinedAt: sv.TIMESTAMP });
+    }
+    S.viewerRegistered = true;
+  } catch (e) { S.viewerRegistered = false; }
+}
+function removeViewer() {
+  if (!S.viewerRegistered) return;
+  try {
+    var sv = firebase.database.ServerValue;
+    S.statRef.onDisconnect().cancel();
+    S.statRef.set(sv.increment(-1));
+    if (S.legacyRef) { S.legacyRef.onDisconnect().cancel(); S.legacyRef.remove(); }
+  } catch (e) {}
+  S.viewerRegistered = false;
+}
+
+/* ═══════════ गिनती और रिएक्शन पढ़ना (हर ~20 सेकंड, jitter के साथ) ═══════════ */
+function statsLoop(first) {
+  clearTimeout(S.statsTimer);
+  if (!S.isLive) return;
+  if (!document.hidden) {
+    fetchJSON('/stats/viewers.json').then(function (v) {
+      var sum = 0, any = false;
+      if (v && typeof v === 'object') { for (var k in v) { sum += +v[k] || 0; any = true; } }
+      var txt = any ? fmt(Math.max(0, sum)) : '—';
+      $('viewerCount').textContent = txt; $('viewerCount2').textContent = txt;
+    }).catch(function () {});
+    fetchJSON('/reactions.json').then(updateCounts).catch(function () {});
+  }
+  var base = S.statsInterval;
+  S.statsTimer = setTimeout(statsLoop, first ? 100 + base : base + Math.random() * base * 0.5);
+}
+
+function updateCounts(r) {
+  r = r || {};
+  var base = r.counts || {}, shards = r.shards || {}, now = {};
+  Object.keys(EMOJI_IDS).forEach(function (emoji) {
+    var code = encodeEmoji(emoji), n = +base[code] || 0;
+    for (var k in shards) { if (shards[k]) n += +shards[k][code] || 0; }
+    now[emoji] = n;
+    var pend = S.batch[emoji] || 0;
+    var el = $(EMOJI_IDS[emoji]);
+    if (el) el.textContent = fmt(n + pend);
+    // दूसरों के रिएक्शन: पिछली गिनती से फ़र्क़ के हिसाब से उड़ते इमोजी (अलग से कोई live listener नहीं)
+    if (S.lastCounts && n > S.lastCounts[emoji]) {
+      var d = Math.min(n - S.lastCounts[emoji], 3);
+      for (var i = 0; i < d; i++) (function (delay) { setTimeout(function () { spawnEmoji(emoji); }, delay); })(i * 280 + Math.random() * 700);
+    }
+  });
+  S.lastCounts = now;
+}
+
+/* ═══════════ रिएक्शन (batch + sharded writes) ═══════════ */
+function sendReaction(emoji) {
+  spawnEmoji(emoji);
+  S.batch[emoji] = (S.batch[emoji] || 0) + 1;
+  var el = $(EMOJI_IDS[emoji]);
+  if (el && S.lastCounts) el.textContent = fmt((S.lastCounts[emoji] || 0) + S.batch[emoji]);
+  if (!S.batchTimer) S.batchTimer = setTimeout(flushReactions, 4000);
+}
+
+function inc(n) { return S.db ? firebase.database.ServerValue.increment(n) : { '.sv': { increment: n } }; }
+
+function flushReactions() {
+  clearTimeout(S.batchTimer); S.batchTimer = 0;
+  var keys = Object.keys(S.batch);
+  if (!keys.length) return;
+  var b = S.batch; S.batch = {};
+  var up = {}, total = 0, latest = null;
+  keys.forEach(function (e) {
+    var code = encodeEmoji(e);
+    up['reactions/shards/s' + S.rShard + '/' + code] = inc(b[e]);
+    if (CFG.LEGACY_REACTION_NODES) up['reactions/counts/' + code] = inc(b[e]);
+    total += b[e]; latest = e;
+  });
+  if (CFG.LEGACY_REACTION_NODES && latest) {
+    up['reactions/total'] = inc(total);
+    up['reactions/latest'] = { emoji: latest, ts: S.db ? firebase.database.ServerValue.TIMESTAMP : { '.sv': 'timestamp' } };
+  }
+  try {
+    if (S.db) S.db.ref().update(up).catch(function () {});
+    else fetch(FB_REST + '/.json', { method: 'PATCH', body: JSON.stringify(up) }).catch(function () {});
+  } catch (e) {}
+}
+
+function spawnEmoji(emoji) {
+  var stage = $('float-stage');
+  if (!stage || document.hidden || document.body.classList.contains('slow-net') || stage.childElementCount > 28) return;
+  var el = document.createElement('div');
+  el.className = 'float-emoji';
+  el.textContent = emoji;
+  el.style.right = (Math.random() * 36) + 'px';
+  stage.appendChild(el);
+  setTimeout(function () { el.remove(); }, 3500);
+}
+
+/* ═══════════ टाइमर ═══════════ */
+function startDuration() {
+  clearInterval(S.durTimer);
+  S.durStart = Date.now();
+  S.durTimer = setInterval(function () {
+    if (document.hidden) return;
+    var s = Math.floor((Date.now() - S.durStart) / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+    $('durationPill').textContent = h > 0 ? p2(h) + ':' + p2(m) + ':' + p2(ss) : p2(m) + ':' + p2(ss);
+  }, 1000);
+}
+function stopDuration() { clearInterval(S.durTimer); $('durationPill').textContent = '00:00'; }
+
+/* ═══════════ Wake lock ═══════════ */
+function wakeOn() {
+  try {
+    if ('wakeLock' in navigator && !S.wake) {
+      navigator.wakeLock.request('screen').then(function (w) {
+        S.wake = w; w.addEventListener('release', function () { S.wake = null; });
+      }).catch(function () {});
+    }
+  } catch (e) {}
+}
+function wakeOff() { try { if (S.wake) S.wake.release(); } catch (e) {} S.wake = null; }
+
+/* ═══════════ शेयर / कॉपी ═══════════ */
+function getShareLink() {
+  try {
+    var b = bridge();
+    if (b && typeof b.getPackageName === 'function') {
+      var pk = b.getPackageName();
+      if (pk) return 'https://play.google.com/store/apps/details?id=' + pk;
+    }
+  } catch (e) {}
+  return CFG.FALLBACK_SHARE_LINK;
+}
+function openShare() { $('share-link-input').value = getShareLink(); $('share-overlay').classList.add('show'); }
+function closeShare() { $('share-overlay').classList.remove('show'); }
+
+function shareWhatsApp() {
+  var url = $('share-link-input').value || getShareLink();
+  var msg = '🚩 लाइव दर्शन! 🙏\n\n' + CFG.TEMPLE + ' का लाइव दर्शन अब मोबाइल पर देखें।\nघर बैठे दर्शन का आनंद लें 🌸\nऐप लिंक: ' + url;
+  try {
+    var b = bridge();
+    if (b && typeof b.openWhatsApp === 'function') { b.openWhatsApp(msg); closeShare(); return; }
+  } catch (e) {}
+  window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(msg), '_blank');
+  closeShare();
+}
+
+function copyLink() {
+  var val = $('share-link-input').value;
+  try {
+    var b = bridge();
+    if (b && typeof b.copyText === 'function') { b.copyText(val); toast('लिंक कॉपी हो गया 🙏', 'ok'); closeShare(); return; }
+  } catch (e) {}
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(val).then(function () { toast('लिंक कॉपी हो गया 🙏', 'ok'); closeShare(); }).catch(legacyCopy);
+  } else legacyCopy();
+  function legacyCopy() {
+    var i = $('share-link-input'); i.select();
+    try { document.execCommand('copy'); toast('लिंक कॉपी हो गया 🙏', 'ok'); } catch (e) {}
+    closeShare();
+  }
+}
+
+/* ═══════════ ऑफ़लाइन स्क्रीन: जप माला + श्लोक ═══════════ */
+var jap = { beads: parseInt(store.get('japa_beads') || '0', 10) || 0, rounds: parseInt(store.get('japa_rounds') || '0', 10) || 0, t: 0 };
+
+function renderJap() {
+  $('beadNum').textContent = jap.beads;
+  $('beadRound').textContent = 'पूरी माला: ' + jap.rounds;
+}
+function saveJap() {
+  clearTimeout(jap.t); jap.t = 0;
+  store.set('japa_beads', jap.beads); store.set('japa_rounds', jap.rounds);
+}
+function tapBead() {
+  var el = $('beadNum');
+  el.classList.add('pop'); setTimeout(function () { el.classList.remove('pop'); }, 100);
+  jap.beads++;
+  if (jap.beads >= 108) {
+    jap.beads = 0; jap.rounds++;
+    toast('हरे कृष्ण! 1 माला पूरी हुई 🎉', 'ok');
+    if (navigator.vibrate) navigator.vibrate([100, 60, 100]);
+    saveJap();
+  } else {
+    if (navigator.vibrate) navigator.vibrate(22);
+    if (!jap.t) jap.t = setTimeout(saveJap, 400);
+  }
+  renderJap();
+}
+function resetBead() {
+  if (!jap.beads && !jap.rounds) return;
+  jap.beads = 0; jap.rounds = 0; saveJap(); renderJap();
+  toast('काउंटर शून्य हो गया', 'ok');
+}
+
+var SHLOKAS = [
+  { t: 'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।', m: 'तुम्हारा अधिकार केवल कर्म करने पर है, उसके फल पर कभी नहीं।', s: 'श्रीमद्भगवद्गीता 2.47' },
+  { t: 'यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।', m: 'जब-जब धर्म की हानि होती है, तब-तब मैं स्वयं प्रकट होता हूँ।', s: 'श्रीमद्भगवद्गीता 4.7' },
+  { t: 'मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु।', m: 'मेरा चिंतन करो, मेरे भक्त बनो, मेरी पूजा करो और मुझे प्रणाम करो।', s: 'श्रीमद्भगवद्गीता 9.34' },
+  { t: 'सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज।', m: 'सब कुछ छोड़कर केवल मेरी शरण में आ जाओ, मैं तुम्हें सब पापों से मुक्त कर दूँगा।', s: 'श्रीमद्भगवद्गीता 18.66' },
+  { t: 'अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।', m: 'जो अनन्य भाव से मेरा चिंतन करते हैं, उनके योग और क्षेम का वहन मैं करता हूँ।', s: 'श्रीमद्भगवद्गीता 9.22' },
+  { t: 'तेषां सततयुक्तानां भजतां प्रीतिपूर्वकम्।', m: 'जो प्रेमपूर्वक सदा मेरा भजन करते हैं, उन्हें मैं वह बुद्धि देता हूँ जिससे वे मुझे प्राप्त करते हैं।', s: 'श्रीमद्भगवद्गीता 10.10' },
+  { t: 'हरेर्नाम हरेर्नाम हरेर्नामैव केवलम्। कलौ नास्त्येव नास्त्येव नास्त्येव गतिरन्यथा॥', m: 'कलियुग में हरिनाम के सिवा और कोई उपाय नहीं है।', s: 'बृहन्नारदीय पुराण' }
+];
+function renderShloka() {
+  var day = Math.floor((Date.now() + 19800000) / 86400000);
+  var s = SHLOKAS[day % SHLOKAS.length];
+  $('shText').textContent = s.t; $('shMean').textContent = s.m; $('shSrc').textContent = '— ' + s.s;
+}
+
+/* ═══════════ क्लिक हैंडलर (एक ही listener) ═══════════ */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-act]');
+  if (!t) return;
+  var a = t.getAttribute('data-act');
+  if (a === 'stop') return;
+  if (a === 'bead') tapBead();
+  else if (a === 'bead-reset') resetBead();
+  else if (a === 'react') sendReaction(t.getAttribute('data-emoji'));
+  else if (a === 'share-open') openShare();
+  else if (a === 'share-close') { if (e.target === t) closeShare(); }
+  else if (a === 'share-wa') shareWhatsApp();
+  else if (a === 'share-copy') copyLink();
+  else if (a === 'force-play') forcePlay();
+});
+
+/* ═══════════ ब्राउज़र इवेंट ═══════════ */
+window.addEventListener('online', function () {
+  banner(false);
+  if (S.isLive && S.db) { try { S.db.goOnline(); } catch (e) {} }
+  S.wsOk = false; pollLoop();
+  toast('नेटवर्क वापस आ गया 🙏', 'ok');
+});
+window.addEventListener('offline', function () {
+  banner(true, 'इंटरनेट बंद हो गया...');
+});
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) { flushReactions(); saveJap(); }
+  else {
+    if (S.isLive) { wakeOn(); statsLoop(); }
+    pollLoop();
+  }
+});
+window.addEventListener('pagehide', function () { flushReactions(); saveJap(); });
+
+/* ═══════════ START ═══════════ */
+detectNetwork();
+$('ytChannelBtn').href = CFG.YT_CHANNEL;
+$('ytChannelBtn2').href = CFG.YT_CHANNEL;
+if (CFG.NEXT_DARSHAN_NOTE) $('offNote').textContent = CFG.NEXT_DARSHAN_NOTE;
+renderJap();
+renderShloka();
+pollLoop();
+})();
+</script>
+</body>
+</html>
