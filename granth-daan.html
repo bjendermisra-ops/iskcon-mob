@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>भगवद्गीता एवं श्रीमद् भागवत दान | श्री श्री राधाकृष्ण चंद्र मंदिर</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Baloo+2:wght@600;800&family=Cinzel:wght@700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ===== Donation pages: shared design (seva-mandir, seva-gau, granth-daan, temple-development) ===== */
+:root{
+  --primary:#E65100; --primary-light:#FF9800; --primary-dark:#BF360C; --gold:#FFB300;
+  --accent:#E65100; --accent2:#FF9800; --accent-dark:#BF360C;
+  --bg:#FDFBF7; --ink:#1E232A; --muted:#5A626A; --radius:22px; --radius-sm:14px;
+  box-sizing:border-box;
+}
+/* Page ka rang badalna ho to body par class lagayein: theme-gau, theme-granth, theme-dev */
+body.theme-gau{--accent:#1B5E20; --accent2:#43A047; --accent-dark:#14461a}
+body.theme-granth{--accent:#1565C0; --accent2:#42A5F5; --accent-dark:#0d47a1}
+body.theme-dev{--accent:#8D5A12; --accent2:#E0A030; --accent-dark:#6b4309}
+
+*,*::before,*::after{box-sizing:inherit; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Poppins','Baloo 2','Noto Sans Devanagari',sans-serif; color:var(--ink);
+  background:var(--bg) radial-gradient(circle at top right,rgba(255,152,0,.09),transparent 420px);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  padding-bottom:calc(30px + env(safe-area-inset-bottom,0px));
+}
+a{color:inherit; text-decoration:none}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #8e5cf0; outline-offset:3px}
+
+/* Header */
+.header{position:relative; padding:calc(18px + env(safe-area-inset-top,0px)) 18px 48px; color:#fff; overflow:hidden;
+  background:linear-gradient(135deg,#872002 0%,#C23608 45%,#E65100 100%);
+  border-radius:0 0 32px 32px; box-shadow:0 10px 25px rgba(230,81,0,.25)}
+body.theme-gau .header{background:linear-gradient(135deg,#0f3d14 0%,#1B5E20 50%,#2E7D32 100%); box-shadow:0 10px 25px rgba(27,94,32,.25)}
+body.theme-granth .header{background:linear-gradient(135deg,#0b2f63 0%,#1565C0 55%,#2f86df 100%); box-shadow:0 10px 25px rgba(21,101,192,.25)}
+body.theme-dev .header{background:linear-gradient(135deg,#4a2f05 0%,#8D5A12 50%,#c2861f 100%); box-shadow:0 10px 25px rgba(141,90,18,.25)}
+.header::before,.header::after{content:""; position:absolute; border-radius:50%; background:rgba(255,255,255,.07)}
+.header::before{width:220px;height:220px; right:-70px; top:-80px}
+.header::after{width:140px;height:140px; left:-50px; bottom:-60px}
+.top{position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:10px}
+.left{display:flex; align-items:center; gap:12px; min-width:0}
+.back{flex:none; width:42px; height:42px; display:grid; place-items:center; border-radius:12px; color:#fff; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); transition:transform .15s}
+.back:active{transform:scale(.92)}
+.sub{display:block; font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#FFE082}
+.title{font:800 17px/1.2 'Cinzel','Poppins',sans-serif; letter-spacing:.3px}
+.lang{flex:none; display:flex; padding:3px; border-radius:25px; background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.25)}
+.lang button{border:0; cursor:pointer; padding:5px 11px; border-radius:20px; background:transparent; color:rgba(255,255,255,.85); font:700 11px 'Poppins',sans-serif}
+.lang button.on{background:#fff; color:var(--accent-dark); box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.hero-txt{position:relative; z-index:1; text-align:center; margin-top:20px}
+.hero-ico{width:58px; height:58px; margin:0 auto 8px; display:grid; place-items:center; border-radius:50%; font-size:24px; background:rgba(255,255,255,.2)}
+.hero-txt h1{font:800 clamp(1.6rem,7vw,2.1rem)/1.15 'Baloo 2','Noto Sans Devanagari',sans-serif}
+.hero-txt p{margin-top:4px; font-size:13px; color:rgba(255,255,255,.88); font-weight:500}
+
+/* Layout */
+.wrap{max-width:520px; margin:-22px auto 0; padding:0 16px; position:relative; z-index:2}
+.card{background:#fff; border-radius:var(--radius); padding:18px; text-align:center; border:1px solid rgba(0,0,0,.04); border-top:5px solid var(--accent); box-shadow:0 10px 30px rgba(0,0,0,.07); margin-bottom:18px}
+.note{background:#FFFDF9; border:1px dashed color-mix(in srgb,var(--accent) 30%,transparent); border-radius:var(--radius-sm); padding:14px 12px; margin-bottom:18px; font-size:13.5px; line-height:1.6; color:#4A3A2A; font-weight:500}
+.note i{color:var(--accent); margin-right:4px}
+
+/* QR block */
+.qr{background:#111; border-radius:16px; overflow:hidden; border:2px solid #EDE6DD; box-shadow:0 10px 25px rgba(0,0,0,.12); margin:0 auto 14px; max-width:380px; min-height:120px}
+.qr img{display:block; width:100%; height:auto; object-fit:contain}
+.verified{display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; padding:6px 12px; border-radius:20px; background:#F0FDF4; border:1px solid #BBF7D0; color:#166534; font-size:11.5px; font-weight:700}
+.tools{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px}
+.tbtn{display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 8px; border:0; border-radius:12px; color:#fff; cursor:pointer; font-size:12.5px; font-weight:800; transition:transform .15s}
+.tbtn:active{transform:scale(.95)}
+.tbtn.dl{background:linear-gradient(135deg,var(--accent2),var(--accent)); box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 30%,transparent)}
+.tbtn.sh{background:#25D366; box-shadow:0 4px 12px rgba(37,211,102,.25)}
+.upi{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; padding:10px 14px; background:#F8F9FA; border:1.5px solid #E9ECEF; border-radius:14px}
+.upi span{font:800 14px monospace,sans-serif; color:#212529; word-break:break-all; text-align:left}
+.copy{flex:none; display:inline-flex; align-items:center; gap:6px; padding:9px 15px; border:0; border-radius:10px; color:#fff; cursor:pointer; font-size:12px; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); transition:transform .15s}
+.copy:active{transform:scale(.92)}
+.apps{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px}
+.app{display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 6px; border:1.5px solid #DEE2E6; border-radius:12px; background:#fff; color:#333; cursor:pointer; font-size:12px; font-weight:800; transition:transform .15s,border-color .15s}
+.app:active{transform:scale(.94); border-color:var(--accent)}
+.app i{font-size:18px}
+.payall{width:100%; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:12px; padding:14px; border:0; border-radius:14px; color:#fff; cursor:pointer; font-size:14px; font-weight:900; background:linear-gradient(135deg,var(--accent2),var(--accent)); box-shadow:0 4px 16px color-mix(in srgb,var(--accent) 35%,transparent); transition:transform .15s}
+.payall:active{transform:scale(.96)}
+.guide{text-align:left; margin-bottom:6px; padding:12px 12px 8px; border-radius:var(--radius-sm); background:color-mix(in srgb,var(--accent) 7%,#fff); border:1.5px dashed color-mix(in srgb,var(--accent) 40%,transparent)}
+.guide-t{display:flex; align-items:center; gap:6px; margin-bottom:8px; font-size:12.5px; font-weight:800; color:var(--accent-dark)}
+.step{display:flex; align-items:flex-start; gap:8px; margin-bottom:6px; font-size:11.5px; line-height:1.5; color:#3A3A3A; font-weight:600}
+.step b{flex:none; width:19px; height:19px; margin-top:1px; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:#fff; font-size:10.5px}
+
+/* Seva list (sirf jaankari) */
+.slabs{margin-top:18px; text-align:left}
+.slabs-t{display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:14.5px; font-weight:800; color:var(--accent-dark)}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.slab{display:flex; flex-direction:column; justify-content:space-between; padding:12px 10px; border:1.5px solid #F0E6D8; border-radius:14px; background:#fff; box-shadow:0 3px 10px rgba(0,0,0,.03); user-select:none}
+.slab.full{grid-column:1/-1}
+.slab h4{margin-bottom:6px; font-size:11.5px; font-weight:700; line-height:1.3; color:#555}
+.amt{font-size:16px; font-weight:900; color:var(--accent-dark)}
+.slab p{margin-top:4px; font-size:11.5px; font-weight:600; color:var(--muted); line-height:1.4}
+.rows{display:grid; gap:6px; margin-top:2px}
+.row{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; background:color-mix(in srgb,var(--accent) 7%,#fff); font-size:12.5px; font-weight:700; color:#3A3A3A}
+.row .amt{font-size:15px}
+.perks{margin-top:10px; padding:10px 12px; border-radius:12px; background:#F0FDF4; border:1px solid #BBF7D0}
+.perks b{display:block; margin-bottom:4px; font-size:12px; color:#166534}
+.perks div{font-size:12px; line-height:1.5; font-weight:600; color:#14532d; margin-top:3px}
+
+/* 80G + links + contact */
+.strip{display:flex; align-items:center; gap:10px; margin-bottom:14px; padding:12px 14px; border-radius:16px; background:#F0FDF4; border:1px solid #BBF7D0; color:#166534; font-size:12.5px; font-weight:600; line-height:1.4}
+.strip i{flex:none; font-size:18px}
+.others{margin-bottom:14px; text-align:center}
+.others h3{margin-bottom:10px; font-size:13px; font-weight:800; color:var(--muted)}
+.chips{display:flex; flex-wrap:wrap; justify-content:center; gap:8px}
+.chips a{padding:8px 14px; border-radius:999px; background:#fff; border:1.5px solid #EDE6DD; font-size:12.5px; font-weight:700; color:var(--ink); box-shadow:0 3px 8px rgba(0,0,0,.04); transition:transform .15s}
+.chips a:active{transform:scale(.95)}
+.coord{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; background:#fff; border-radius:var(--radius); border:1.5px solid #EDE6DD; box-shadow:0 10px 26px rgba(0,0,0,.06)}
+.coord .who{display:flex; align-items:center; gap:12px; min-width:0}
+.av{flex:none; width:46px; height:46px; display:grid; place-items:center; border-radius:50%; font-size:19px; color:#872002; background:linear-gradient(135deg,#FFE082,#FFB300)}
+.nm{font-size:14.5px; font-weight:800}
+.rl{font-size:11.5px; color:var(--muted); font-weight:600}
+.ph{font:800 13px monospace; color:var(--primary)}
+.acts{display:flex; gap:8px; flex:none}
+.acts a{width:38px; height:38px; display:grid; place-items:center; border-radius:10px; background:#FFF3E0; color:var(--primary-dark); border:1px solid rgba(230,81,0,.3); transition:transform .15s}
+.acts a.wa{background:#E8F5E9; color:#1B5E20; border-color:rgba(46,125,50,.3)}
+.acts a:active{transform:scale(.9)}
+.foot{margin-top:18px; text-align:center; font-size:13px; font-weight:600; color:var(--muted)}
+
+/* Toast */
+.toast{position:fixed; top:25px; left:50%; z-index:999999; max-width:92vw; padding:10px 22px; border-radius:30px; text-align:center; font-size:13px; font-weight:700; line-height:1.45; color:#fff; background:rgba(20,24,30,.96); border:1px solid var(--gold); box-shadow:0 8px 25px rgba(0,0,0,.3); opacity:0; pointer-events:none; transform:translateX(-50%) translateY(-100px); transition:all .35s ease}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+.toast i{color:#00E676; margin-right:6px}
+
+.fadein{animation:fi .35s ease both}
+@keyframes fi{from{opacity:0; transform:translateY(10px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+
+/* ===== Granth / Development extra ===== */
+.sec{margin-top:20px; text-align:left}
+.sec>h3{display:flex; align-items:center; gap:8px; margin-bottom:4px; font-size:14.5px; font-weight:800; color:var(--accent-dark)}
+.sec>p{margin-bottom:10px; font-size:12px; line-height:1.5; font-weight:600; color:var(--muted)}
+.pgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.pc{overflow:hidden; text-align:center; background:#fff; border:1.5px solid #F0E6D8; border-radius:14px; box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.photo{position:relative; display:grid; place-items:center; aspect-ratio:3/4; color:var(--accent); background:linear-gradient(160deg,color-mix(in srgb,var(--accent2) 28%,#fff),color-mix(in srgb,var(--accent) 16%,#fff))}
+.photo i{font-size:34px; opacity:.65}
+.photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.pc .info{padding:8px 4px 10px}
+.pc .lg{font-size:12px; font-weight:700; color:#555; line-height:1.3}
+.pc .amt{font-size:15px; margin-top:2px}
+.mrow{padding:10px 12px; border-radius:12px; background:color-mix(in srgb,var(--accent) 7%,#fff)}
+.mrow+.mrow{margin-top:8px}
+.mrow b{font-size:13.5px; color:#2b2f4a}
+.mp{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+.mp span{padding:3px 10px; border-radius:999px; background:#fff; border:1px solid #E5E0F5; font-size:11.5px; font-weight:700; color:#3A3A3A}
+.dlist{display:grid; gap:10px}
+.ditem{display:flex; align-items:center; gap:12px; padding:10px; text-align:left; background:#fff; border:1.5px solid #F0E6D8; border-radius:14px; box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.dth{position:relative; flex:none; display:grid; place-items:center; width:66px; height:66px; overflow:hidden; border-radius:12px; font-size:24px; color:var(--accent); background:linear-gradient(160deg,color-mix(in srgb,var(--accent2) 28%,#fff),color-mix(in srgb,var(--accent) 16%,#fff))}
+.dth img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.dtx{flex:1; min-width:0}
+.dtx b{display:block; font-size:13.5px; line-height:1.3; color:#2b2f4a}
+.dtx small{display:block; margin-top:2px; font-size:11.5px; line-height:1.4; font-weight:600; color:var(--muted)}
+.ditem .amt{flex:none; font-size:15px}
+.moreinfo{margin-top:12px; font-size:12px; font-weight:600; color:var(--muted); text-align:center}
+</style>
+</head>
+<body class="theme-granth">
+
+<div id="toast" class="toast" role="status" aria-live="polite"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+<header class="header">
+  <div class="top">
+    <div class="left">
+      <a href="donate.html" class="back" aria-label="Back"><i class="fas fa-arrow-left"></i></a>
+      <div>
+        <span class="sub" data-t="sub">पावन समर्पण</span>
+        <div class="title" data-t="title">श्री श्री राधाकृष्ण चंद्र</div>
+      </div>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="hi" class="on">HI</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="mr">MR</button>
+    </div>
+  </div>
+  <div class="hero-txt">
+    <div class="hero-ico"><i class="fas fa-book-open"></i></div>
+    <h1 data-t="h1">भगवद्गीता एवं श्रीमद् भागवत दान</h1>
+    <p data-t="h1sub">ग्रंथ दान करें, भक्ति की ज्योति जलाएं</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card fadein">
+
+    <div class="note"><i class="fas fa-quote-left"></i><span data-t="note"></span></div>
+
+    <!-- QR (link neeche SEVA config me badlein) -->
+    <div class="qr"><img id="qr-img" alt="Granth Daan QR" width="380" height="380" loading="eager"></div>
+
+    <div class="verified"><i class="fas fa-shield-halved"></i><span>A/c: LOK CHARITABLE TRUST (Kotak Bank)</span></div>
+
+    <div class="tools">
+      <button class="tbtn dl" type="button" data-act="download"><i class="fas fa-download"></i><span data-t="dl">QR डाउनलोड करें</span></button>
+      <button class="tbtn sh" type="button" data-act="share"><i class="fab fa-whatsapp"></i><span data-t="sh">QR व सेवा शेयर करें</span></button>
+    </div>
+
+    <div class="upi">
+      <span id="upi-text"></span>
+      <button class="copy" type="button" data-act="copy"><i class="far fa-copy"></i><span data-t="copy">कॉपी करें</span></button>
+    </div>
+
+    <div class="apps">
+      <button class="app" type="button" data-act="app" data-pkg="com.phonepe.app"><i class="fas fa-wallet" style="color:#5f259f"></i><span>PhonePe</span></button>
+      <button class="app" type="button" data-act="app" data-pkg="com.google.android.apps.nbu.paisa.user"><i class="fab fa-google-pay" style="color:#4285F4"></i><span>Google Pay</span></button>
+      <button class="app" type="button" data-act="app" data-pkg="net.one97.paytm"><i class="fas fa-bolt" style="color:#00b9f5"></i><span>Paytm</span></button>
+    </div>
+
+    <button class="payall" type="button" data-act="chooser"><i class="fas fa-mobile-screen-button"></i><span data-t="payall">अन्य UPI ऐप से दान दें (All UPI)</span></button>
+
+    <div class="guide">
+      <div class="guide-t"><i class="fas fa-circle-info"></i><span data-t="g_title"></span></div>
+      <div class="step"><b>1</b><span data-t="g1"></span></div>
+      <div class="step"><b>2</b><span data-t="g2"></span></div>
+      <div class="step"><b>3</b><span data-t="g3"></span></div>
+      <div class="step"><b>4</b><span data-t="g4"></span></div>
+    </div>
+
+    <!-- ========== GRANTH DAAN LIST (सिर्फ जानकारी) ==========
+         फोटो लगाने के लिए images फ़ोल्डर में ये नाम की फाइलें रखें:
+         gita-marathi.jpg, gita-hindi.jpg, gita-english.jpg,
+         bhagavatam-hindi.jpg, bhagavatam-marathi.jpg, bhagavatam-english.jpg
+         (फोटो न हो तो आइकन दिखता है) -->
+    <div class="slabs">
+      <div class="sec" style="margin-top:0">
+        <h3><i class="fas fa-book-open"></i><span data-t="gita_t"></span></h3>
+        <p data-t="gita_d"></p>
+        <div class="pgrid">
+        <div class="pc"><div class="photo"><i class="fas fa-book-open"></i><img src="images/gita-marathi.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_mr"></div><div class="amt">₹240</div></div></div>
+        <div class="pc"><div class="photo"><i class="fas fa-book-open"></i><img src="images/gita-hindi.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_hi"></div><div class="amt">₹280</div></div></div>
+        <div class="pc"><div class="photo"><i class="fas fa-book-open"></i><img src="images/gita-english.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_en"></div><div class="amt">₹320</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h3><i class="fas fa-book"></i><span data-t="bhag_t"></span></h3>
+        <p data-t="bhag_d"></p>
+        <div class="pgrid">
+        <div class="pc"><div class="photo"><i class="fas fa-book"></i><img src="images/bhagavatam-hindi.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_hi"></div><div class="amt">₹7,500</div></div></div>
+        <div class="pc"><div class="photo"><i class="fas fa-book"></i><img src="images/bhagavatam-marathi.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_mr"></div><div class="amt">₹6,500</div></div></div>
+        <div class="pc"><div class="photo"><i class="fas fa-book"></i><img src="images/bhagavatam-english.jpg" alt="" loading="lazy" onerror="this.remove()"></div><div class="info"><div class="lg" data-t="lg_en"></div><div class="amt">₹8,500</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h3><i class="fas fa-layer-group"></i><span data-t="multi_t"></span></h3>
+        <p data-t="multi_d"></p>
+        <div class="mrow">
+          <b data-t="m11"></b>
+          <div class="mp"><span><span data-t="lg_mr"></span> ₹2,640</span><span><span data-t="lg_hi"></span> ₹3,080</span><span><span data-t="lg_en"></span> ₹3,520</span></div>
+        </div>
+        <div class="mrow">
+          <b data-t="m21"></b>
+          <div class="mp"><span><span data-t="lg_mr"></span> ₹5,040</span><span><span data-t="lg_hi"></span> ₹5,880</span><span><span data-t="lg_en"></span> ₹6,720</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT: ये line तभी रखें जब ट्रस्ट के पास सच में 80G सुविधा हो -->
+  <div class="strip"><i class="fas fa-circle-check"></i><span data-t="g80"></span></div>
+
+  <div class="others">
+    <h3 data-t="others"></h3>
+    <div class="chips">
+      <a href="seva-mandir.html" data-t="o_mandir"></a>
+      <a href="seva-gau.html" data-t="o_gau"></a>
+      <a href="temple-development.html" data-t="o_dev"></a>
+    </div>
+  </div>
+
+  <div class="coord">
+    <div class="who">
+      <div class="av"><i class="fas fa-user"></i></div>
+      <div>
+        <div class="nm">श्रीधर माधव दास</div>
+        <div class="rl" data-t="role"></div>
+        <div class="ph">9119436809</div>
+      </div>
+    </div>
+    <div class="acts">
+      <a href="tel:9119436809" aria-label="Call"><i class="fas fa-phone-alt"></i></a>
+      <a class="wa" target="_blank" rel="noopener" aria-label="WhatsApp" href="https://api.whatsapp.com/send?phone=919119436809&text=Hare%20Krishna!%20I%20want%20more%20details%20about%20Granth%20Daan."><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+
+  <p class="foot" data-t="foot"></p>
+</main>
+
+<script>
+/* ===== इस page की सेटिंग: UPI / QR यहाँ बदलें ===== */
+window.SEVA={
+  /* EDIT: अभी मंदिर सेवा वाला QR/UPI लगा है। अलग हो तो यहाँ बदलें */
+  upi:"radhakrishnachandra@kotak",
+  name:"LOK CHARITABLE TRUST",
+  qr:"https://i.ibb.co/C3GcNCd7/20261009-152735-0000.png",
+  file:"Granth_Daan_QR.png",
+  msg:{
+    hi:"📖 *श्री श्री राधाकृष्ण चंद्र मंदिर - भगवद्गीता एवं श्रीमद् भागवत दान* 📖\n\n🙏 *खाता नाम:* LOK CHARITABLE TRUST\n📌 *UPI ID:* radhakrishnachandra@kotak\n\n✨ *ग्रंथ दान:*\n• भगवद्गीता: मराठी ₹240 | हिंदी ₹280 | अंग्रेजी ₹320\n• श्रीमद् भागवत सेट: हिंदी ₹7,500 | मराठी ₹6,500 | अंग्रेजी ₹8,500\n• 11 / 21 भगवद्गीता भी अपनी क्षमता अनुसार\n\n॥ हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे ॥",
+    en:"📖 *Sri Sri Radha Krishna Chandra Mandir - Bhagavad Gita & Srimad Bhagavatam Daan* 📖\n\n🙏 *A/c Name:* LOK CHARITABLE TRUST\n📌 *UPI ID:* radhakrishnachandra@kotak\n\n✨ *Book Donation:*\n• Bhagavad Gita: Marathi ₹240 | Hindi ₹280 | English ₹320\n• Srimad Bhagavatam set: Hindi ₹7,500 | Marathi ₹6,500 | English ₹8,500\n• 11 / 21 Gitas as per your capacity\n\n॥ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ॥",
+    mr:"📖 *श्री श्री राधाकृष्ण चंद्र मंदिर - भगवद्गीता व श्रीमद् भागवत दान* 📖\n\n🙏 *खाते नाव:* LOK CHARITABLE TRUST\n📌 *UPI ID:* radhakrishnachandra@kotak\n\n✨ *ग्रंथ दान:*\n• भगवद्गीता: मराठी ₹240 | हिंदी ₹280 | इंग्रजी ₹320\n• श्रीमद् भागवत संच: हिंदी ₹7,500 | मराठी ₹6,500 | इंग्रजी ₹8,500\n• 11 / 21 भगवद्गीता आपल्या क्षमतेनुसार\n\n॥ हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे ॥"
+  }
+};
+
+/* ===== इस page का text (तीनों भाषा) ===== */
+window.PAGE_T={
+  hi:{h1:"भगवद्गीता एवं श्रीमद् भागवत दान",h1sub:"ग्रंथ दान करें, भक्ति की ज्योति जलाएं",
+    note:"भगवद्गीता और श्रीमद् भागवत जैसे पवित्र ग्रंथों का दान अनेक जीवनों में भक्ति का प्रकाश फैलाता है। अपनी क्षमता अनुसार ग्रंथ दान कर इस सेवा में सहभागी बनें।",
+    lg_mr:"मराठी",lg_hi:"हिंदी",lg_en:"अंग्रेजी",
+    gita_t:"भगवद्गीता दान",gita_d:"एक भगवद्गीता (प्रति) की सेवा राशि",
+    bhag_t:"श्रीमद् भागवत सेट दान",bhag_d:"इस प्रकार से आप अपनी क्षमता अनुसार एक भागवत सेट भी मंदिर में दान कर सकते हैं",
+    multi_t:"एक से अधिक भगवद्गीता दान",multi_d:"इस प्रकार आपकी क्षमता के अनुसार आप डोनेट कर सकते हैं",
+    m11:"11 भगवद्गीता",m21:"21 भगवद्गीता"},
+  en:{h1:"Bhagavad Gita & Srimad Bhagavatam Daan",h1sub:"Donate sacred books, spread the light of devotion",
+    note:"Donating sacred books like the Bhagavad Gita and Srimad Bhagavatam spreads the light of devotion in many lives. Join this seva as per your capacity.",
+    lg_mr:"Marathi",lg_hi:"Hindi",lg_en:"English",
+    gita_t:"Bhagavad Gita Daan",gita_d:"Seva amount for one copy of the Bhagavad Gita",
+    bhag_t:"Srimad Bhagavatam Set Daan",bhag_d:"As per your capacity, you can also donate a complete Bhagavatam set to the temple",
+    multi_t:"Donate Multiple Bhagavad Gitas",multi_d:"You can donate as per your capacity",
+    m11:"11 Bhagavad Gitas",m21:"21 Bhagavad Gitas"},
+  mr:{h1:"भगवद्गीता व श्रीमद् भागवत दान",h1sub:"ग्रंथ दान करा, भक्तीची ज्योत उजळवा",
+    note:"भगवद्गीता आणि श्रीमद् भागवत यांसारख्या पवित्र ग्रंथांचे दान अनेक जीवनांत भक्तीचा प्रकाश पसरवते. आपल्या क्षमतेनुसार ग्रंथ दान करून या सेवेत सहभागी व्हा.",
+    lg_mr:"मराठी",lg_hi:"हिंदी",lg_en:"इंग्रजी",
+    gita_t:"भगवद्गीता दान",gita_d:"एका भगवद्गीतेची (प्रत) सेवा रक्कम",
+    bhag_t:"श्रीमद् भागवत संच दान",bhag_d:"अशा प्रकारे आपण आपल्या क्षमतेनुसार एक भागवत संचही मंदिरात दान करू शकता",
+    multi_t:"एकापेक्षा अधिक भगवद्गीता दान",multi_d:"आपल्या क्षमतेनुसार आपण दान करू शकता",
+    m11:"11 भगवद्गीता",m21:"21 भगवद्गीता"}
+};
+</script>
+<script>
+/* ===== Donation pages: shared logic =====
+   Har page apna config deta hai:
+     window.SEVA   = { upi, name, qr, file, label, msg:{hi,en,mr} }
+     window.PAGE_T = { hi:{...}, en:{...}, mr:{...} }   (us page ke text)
+*/
+(function(){
+  "use strict";
+
+  /* ---------- Common text (teeno bhasha) ---------- */
+  var COMMON={
+    hi:{sub:"पावन समर्पण",title:"श्री श्री राधाकृष्ण चंद्र",
+      copy:"कॉपी करें",copied:"UPI ID कॉपी हो गया! 🙏",dl:"QR डाउनलोड करें",sh:"QR व सेवा शेयर करें",
+      payall:"अन्य UPI ऐप से दान दें (All UPI)",
+      g_title:"बिना लिमिट भुगतान का आसान तरीका",
+      g1:"ऊपर से QR डाउनलोड करें (गैलरी में सेव हो जाएगा)",
+      g2:"कोई भी UPI ऐप खोलें (PhonePe / Google Pay / Paytm / BHIM)",
+      g3:"ऐप में \"Scan QR\" → \"गैलरी / Upload QR\" चुनें, या कॉपी किया हुआ UPI ID खुद डालें",
+      g4:"अपनी श्रद्धा अनुसार राशि डालकर भुगतान करें 🙏",
+      g80:"सभी दान पर 80G सुविधा उपलब्ध है।",
+      others:"अन्य सेवाएं",o_mandir:"मंदिर सेवा",o_gau:"गौ सेवा",o_granth:"ग्रंथ दान",o_dev:"टेंपल डेवलपमेंट",
+      role:"मंदिर सेवा एवं दान समन्वयक",
+      foot:"॥ हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे ॥",
+      toast_open:"UPI ID कॉपी हो गया ✅ ऐप खुल रहा है — 'Scan QR (गैलरी)' या UPI ID paste करें",
+      toast_chooser:"UPI ID कॉपी हो गया ✅ अपना UPI ऐप खोलकर UPI ID paste करें या QR स्कैन करें",
+      toast_dl:"QR डाउनलोड हो रहा है...",toast_sh:"शेयर किया जा रहा है...",share_title:"श्री श्री राधाकृष्ण चंद्र सेवा"},
+    en:{sub:"SACRED SEVA",title:"Sri Sri Radha Krishna Chandra",
+      copy:"Copy UPI",copied:"UPI ID copied to clipboard! 🙏",dl:"Download QR",sh:"Share QR & Details",
+      payall:"Donate via Any UPI App",
+      g_title:"Easy way to pay with no limit",
+      g1:"Download the QR above (it saves to your gallery)",
+      g2:"Open any UPI app (PhonePe / Google Pay / Paytm / BHIM)",
+      g3:"In the app choose \"Scan QR\" → \"Gallery / Upload QR\", or paste the copied UPI ID yourself",
+      g4:"Enter the amount of your choice and complete the payment 🙏",
+      g80:"80G benefit is available on all donations.",
+      others:"Other Sevas",o_mandir:"Temple Seva",o_gau:"Gau Seva",o_granth:"Granth Daan",o_dev:"Temple Development",
+      role:"Temple Seva & Donation Coordinator",
+      foot:"॥ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ॥",
+      toast_open:"UPI ID copied ✅ Opening app — use 'Scan QR (Gallery)' or paste the UPI ID",
+      toast_chooser:"UPI ID copied ✅ Open your UPI app and paste the UPI ID or scan the QR",
+      toast_dl:"Downloading QR...",toast_sh:"Sharing...",share_title:"Sri Sri Radha Krishna Chandra Seva"},
+    mr:{sub:"पावन समर्पण",title:"श्री श्री राधाकृष्ण चंद्र",
+      copy:"कॉपी करा",copied:"UPI ID कॉपी केला आहे! 🙏",dl:"QR डाउनलोड करा",sh:"QR व सेवा शेअर करा",
+      payall:"इतर UPI ॲपद्वारे दान करा",
+      g_title:"मर्यादेशिवाय पेमेंट करण्याची सोपी पद्धत",
+      g1:"वरून QR डाउनलोड करा (गॅलरीत सेव्ह होईल)",
+      g2:"कोणतेही UPI ॲप उघडा (PhonePe / Google Pay / Paytm / BHIM)",
+      g3:"ॲपमध्ये \"Scan QR\" → \"गॅलरी / Upload QR\" निवडा, किंवा कॉपी केलेला UPI ID स्वतः टाका",
+      g4:"आपल्या श्रद्धेनुसार रक्कम टाकून पेमेंट करा 🙏",
+      g80:"सर्व देणग्यांवर 80G सुविधा उपलब्ध आहे.",
+      others:"इतर सेवा",o_mandir:"मंदिर सेवा",o_gau:"गोसेवा",o_granth:"ग्रंथ दान",o_dev:"टेंपल डेव्हलपमेंट",
+      role:"मंदिर सेवा आणि देणगी समन्वयक",
+      foot:"॥ हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे ॥",
+      toast_open:"UPI ID कॉपी केला ✅ ॲप उघडत आहे — 'Scan QR (गॅलरी)' वापरा किंवा UPI ID पेस्ट करा",
+      toast_chooser:"UPI ID कॉपी केला ✅ आपले UPI ॲप उघडून UPI ID पेस्ट करा किंवा QR स्कॅन करा",
+      toast_dl:"QR डाउनलोड होत आहे...",toast_sh:"शेअर केले जात आहे...",share_title:"श्री श्री राधाकृष्ण चंद्र सेवा"}
+  };
+
+  var S=window.SEVA||{}, lang="hi";
+  function dict(){ return Object.assign({},COMMON[lang],(window.PAGE_T||{})[lang]); }
+  function $(id){ return document.getElementById(id); }
+
+  /* ---------- Language ---------- */
+  function setLang(l){
+    if(!COMMON[l]) l="hi"; lang=l;
+    var d=dict();
+    document.documentElement.lang=l;
+    [].forEach.call(document.querySelectorAll("[data-t]"),function(el){
+      var k=el.getAttribute("data-t"); if(d[k]!==undefined) el.textContent=d[k];
+    });
+    [].forEach.call(document.querySelectorAll("[data-h]"),function(el){
+      var k=el.getAttribute("data-h"); if(d[k]!==undefined) el.innerHTML=d[k];
+    });
+    [].forEach.call(document.querySelectorAll(".lang button"),function(b){ b.classList.toggle("on",b.getAttribute("data-lang")===l); });
+    try{ localStorage.setItem("lang",l); localStorage.setItem("preferred_language",l); }catch(e){}
+  }
+
+  /* ---------- Toast ---------- */
+  var toastT=0;
+  function toast(text){
+    var t=$("toast"); if(!t) return;
+    $("toast-msg").textContent=text; t.classList.add("show");
+    if(navigator.vibrate) navigator.vibrate(40);
+    clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove("show"); },2600);
+  }
+
+  /* ---------- Copy ---------- */
+  function fallbackCopy(text,quiet){
+    try{
+      var i=document.createElement("input"); i.value=text; document.body.appendChild(i); i.select();
+      document.execCommand("copy"); document.body.removeChild(i);
+      if(!quiet) toast(dict().copied);
+    }catch(e){}
+  }
+  function copyText(text,quiet){
+    if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(text).then(function(){ if(!quiet) toast(dict().copied); },function(){ fallbackCopy(text,quiet); });
+    } else fallbackCopy(text,quiet);
+  }
+
+  /* ---------- Android bridge helpers ---------- */
+  function bridges(){ return [window.AndroidBridge,window.AndroidInterface].filter(Boolean); }
+  function callBridge(names,args){
+    var bs=bridges();
+    for(var b=0;b<bs.length;b++) for(var m=0;m<names.length;m++){
+      var fn=bs[b][names[m]];
+      if(typeof fn==="function"){
+        try{ var r=fn.apply(bs[b],args||[]); if(r!==false) return true; }catch(e){}
+      }
+    }
+    return false;
+  }
+
+  /* ---------- Download QR ---------- */
+  function downloadQR(){
+    toast(dict().toast_dl);
+    if(callBridge(["downloadImage"],[S.qr,S.file])) return;
+    fetch(S.qr).then(function(r){ return r.blob(); }).then(function(blob){
+      var u=URL.createObjectURL(blob), a=document.createElement("a");
+      a.href=u; a.download=S.file||"QR.png"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(u); },4000);
+    }).catch(function(){
+      var a=document.createElement("a"); a.href=S.qr; a.target="_blank"; a.rel="noopener"; a.download=S.file||"QR.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    });
+  }
+
+  /* ---------- Share QR + message ---------- */
+  function waFallback(msg){ window.open("https://api.whatsapp.com/send?text="+encodeURIComponent(msg+"\n\n"+S.qr),"_blank"); }
+  function shareQR(){
+    var msg=(S.msg&&(S.msg[lang]||S.msg.hi))||"";
+    toast(dict().toast_sh);
+    if(callBridge(["shareImage"],[S.qr,msg])) return;
+    if(navigator.share){
+      fetch(S.qr).then(function(r){ return r.blob(); }).then(function(blob){
+        var f=new File([blob],S.file||"qr.png",{type:blob.type});
+        if(navigator.canShare&&navigator.canShare({files:[f]})) navigator.share({files:[f],title:dict().share_title,text:msg});
+        else waFallback(msg);
+      }).catch(function(){ waFallback(msg); });
+    } else waFallback(msg);
+  }
+
+  /* ---------- UPI apps: payment link nahi, sirf asli app kholna ----------
+     (pre-filled upi://pay link se PhonePe/GPay ki Rs.2000 limit error aati hai) */
+  function openApp(pkg){
+    copyText(S.upi,true); toast(dict().toast_open);
+    if(callBridge(["launchUpiApp","openAppByPackage","launchApp","openApp"],[pkg])) return;
+    try{ window.location.href="intent://#Intent;package="+pkg+";end"; }catch(e){}
+  }
+  function openChooser(){
+    copyText(S.upi,true); toast(dict().toast_chooser);
+    if(callBridge(["openUpiAppPicker","openUpiChooserOnly","openAppChooser"],[])) return;
+    try{ window.location.href="upi://pay"; }catch(e){}
+  }
+
+  /* ---------- Click handling (data-act) ---------- */
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-act]"); if(!b) return;
+    var a=b.getAttribute("data-act");
+    if(a==="copy") copyText(S.upi);
+    else if(a==="download") downloadQR();
+    else if(a==="share") shareQR();
+    else if(a==="app") openApp(b.getAttribute("data-pkg"));
+    else if(a==="chooser") openChooser();
+  });
+  [].forEach.call(document.querySelectorAll(".lang button"),function(b){
+    b.addEventListener("click",function(){ setLang(b.getAttribute("data-lang")); });
+  });
+
+  /* ---------- Init ---------- */
+  var saved="hi"; try{ saved=localStorage.getItem("lang")||localStorage.getItem("preferred_language")||"hi"; }catch(e){}
+  setLang(saved);
+  var up=$("upi-text"); if(up&&S.upi) up.textContent=S.upi;
+  var qi=$("qr-img"); if(qi&&S.qr) qi.src=S.qr;
+})();
+
+</script>
+</body>
+</html>
