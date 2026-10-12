@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1f0802">
+    <title>Privacy Policy - Shree Shree Radha Krishna Chandra Mandir</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #FF8F00;
+            --deep-orange: #E65100;
+            --text-dark: #212121;
+            --text-light: #4a4a4a;
+            --bg-color: #FAF7F4;
+            --card-bg: #FFFFFF;
+            --soft-line: rgba(255, 143, 0, 0.25);
+        }
+
+        body.dark {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-dark: #ececec;
+            --text-light: #b5b5b5;
+            --soft-line: rgba(255, 143, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+            background: linear-gradient(90deg, #FF8F00, #FFD54F);
+            z-index: 2000; transition: width 0.1s linear;
+        }
+
+        /* Top navbar */
+        .top-nav {
+            background: rgba(31, 8, 2, 0.88);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .back-btn {
+            color: white; font-size: 1.2rem; text-decoration: none;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+        .back-btn:active { transform: scale(0.88) translateX(-4px); background: rgba(255, 255, 255, 0.25); }
+        .page-title { color: white; font-size: 1.15rem; font-weight: 600; margin: 0; letter-spacing: 0.4px; }
+
+        /* Header */
+        .policy-header {
+            background: linear-gradient(135deg, #1f0802 0%, #3d1b19 100%);
+            padding: 50px 20px 55px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary-orange);
+        }
+        .header-bg-glow {
+            position: absolute; top: 50%; left: 50%; width: 420px; height: 420px;
+            background: radial-gradient(circle, rgba(255, 153, 51, 0.18) 0%, transparent 70%);
+            transform: translate(-50%, -50%); pointer-events: none;
+        }
+        .header-logo {
+            width: 85px; height: 85px; border-radius: 50%;
+            border: 3px solid var(--primary-orange);
+            margin-bottom: 14px; position: relative; z-index: 1;
+            box-shadow: 0 0 22px rgba(255, 153, 51, 0.45);
+            background-color: white; object-fit: cover;
+        }
+        .header-title {
+            font-family: 'Cinzel', serif; font-size: 1.9rem; font-weight: 700;
+            color: #ffcc80; margin: 0 0 6px 0; position: relative; z-index: 1;
+            letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .header-temple {
+            font-family: 'Cinzel', serif; font-size: 1rem; color: #fff3e0;
+            position: relative; z-index: 1; margin: 0 0 8px 0; letter-spacing: 0.5px;
+        }
+        .header-subtitle {
+            font-size: 0.9rem; color: #ececec; font-weight: 300;
+            position: relative; z-index: 1; opacity: 0.9; margin: 0;
+        }
+
+        /* Main card */
+        .policy-container {
+            max-width: 900px;
+            margin: -25px auto 30px auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 30px 22px;
+            position: relative; z-index: 2;
+        }
+
+        .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .badge-pill {
+            font-size: 0.8rem; font-weight: 600; padding: 5px 14px; border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .badge-date { color: #d32f2f; background: rgba(211, 47, 47, 0.1); border: 1px solid rgba(211, 47, 47, 0.2); }
+        .badge-play { color: #2e7d32; background: rgba(46, 125, 50, 0.1); border: 1px solid rgba(46, 125, 50, 0.2); }
+
+        /* Quick summary */
+        .quick-summary {
+            background: linear-gradient(135deg, rgba(255, 143, 0, 0.1), rgba(255, 143, 0, 0.02));
+            border: 1px solid var(--soft-line);
+            border-radius: 14px; padding: 16px 18px; margin: 18px 0 8px 0;
+        }
+        .quick-summary h3 { font-size: 1rem; font-weight: 700; color: var(--deep-orange); margin: 0 0 10px 0; }
+        .quick-summary ul { list-style: none; padding: 0; margin: 0; }
+        .quick-summary li { font-size: 0.9rem; color: var(--text-light); margin-bottom: 6px; display: flex; gap: 8px; align-items: flex-start; }
+        .quick-summary li i { color: #2e7d32; margin-top: 5px; font-size: 0.8rem; }
+
+        .p-section-title {
+            font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700;
+            color: var(--deep-orange);
+            border-bottom: 2px dashed var(--soft-line);
+            padding-bottom: 8px; margin-top: 34px; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .p-section-title i { font-size: 1rem; color: var(--primary-orange); }
+
+        .p-text { font-size: 0.93rem; color: var(--text-light); margin-bottom: 14px; }
+
+        ul { padding-left: 20px; margin-bottom: 14px; }
+        ul li { font-size: 0.93rem; color: var(--text-light); margin-bottom: 7px; }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 143, 0, 0.07), transparent);
+            border-left: 4px solid var(--primary-orange);
+            padding: 15px; border-radius: 10px; margin: 18px 0;
+            font-size: 0.93rem; color: var(--text-dark);
+        }
+        .highlight-box p { color: var(--text-light); }
+        .highlight-box ul { list-style: none; padding-left: 0; }
+
+        .box-blue { border-left-color: #0288D1; background: rgba(2, 136, 209, 0.07); }
+        .box-red { border-left-color: #d32f2f; background: rgba(211, 47, 47, 0.06); }
+
+        .permission-highlight {
+            background: rgba(46, 125, 50, 0.07);
+            border: 1px solid rgba(46, 125, 50, 0.25);
+            border-left: 5px solid #2e7d32;
+            padding: 15px; border-radius: 10px; margin: 15px 0;
+        }
+        .permission-highlight h4 { font-size: 1rem; font-weight: 700; color: #2e7d32; margin-bottom: 8px; }
+        .permission-highlight p { font-size: 0.9rem; color: var(--text-light); }
+
+        .guarantee { font-size: 0.85rem; color: #d32f2f; font-weight: 600; margin: 10px 0 0 0; }
+
+        /* Contact / developer (short) */
+        .contact-card {
+            background: linear-gradient(145deg, #1f2937, #111827);
+            border-radius: 16px; padding: 20px; margin-top: 40px;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+        }
+        .contact-label {
+            font-size: 0.75rem; color: #ffb74d; text-transform: uppercase;
+            font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 6px;
+        }
+        .contact-card p { color: #d1d5db; font-size: 0.9rem; margin: 0 0 10px 0; }
+        .contact-card a {
+            color: #ffb74d; text-decoration: none; font-weight: 600; word-break: break-all;
+        }
+
+        footer.page-footer {
+            text-align: center; padding: 20px; font-size: 0.82rem;
+            color: var(--text-light); margin-bottom: 20px;
+        }
+
+        /* Smooth reveal */
+        .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.show { opacity: 1; transform: none; }
+
+        @media (min-width: 768px) {
+            .policy-container { padding: 40px 45px; }
+            .header-title { font-size: 2.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <div class="top-nav">
+        <a href="index.html" class="back-btn" aria-label="Back"><i class="fas fa-arrow-left"></i></a>
+        <h1 class="page-title">Privacy Policy</h1>
+    </div>
+
+    <header class="policy-header">
+        <div class="header-bg-glow"></div>
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh89ueri3DvWfVUmM76dyYJSTCLcDC6oYuAT3j-ezAKl5iDeJ97q28vt2MR39RJwL8BGI91we6F4DRj-u7j1EE2NPyQRwFs0HfYcB4HjxZ9VoeUQWGR7GdARSdow00uHqEehsr6gOVDFG15mntfIdNuOrQ_fxAZHCjMWU9kEjzaUMhuN52vsKMA6Tb9Dtx3/s256/1000096788.png" alt="Temple Logo" class="header-logo">
+        <h1 class="header-title">Privacy Policy</h1>
+        <p class="header-temple">Shree Shree Radha Krishna Chandra Mandir</p>
+        <p class="header-subtitle">How we collect, use and protect your information</p>
+    </header>
+
+    <main class="policy-container container">
+
+        <div class="badge-row">
+            <span class="badge-pill badge-date"><i class="fas fa-calendar-check"></i> Effective Date: October 12, 2026</span>
+            <span class="badge-pill badge-play"><i class="fab fa-google-play"></i> Google Play Data Safety Compliant</span>
+        </div>
+
+        <p class="p-text">Hare Krishna! Welcome to the official <b>Shree Shree Radha Krishna Chandra Mandir</b> mobile application. We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose and safeguard your information when you use our app, in compliance with Google Play Developer policies.</p>
+
+        <!-- Quick summary -->
+        <div class="quick-summary reveal">
+            <h3><i class="fas fa-bolt me-1"></i> Quick Summary</h3>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> No login or account is needed to use the app.</li>
+                <li><i class="fas fa-check-circle"></i> We never store your card details or UPI PIN.</li>
+                <li><i class="fas fa-check-circle"></i> Camera and microphone audio/video is never recorded or stored.</li>
+                <li><i class="fas fa-check-circle"></i> We never sell your personal data to anyone.</li>
+                <li><i class="fas fa-check-circle"></i> You can request deletion of your data at any time.</li>
+            </ul>
+        </div>
+
+        <!-- 1 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-clipboard-user"></i> 1. Information We Collect</h2>
+        <p class="p-text reveal">Most features of the app (Live Darshan, Kirtan, Daily Schedule, Stories and Games) do not require any personal data. We follow a "No Forced Login" model. We process information only in the following situations:</p>
+
+        <div class="highlight-box reveal">
+            <b>A. Donations & 80G Tax Exemption</b>
+            <p style="margin: 5px 0 0 0;">When you voluntarily donate through the app, we may collect the following to issue your receipt, offer Prasadam and facilitate 80G tax exemption:</p>
+            <ul style="margin-top:10px; margin-bottom:0;">
+                <li><i class="fas fa-check text-success me-1"></i> Full Name</li>
+                <li><i class="fas fa-check text-success me-1"></i> Mobile Number & Email Address</li>
+                <li><i class="fas fa-check text-success me-1"></i> PAN details (only if you opt for 80G tax exemption)</li>
+            </ul>
+        </div>
+        <p class="p-text reveal"><b>Note on Financial Data:</b> We do not store your credit/debit card numbers or UPI PINs. All payments are processed securely through regulated third-party payment apps and gateways (such as PhonePe, Google Pay, Paytm or your bank app).</p>
+
+        <div class="highlight-box reveal">
+            <b>B. App Settings & Local Device Storage</b>
+            <p style="margin: 5px 0 0 0;">To give you a smooth experience, some preferences are saved only on your own device. This data is <b>NOT</b> uploaded to our servers:</p>
+            <ul style="margin-top:10px; margin-bottom:0;">
+                <li><i class="fas fa-mobile-alt text-success me-1"></i> Japa Mala counter and daily rounds.</li>
+                <li><i class="fas fa-mobile-alt text-success me-1"></i> Game levels (locked/unlocked status).</li>
+                <li><i class="fas fa-mobile-alt text-success me-1"></i> Theme (Dark/Light) and language (Hindi/English).</li>
+                <li><i class="fas fa-mobile-alt text-success me-1"></i> Display name saved locally for quick joining of Live Japa sessions.</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box box-blue reveal">
+            <b style="color:#0277BD;"><i class="fas fa-calendar-alt me-1"></i> C. Event Registrations, Forms & Surveys</b>
+            <p style="margin: 5px 0 0 0;">For temple festivals, seminars, youth or Sunday school programs and volunteer activities, we may use in-app forms or secure external links (like Google Forms). If you choose to participate, we may collect:</p>
+            <ul style="margin-top:10px; margin-bottom:0;">
+                <li><i class="fas fa-check text-primary me-1"></i> Full Name, Email Address and Phone/WhatsApp Number.</li>
+                <li><i class="fas fa-check text-primary me-1"></i> Event-related details (date, seva preference, age group, etc.).</li>
+            </ul>
+            <p class="guarantee"><i class="fas fa-shield-alt me-1"></i> We use this data only to organize the specific event and send you passes, links or schedule updates. We NEVER share, rent or sell it to marketing agencies or third parties.</p>
+        </div>
+
+        <!-- 2 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-unlock-alt"></i> 2. Device Permissions</h2>
+        <p class="p-text reveal">Our app requests only the minimum permissions needed to work properly:</p>
+
+        <div class="permission-highlight reveal">
+            <h4><i class="fas fa-video me-1"></i> Sensitive Permissions: Camera & Microphone</h4>
+            <p>The "Live Global Japa" feature lets devotees chant interactively with the temple through an integrated web-conferencing tool (Zoom Web API). For this:</p>
+            <ul style="margin-bottom: 0;">
+                <li><b>Camera (android.permission.CAMERA):</b> used only to stream your live video during the session.</li>
+                <li><b>Microphone (android.permission.RECORD_AUDIO):</b> used only to transmit your voice/chanting during the session.</li>
+            </ul>
+            <p class="guarantee"><i class="fas fa-user-shield me-1"></i> We DO NOT record, store, save or share your audio or video. Data is processed in real time only for the live session. You can mute or turn off your camera at any time.</p>
+        </div>
+
+        <ul class="reveal">
+            <li><b>Internet & Network:</b> to load Live Darshan, Kirtan media and the temple's dynamic schedule.</li>
+            <li><b>Foreground Service & Wake Lock:</b> keeps your phone awake while you listen to continuous Kirtan or watch Live Darshan.</li>
+            <li><b>Google Play License Check:</b> a standard Android check to confirm the app is installed from official channels.</li>
+            <li><b>Phone State:</b> used only by our audio player to detect incoming calls and pause Kirtan automatically. We <b>DO NOT</b> read or store your call logs, phone number, contacts or device IMEI.</li>
+            <li><b>Location (Map Redirection):</b> the "Temple Directory/Map" only opens third-party map apps. We do <b>NOT</b> track or store your GPS location.</li>
+        </ul>
+
+        <!-- 3 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-external-link-alt"></i> 3. External Links & Other Apps</h2>
+        <p class="p-text reveal">The app contains links to our official <b>online store</b> (books, spiritual items and merchandise), other official apps of the temple, and social media channels (YouTube, Facebook, Instagram). It may also open third-party payment apps for donations.</p>
+        <p class="p-text reveal">Once you leave our app through such a link, your data and purchases are governed by the privacy policy and terms of that website, platform or app.</p>
+
+        <!-- 4 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-database"></i> 4. Third-Party Services & Ads</h2>
+        <p class="p-text reveal">To keep the app running smoothly and cover server costs, we use trusted third-party services. They may collect device identifiers and usage data under their own privacy policies:</p>
+        <ul class="reveal">
+            <li><b>Google Firebase:</b> app analytics, remote configuration, real-time database and crash prevention.</li>
+            <li><b>Blogger API & YouTube:</b> to load images, gallery content and live video Darshan.</li>
+            <li><b>Zoom Web SDK / API:</b> to run the "Live Global Japa" video sessions.</li>
+            <li><b>Ad Networks (Google AdMob, Unity Ads, Start.io):</b> we show ads to support app maintenance. These networks may use your device's <b>Advertising ID</b>, IP address and app interaction data to show personalized or non-personalized ads.</li>
+            <li><b>AdID & AdServices (Privacy Sandbox):</b> we use the Advertising ID permission, AdServices Topics and Attribution APIs, and the Play Install Referrer API for ad measurement without collecting sensitive personal information. You can reset or manage ad personalization anytime from your phone's Google settings.</li>
+        </ul>
+
+        <!-- 5 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-bell"></i> 5. Push Notifications</h2>
+        <p class="p-text reveal">We use Firebase Cloud Messaging to send spiritual updates such as Ekadashi reminders, festival alerts and Live Darshan timings. You can turn notifications on or off anytime from your device settings.</p>
+
+        <!-- 6 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-gamepad"></i> 6. Stories, Games & Quizzes</h2>
+        <p class="p-text reveal">The app has spiritual stories, quizzes and games (memory match, puzzles) made for <b>users of all ages</b>. <b>No personal data, login or tracking identifier is collected by these features</b>; they work without any user information.</p>
+
+        <!-- 7 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-users"></i> 7. General Audience & Children</h2>
+        <p class="p-text reveal">This app is built for a <b>General Audience</b>. We do not knowingly collect personal information from any user (including children) to use the main features, stories or games. Information is collected only during voluntary donations or event registrations, which are meant for adults. If you are a parent or guardian and believe a minor has submitted personal information without your consent, please contact us and we will remove it.</p>
+
+        <!-- 8 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-comments"></i> 8. Feedback & Communication</h2>
+        <p class="p-text reveal">You can contact the temple through WhatsApp or email from within the app. In that case your phone number or email address is visible to our team. We use it only to answer your query and never share or sell it.</p>
+
+        <!-- 9 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-trash-alt"></i> 9. Data Retention & Deletion</h2>
+        <p class="p-text reveal">Because the app has no accounts, there is no user profile to delete. Personal data such as donation or event registration records is kept only as long as needed for legal, accounting, tax or event purposes. Audio and video from live sessions is never retained.</p>
+        <div class="highlight-box box-red reveal">
+            <b>How to Request Data Deletion</b>
+            <p style="margin: 5px 0 0 0;">To delete your donation records, event registration details or contact details, or to withdraw your consent, email us at <b>devsantosh.tech@gmail.com</b> with the subject <b>"Data Deletion Request"</b>. After verifying your request, we will permanently delete your personal data from our active records within 15-30 business days.</p>
+        </div>
+
+        <!-- 10 -->
+        <h2 class="p-section-title reveal"><i class="fas fa-shield-alt"></i> 10. Data Security & Policy Updates</h2>
+        <p class="p-text reveal">We use industry-standard security (HTTPS/SSL encryption) to protect your data in transit. However, no method of internet transmission is 100% secure. We may update this Privacy Policy from time to time to reflect new features or Google Play policy changes, and the updated date will be shown at the top. Continued use of the app means you accept the updated policy.</p>
+
+        <!-- Contact (short) -->
+        <div class="contact-card reveal">
+            <span class="contact-label"><i class="fas fa-headset me-1"></i> Contact & Support</span>
+            <p>App developed and maintained by <b style="color:#fff;">Dev Santosh</b>. For privacy questions, data deletion or app support:</p>
+            <a href="mailto:devsantosh.tech@gmail.com"><i class="fas fa-envelope me-1"></i>devsantosh.tech@gmail.com</a>
+        </div>
+
+    </main>
+
+    <footer class="page-footer">
+        © 2026 Shree Shree Radha Krishna Chandra Mandir. All Rights Reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dark mode (saved theme, otherwise follow system)
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && systemDark)) {
+                document.body.classList.add('dark');
+            }
+        })();
+
+        // Scroll progress bar
+        var bar = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', function () {
+            var h = document.documentElement;
+            var scrolled = (h.scrollTop || document.body.scrollTop) / ((h.scrollHeight - h.clientHeight) || 1);
+            bar.style.width = (scrolled * 100) + '%';
+        }, { passive: true });
+
+        // Smooth reveal on scroll
+        var items = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (en.isIntersecting) {
+                        en.target.classList.add('show');
+                        io.unobserve(en.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+            items.forEach(function (el) { io.observe(el); });
+        } else {
+            items.forEach(function (el) { el.classList.add('show'); });
+        }
+    </script>
+</body>
+</html>
