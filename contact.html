@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#FF9933">
+<title>Contact - Sri Sri Radha Krishna Chandra Mandir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<style>
+:root{--pr:#FF9933;--pd:#E65100;--bg:#FAF6F1;--card:#fff;--tx:#2b2b2b;--mu:#6b7280;--bd:rgba(255,153,51,.25);--sh:0 10px 30px rgba(0,0,0,.08)}
+[data-theme="dark"]{--bg:#121212;--card:#1e1e1e;--tx:#ececec;--mu:#9ca3af;--bd:rgba(255,153,51,.2);--sh:0 10px 30px rgba(0,0,0,.5)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;font-family:'Poppins','Noto Sans Devanagari',system-ui,sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));transition:background .3s,color .3s}
+a{text-decoration:none}
+
+.tick{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:rgba(87,30,78,.95);color:#fff;overflow:hidden;white-space:nowrap;border-bottom:1px solid rgba(255,218,121,.25)}
+.tick-in{display:inline-block;padding:9px 0;font-family:'Cinzel',serif;font-weight:700;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;animation:scroll 28s linear infinite;will-change:transform}
+.tick-in span{padding-right:40px}
+.tick-in i{color:#ffda79;margin:0 6px}
+@keyframes scroll{to{transform:translate3d(-50%,0,0)}}
+
+.hero{position:relative;padding:calc(70px + env(safe-area-inset-top,0px)) 20px 90px;text-align:center;color:#fff;background:linear-gradient(160deg,#4A0E3D 0%,#8E1B5E 50%,#E65100 120%);border-radius:0 0 40px 40px;overflow:hidden}
+.hero::before{content:'🪷';position:absolute;right:-14px;top:40px;font-size:7rem;opacity:.1}
+.hero::after{content:'🌸';position:absolute;left:-14px;bottom:10px;font-size:6rem;opacity:.1}
+.back{position:absolute;top:calc(54px + env(safe-area-inset-top,0px));left:16px;display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:30px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:.85rem;font-weight:600;transition:transform .2s}
+.back:active{transform:scale(.93)}
+.hero-jai{margin-top:34px;font-size:.78rem;letter-spacing:2px;color:#FFE082;font-weight:700}
+.hero h1{font-family:'Noto Sans Devanagari','Cinzel',serif;font-size:1.6rem;font-weight:800;line-height:1.3;margin:6px 0 4px;text-shadow:0 3px 10px rgba(0,0,0,.4)}
+.hero p{margin:0;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#FFE082}
+
+.wrap{max-width:560px;margin:-58px auto 0;padding:0 16px;position:relative;z-index:5}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:24px;box-shadow:var(--sh);padding:22px;margin-bottom:18px;opacity:0;transform:translateY(18px);animation:up .6s ease forwards}
+.card:nth-child(2){animation-delay:.1s}.card:nth-child(3){animation-delay:.2s}.card:nth-child(4){animation-delay:.3s}
+@keyframes up{to{opacity:1;transform:none}}
+.role{display:block;font-size:.7rem;font-weight:800;letter-spacing:1.5px;color:var(--pd);text-transform:uppercase}
+[data-theme="dark"] .role{color:var(--pr)}
+.h2{display:flex;align-items:center;gap:12px;margin:0 0 12px;font-family:'Noto Sans Devanagari','Cinzel',serif;font-size:1.15rem;font-weight:800}
+.h2 i{color:var(--pr);font-size:1.4rem}
+
+/* Contact */
+.person{text-align:center}
+.avatar{position:relative;width:70px;height:70px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;background:linear-gradient(135deg,#FF9933,#E65100);box-shadow:0 8px 22px rgba(255,153,51,.45)}
+.avatar::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--pr);opacity:0;animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+.pname{font-family:'Noto Sans Devanagari','Cinzel',serif;font-size:1.35rem;font-weight:800;margin:4px 0 6px}
+.pnum{display:inline-flex;align-items:center;gap:10px;padding:7px 8px 7px 16px;border-radius:30px;background:rgba(255,153,51,.1);border:1px solid var(--bd);font-weight:700;font-size:.95rem;letter-spacing:.5px}
+.pnum button{width:30px;height:30px;border-radius:50%;border:0;background:var(--pr);color:#fff;cursor:pointer;font-size:.8rem}
+.btns{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 8px;border-radius:16px;border:0;font:700 .92rem 'Poppins','Noto Sans Devanagari',sans-serif;cursor:pointer;color:#fff !important;transition:transform .15s}
+.btn:active{transform:scale(.95)}
+.b-call{background:linear-gradient(135deg,#2563eb,#1e40af);box-shadow:0 6px 16px rgba(37,99,235,.35)}
+.b-wa{background:linear-gradient(135deg,#25D366,#128C7E);box-shadow:0 6px 16px rgba(37,211,102,.35)}
+.b-map{background:linear-gradient(135deg,#FF9933,#E65100);box-shadow:0 6px 16px rgba(255,153,51,.4)}
+.b-copy{background:rgba(255,153,51,.12);color:var(--pd) !important;border:2px solid var(--pr);box-shadow:none}
+[data-theme="dark"] .b-copy{color:var(--pr) !important}
+
+/* Topic chips */
+.sub{font-size:.8rem;color:var(--mu);margin:0 0 12px;font-weight:500}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;border:1px solid var(--bd);background:rgba(37,211,102,.07);color:var(--tx);font:600 .8rem 'Poppins','Noto Sans Devanagari',sans-serif;text-align:left;cursor:pointer;transition:transform .15s}
+.chip:active{transform:scale(.96)}
+.chip i{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.95rem;background:linear-gradient(135deg,#25D366,#128C7E)}
+.chip:nth-child(2) i{background:linear-gradient(135deg,#FF9933,#E65100)}
+.chip:nth-child(3) i{background:linear-gradient(135deg,#0288D1,#00BCD4)}
+.chip:nth-child(4) i{background:linear-gradient(135deg,#8E1B5E,#C2185B)}
+
+/* Location */
+.addr{margin:0 0 14px;font-size:.93rem;line-height:1.65;color:var(--mu);font-weight:500}
+.map{border-radius:18px;overflow:hidden;border:3px solid var(--card);box-shadow:var(--sh);background:#e5e7eb;min-height:230px}
+.map iframe{width:100%;height:230px;border:0;display:block}
+
+/* Social */
+.soc{display:flex;justify-content:center;gap:16px}
+.soc a{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;transition:transform .2s;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.soc a:active{transform:scale(.9)}
+.s-yt{background:linear-gradient(135deg,#c4302b,#ff0000)}
+.s-ig{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.s-wa{background:linear-gradient(135deg,#25D366,#128C7E)}
+
+.ded{text-align:center;margin:22px 0 18px;color:var(--pd);font-size:.72rem;font-weight:700;letter-spacing:1px;line-height:1.7}
+.ded i{font-size:2rem;display:block;margin-bottom:8px;color:var(--pr)}
+.dev{background:linear-gradient(160deg,#1e293b,#0b0f19);color:#fff;border-radius:22px;padding:22px;text-align:center;opacity:0;animation:up .6s ease .4s forwards}
+.dev small{display:block;font-size:.68rem;letter-spacing:2px;color:#94a3b8;text-transform:uppercase}
+.dev b{display:block;font-size:1.15rem;margin:6px 0 2px;font-weight:700}
+.dev span{font-size:.8rem;color:#94a3b8}
+.dev a{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 22px;border-radius:30px;border:1px solid rgba(255,153,51,.5);color:#FFB74D;font-weight:600;font-size:.82rem;transition:transform .15s}
+.dev a:active{transform:scale(.95)}
+
+/* Sticky action bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd);box-shadow:0 -8px 24px rgba(0,0,0,.1)}
+.bar .btn{padding:13px 8px}
+
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:#222;color:#fff;padding:11px 20px;border-radius:30px;font-size:.85rem;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:99;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+</style>
+</head>
+<body>
+
+<div class="tick"><div class="tick-in">
+<span><i class="fas fa-spa"></i>HARE KRISHNA HARE KRISHNA KRISHNA KRISHNA HARE HARE • HARE RAMA HARE RAMA RAMA RAMA HARE HARE<i class="fas fa-spa"></i></span>
+<span><i class="fas fa-spa"></i>HARE KRISHNA HARE KRISHNA KRISHNA KRISHNA HARE HARE • HARE RAMA HARE RAMA RAMA RAMA HARE HARE<i class="fas fa-spa"></i></span>
+</div></div>
+
+<header class="hero">
+  <a href="index.html" class="back"><i class="fas fa-arrow-left"></i> <span data-i="back">Back to Home</span></a>
+  <div class="hero-jai" data-i="jai">॥ Jai Sri Radhe Krishna ॥</div>
+  <h1 data-i="name">Sri Sri Radha Krishna Chandra Mandir</h1>
+  <p data-i="sub">Connect With Us</p>
+</header>
+
+<main class="wrap">
+
+  <section class="card person">
+    <div class="avatar"><i class="fas fa-user-tie"></i></div>
+    <span class="role" data-i="role">Temple Contact</span>
+    <div class="pname" data-i="person">Shree Dhar Madhav</div>
+    <div class="pnum"><span>+91 91194 36809</span><button onclick="copyText('+919119436809','numCopied')" aria-label="Copy number"><i class="far fa-copy"></i></button></div>
+    <div class="btns">
+      <a class="btn b-call" href="tel:+919119436809" onclick="tap()"><i class="fas fa-phone-alt"></i> <span data-i="call">Call</span></a>
+      <a class="btn b-wa" href="#" onclick="wa('general');return false;"><i class="fab fa-whatsapp"></i> <span data-i="chat">WhatsApp</span></a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="h2"><i class="fab fa-whatsapp" style="color:#25D366"></i><span data-i="askT">What do you want to ask?</span></h2>
+    <p class="sub" data-i="askS">Tap a topic. WhatsApp opens with the message ready.</p>
+    <div class="chips">
+      <button class="chip" onclick="wa('feast')"><i class="fas fa-bowl-food"></i><span data-i="c1">Sunday Feast</span></button>
+      <button class="chip" onclick="wa('seva')"><i class="fas fa-hand-holding-heart"></i><span data-i="c2">Seva & Donation</span></button>
+      <button class="chip" onclick="wa('kids')"><i class="fas fa-graduation-cap"></i><span data-i="c3">Kids Sanskar Class</span></button>
+      <button class="chip" onclick="wa('general')"><i class="fas fa-comment-dots"></i><span data-i="c4">Other Question</span></button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="h2"><i class="fas fa-map-location-dot"></i><span data-i="locT">Temple Location</span></h2>
+    <p class="addr" data-i="addr">Sri Sri Radha Krishna Chandra Mandir, 15 Number, Hadapsar, Pune, Maharashtra</p>
+    <div class="map" id="mapBox"></div>
+    <div class="btns">
+      <button class="btn b-copy" onclick="copyText(L[lang].addr,'copied')"><i class="far fa-copy"></i> <span data-i="copy">Copy Address</span></button>
+      <button class="btn b-map" onclick="openMap()"><i class="fas fa-diamond-turn-right"></i> <span data-i="nav">Navigate</span></button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="h2" style="justify-content:center"><i class="fas fa-heart" style="color:#e91e63"></i><span data-i="socT">Stay Connected</span></h2>
+    <div class="soc">
+      <a class="s-yt" href="intent://youtube.com/@srisriradhakrsnachandraman9892#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=https://youtube.com/@srisriradhakrsnachandraman9892;end" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <a class="s-ig" href="intent://instagram.com/_u/shri_shri_radhakrishna_chandra#Intent;scheme=https;package=com.instagram.android;S.browser_fallback_url=https://www.instagram.com/shri_shri_radhakrishna_chandra;end" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a class="s-wa" href="https://chat.whatsapp.com/BW0QvViK1nXDZxquUTmau4?s=qt&p=a&mlu=4&ilr=4" target="_blank" aria-label="WhatsApp Community"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </section>
+
+  <div class="ded"><i class="fas fa-spa"></i><span data-i="ded">DEDICATED TO HIS DIVINE GRACE<br>A.C. BHAKTIVEDANTA SWAMI PRABHUPADA</span></div>
+
+  <section class="dev">
+    <small data-i="devL">App Developer</small>
+    <b>Santosh</b>
+    <span data-i="devS">Developed & maintained with devotion</span><br>
+    <a href="dev.html"><i class="fas fa-code"></i> <span data-i="devB">Contact Developer</span></a>
+  </section>
+</main>
+
+<div class="bar">
+  <a class="btn b-call" href="tel:+919119436809" onclick="tap()"><i class="fas fa-phone-alt"></i> <span data-i="call">Call</span></a>
+  <a class="btn b-wa" href="#" onclick="wa('general');return false;"><i class="fab fa-whatsapp"></i> <span data-i="chat">WhatsApp</span></a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var NUM="919119436809", Q="Sri Sri Radha Krishnachandra Mandir Hadapsar Pune";
+var L={
+ en:{back:"Back to Home",jai:"॥ Jai Sri Radhe Krishna ॥",name:"Sri Sri Radha Krishna Chandra Mandir",sub:"Connect With Us",role:"Temple Contact",person:"Shree Dhar Madhav",call:"Call",chat:"WhatsApp",askT:"What do you want to ask?",askS:"Tap a topic. WhatsApp opens with the message ready.",c1:"Sunday Feast",c2:"Seva & Donation",c3:"Kids Sanskar Class",c4:"Other Question",locT:"Temple Location",addr:"Sri Sri Radha Krishna Chandra Mandir, 15 Number, Hadapsar, Pune, Maharashtra",copy:"Copy Address",nav:"Navigate",socT:"Stay Connected",ded:"DEDICATED TO HIS DIVINE GRACE<br>A.C. BHAKTIVEDANTA SWAMI PRABHUPADA",devL:"App Developer",devS:"Developed & maintained with devotion",devB:"Contact Developer",copied:"Temple address copied!",numCopied:"Number copied!",offline:"You are offline. Map needs internet.",
+  m:{general:"Hare Krishna Prabhu! 🙏",feast:"Hare Krishna Prabhu! 🙏 I would like to know about the Sunday Feast.",seva:"Hare Krishna Prabhu! 🙏 I would like to know about Seva and Donation.",kids:"Hare Krishna Prabhu! 🙏 I would like to know about the Kids Sanskar Class and admission."}},
+ hi:{back:"होम पर जाएँ",jai:"॥ जय श्री राधे कृष्ण ॥",name:"श्री श्री राधाकृष्ण चंद्र मंदिर",sub:"हमसे जुड़ें",role:"मंदिर संपर्क",person:"श्रीधर माधव",call:"कॉल करें",chat:"WhatsApp",askT:"आप क्या पूछना चाहते हैं?",askS:"विषय चुनें। WhatsApp में संदेश तैयार मिलेगा।",c1:"संडे फीस्ट",c2:"सेवा व दान",c3:"बाल संस्कार क्लास",c4:"अन्य प्रश्न",locT:"मंदिर का पता",addr:"श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र",copy:"पता कॉपी करें",nav:"रास्ता देखें",socT:"जुड़े रहें",ded:"श्रील ए.सी. भक्तिवेदांत स्वामी प्रभुपाद<br>को समर्पित",devL:"ऐप डेवलपर",devS:"भक्ति भाव से विकसित व संचालित",devB:"डेवलपर से संपर्क",copied:"मंदिर का पता कॉपी हो गया!",numCopied:"नंबर कॉपी हो गया!",offline:"आप ऑफ़लाइन हैं। नक्शे के लिए इंटरनेट चाहिए।",
+  m:{general:"हरे कृष्ण प्रभुजी! 🙏",feast:"हरे कृष्ण प्रभुजी! 🙏 मुझे संडे फीस्ट के बारे में जानकारी चाहिए।",seva:"हरे कृष्ण प्रभुजी! 🙏 मुझे सेवा और दान के बारे में जानकारी चाहिए।",kids:"हरे कृष्ण प्रभुजी! 🙏 मुझे बाल संस्कार क्लास और प्रवेश के बारे में जानकारी चाहिए।"}},
+ mr:{back:"मुख्यपृष्ठावर जा",jai:"॥ जय श्री राधे कृष्ण ॥",name:"श्री श्री राधाकृष्ण चंद्र मंदिर",sub:"आमच्याशी संपर्क साधा",role:"मंदिर संपर्क",person:"श्रीधर माधव",call:"कॉल करा",chat:"WhatsApp",askT:"तुम्हाला काय विचारायचे आहे?",askS:"विषय निवडा. WhatsApp मध्ये संदेश तयार मिळेल.",c1:"संडे फीस्ट",c2:"सेवा व देणगी",c3:"बाल संस्कार वर्ग",c4:"इतर प्रश्न",locT:"मंदिराचा पत्ता",addr:"श्री श्री राधाकृष्ण चंद्र मंदिर, 15 नंबर, हडपसर, पुणे, महाराष्ट्र",copy:"पत्ता कॉपी करा",nav:"नकाशा व रस्ता",socT:"जोडलेले राहा",ded:"श्रील ए.सी. भक्तिवेदांत स्वामी प्रभुपाद<br>यांना समर्पित",devL:"ॲप डेव्हलपर",devS:"भक्तिभावाने विकसित व संचालित",devB:"डेव्हलपरशी संपर्क",copied:"मंदिराचा पत्ता कॉपी केला!",numCopied:"नंबर कॉपी केला!",offline:"तुम्ही ऑफलाइन आहात. नकाशासाठी इंटरनेट हवे.",
+  m:{general:"हरे कृष्ण प्रभूजी! 🙏",feast:"हरे कृष्ण प्रभूजी! 🙏 मला संडे फीस्टबद्दल माहिती हवी आहे.",seva:"हरे कृष्ण प्रभूजी! 🙏 मला सेवा आणि देणगीबद्दल माहिती हवी आहे.",kids:"हरे कृष्ण प्रभूजी! 🙏 मला बाल संस्कार वर्ग आणि प्रवेशाबद्दल माहिती हवी आहे."}}
+};
+var lang="en";
+try{lang=localStorage.getItem("lang")||"en";if(!L[lang])lang="en";if(localStorage.getItem("theme")==="dark")document.body.setAttribute("data-theme","dark");}catch(e){}
+document.querySelectorAll("[data-i]").forEach(function(el){var v=L[lang][el.getAttribute("data-i")];if(v)el.innerHTML=v;});
+
+function tap(){try{if(navigator.vibrate)navigator.vibrate(12)}catch(e){}}
+function toast(k){var t=document.getElementById("toast");t.textContent=L[lang][k];t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2200);}
+
+function wa(topic){
+  tap();
+  var msg=L[lang].m[topic]||L[lang].m.general;
+  window.location.href="https://wa.me/"+NUM+"?text="+encodeURIComponent(msg);
+}
+
+function copyText(txt,key){
+  tap();
+  function ok(){toast(key)}
+  function fb(){
+    var a=document.createElement("textarea");a.value=txt;a.style.position="fixed";a.style.opacity="0";
+    document.body.appendChild(a);a.select();
+    try{document.execCommand("copy");ok()}catch(e){}
+    document.body.removeChild(a);
+  }
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fb);return}}catch(e){}
+  fb();
+}
+
+function openMap(){
+  tap();
+  var q=encodeURIComponent(Q),web="https://www.google.com/maps/search/?api=1&query="+q;
+  window.location.href="intent://maps.google.com/maps?q="+q+"#Intent;scheme=https;package=com.google.android.apps.maps;S.browser_fallback_url="+encodeURIComponent(web)+";end";
+}
+
+function loadMap(){
+  var box=document.getElementById("mapBox");
+  if(!navigator.onLine){box.innerHTML='<div style="padding:90px 16px;text-align:center;color:#6b7280;font-size:.85rem">'+L[lang].offline+'</div>';return}
+  var f=document.createElement("iframe");
+  f.src="https://www.google.com/maps?q="+encodeURIComponent(Q)+"&output=embed";
+  f.loading="lazy";f.setAttribute("allowfullscreen","");f.title="Temple Map";
+  box.appendChild(f);
+}
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){loadMap();io.disconnect()}},{rootMargin:"200px"});
+  io.observe(document.getElementById("mapBox"));
+}else loadMap();
+</script>
+</body>
+</html>
