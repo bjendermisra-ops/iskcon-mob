@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#00695C">
+<title>Courses & Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<style>
+:root{--d:#00695C;--bg:#F4F8F7;--c:#fff;--t:#1f2937;--m:#6b7280;--b:rgba(0,137,123,.22)}
+[data-theme=dark]{--bg:#0f1514;--c:#1b2524;--t:#ececec;--m:#9ca3af;--b:rgba(38,166,154,.25)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Poppins,'Noto Sans Devanagari',system-ui,sans-serif;background:var(--bg);color:var(--t);padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+a{text-decoration:none}
+.hero{padding:calc(18px + env(safe-area-inset-top,0px)) 18px 70px;background:linear-gradient(150deg,#004D40,#00897B 60%,#26A69A);color:#fff;border-radius:0 0 36px 36px;text-align:center;position:relative}
+.back{position:absolute;left:14px;top:calc(14px + env(safe-area-inset-top,0px));width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;justify-content:center}
+.hero h1{margin:26px 0 4px;font-size:1.4rem;font-weight:800}
+.hero p{margin:0;font-size:.8rem;opacity:.92}
+.tabs{display:flex;gap:6px;max-width:600px;margin:-28px auto 14px;padding:0 14px;position:relative;z-index:3}
+.tab{flex:1;padding:11px 2px;border:0;border-radius:14px;background:var(--c);color:var(--m);font-family:inherit;font-weight:700;font-size:.7rem;box-shadow:0 6px 16px rgba(0,0,0,.1);cursor:pointer}
+.tab.on{background:linear-gradient(135deg,#00897B,#26A69A);color:#fff}
+.list{max-width:600px;margin:0 auto;padding:0 14px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 22px rgba(0,0,0,.07);animation:up .5s ease both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.card h3{margin:0;font-size:1.02rem;font-weight:800;line-height:1.3}
+.st{font-size:.62rem;font-weight:800;padding:3px 9px;border-radius:10px;white-space:nowrap;text-transform:uppercase}
+.st.open{background:#dcfce7;color:#166534}.st.soon{background:#fef3c7;color:#92400e}.st.full{background:#fee2e2;color:#991b1b}
+.desc{font-size:.8rem;color:var(--m);margin:6px 0 0;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:.68rem;font-weight:600;padding:4px 10px;border-radius:12px;background:rgba(0,137,123,.1);color:var(--d)}
+[data-theme=dark] .chip{color:#80cbc4}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.mb{background:rgba(0,137,123,.07);border-radius:12px;padding:8px 6px;text-align:center}
+.mb small{display:block;font-size:.58rem;font-weight:700;color:var(--m);text-transform:uppercase}
+.mb b{font-size:.76rem;display:block;margin-top:2px;line-height:1.2}
+.note{margin-top:10px;padding:8px 12px;border-radius:12px;background:#fff7e0;color:#7a4b00;font-size:.74rem;font-weight:600;border-left:4px solid #FFB300}
+.reg{width:100%;margin-top:12px;padding:13px;border:0;border-radius:14px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-family:inherit;font-weight:800;font-size:.88rem;cursor:pointer}
+.reg:disabled{background:#9ca3af;cursor:default}
+.reg:active:not(:disabled){transform:scale(.97)}
+.my{margin-top:12px;padding:12px 14px;border-radius:14px;font-size:.8rem;line-height:1.45;border:1px solid}
+.my b{display:block;font-size:.88rem;margin-bottom:2px}
+.my small{display:block;opacity:.85;margin-top:5px;font-size:.7rem}
+.my.new{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+.my.contacted{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.my.confirmed{background:#dcfce7;color:#166534;border-color:#86efac}
+.my.cancelled{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.empty{text-align:center;padding:40px 10px;color:var(--m);font-size:.9rem}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;z-index:50}
+.sheet.on{display:flex}
+.box{width:100%;max-width:600px;margin:0 auto;background:var(--c);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:slide .3s ease}
+@keyframes slide{from{transform:translateY(100%)}}
+.box h3{margin:0 0 4px;font-size:1.05rem}.box p{margin:0 0 12px;font-size:.8rem;color:var(--m)}
+.box input{width:100%;padding:13px;margin-bottom:10px;border:1px solid var(--b);border-radius:12px;background:var(--bg);color:var(--t);font-family:inherit;font-size:.95rem}
+.err{color:#dc2626;font-size:.75rem;min-height:1em;margin-bottom:6px}
+.x{background:none;border:0;color:var(--m);width:100%;padding:10px;font-family:inherit;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);background:#166534;color:#fff;padding:12px 18px;border-radius:30px;font-weight:700;font-size:.82rem;opacity:0;transition:.35s;z-index:99;max-width:92%;text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style></head>
+<body>
+<div class="hero"><a class="back" href="index.html"><i class="fas fa-arrow-left"></i></a><h1 data-i="title"></h1><p data-i="sub"></p></div>
+<div class="tabs" id="tabs"></div>
+<div class="list" id="list"></div>
+<div class="sheet" id="sheet"><div class="box">
+<h3 id="sh"></h3><p data-i="fill"></p>
+<input id="nm" maxlength="60" data-ph="name" autocomplete="name">
+<input id="mo" type="tel" inputmode="numeric" maxlength="10" data-ph="mobile" autocomplete="tel">
+<input id="ci" maxlength="40" data-ph="city">
+<div class="err" id="err"></div>
+<button class="reg" id="go" data-i="submit"></button>
+<button class="x" id="cl" data-i="close"></button>
+</div></div>
+<div class="toast" id="ts"></div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import{getDatabase,ref,get,set,goOnline,goOffline}from"https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+const db=getDatabase(initializeApp({apiKey:"AIzaSyBfbNzASqzPt4kMP-LlpJasIras7ifTch4",authDomain:"iskcon-hadapsar.firebaseapp.com",databaseURL:"https://iskcon-hadapsar-default-rtdb.firebaseio.com",projectId:"iskcon-hadapsar",appId:"1:231589086724:web:64d8a5d7a136b39db39751"}));
+const NUM="919119436809";
+const COURSE_TTL=300000,POLL_BASE=75000,POLL_MAX=600000,IDLE_MS=20000,MAX_TRY=8;
+const TX={
+en:{title:"Courses & Training",sub:"Learn, grow and connect with Krishna",t_course:"Courses",t_counselling:"Counselling",t_seminar:"Youth Seminar",t_mine:"Mine ✅",day:"Day",time:"Time",fee:"Fee",free:"Free",reg:"Register Now",open:"Open",soon:"Coming Soon",full:"Full",soonBtn:"Details coming soon",fullBtn:"Batch full",fill:"Fill details. WhatsApp will open to confirm.",name:"Your name",mobile:"Mobile number (10 digits)",city:"City (optional)",submit:"Register on WhatsApp",close:"Cancel",bad:"Enter a valid name and 10 digit mobile number.",empty:"Nothing here yet.",emptyMine:"You have not registered yet.",tbd:"To be announced",
+regd:"Registered ✅",as:"Registered as",s_new:"Registration received",m_new:"Waiting for temple confirmation.",s_contacted:"Temple has contacted you",m_contacted:"Please check your WhatsApp / phone.",s_confirmed:"Confirmed 🎉",m_confirmed:"Your seat is confirmed. Hare Krishna!",s_cancelled:"Not accepted",m_cancelled:"Please contact the temple for details."},
+hi:{title:"कोर्सेस व ट्रेनिंग",sub:"सीखें, आगे बढ़ें और कृष्ण से जुड़ें",t_course:"कोर्सेस",t_counselling:"काउंसलिंग",t_seminar:"युवा सेमिनार",t_mine:"मेरे ✅",day:"दिन",time:"समय",fee:"शुल्क",free:"विनामूल्य",reg:"अभी रजिस्टर करें",open:"प्रवेश जारी",soon:"जल्द आ रहा है",full:"बैच फुल",soonBtn:"जानकारी जल्द आएगी",fullBtn:"बैच फुल है",fill:"जानकारी भरें। पुष्टि के लिए WhatsApp खुलेगा।",name:"आपका नाम",mobile:"मोबाइल नंबर (10 अंक)",city:"शहर (वैकल्पिक)",submit:"WhatsApp पर रजिस्टर करें",close:"रद्द करें",bad:"सही नाम और 10 अंकों का मोबाइल नंबर भरें।",empty:"अभी कुछ नहीं है।",emptyMine:"आपने अभी रजिस्टर नहीं किया है।",tbd:"जल्द घोषित होगा",
+regd:"रजिस्टर हो गया ✅",as:"इस नाम से:",s_new:"रजिस्ट्रेशन मिल गया",m_new:"मंदिर की पुष्टि का इंतज़ार है।",s_contacted:"मंदिर ने संपर्क किया",m_contacted:"कृपया अपना WhatsApp / फ़ोन देखें।",s_confirmed:"पुष्टि हो गई 🎉",m_confirmed:"आपकी सीट पक्की है। हरे कृष्ण!",s_cancelled:"स्वीकार नहीं हुआ",m_cancelled:"जानकारी के लिए मंदिर से संपर्क करें।"},
+mr:{title:"कोर्सेस अँड ट्रेनिंग",sub:"शिका, प्रगती करा आणि कृष्णाशी जोडले जा",t_course:"कोर्सेस",t_counselling:"समुपदेशन",t_seminar:"युवा सेमिनार",t_mine:"माझे ✅",day:"वार",time:"वेळ",fee:"शुल्क",free:"विनामूल्य",reg:"आता नोंदणी करा",open:"प्रवेश सुरू",soon:"लवकरच येत आहे",full:"बॅच फुल",soonBtn:"माहिती लवकरच येईल",fullBtn:"बॅच फुल आहे",fill:"माहिती भरा. खात्रीसाठी WhatsApp उघडेल.",name:"तुमचे नाव",mobile:"मोबाइल नंबर (10 अंक)",city:"शहर (ऐच्छिक)",submit:"WhatsApp वर नोंदणी करा",close:"रद्द करा",bad:"योग्य नाव आणि 10 अंकी मोबाइल नंबर भरा.",empty:"अजून काही नाही.",emptyMine:"तुम्ही अजून नोंदणी केलेली नाही.",tbd:"लवकरच जाहीर होईल",
+regd:"नोंदणी झाली ✅",as:"या नावाने:",s_new:"नोंदणी मिळाली",m_new:"मंदिराच्या पुष्टीची प्रतीक्षा आहे.",s_contacted:"मंदिराने संपर्क केला",m_contacted:"कृपया तुमचा WhatsApp / फोन पहा.",s_confirmed:"पुष्टी झाली 🎉",m_confirmed:"तुमची जागा निश्चित आहे. हरे कृष्ण!",s_cancelled:"स्वीकारले नाही",m_cancelled:"माहितीसाठी मंदिराशी संपर्क साधा."}};
+const DEF=[["Bhagavad Gita Course - Level 1","course"],["Bhagavad Gita Course - Level 2","course"],["Art of Mind Control","course"],["Discover Your Self","course"],["Stress Management","course"],["ISKCON Disciple Course","course"],["Bhakti Shastri","course"],["Counselling & Training","counselling"],["Yuva Seminar","seminar"]].map((d,i)=>({id:"d"+i,title:d[0],type:d[1],status:"soon",desc:d[1]=="counselling"?"Apply Krishna consciousness practically in daily life":"",note:d[1]=="counselling"?"Only for devotees chanting 8 rounds • Free":"",fee:d[1]=="counselling"?"Free":"",days:d[1]=="seminar"?"Every Saturday":""}));
+let lang="en";
+try{lang=localStorage.getItem("lang")||"en";if(!TX[lang])lang="en";if(localStorage.getItem("theme")==="dark")document.body.setAttribute("data-theme","dark")}catch(e){}
+const T=TX[lang],$=i=>document.getElementById(i);
+document.querySelectorAll("[data-i]").forEach(e=>e.textContent=T[e.dataset.i]);
+document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=T[e.dataset.ph]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let DATA=DEF,tab="course",cur=null,MY={},ST={};
+try{const c=JSON.parse(localStorage.getItem("cc_cache")||"null");if(c&&c.length)DATA=c}catch(e){}
+try{MY=JSON.parse(localStorage.getItem("cc_my")||"{}")||{}}catch(e){}
+try{Object.keys(MY).forEach(k=>{if(MY[k]&&MY[k].seen)ST[k]=MY[k].seen})}catch(e){}
+const saveMY=()=>{try{localStorage.setItem("cc_my",JSON.stringify(MY))}catch(e){}};
+function toast(m){const t=$("ts");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),4500)}
+function rid(){let s="r"+Date.now().toString(36);try{const a=new Uint8Array(12);crypto.getRandomValues(a);a.forEach(x=>s+=(x%36).toString(36))}catch(e){for(let i=0;i<12;i++)s+=Math.floor(Math.random()*36).toString(36)}return s}
+/* ---- connection manager: socket is opened only when needed and released after idle (saves concurrent connections at scale) ---- */
+let busy=0,idleT=null;
+function wake(){clearTimeout(idleT);try{goOnline(db)}catch(e){}}
+function rest(){clearTimeout(idleT);idleT=setTimeout(()=>{if(busy<=0){try{goOffline(db)}catch(e){}}},IDLE_MS)}
+async function net(fn){busy++;wake();try{return await fn()}finally{busy--;rest()}}
+/* ---- offline-safe write queue ---- */
+function inQ(k){try{return JSON.parse(localStorage.getItem("cc_q")||"[]").some(x=>x&&x.k===k)}catch(e){return false}}
+function queue(k,r,n){try{const q=JSON.parse(localStorage.getItem("cc_q")||"[]");if(!q.some(x=>x&&x.k===k))q.push({k:k,r:r,n:n||0});localStorage.setItem("cc_q",JSON.stringify(q))}catch(e){}}
+function put(k,r){return net(()=>set(ref(db,"registrations/"+k),r))}
+let flushing=false;
+function flushQ(){if(flushing)return;flushing=true;try{const q=(JSON.parse(localStorage.getItem("cc_q")||"[]")).filter(x=>x&&x.k);localStorage.removeItem("cc_q");
+if(!q.length){flushing=false;return}
+Promise.all(q.map(x=>put(x.k,x.r).catch(e=>{if(e&&e.code==="PERMISSION_DENIED")return;if((x.n||0)+1<MAX_TRY)queue(x.k,x.r,(x.n||0)+1)}))).then(()=>{flushing=false},()=>{flushing=false})}catch(e){flushing=false}}
+/* ---- status tracking: one-time reads with jittered, backed-off polling (no live listeners) ---- */
+let drawQ=0;
+function sched(){cancelAnimationFrame(drawQ);drawQ=requestAnimationFrame(draw)}
+async function pull(cid){const m=MY[cid];if(!m)return true;
+try{const s=await net(()=>get(ref(db,"registrations/"+m.key)));const v=s.val();
+if(!v){if(Date.now()-m.ts>12e4&&!inQ(m.key)){delete MY[cid];delete ST[cid];saveMY();sched()}return true}
+const st=v.status||"new";ST[cid]=st;
+if(m.seen&&m.seen!==st&&st!=="new"){const c=DATA.find(x=>x.id===cid);toast((c?c.title+" • ":(m.title?m.title+" • ":""))+T["s_"+st])}
+m.seen=st;saveMY();sched();return true}catch(e){return false}}
+let pollDelay=POLL_BASE,pollT=null;
+function pollLoop(){clearTimeout(pollT);pollT=setTimeout(async()=>{
+if(document.hidden||!Object.keys(MY).length){pollLoop();return}
+const r=await Promise.all(Object.keys(MY).map(pull));
+pollDelay=r.every(Boolean)?POLL_BASE:Math.min(pollDelay*2,POLL_MAX);pollLoop()},pollDelay+Math.floor(Math.random()*30000))}
+function drawTabs(){const n=Object.keys(MY).length;$("tabs").innerHTML=["course","counselling","seminar","mine"].map(k=>'<button class="tab'+(k===tab?' on':'')+'" data-k="'+k+'">'+T["t_"+k]+(k==="mine"&&n?' ('+n+')':'')+'</button>').join("")}
+function draw(){
+let L;
+if(tab==="mine"){L=Object.keys(MY).map(id=>DATA.find(c=>c.id===id)||{id:id,title:MY[id].title||id,type:"course",status:"open"})}
+else L=DATA.filter(c=>(c.type||"course")===tab);
+drawTabs();
+$("list").innerHTML=L.length?L.map((c,i)=>{
+const st=T[c.status]?c.status:"open",free=!c.fee||/^(0|free|nil)$/i.test(String(c.fee).trim());
+const subs=String(c.subjects||"").split(/[\n,|]+/).map(s=>s.trim()).filter(Boolean);
+const my=MY[c.id],sx=ST[c.id]||"new";
+return'<div class="card" style="animation-delay:'+Math.min(i,8)*.07+'s"><div class="top"><h3>'+esc(c.title)+'</h3><span class="st '+st+'">'+T[st]+'</span></div>'
++(c.desc?'<p class="desc">'+esc(c.desc)+'</p>':'')
++(subs.length?'<div class="chips">'+subs.map(s=>'<span class="chip">'+esc(s)+'</span>').join("")+'</div>':'')
++'<div class="meta"><div class="mb"><small>'+T.day+'</small><b>'+esc(c.days||T.tbd)+'</b></div><div class="mb"><small>'+T.time+'</small><b>'+esc(c.time||T.tbd)+'</b></div><div class="mb"><small>'+T.fee+'</small><b>'+(free?T.free:"₹"+esc(String(c.fee).replace(/^₹/,"")))+'</b></div></div>'
++(c.note?'<div class="note">'+esc(c.note)+'</div>':'')
++(my?'<div class="my '+sx+'"><b>'+T.regd+' • '+T["s_"+sx]+'</b>'+T["m_"+sx]+'<small>'+T.as+' '+esc(my.name)+' • '+esc(my.mobile)+'</small></div>'
+:'<button class="reg" data-id="'+esc(c.id)+'"'+(st==="open"?'':' disabled')+'>'+(st==="open"?T.reg:st==="full"?T.fullBtn:T.soonBtn)+'</button>')
++'</div>'}).join(""):'<div class="empty">'+(tab==="mine"?T.emptyMine:T.empty)+'</div>'}
+$("tabs").onclick=e=>{const b=e.target.closest(".tab");if(b){tab=b.dataset.k;drawTabs();draw()}};
+$("list").onclick=e=>{const b=e.target.closest(".reg");if(!b||b.disabled)return;if(MY[b.dataset.id])return;cur=DATA.find(c=>c.id===b.dataset.id);if(cur){$("sh").textContent=cur.title;$("err").textContent="";$("sheet").classList.add("on")}};
+$("cl").onclick=()=>$("sheet").classList.remove("on");
+$("sheet").onclick=e=>{if(e.target.id==="sheet")$("cl").onclick()};
+$("go").onclick=()=>{
+const n=$("nm").value.trim(),m=$("mo").value.replace(/\D/g,""),c=$("ci").value.trim();
+if(n.length<2||m.length!==10){$("err").textContent=T.bad;return}
+if(MY[cur.id])return;
+const b=$("go"),c0=cur,key=rid();b.disabled=true;b.textContent="⏳";
+const rec={courseId:c0.id||"",courseTitle:c0.title,name:n,mobile:m,city:c,lang:lang,ts:Date.now()};
+const msg="Hare Krishna Prabhu! 🙏\nRegistration: "+c0.title+"\nName: "+n+"\nMobile: "+m+(c?"\nCity: "+c:"");
+const go=()=>{MY[c0.id]={key:key,name:n,mobile:m,ts:rec.ts,title:c0.title};saveMY();b.disabled=false;b.textContent=T.submit;$("sheet").classList.remove("on");draw();location.href="https://wa.me/"+NUM+"?text="+encodeURIComponent(msg)};
+Promise.race([put(key,rec),new Promise((_,x)=>setTimeout(x,8000))]).catch(e=>{if(!(e&&e.code==="PERMISSION_DENIED"))queue(key,rec)}).then(go)};
+/* ---- courses: cached (stale-while-revalidate), one-time fetch, refreshed only when stale ---- */
+let courseBusy=false;
+function applyCourses(v){if(v){DATA=Object.entries(v).map(([id,c])=>({...c,id})).filter(c=>c.active!==false).sort((a,b)=>(a.order||99)-(b.order||99));try{localStorage.setItem("cc_cache",JSON.stringify(DATA))}catch(e){}}}
+function stale(){try{return Date.now()-(+localStorage.getItem("cc_ts")||0)>COURSE_TTL}catch(e){return true}}
+async function loadCourses(force){if(courseBusy||(!force&&!stale()))return;courseBusy=true;
+try{const s=await net(()=>get(ref(db,"courses")));applyCourses(s.val());try{localStorage.setItem("cc_ts",String(Date.now()))}catch(e){}}catch(e){}
+courseBusy=false;draw()}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){loadCourses();flushQ();Promise.all(Object.keys(MY).map(pull))}});
+window.addEventListener("online",()=>{flushQ();loadCourses(true)});
+window.addEventListener("storage",e=>{if(e.key==="cc_my"){try{MY=JSON.parse(e.newValue||"{}")||{}}catch(x){}sched()}});
+drawTabs();draw();
+const hasCache=!stale();
+setTimeout(()=>{loadCourses(false);flushQ();Object.keys(MY).forEach(pull);pollLoop()},hasCache?Math.floor(Math.random()*2500):0);
+</script>
+</body></html>
