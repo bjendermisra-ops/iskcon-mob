@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ISKCON Hadapsar - Master Authority Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: { 
+                        iskcon: { 50: '#fff7ed', 100: '#ffedd5', 500: '#f97316', 600: '#ea580c', 900: '#7c2d12' }, 
+                        darkbg: '#040711', 
+                        darkcard: '#0b1329' 
+                    },
+                    animation: { 
+                        'fade-in-up': 'fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards', 
+                        'blob': 'blob 10s infinite alternate', 
+                        'float': 'float 5s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: { '0%': { opacity: '0', transform: 'translateY(16px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        blob: { '0%': { transform: 'translate(0px, 0px) scale(1)' }, '50%': { transform: 'translate(30px, -40px) scale(1.1)' }, '100%': { transform: 'translate(-25px, 25px) scale(0.95)' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; user-select: none; }
+        input, textarea, select { user-select: text; }
+        html, body { overscroll-behavior-y: none; }
+        body { transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden; }
+
+        .bg-grid-cyber {
+            background-image: radial-gradient(rgba(249, 115, 22, 0.08) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .dark .bg-grid-cyber {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+        }
+
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.7); 
+        }
+        .dark .glass-panel { 
+            background: rgba(11, 19, 41, 0.82); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
+        }
+        
+        .super-card { 
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            position: relative; 
+            cursor: pointer; 
+            transform-origin: center;
+        }
+        .super-card:hover { 
+            transform: translateY(-6px) scale(1.015); 
+            box-shadow: 0 20px 35px -10px rgba(249, 115, 22, 0.22); 
+        }
+        .dark .super-card:hover { 
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.9), 0 0 20px -5px rgba(249,115,22,0.2); 
+        }
+        .super-card:active { transform: scale(0.98); }
+        .super-card:hover .card-icon-box { transform: scale(1.12) rotate(4deg); }
+        .card-icon-box { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        .bg-blobs { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+        .blob-1 { position: absolute; top: -15%; left: -10%; width: 550px; height: 550px; background: radial-gradient(circle, rgba(249, 115, 22, 0.16) 0%, transparent 70%); border-radius: 50%; filter: blur(50px); }
+        .blob-2 { position: absolute; bottom: -20%; right: -10%; width: 650px; height: 650px; background: radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); }
+        
+        ::-webkit-scrollbar { width: 5px; } 
+        ::-webkit-scrollbar-thumb { background: rgba(249, 115, 22, 0.4); border-radius: 10px; } 
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-darkbg dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col relative bg-grid-cyber">
+
+    <!-- 🚨 MILITARY KILL SWITCH BAN OVERLAY -->
+    <div id="kill-switch-overlay" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-red-950/98 backdrop-blur-3xl hidden transition-all duration-300 p-6 text-center">
+        <div class="relative w-28 h-28 mb-6 flex items-center justify-center">
+            <span class="absolute inset-0 rounded-full bg-red-600/30 animate-ping"></span>
+            <div class="w-24 h-24 rounded-3xl bg-red-600 text-white flex items-center justify-center text-5xl shadow-[0_0_50px_rgba(239,68,68,0.9)]">
+                <i class="fa-solid fa-shield-virus"></i>
+            </div>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black text-white tracking-widest uppercase mb-3 drop-shadow-md">ACCESS REVOKED</h1>
+        <p class="text-base md:text-xl font-bold text-red-300 max-w-xl mb-6 leading-relaxed">
+            Your terminal has been PERMANENTLY BANNED by Supreme Papa Command.
+        </p>
+        <div class="bg-black/70 border border-red-500/40 p-5 rounded-2xl max-w-md w-full text-left font-mono text-xs space-y-2 text-slate-300 shadow-2xl">
+            <p class="text-red-400 font-bold flex items-center gap-2"><i class="fa-solid fa-radar fa-fade"></i> SECURITY INCIDENT LOGGED:</p>
+            <div class="grid grid-cols-2 gap-2 text-[11px] pt-2 border-t border-red-900/60">
+                <div><span class="text-slate-500">Hardware Hash:</span> <span id="banDevHash" class="text-white">Locked</span></div>
+                <div><span class="text-slate-500">Device Model:</span> <span id="banDevModel" class="text-yellow-400">Captured</span></div>
+                <div><span class="text-slate-500">Native GPS:</span> <span class="text-emerald-400">Transmitted</span></div>
+                <div><span class="text-slate-500">Police Status:</span> <span class="text-red-400 font-bold">Action Ready</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AMBIENT BLOBS -->
+    <div class="bg-blobs">
+        <div class="blob-1 animate-blob"></div>
+        <div class="blob-2 animate-blob"></div>
+    </div>
+
+    <!-- INITIAL SPLASH SCREEN -->
+    <div id="splash-screen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-slate-50 dark:bg-darkbg transition-opacity duration-500">
+        <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+            <div class="absolute inset-0 border-4 border-t-iskcon-500 border-r-transparent border-b-amber-500 border-l-transparent rounded-full animate-spin"></div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-iskcon-500 to-amber-400 flex items-center justify-center shadow-lg text-white font-black text-2xl tracking-tighter">
+                IH
+            </div>
+        </div>
+        <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-widest uppercase">ISKCON Hadapsar</h2>
+        <div class="flex items-center gap-2 text-xs font-bold text-iskcon-500 mt-2">
+            <i class="fa-solid fa-microchip animate-pulse"></i> Verifying Hardware Fingerprint & Duty GPS...
+        </div>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div id="login-section" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 dark:bg-black/70 backdrop-blur-xl p-4">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-iskcon-500 via-amber-400 to-emerald-400"></div>
+
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-iskcon-600 to-amber-500 flex items-center justify-center shadow-lg text-white font-black text-2xl mb-3 animate-float">
+                    IH
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Admin Duty Terminal</h2>
+                <span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full bg-iskcon-500/10 text-iskcon-600 dark:text-iskcon-400 border border-iskcon-500/20 mt-1">
+                    <i class="fa-solid fa-fingerprint"></i> One Device = One Account Locked
+                </span>
+            </div>
+
+            <form id="loginForm" class="space-y-3.5">
+                <div id="loginError" class="hidden bg-red-100 dark:bg-red-950/70 border border-red-300 dark:border-red-800 text-red-800 dark:text-red-200 p-3 rounded-xl text-xs font-bold flex items-start gap-2 leading-relaxed">
+                    <i class="fa-solid fa-triangle-exclamation mt-0.5 text-base shrink-0"></i>
+                    <span id="loginErrorText">Authentication Failed</span>
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-user absolute left-4 top-4 text-slate-400 text-sm"></i>
+                    <input type="text" id="adminName" required class="w-full pl-11 pr-4 py-3 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-iskcon-500 outline-none" placeholder="Your Official Name">
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-language absolute left-4 top-4 text-slate-400 text-sm"></i>
+                    <select id="adminLang" required class="w-full pl-11 pr-8 py-3 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-iskcon-500 outline-none appearance-none">
+                        <option value="" disabled selected>Interface Language</option>
+                        <option value="en">English (Global)</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                        <option value="mr">मराठी (Marathi)</option>
+                    </select>
+                    <i class="fa-solid fa-angle-down absolute right-4 top-4 text-slate-400 pointer-events-none text-xs"></i>
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-4 text-slate-400 text-sm"></i>
+                    <input type="email" id="email" required class="w-full pl-11 pr-4 py-3 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-iskcon-500 outline-none" placeholder="Assigned Admin Email">
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-4 text-slate-400 text-sm"></i>
+                    <input type="password" id="password" required class="w-full pl-11 pr-4 py-3 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-iskcon-500 outline-none" placeholder="Security Password">
+                </div>
+
+                <button type="submit" id="loginBtn" class="w-full py-3.5 rounded-xl text-white font-extrabold text-sm bg-gradient-to-r from-iskcon-600 via-orange-500 to-amber-500 hover:shadow-lg hover:shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-check text-base"></i> <span>Authenticate & Start Duty</span>
+                </button>
+            </form>
+
+            <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-center gap-1.5 font-bold uppercase">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Hardware Hash & Native GPS Linked
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="main-dashboard" style="display: none;" class="flex-1 flex-col w-full h-full transition-opacity duration-500">
+        
+        <header class="glass-panel sticky top-0 z-40 px-4 md:px-7 py-3 flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800/80 shadow-sm">
+            <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-tr from-iskcon-600 to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-md">
+                    IH
+                </div>
+                <div>
+                    <h1 class="text-base md:text-lg font-black leading-tight text-slate-900 dark:text-white">ISKCON Hadapsar</h1>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] md:text-xs font-bold text-iskcon-500 uppercase tracking-wider">Admin Management Hub</span>
+                        <span class="hidden md:inline-flex items-center gap-1 text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                            <i class="fa-solid fa-satellite-dish fa-spin"></i> GPS SYNCED
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="relative hidden sm:block">
+                    <select id="headerLangSelect" class="bg-white/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl px-3 py-2 pr-7 outline-none cursor-pointer">
+                        <option value="en">ENG</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                    <i class="fa-solid fa-globe absolute right-2.5 top-3 text-[10px] text-slate-400 pointer-events-none"></i>
+                </div>
+
+                <button id="themeToggle" class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-moon dark:hidden text-sm"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400 text-sm"></i>
+                </button>
+
+                <div class="flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-800">
+                    <div class="text-right hidden sm:block">
+                        <p id="adminUserDisplay" class="text-xs font-extrabold text-slate-900 dark:text-white">Admin</p>
+                        <p class="text-[9px] font-bold text-emerald-500 flex items-center justify-end gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> DUTY ACTIVE
+                        </p>
+                    </div>
+                    <img id="adminAvatar" src="" alt="Avatar" class="w-9 h-9 rounded-xl object-cover ring-2 ring-iskcon-500/40">
+                    <button id="logoutBtn" title="Logout" class="w-9 h-9 flex items-center justify-center rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                        <i class="fa-solid fa-power-off text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-7 py-6 flex flex-col gap-6">
+            <div class="relative overflow-hidden glass-panel rounded-3xl border-l-8 border-l-red-500 p-5 shadow-sm">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-shield-halved animate-pulse"></i>
+                        </div>
+                        <div>
+                            <h3 data-i18n="warnTitle" class="text-base md:text-lg font-black text-slate-900 dark:text-white">⚠️ Hare Krishna! Secured Admin Duty Terminal</h3>
+                            <p data-i18n="warnDesc" class="text-xs md:text-sm text-slate-600 dark:text-slate-300 font-medium">This terminal is hardware-bound to your physical smartphone. All activities, GPS locations, and speed are monitored in real-time by Supreme Papa Command.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/5 dark:bg-white/5 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500 dark:text-slate-400 shrink-0">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Papa Radar Connected
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                <div>
+                    <h2 data-i18n="welcomeTitle" class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Temple Command Modules 🙏</h2>
+                    <p data-i18n="welcomeDesc" class="text-xs md:text-sm text-slate-500 dark:text-slate-400 font-medium">Select an authorized module below to perform divine services.</p>
+                </div>
+            </div>
+
+            <!-- MODULES GRID (7 MODULES) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10">
+                
+                <!-- ⭐ MODULE 1: KIDS SANSKAR CLASS ⭐ -->
+                <div onclick="navigateWithLog('Kids Sanskar Class', 'kids_sanskar.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-sky-500/20">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 animate-pulse">
+                            Admission Open
+                        </span>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modKidsTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Kids Sanskar Class</h3>
+                        <p data-i18n="modKidsDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Manage moral values, Gita shlokas, batches & child enrollments.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- ⭐ MODULE 2: COURSES & TRAINING PROGRAMS ⭐ -->
+                <div onclick="navigateWithLog('Courses and Training Programs', 'courses_training.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-teal-500/20">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/15 text-teal-600 dark:text-teal-400 border border-teal-500/30">
+                            New Batches
+                        </span>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modCourseTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Courses & Training</h3>
+                        <p data-i18n="modCourseDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Spiritual learning, Bhakti Shastri, youth & senior workshops.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-teal-600 dark:text-teal-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- MODULE 3: DAILY DARSHAN -->
+                <div onclick="navigateWithLog('Daily Darshan', 'darshan.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30">
+                            Daily Deity
+                        </span>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modDarshanTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Daily Darshan</h3>
+                        <p data-i18n="modDarshanDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Upload HD Darshan pictures of Sri Sri Radha Krishna Chandra.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- MODULE 4: LIVE STREAM -->
+                <div onclick="navigateWithLog('Live Stream', 'livestream.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-red-500 to-rose-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-red-500/20">
+                            <i class="fa-solid fa-broadcast-tower"></i>
+                        </div>
+                        <span class="flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Live Aarti
+                        </span>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modLiveTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Live Aarti Stream</h3>
+                        <p data-i18n="modLiveDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Manage YouTube Live, Mangala & Sandhya Aarti broadcasts.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-red-600 dark:text-red-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- MODULE 5: MASTER QUIZ -->
+                <div onclick="navigateWithLog('Master Quiz', 'MasterQuize.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-purple-500/20">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30">
+                            Quizzes
+                        </span>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modQuizTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Master Quiz Engine</h3>
+                        <p data-i18n="modQuizDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Bhagavad Gita quizzes, scores, and leaderboards.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-purple-600 dark:text-purple-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- MODULE 6: LECTURES & KIRTAN -->
+                <div onclick="navigateWithLog('Lectures & Kirtan', 'LecturesKirtan.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20 mb-4">
+                        <i class="fa-solid fa-headphones"></i>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modLecTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Lectures & Kirtans</h3>
+                        <p data-i18n="modLecDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Upload Maharaj discourses, classes, kirtans & audio files.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- MODULE 7: MASTER SLIDER -->
+                <div onclick="navigateWithLog('Master Slider', 'MasterSlider.html')" class="super-card glass-panel rounded-3xl p-5 md:p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-hidden">
+                    <div class="card-icon-box w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 mb-4">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 data-i18n="modSlideTitle" class="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white mb-1.5">Home Sliders</h3>
+                        <p data-i18n="modSlideDesc" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">Manage dynamic mobile app banners & festival posters.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                        <span data-i18n="accessBtn">Open Portal</span>
+                        <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1.5 transition-transform"></i>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="mt-auto py-5 border-t border-slate-200/50 dark:border-slate-800/80 text-center glass-panel">
+            <p class="text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                &copy; 2026 ISKCON Hadapsar. <span class="text-iskcon-500 font-bold">Hare Krishna!</span>
+            </p>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        const translations = {
+            en: {
+                welcomeTitle: "Temple Command Modules 🙏",
+                welcomeDesc: "Select an authorized module below to perform divine services.",
+                warnTitle: "⚠️ Hare Krishna! Secured Admin Duty Terminal",
+                warnDesc: "This terminal is hardware-bound to your physical smartphone. All activities, GPS locations, and speed are monitored in real-time by Supreme Papa Command.",
+                modKidsTitle: "Kids Sanskar Class",
+                modKidsDesc: "Manage moral values, Gita shlokas, batches & child enrollments.",
+                modCourseTitle: "Courses & Training",
+                modCourseDesc: "Spiritual learning, Bhakti Shastri, youth & senior workshops.",
+                modDarshanTitle: "Daily Darshan",
+                modDarshanDesc: "Upload HD Darshan pictures of Sri Sri Radha Krishna Chandra.",
+                modLiveTitle: "Live Aarti Stream",
+                modLiveDesc: "Manage YouTube Live, Mangala & Sandhya Aarti broadcasts.",
+                modQuizTitle: "Master Quiz Engine",
+                modQuizDesc: "Bhagavad Gita quizzes, scores, and leaderboards.",
+                modLecTitle: "Lectures & Kirtans",
+                modLecDesc: "Upload Maharaj discourses, classes, kirtans & audio files.",
+                modSlideTitle: "Home Sliders",
+                modSlideDesc: "Manage dynamic mobile app banners & festival posters.",
+                accessBtn: "Open Portal"
+            },
+            hi: {
+                welcomeTitle: "मंदिर सेवा मॉड्यूल्स 🙏",
+                welcomeDesc: "प्रबंधन हेतु नीचे दिए गए अधिकृत मॉड्यूल का चयन करें।",
+                warnTitle: "⚠️ हरे कृष्ण! सुरक्षित एडमिन ड्यूटी टर्मिनल",
+                warnDesc: "यह टर्मिनल आपके स्मार्टफोन हार्डवेयर से बंधा है। आपकी हर लोकेशन और स्पीड पापा कंसोल पर लाइव जा रही है।",
+                modKidsTitle: "किड्स संस्कार क्लास",
+                modKidsDesc: "संस्कार, श्लोक, बच्चों के बैच व एडमिशन प्रबंधित करें।",
+                modCourseTitle: "कोर्सेज व ट्रेनिंग",
+                modCourseDesc: "भक्ति शास्त्री, युवा कार्यक्रम व आध्यात्मिक वर्कशॉप।",
+                modDarshanTitle: "दैनिक दर्शन",
+                modDarshanDesc: "श्री श्री राधाकृष्ण चंद्र जी के दैनिक दर्शन अपलोड करें।",
+                modLiveTitle: "लाइव आरती स्ट्रीम",
+                modLiveDesc: "यूट्यूब लाइव दर्शन एवं आरती लिंक अपडेट करें।",
+                modQuizTitle: "मास्टर क्विज",
+                modQuizDesc: "भगवद्गीता क्विज, स्कोर व लीडरबोर्ड मैनेज करें।",
+                modLecTitle: "प्रवचन और कीर्तन",
+                modLecDesc: "महाराज के प्रवचन, युवा क्लास व कीर्तन ऑडियो अपलोड करें।",
+                modSlideTitle: "होम स्लाइडर",
+                modSlideDesc: "ऐप के मुख्य स्क्रीन बैनर और सूचनाएं अपडेट करें।",
+                accessBtn: "मॉड्यूल खोलें"
+            },
+            mr: {
+                welcomeTitle: "मंदिर सेवा मॉड्यूल्स 🙏",
+                welcomeDesc: "व्यवस्थापनासाठी खालील अधिकृत मॉड्यूल निवडा.",
+                warnTitle: "⚠️ हरे कृष्ण! सुरक्षित ॲडमिन ड्यूटी टर्मिनल",
+                warnDesc: "हे टर्मिनल तुमच्या स्मार्टफोन हार्डवेअरशी लॉक केलेले आहे. तुमची हालचाल पापा कन्सोलवर ट्रॅक होत आहे.",
+                modKidsTitle: "किड्स संस्कार क्लास",
+                modKidsDesc: "संस्कार, श्लोक, बॅचेस आणि प्रवेश नोंदणी व्यवस्थापित करा.",
+                modCourseTitle: "कोर्सेस आणि ट्रेनिंग",
+                modCourseDesc: "भक्ती शास्त्री, युवक वर्ग आणि आध्यात्मिक कोर्सेस.",
+                modDarshanTitle: "दैनिक दर्शन",
+                modDarshanDesc: "श्री श्री राधाकृष्ण चंद्र यांचे सुंदर दर्शन फोटो अपलोड करा.",
+                modLiveTitle: "लाइव्ह आरती स्ट्रीम",
+                modLiveDesc: "लाइव्ह आरती आणि उत्सव प्रसारण लिंक अद्यतनित करा.",
+                modQuizTitle: "मास्टर क्विझ",
+                modQuizDesc: "भगवद्गीता क्विझ आणि गुणफलक व्यवस्थापित करा.",
+                modLecTitle: "प्रवचन आणि कीर्तन",
+                modLecDesc: "प्रवचन, युवा वर्ग आणि कीर्तन ऑडिओ अपलोड करा.",
+                modSlideTitle: "होम स्लायडर",
+                modSlideDesc: "अ‍ॅपच्या मुख्य स्क्रीनवरील बॅनर्स व्यवस्थापित करा.",
+                accessBtn: "मॉड्यूल उघडा"
+            }
+        };
+
+        function applyLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            document.getElementById('headerLangSelect').value = lang;
+        }
+
+        document.getElementById('headerLangSelect').addEventListener('change', (e) => {
+            localStorage.setItem('adminLang', e.target.value);
+            applyLanguage(e.target.value);
+        });
+
+        const themeBtn = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        themeBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 🔥 100% REAL FIREBASE CONFIGURATION 🔥
+        const firebaseConfig = {
+            apiKey: "AIzaSyDf3lUv3k6kWCE0rxGfMfkwy2uARiXVFaY",
+            authDomain: "iskcon-master-hub.firebaseapp.com",
+            databaseURL: "https://iskcon-master-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "iskcon-master-hub",
+            storageBucket: "iskcon-master-hub.firebasestorage.app",
+            messagingSenderId: "678769736356",
+            appId: "1:678769736356:web:17e68b347e36f131b68431"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        function sanitizeEmail(email) { return email.replace(/[.#$[\]]/g, '_'); }
+
+        const splashScreen = document.getElementById('splash-screen');
+        const loginSection = document.getElementById('login-section');
+        const mainDashboard = document.getElementById('main-dashboard');
+        const killOverlay = document.getElementById('kill-switch-overlay');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const loginErrorText = document.getElementById('loginErrorText');
+
+        let liveKillswitchListener = null;
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const sEmail = sanitizeEmail(user.email);
+                
+                if (liveKillswitchListener) database.ref('blocked_users/' + sEmail).off('value', liveKillswitchListener);
+                
+                liveKillswitchListener = database.ref('blocked_users/' + sEmail).on('value', (snap) => {
+                    if (snap.exists() && snap.val().isBlocked === true) {
+                        killOverlay.classList.remove('hidden');
+                        auth.signOut();
+                    } else {
+                        killOverlay.classList.add('hidden');
+                    }
+                });
+
+                if (window.AndroidBridge && window.AndroidBridge.startNativeDutyTracking) {
+                    window.AndroidBridge.startNativeDutyTracking(user.email);
+                }
+
+                splashScreen.style.opacity = '0';
+                loginSection.style.display = 'none';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainDashboard.style.display = 'flex';
+                    mainDashboard.classList.add('animate-fade-in-up');
+                    
+                    const savedName = localStorage.getItem('adminName') || user.email.split('@')[0];
+                    document.getElementById('adminUserDisplay').textContent = savedName;
+                    document.getElementById('adminAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(savedName)}&background=ea580c&color=fff&bold=true`;
+                    applyLanguage(localStorage.getItem('adminLang') || 'en');
+                }, 400);
+
+            } else {
+                if (liveKillswitchListener) database.ref('blocked_users').off('value', liveKillswitchListener);
+                mainDashboard.style.display = 'none';
+                splashScreen.style.display = 'none';
+                loginSection.style.display = 'flex';
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const adminName = document.getElementById('adminName').value.trim();
+            const adminLang = document.getElementById('adminLang').value;
+            const btn = document.getElementById('loginBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking Hardware Locks...`;
+
+            if (!window.HardwareGuard || !window.HardwareGuard.getDeviceHash) {
+                loginErrorText.innerHTML = "SECURITY POLICY VIOLATION: Unauthorized environment! This portal strictly functions inside the official ISKCON Android Application.";
+                loginError.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Authenticate & Start Duty`;
+                return;
+            }
+
+            const deviceHash = window.HardwareGuard.getDeviceHash();
+            const deviceModel = window.HardwareGuard.getDeviceModel() || "Android Device";
+            const sEmail = sanitizeEmail(email);
+
+            const hwSnap = await database.ref('blacklisted_hardware/' + deviceHash).once('value');
+            if (hwSnap.exists() && hwSnap.val().isBlocked === true) {
+                document.getElementById('banDevHash').innerText = deviceHash.substring(0, 10) + "...";
+                document.getElementById('banDevModel').innerText = deviceModel;
+                killOverlay.classList.remove('hidden');
+                return;
+            }
+
+            const banSnap = await database.ref('blocked_users/' + sEmail).once('value');
+            if (banSnap.exists() && banSnap.val().isBlocked === true) {
+                loginErrorText.textContent = "ACCOUNT PERMANENTLY TERMINATED BY SUPREME COMMAND.";
+                loginError.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Authenticate & Start Duty`;
+                return;
+            }
+
+            const devRegSnap = await database.ref('device_registry/' + deviceHash).once('value');
+            if (devRegSnap.exists()) {
+                const registeredEmail = devRegSnap.val().registered_email;
+                if (registeredEmail !== sEmail) {
+                    loginErrorText.innerHTML = `DEVICE LOCKED! This physical device is legally bound to (${registeredEmail.replace(/_/g, '.')}). You cannot open any other account on this phone.`;
+                    loginError.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Authenticate & Start Duty`;
+                    return;
+                }
+            }
+
+            const bindSnap = await database.ref('device_bindings/' + sEmail).once('value');
+            if (bindSnap.exists()) {
+                const boundHash = bindSnap.val().bound_device_hash;
+                if (boundHash !== deviceHash) {
+                    database.ref('security_blackbox_logs').push({
+                        event: "CREDENTIAL_SHARING_BREACH",
+                        email: email,
+                        attempted_hash: deviceHash,
+                        attempted_model: deviceModel,
+                        bound_hash: boundHash,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    });
+                    loginErrorText.innerHTML = "SECURITY BREACH: Your ID is permanently bound to another device. ID sharing is strictly prohibited!";
+                    loginError.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Authenticate & Start Duty`;
+                    return;
+                }
+            } else {
+                await database.ref('device_bindings/' + sEmail).set({
+                    bound_device_hash: deviceHash,
+                    device_model: deviceModel,
+                    bound_date: firebase.database.ServerValue.TIMESTAMP
+                });
+                await database.ref('device_registry/' + deviceHash).set({
+                    registered_email: sEmail,
+                    device_model: deviceModel,
+                    registered_date: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    loginError.classList.add('hidden');
+                    localStorage.setItem('adminName', adminName);
+                    localStorage.setItem('adminLang', adminLang);
+
+                    if (window.AndroidBridge && window.AndroidBridge.startNativeDutyTracking) {
+                        window.AndroidBridge.startNativeDutyTracking(email);
+                    }
+
+                    database.ref('admin_activity_logs').push({
+                        email: email,
+                        name: adminName,
+                        action: "Duty Started & Hardware Locked",
+                        device: deviceModel,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    });
+                })
+                .catch((err) => {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Authenticate & Start Duty`;
+                    loginErrorText.textContent = "Authentication Failed: " + err.message;
+                    loginError.classList.remove('hidden');
+                });
+        });
+
+        window.navigateWithLog = function(moduleName, targetUrl) {
+            const user = auth.currentUser;
+            const adminName = localStorage.getItem('adminName') || 'Duty Staff';
+            if (user) {
+                database.ref('admin_activity_logs').push({
+                    email: user.email,
+                    name: adminName,
+                    module: moduleName,
+                    action: "Accessed Module",
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+            window.location.href = targetUrl;
+        };
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            auth.signOut();
+        });
+    </script>
+</body>
+</html>
