@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#F37E1C">
+    <title>Daily Schedule & Smart Live Alarms</title>
+
+    <!-- Google Fonts & Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root { 
+            --primary: #F37E1C; 
+            --primary-gradient: linear-gradient(135deg, #FF9100, #E65100);
+            --bg-body: #FDFBF7; 
+            --card-white: #ffffff; 
+            --text-dark: #222222;
+            --text-gray: #666666;
+            --timeline-line: #E8E5DF;
+            --timeline-ring: #D5D1C8;
+            --font-en: 'Poppins', sans-serif;
+            --font-local: 'Mukta', 'Tiro Devanagari Hindi', sans-serif;
+            --card-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            --toast-bg: #1A1A1A;
+            --toast-text: #ffffff;
+            --sheet-bg: #ffffff;
+            --border-subtle: #EEEEEE;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0E0F12; 
+            --card-white: #171920; 
+            --text-dark: #F3F4F6;
+            --text-gray: #9CA3AF;
+            --timeline-line: #262935;
+            --timeline-ring: #374151;
+            --card-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            --toast-bg: #FFFFFF;
+            --toast-text: #121212;
+            --sheet-bg: #171920;
+            --border-subtle: #262935;
+        }
+
+        body { 
+            background-color: var(--bg-body); 
+            font-family: var(--font-en); 
+            margin: 0; padding: 0;
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.4s ease;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--bg-body);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0,0,0,0.1);
+            transition: background-color 0.4s ease;
+            overflow-x: hidden;
+            padding-bottom: 60px;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-header-action {
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,0.22);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .btn-header-action:active { transform: scale(0.92); background: rgba(255,255,255,0.35); }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lang-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.6);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-status {
+            background: linear-gradient(145deg, #1F222A, #121419);
+            margin: 16px;
+            border-radius: 20px;
+            padding: 24px 18px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            position: relative;
+            border: 1px solid rgba(255, 153, 51, 0.25);
+        }
+        
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .dot-green { background: #10B981; box-shadow: 0 0 10px #10B981; }
+        .dot-red { background: #EF4444; box-shadow: 0 0 10px #EF4444; }
+
+        .status-main {
+            font-family: 'Cinzel', serif;
+            font-size: 1.55rem;
+            margin-bottom: 6px;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+
+        .status-sub {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+        }
+
+        .status-countdown {
+            font-family: var(--font-en);
+            margin-top: 12px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            background: rgba(255, 153, 51, 0.15);
+            border: 1px solid rgba(255, 153, 51, 0.45);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 25px;
+            color: #FFB74D;
+        }
+
+        .test-reminder-banner {
+            margin: 0 16px 20px 16px;
+            background: linear-gradient(135deg, rgba(243, 126, 28, 0.12), rgba(255, 153, 51, 0.05));
+            border: 1.5px dashed var(--primary);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .test-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .test-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .test-desc {
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            line-height: 1.2;
+        }
+
+        .btn-test-action {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(243, 126, 28, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn-test-action:active { transform: scale(0.95); }
+
+        .section-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 20px 14px 20px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            margin: 0;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .btn-all-alarms {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-all-alarms:active { background: var(--primary); color: white; }
+
+        .timeline-wrapper {
+            position: relative;
+            padding-left: 36px;
+            padding-right: 16px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            bottom: 30px;
+            width: 3px;
+            background: var(--timeline-line);
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        .event-card {
+            background: var(--card-white);
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            position: relative;
+            box-shadow: var(--card-shadow);
+            z-index: 2;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .timeline-point {
+            position: absolute;
+            left: -25px;
+            top: 24px;
+            width: 15px; height: 15px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            border: 4px solid var(--timeline-ring);
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+
+        .event-card.active .timeline-point { 
+            border-color: var(--primary); 
+            background: var(--primary); 
+            animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .event-card.active { 
+            border-left: 4px solid var(--primary); 
+            transform: scale(1.015);
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(243, 126, 28, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(243, 126, 28, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 126, 28, 0); }
+        }
+
+        .t-time-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+
+        .t-time {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .alarm-live-badge {
+            font-size: 0.72rem;
+            background: rgba(243, 126, 28, 0.15);
+            border: 1px solid rgba(243, 126, 28, 0.35);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .t-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+        .t-desc {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .btn-bell {
+            width: 44px; height: 44px;
+            border-radius: 14px;
+            border: none;
+            background: rgba(120, 120, 120, 0.08);
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+        .btn-bell i { font-size: 1.15rem; }
+
+        .btn-bell.scheduled {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(243, 126, 28, 0.35);
+        }
+        .btn-bell:active { transform: scale(0.92); }
+
+        .sheet-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .sheet-backdrop.show { display: block; opacity: 1; }
+
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0; right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--sheet-bg);
+            border-radius: 28px 28px 0 0;
+            padding: 24px 20px 32px 20px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+            z-index: 1001;
+            transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-dark);
+        }
+        .bottom-sheet.show { bottom: 0; }
+
+        .sheet-handle {
+            width: 42px; height: 5px;
+            background: var(--timeline-ring);
+            border-radius: 10px;
+            margin: 0 auto 16px auto;
+        }
+
+        .sheet-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sheet-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        .sheet-subtitle {
+            font-size: 0.88rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .sheet-section-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+        }
+
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .choice-pill {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 8px;
+            border-radius: 14px;
+            background: rgba(120, 120, 120, 0.08);
+            border: 1.5px solid transparent;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .choice-pill.selected {
+            border-color: var(--primary);
+            background: rgba(243, 126, 28, 0.12);
+            color: var(--primary);
+        }
+
+        .sheet-live-preview {
+            background: rgba(243, 126, 28, 0.08);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-sheet-save {
+            width: 100%;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(243, 126, 28, 0.35);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+        .btn-sheet-save:active { transform: scale(0.98); }
+
+        .btn-sheet-cancel {
+            width: 100%;
+            background: transparent;
+            color: #EF4444;
+            border: 1.5px solid rgba(239, 68, 68, 0.3);
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 2000;
+            transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-msg.show {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        body.font-hindi .t-name, body.font-hindi .status-main,
+        body.font-marathi .t-name, body.font-marathi .status-main { 
+            font-family: var(--font-local); 
+        }
+    </style>
+</head>
+<body onload="bootLoader()">
+
+<div class="mobile-container">
+    
+    <header class="header">
+        <button class="btn-header-action" onclick="goHome()" title="Back">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="header-title" id="lbl_page_title">SCHEDULE</div>
+        <div class="header-actions">
+            <button class="btn-header-action" onclick="toggleAllDailyReminders()" title="Schedule All">
+                <i class="fas fa-bell-concierge"></i>
+            </button>
+            <button class="btn-header-action" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fas fa-moon" id="icon_theme"></i>
+            </button>
+            <div class="lang-badge" id="btn_lang_toggle" onclick="manualLangSwitch()">EN</div>
+        </div>
+    </header>
+
+    <!-- STATUS CARD -->
+    <div class="hero-status">
+        <div class="status-main" id="lbl_status">Loading...</div>
+        <div class="status-sub" id="lbl_status_sub">Checking temple time...</div>
+        <div class="status-countdown" id="lbl_countdown" style="display: none;"></div>
+    </div>
+
+    <!-- ⚡ 10-SECOND REAL ALARM TEST BANNER -->
+    <div class="test-reminder-banner">
+        <div class="test-info">
+            <div class="test-title" id="lbl_test_title">⚡ 10s Alarm Test</div>
+            <div class="test-desc" id="lbl_test_desc">Verify sound on phone before real aarti</div>
+        </div>
+        <button class="btn-test-action" onclick="trigger10SecondTest()" id="btn_test_action">
+            <i class="fas fa-bolt"></i> <span id="lbl_btn_test">Test Now</span>
+        </button>
+    </div>
+
+    <!-- DAILY PROGRAM HEADER -->
+    <div class="section-header-row">
+        <h3 class="section-title" id="lbl_section_title">Daily Program</h3>
+        <button class="btn-all-alarms" onclick="toggleAllDailyReminders()" id="btn_quick_all">
+            <i class="fas fa-bell"></i> Set All
+        </button>
+    </div>
+
+    <!-- TIMELINE LIST -->
+    <div class="timeline-wrapper" id="container_schedule">
+        <div class="timeline-line"></div>
+    </div>
+
+    <div class="toast-msg" id="sys_toast">Message</div>
+
+</div>
+
+<!-- 🪷 BOTTOM SHEET CUSTOMIZER -->
+<div class="sheet-backdrop" id="sheet_backdrop" onclick="closeSheet()"></div>
+<div class="bottom-sheet" id="reminder_sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <h4 class="sheet-title" id="sheet_event_name">Mangal Aarti</h4>
+        <div class="sheet-subtitle" id="sheet_event_time">⏰ 04:30 AM</div>
+    </div>
+
+    <div class="sheet-section-label" id="sheet_lbl_advance">कितनी देर पहले याद दिलाएं?</div>
+    <div class="pill-group" id="advance_pills">
+        <div class="choice-pill" onclick="selectAdvance(0, this)">On Time</div>
+        <div class="choice-pill" onclick="selectAdvance(5, this)">5m before</div>
+        <div class="choice-pill" onclick="selectAdvance(10, this)">10m before</div>
+        <div class="choice-pill selected" onclick="selectAdvance(15, this)">15m before</div>
+        <div class="choice-pill" onclick="selectAdvance(30, this)">30m before</div>
+    </div>
+
+    <div class="sheet-live-preview" id="sheet_preview_box">
+        ⏰ अलार्म का समय: गणना हो रही है...
+    </div>
+
+    <button class="btn-sheet-save" onclick="confirmReminderSave()" id="btn_sheet_save">
+        <i class="fas fa-bell"></i> रिमाइंडर सेट करें
+    </button>
+    <button class="btn-sheet-cancel" onclick="cancelSelectedReminder()" id="btn_sheet_cancel" style="display: none;">
+        <i class="fas fa-bell-slash"></i> यह रिमाइंडर हटाएं
+    </button>
+</div>
+
+<script>
+
+    let appLang = 'en'; 
+    let isInitialLoad = true;
+
+    function detectGlobalLanguage() {
+        const explicitLang = localStorage.getItem('lang');
+        if(explicitLang === 'en' || explicitLang === 'hi' || explicitLang === 'mr') return explicitLang;
+        const keysToScan =['language', 'app_language', 'selectedLang', 'googtrans', 'site_lang'];
+        let foundValue = '';
+        keysToScan.forEach(key => {
+            let val = localStorage.getItem(key);
+            if(val) foundValue += val.toLowerCase() + " ";
+        });
+        if(foundValue.includes('marathi') || foundValue.includes('mr-in') || foundValue.includes('mr')) return 'mr';
+        if(foundValue.includes('hindi') || foundValue.includes('hi-in') || foundValue.includes('hi')) return 'hi';
+        return 'en';
+    }
+
+    let currentTheme = 'light';
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if(savedTheme === 'dark') {
+            currentTheme = 'dark';
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('icon_theme').className = 'fas fa-sun';
+        } else {
+            currentTheme = 'light';
+            document.body.removeAttribute('data-theme');
+            document.getElementById('icon_theme').className = 'fas fa-moon';
+        }
+    }
+
+    function toggleTheme() {
+        if(currentTheme === 'light') {
+            currentTheme = 'dark';
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('icon_theme').className = 'fas fa-sun';
+            localStorage.setItem('theme', 'dark');
+            showToast(appLang === 'hi' ? 'डार्क मोड चालू' : appLang === 'mr' ? 'डार्क मोड चालू' : 'Dark Mode Enabled');
+        } else {
+            currentTheme = 'light';
+            document.body.removeAttribute('data-theme');
+            document.getElementById('icon_theme').className = 'fas fa-moon';
+            localStorage.setItem('theme', 'light');
+            showToast(appLang === 'hi' ? 'लाइट मोड चालू' : appLang === 'mr' ? 'लाइट मोड चालू' : 'Light Mode Enabled');
+        }
+    }
+
+    const UI_TEXT = {
+        en: { 
+            title: "SCHEDULE", program: "Daily Program", badge: "EN", 
+            closed: "TEMPLE CLOSED", open: "TEMPLE OPEN", 
+            subOpen: "Darshan is Available", subClosedEve: "Opens Today 4:15 PM", subClosedMorn: "Opens Today 4:30 AM",
+            nextEvent: "Next: ",
+            testTitle: "⚡ 10s Alarm Test", testDesc: "Verify real alarm on phone right now", testBtn: "Test Now",
+            setAll: "Set All", clearAll: "Cancel All",
+            sheetAdvance: "How long before to remind?",
+            saveReminder: "Save Reminder 🙏", cancelReminder: "Remove Reminder",
+            onTime: "On time", before: "m before",
+            remindSetSuccess: "Alarm Scheduled! Real hardware alarm active 📿",
+            remindCancelSuccess: "Reminder removed",
+            testStarted: "⏳ 10s Real Alarm scheduled! Listen for ringing...",
+            testSuccessMsg: "Hare Krishna! 10-second real hardware alarm test was successful.",
+            alarmIn: "Alarm in", ringingNow: "Ringing Now 🔔",
+            todayAt: "Today at", tomorrowAt: "Tomorrow at"
+        },
+        hi: { 
+            title: "दर्शन समय", program: "दैनिक कार्यक्रम", badge: "HI", 
+            closed: "मंदिर बंद है", open: "मंदिर खुला है", 
+            subOpen: "दर्शन अभी उपलब्ध है", subClosedEve: "आज शाम 4:15 खुलेगा", subClosedMorn: "आज सुबह 4:30 खुलेगा",
+            nextEvent: "अगला: ",
+            testTitle: "⚡ 10 सेकंड टेस्ट अलार्म", testDesc: "आरती से पहले फोन पर असली अलार्म चेक करें", testBtn: "टेस्ट करें",
+            setAll: "सभी लगाएं", clearAll: "सभी हटाएं",
+            sheetAdvance: "कितनी देर पहले याद दिलाएं?",
+            saveReminder: "रिमाइंडर सेट करें 🙏", cancelReminder: "यह रिमाइंडर हटाएं",
+            onTime: "ठीक समय पर", before: "मिनट पहले",
+            remindSetSuccess: "अलार्म सेट हो गया! (नेट बंद होने पर भी बजेगा) 📿",
+            remindCancelSuccess: "रिमाइंडर हटा दिया गया",
+            testStarted: "⏳ 10 सेकंड टेस्ट अलार्म शुरू! आवाज का इंतजार करें...",
+            testSuccessMsg: "हरे कृष्ण! 10 सेकंड का असली अलार्म सफलतापूर्वक बज गया।",
+            alarmIn: "अलार्म", ringingNow: "अभी बज रहा है 🔔",
+            todayAt: "आज", tomorrowAt: "कल"
+        },
+        mr: { 
+            title: "दर्शन वेळापत्रक", program: "दैनंदिन कार्यक्रम", badge: "MR", 
+            closed: "मंदिर बंद आहे", open: "मंदिर उघडे आहे", 
+            subOpen: "दर्शन चालू आहे", subClosedEve: "आज सायं. 4:15 ला उघडेल", subClosedMorn: "आज पहाटे 4:30 ला उघडेल",
+            nextEvent: "पुढील: ",
+            testTitle: "⚡ 10 सेकंद चाचणी अलार्म", testDesc: "आरतीआधी फोनवर खरा अलार्म तपासा", testBtn: "चाचणी करा",
+            setAll: "सर्व लावा", clearAll: "सर्व काढा",
+            sheetAdvance: "किती वेळ आधी आठवण द्यावी?",
+            saveReminder: "रिमाइंडर सेट करा 🙏", cancelReminder: "हा रिमाइंडर काढा",
+            onTime: "वेळेवर", before: "मिनिटे आधी",
+            remindSetSuccess: "अलार्म सेट झाला! (नेट बंद तरीही वाजेल) 📿",
+            remindCancelSuccess: "रिमाइंडर काढून टाकला",
+            testStarted: "⏳ 10 सेकंद चाचणी अलार्म सुरू! आवाजाची वाट पहा...",
+            testSuccessMsg: "हरे कृष्ण! 10 सेकंदांचा खरा अलार्म यशस्वीरीत्या वाजला.",
+            alarmIn: "अलार्म", ringingNow: "आत्ता वाजत आहे 🔔",
+            todayAt: "आज", tomorrowAt: "उद्या"
+        }
+    };
+
+    const EVENTS =[
+        { id: 101, t: "04:30 AM", h: 4.5, 
+          en: { n: "Mangal Aarti", d: "First Darshan of the Day" }, 
+          hi: { n: "मंगल आरती", d: "दिन का पहला पावन दर्शन" }, 
+          mr: { n: "मंगल आरती", d: "दिवसाचे पहिले दर्शन" } },
+          
+        { id: 102, t: "05:15 AM", h: 5.25, 
+          en: { n: "Tulasi Aarti", d: "Worship & Prayers" }, 
+          hi: { n: "तुलसी आरती", d: "तुलसी पूजन व परिक्रमा" }, 
+          mr: { n: "तुळशी आरती", d: "तुळशी पूजा व प्रदक्षिणा" } },
+
+        { id: 103, t: "07:30 AM", h: 7.5, 
+          en: { n: "Guru Puja", d: "Spiritual Master Worship" }, 
+          hi: { n: "गुरु पूजा", d: "गुरु वंदना व कीर्तन" }, 
+          mr: { n: "गुरू पूजा", d: "गुरू वंदना व कीर्तन" } },
+
+        { id: 104, t: "08:30 AM", h: 8.5, 
+          en: { n: "Darshan Aarti", d: "Full Sringar View" }, 
+          hi: { n: "दर्शन आरती", d: "भव्य शृंगार दर्शन" }, 
+          mr: { n: "दर्शन आरती", d: "भव्य शृंगार दर्शन" } },
+
+        { id: 105, t: "12:30 PM", h: 12.5, 
+          en: { n: "Raj Bhoga Aarti", d: "Noon Bhoga Offering" }, 
+          hi: { n: "राज भोग आरती", d: "दोपहर पावन भोग आरती" }, 
+          mr: { n: "राज भोग आरती", d: "दुपारची आरती" } },
+
+        { id: 106, t: "01:00 PM", h: 13.0, 
+          en: { n: "Temple Closes", d: "Afternoon Rest" }, 
+          hi: { n: "मंदिर विश्राम", d: "दोपहर दर्शन बंद" }, 
+          mr: { n: "मंदिर बंद", d: "विश्रांतीची वेळ" } },
+
+        { id: 107, t: "04:15 PM", h: 16.25, 
+          en: { n: "Utthapana Aarti", d: "Temple Re-opens" }, 
+          hi: { n: "उत्थापन आरती", d: "संध्या दर्शन खुलता है" }, 
+          mr: { n: "उत्थापन आरती", d: "मंदिर पुन्हा उघडते" } },
+
+        { id: 108, t: "07:00 PM", h: 19.0, 
+          en: { n: "Sandhya Aarti", d: "Gaura Aarti & Kirtan" }, 
+          hi: { n: "संध्या आरती", d: "गौरा आरती व मधुर कीर्तन" }, 
+          mr: { n: "संध्या आरती", d: "गौर आरती व कीर्तन" } },
+
+        { id: 109, t: "08:30 PM", h: 20.5, 
+          en: { n: "Shayana Aarti", d: "Last Darshan Service" }, 
+          hi: { n: "शयन आरती", d: "दिन का अंतिम पावन दर्शन" }, 
+          mr: { n: "शयन आरती", d: "दिवसाचे शेवटचे दर्शन" } },
+          
+        { id: 110, t: "09:00 PM", h: 21.0, 
+          en: { n: "Temple Closes", d: "Good Night & Rest" }, 
+          hi: { n: "मंदिर बंद", d: "शुभ रात्रि" }, 
+          mr: { n: "मंदिर बंद", d: "शुभ रात्री" } }
+    ];
+
+    let reminderStore = {};
+
+    function loadSavedReminders() {
+        try {
+            const raw = localStorage.getItem('schedule_reminders');
+            if(raw) reminderStore = JSON.parse(raw);
+        } catch(e) { reminderStore = {}; }
+    }
+
+    function saveRemindersToStorage() {
+        localStorage.setItem('schedule_reminders', JSON.stringify(reminderStore));
+        if(window.AndroidBridge && window.AndroidBridge.setNativePref) {
+            window.AndroidBridge.setNativePref('schedule_reminders', JSON.stringify(reminderStore));
+        }
+    }
+
+    /* 🔥 100% सही अलार्म टारगेट कैलकुलेटर (बग-फ्री) */
+    function calculateExactAlarmTarget(eventHourDecimal, advanceMins = 0) {
+        const now = new Date();
+        const target = new Date();
+
+        let targetH = Math.floor(eventHourDecimal);
+        let targetM = Math.round((eventHourDecimal - targetH) * 60);
+
+        target.setHours(targetH, targetM, 0, 0);
+        target.setTime(target.getTime() - (advanceMins * 60 * 1000));
+
+        let isTomorrow = false;
+        // अगर आज का यह समय पहले ही बीत चुका है तभी कल पर ले जाओ!
+        if (target.getTime() <= now.getTime()) {
+            target.setDate(target.getDate() + 1);
+            isTomorrow = true;
+        }
+
+        return {
+            timestamp: target.getTime(),
+            isTomorrow: isTomorrow,
+            formattedTime: target.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+    }
+
+    function applyLanguageFont() {
+        document.body.className = ''; 
+        if(appLang === 'hi') document.body.classList.add('font-hindi');
+        else if(appLang === 'mr') document.body.classList.add('font-marathi');
+    }
+
+    function bootLoader() {
+        appLang = detectGlobalLanguage(); 
+        applyLanguageFont();
+        initTheme();
+        loadSavedReminders();
+
+        renderUI();
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                updateTime();
+            }
+        });
+    }
+
+    function goHome() {
+        if(window.history.length > 1) window.history.back();
+        else window.location.href = "index.html";
+    }
+
+    function manualLangSwitch() {
+        if(appLang === 'en') appLang = 'mr'; 
+        else if(appLang === 'mr') appLang = 'hi';
+        else appLang = 'en';
+
+        localStorage.setItem('lang', appLang);
+        applyLanguageFont();
+        renderUI();
+        updateTime();
+        showToast(appLang === 'hi' ? 'भाषा बदली गई' : appLang === 'mr' ? 'भाषा बदलली' : 'Language Changed');
+    }
+
+    function renderUI() {
+        const text = UI_TEXT[appLang];
+        
+        document.getElementById('lbl_page_title').innerText = text.title;
+        document.getElementById('lbl_section_title').innerText = text.program;
+        document.getElementById('btn_lang_toggle').innerText = text.badge;
+
+        document.getElementById('lbl_test_title').innerText = text.testTitle;
+        document.getElementById('lbl_test_desc').innerText = text.testDesc;
+        document.getElementById('lbl_btn_test').innerText = text.testBtn;
+
+        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+        document.getElementById('btn_quick_all').innerHTML = `<i class="fas ${hasAll ? 'fa-bell-slash' : 'fa-bell'}"></i> ${hasAll ? text.clearAll : text.setAll}`;
+
+        const container = document.getElementById('container_schedule');
+        const lineHTML = '<div class="timeline-line"></div>';
+        let eventsHTML = '';
+
+        EVENTS.forEach((item, index) => {
+            const langData = item[appLang]; 
+            const isSet = reminderStore[index] !== undefined;
+
+            eventsHTML += `
+            <div class="event-card" id="card_${index}">
+                <div class="timeline-point" id="dot_${index}"></div>
+                <div class="event-card-content">
+                    <div class="t-time-row">
+                        <span class="t-time">${item.t}</span>
+                        <span id="badge_alarm_${index}"></span>
+                    </div>
+                    <div class="t-name">${langData.n}</div>
+                    <div class="t-desc">${langData.d}</div>
+                </div>
+                <button class="btn-bell ${isSet ? 'scheduled' : ''}" id="btn_bell_${index}" onclick="openReminderSheet(${index})" title="Set Reminder">
+                    <i class="fas fa-bell"></i>
+                </button>
+            </div>`;
+        });
+
+        container.innerHTML = lineHTML + eventsHTML;
+    }
+
+    let testCountdownTimer = null;
+
+    function trigger10SecondTest() {
+        const text = UI_TEXT[appLang];
+        const btn = document.getElementById('btn_test_action');
+
+        if (window.AndroidBridge && window.AndroidBridge.hasExactAlarmPermission) {
+            if (!window.AndroidBridge.hasExactAlarmPermission()) {
+                window.AndroidBridge.requestExactAlarmPermission();
+                return;
+            }
+        }
+        if (window.AndroidBridge && window.AndroidBridge.hasNotificationPermission) {
+            if (!window.AndroidBridge.hasNotificationPermission()) {
+                window.AndroidBridge.requestNotificationPermission();
+            }
+        }
+
+        if (window.AndroidBridge && window.AndroidBridge.testLoudAlarm) {
+            window.AndroidBridge.testLoudAlarm(10);
+        } else if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
+            window.AndroidBridge.setReminderAdvanced(
+                "⚡ 10s टेस्ट अलार्म सफल!",
+                text.testSuccessMsg,
+                Date.now() + 10000,
+                9999,
+                "schedule.html",
+                "दर्शन देखें 🙏"
+            );
+        } else {
+            showToast("ऐप के अंदर यह 100% फुल लाउड वॉल्यूम में बजेगा!");
+        }
+
+        showToast(text.testStarted);
+
+        let remaining = 10;
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${remaining}s...`;
+
+        clearInterval(testCountdownTimer);
+        testCountdownTimer = setInterval(() => {
+            remaining--;
+            if (remaining > 0) {
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${remaining}s...`;
+            } else {
+                clearInterval(testCountdownTimer);
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-check"></i> Test Passed!`;
+                setTimeout(() => {
+                    btn.innerHTML = `<i class="fas fa-bolt"></i> <span id="lbl_btn_test">${text.testBtn}</span>`;
+                }, 3500);
+            }
+        }, 1000);
+    }
+
+    let activeSheetEventIndex = -1;
+    let selectedAdvanceMinutes = 15;
+
+    function updateSheetPreview() {
+        if (activeSheetEventIndex === -1) return;
+        const event = EVENTS[activeSheetEventIndex];
+        const text = UI_TEXT[appLang];
+        const calc = calculateExactAlarmTarget(event.h, selectedAdvanceMinutes);
+
+        let dayText = calc.isTomorrow ? text.tomorrowAt : text.todayAt;
+        let diffMs = calc.timestamp - Date.now();
+        let diffH = Math.floor(diffMs / (1000 * 60 * 60));
+        let diffM = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        let remString = diffH > 0 ? `${diffH}h ${diffM}m` : `${diffM}m`;
+        document.getElementById('sheet_preview_box').innerHTML = 
+            `🔔 <b>${dayText} ${calc.formattedTime}</b> (${remString} बाद)`;
+    }
+
+    function openReminderSheet(eventIndex) {
+        activeSheetEventIndex = eventIndex;
+        const event = EVENTS[eventIndex];
+        const langData = event[appLang];
+        const text = UI_TEXT[appLang];
+
+        document.getElementById('sheet_event_name').innerText = langData.n;
+        document.getElementById('sheet_event_time').innerText = `⏰ ${event.t}`;
+        document.getElementById('sheet_lbl_advance').innerText = text.sheetAdvance;
+        document.getElementById('btn_sheet_save').innerHTML = `<i class="fas fa-bell"></i> ${text.saveReminder}`;
+        document.getElementById('btn_sheet_cancel').innerHTML = `<i class="fas fa-bell-slash"></i> ${text.cancelReminder}`;
+
+        const isAlreadySet = reminderStore[eventIndex] !== undefined;
+        selectedAdvanceMinutes = isAlreadySet ? reminderStore[eventIndex].advanceMinutes : 15;
+
+        updatePillSelection(selectedAdvanceMinutes);
+        updateSheetPreview();
+
+        document.getElementById('btn_sheet_cancel').style.display = isAlreadySet ? 'block' : 'none';
+
+        document.getElementById('sheet_backdrop').classList.add('show');
+        document.getElementById('reminder_sheet').classList.add('show');
+    }
+
+    function closeSheet() {
+        document.getElementById('sheet_backdrop').classList.remove('show');
+        document.getElementById('reminder_sheet').classList.remove('show');
+        activeSheetEventIndex = -1;
+    }
+
+    function selectAdvance(mins, el) {
+        selectedAdvanceMinutes = mins;
+        document.querySelectorAll('#advance_pills .choice-pill').forEach(p => p.classList.remove('selected'));
+        el.classList.add('selected');
+        updateSheetPreview();
+    }
+
+    function updatePillSelection(mins) {
+        document.querySelectorAll('#advance_pills .choice-pill').forEach(p => {
+            p.classList.remove('selected');
+            if (p.getAttribute('onclick').includes(`selectAdvance(${mins},`)) {
+                p.classList.add('selected');
+            }
+        });
+    }
+
+    function confirmReminderSave() {
+        if (activeSheetEventIndex === -1) return;
+        const text = UI_TEXT[appLang];
+        const event = EVENTS[activeSheetEventIndex];
+        const reqCode = 3000 + activeSheetEventIndex;
+
+        if (window.AndroidBridge && window.AndroidBridge.hasExactAlarmPermission) {
+            if (!window.AndroidBridge.hasExactAlarmPermission()) {
+                window.AndroidBridge.requestExactAlarmPermission();
+                return;
+            }
+        }
+        if (window.AndroidBridge && window.AndroidBridge.hasNotificationPermission) {
+            if (!window.AndroidBridge.hasNotificationPermission()) {
+                window.AndroidBridge.requestNotificationPermission();
+            }
+        }
+
+        const calc = calculateExactAlarmTarget(event.h, selectedAdvanceMinutes);
+        const eventTitle = `${event[appLang].n} (${event.t})`;
+        const advanceNoticeText = selectedAdvanceMinutes === 0 ? "शुरू होने वाली है" : `${selectedAdvanceMinutes} मिनट में शुरू होगी`;
+        const eventMsg = `श्री श्री राधाकृष्ण चंद्र मंदिर: ${event[appLang].n} ${advanceNoticeText}। दर्शन व प्रार्थना के लिए ऐप खोलें।`;
+
+        if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
+            window.AndroidBridge.setReminderAdvanced(
+                `🔔 ${eventTitle}`,
+                eventMsg,
+                calc.timestamp,
+                reqCode,
+                "schedule.html",
+                "दर्शन देखें 🙏"
+            );
+        }
+
+        reminderStore[activeSheetEventIndex] = {
+            advanceMinutes: selectedAdvanceMinutes,
+            reqCode: reqCode,
+            timestamp: calc.timestamp,
+            eventHour: event.h
+        };
+        saveRemindersToStorage();
+        updateTime();
+        closeSheet();
+
+        let dayText = calc.isTomorrow ? text.tomorrowAt : text.todayAt;
+        showToast(`⏰ अलार्म सेट: ${dayText} ${calc.formattedTime}`);
+    }
+
+    function cancelSelectedReminder() {
+        if (activeSheetEventIndex === -1) return;
+        const text = UI_TEXT[appLang];
+        const reqCode = 3000 + activeSheetEventIndex;
+
+        if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
+            window.AndroidBridge.cancelReminder(reqCode);
+        }
+
+        delete reminderStore[activeSheetEventIndex];
+        saveRemindersToStorage();
+        updateTime();
+        closeSheet();
+
+        showToast(text.remindCancelSuccess);
+    }
+
+    function toggleAllDailyReminders() {
+        const text = UI_TEXT[appLang];
+        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+
+        if (hasAll) {
+            EVENTS.forEach((_, idx) => {
+                if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
+                    window.AndroidBridge.cancelReminder(3000 + idx);
+                }
+            });
+            reminderStore = {};
+            saveRemindersToStorage();
+            updateTime();
+            showToast(text.remindCancelSuccess);
+        } else {
+            if (window.AndroidBridge && window.AndroidBridge.hasExactAlarmPermission) {
+                if (!window.AndroidBridge.hasExactAlarmPermission()) {
+                    window.AndroidBridge.requestExactAlarmPermission();
+                    return;
+                }
+            }
+
+            EVENTS.forEach((event, idx) => {
+                const reqCode = 3000 + idx;
+                const calc = calculateExactAlarmTarget(event.h, 15);
+                const eventTitle = `${event[appLang].n} (${event.t})`;
+                const eventMsg = `श्री श्री राधाकृष्ण चंद्र मंदिर: ${event[appLang].n} 15 मिनट में शुरू होगी। दर्शन के लिए जुड़ें।`;
+
+                if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
+                    window.AndroidBridge.setReminderAdvanced(`🔔 ${eventTitle}`, eventMsg, calc.timestamp, reqCode, "schedule.html", "दर्शन देखें 🙏");
+                }
+
+                reminderStore[idx] = { 
+                    advanceMinutes: 15, 
+                    reqCode: reqCode, 
+                    timestamp: calc.timestamp,
+                    eventHour: event.h
+                };
+            });
+            saveRemindersToStorage();
+            updateTime();
+            showToast(text.remindSetSuccess);
+        }
+    }
+
+    /* ========================================================
+       ⚡ 100% शुद्ध और सटीक डेट-बेस्ड टाइम इंजन (बग-फ्री)
+       ======================================================== */
+    let toastTimeout;
+    function showToast(message) {
+        const toast = document.getElementById('sys_toast');
+        toast.innerText = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
+    }
+
+    function updateTime() {
+        const now = new Date();
+        const curH = now.getHours() + (now.getMinutes() / 60) + (now.getSeconds() / 3600);
+        const text = UI_TEXT[appLang];
+
+        // 1. मंदिर खुला या बंद स्टेटस
+        const statusEl = document.getElementById('lbl_status');
+        const statusSubEl = document.getElementById('lbl_status_sub');
+        const countdownEl = document.getElementById('lbl_countdown');
+
+        let isOpen = (curH >= 4.5 && curH < 13.0) || (curH >= 16.25 && curH < 21.0);
+
+        if(isOpen) {
+            statusEl.innerHTML = `<span class="status-dot dot-green"></span> ${text.open}`;
+            statusSubEl.innerText = text.subOpen;
+        } else {
+            statusEl.innerHTML = `<span class="status-dot dot-red"></span> ${text.closed}`;
+            if(curH >= 13.0 && curH < 16.25) statusSubEl.innerText = text.subClosedEve; 
+            else statusSubEl.innerText = text.subClosedMorn;
+        }
+
+        // 2. 🔥 अगली आरती का बिल्कुल सटीक 1-सेकंड लाइव काउंटडाउन (26 घंटे वाला बग खत्म)
+        let nextAartiEvent = null;
+        let minDiffMs = Infinity;
+
+        for (let i = 0; i < EVENTS.length; i++) {
+            const ev = EVENTS[i];
+            let evDate = new Date();
+            let th = Math.floor(ev.h);
+            let tm = Math.round((ev.h - th) * 60);
+            evDate.setHours(th, tm, 0, 0);
+
+            // अगर आज का यह समय बीत चुका है, तो कल के लिए जोड़ो
+            if (evDate.getTime() <= now.getTime()) {
+                evDate.setDate(evDate.getDate() + 1);
+            }
+
+            let diff = evDate.getTime() - now.getTime();
+            if (diff < minDiffMs) {
+                minDiffMs = diff;
+                nextAartiEvent = ev;
+            }
+        }
+
+        if (nextAartiEvent && minDiffMs < Infinity) {
+            let remTotalSecs = Math.floor(minDiffMs / 1000);
+            let remH = Math.floor(remTotalSecs / 3600);
+            let remM = Math.floor((remTotalSecs % 3600) / 60);
+            let remS = Math.floor(remTotalSecs % 60);
+
+            let sH = remH.toString().padStart(2, '0');
+            let sM = remM.toString().padStart(2, '0');
+            let sS = remS.toString().padStart(2, '0');
+
+            let nextEventName = nextAartiEvent[appLang].n;
+            countdownEl.style.display = 'inline-flex';
+            countdownEl.innerHTML = `<i class="fas fa-hourglass-half"></i> ${text.nextEvent} ${nextEventName} (${sH}h ${sM}m ${sS}s)`;
+        }
+
+        // 3. एक्टिव आरती कार्ड हाईलाइट
+        let currentActiveIdx = -1;
+        for (let i = 0; i < EVENTS.length; i++) {
+            if (curH >= EVENTS[i].h) {
+                currentActiveIdx = i;
+            }
+        }
+
+        document.querySelectorAll('.event-card').forEach(el => el.classList.remove('active'));
+        if(currentActiveIdx > -1) {
+            const activeCard = document.getElementById('card_' + currentActiveIdx);
+            if(activeCard) {
+                activeCard.classList.add('active');
+                if(isInitialLoad) {
+                    setTimeout(() => { activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 500);
+                    isInitialLoad = false;
+                }
+            }
+        } else if (isInitialLoad) {
+            isInitialLoad = false;
+        }
+
+        // 4. 🔥 कार्ड्स पर अलार्म का लाइव 1-सेकंड टाइमर
+        EVENTS.forEach((item, index) => {
+            const badgeEl = document.getElementById(`badge_alarm_${index}`);
+            const bellBtn = document.getElementById(`btn_bell_${index}`);
+            if (!badgeEl || !bellBtn) return;
+
+            const reminder = reminderStore[index];
+            if (reminder) {
+                bellBtn.classList.add('scheduled');
+
+                let diffMs = reminder.timestamp - now.getTime();
+
+                // अगर अलार्म का समय बीत चुका है तो कल के लिए री-शेड्यूल करो
+                if (diffMs <= -60000) { 
+                    const nextCalc = calculateExactAlarmTarget(item.h, reminder.advanceMinutes);
+                    reminder.timestamp = nextCalc.timestamp;
+                    saveRemindersToStorage();
+                    diffMs = reminder.timestamp - now.getTime();
+                }
+
+                if (diffMs > 0) {
+                    let dTotalSecs = Math.floor(diffMs / 1000);
+                    let dH = Math.floor(dTotalSecs / 3600);
+                    let dM = Math.floor((dTotalSecs % 3600) / 60);
+                    let dS = Math.floor(dTotalSecs % 60);
+
+                    let timeString = '';
+                    if (dH > 0) {
+                        timeString = `${dH}h ${dM}m ${dS}s`;
+                    } else if (dM > 0) {
+                        timeString = `${dM}m ${dS}s`;
+                    } else {
+                        timeString = `${dS}s`;
+                    }
+
+                    badgeEl.innerHTML = `<span class="alarm-live-badge"><i class="fas fa-clock"></i> ${text.alarmIn} ${timeString}</span>`;
+                } else {
+                    badgeEl.innerHTML = `<span class="alarm-live-badge"><i class="fas fa-bell"></i> ${text.ringingNow}</span>`;
+                }
+            } else {
+                bellBtn.classList.remove('scheduled');
+                badgeEl.innerHTML = '';
+            }
+        });
+
+        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+        const quickAllBtn = document.getElementById('btn_quick_all');
+        if (quickAllBtn) {
+            quickAllBtn.innerHTML = `<i class="fas ${hasAll ? 'fa-bell-slash' : 'fa-bell'}"></i> ${hasAll ? text.clearAll : text.setAll}`;
+        }
+    }
+
+</script>
+</body>
+</html>
