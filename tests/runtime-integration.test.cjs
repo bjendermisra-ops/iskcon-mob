@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../temple-runtime.js'), 'utf8');
-async function boot({installed=12, online=true, status=200, manifest, fail=false, native=false}={}) {
+async function boot({installed=12, online=true, status=200, manifest, fail=false, native=false, noAbort=false}={}) {
   const elements=[], events={}, requests=[], launches=[];
   function el(tag) {
     const e={tag,children:[],hidden:false,textContent:'',classList:{add(){}},setAttribute(){},
@@ -17,7 +17,7 @@ async function boot({installed=12, online=true, status=200, manifest, fail=false
   const window={addEventListener(name,fn){events[name]=fn},
     AndroidBridge:installed ? {getAppVersionCode(){return installed}, isInternetValidated(){return native},openExternal(url){launches.push(url)}} : undefined};
   const context={window,document,navigator:{onLine:online},location:{href:'https://example.test/iskcon-mob/dev.html'},
-    URL,AbortController,setTimeout,clearTimeout,setInterval(){},sessionStorage:{getItem(){return null},setItem(){}},
+    URL,AbortController:noAbort ? undefined : AbortController,setTimeout,clearTimeout,setInterval(){},sessionStorage:{getItem(){return null},setItem(){}},
     async fetch(url){requests.push(url);if(fail)throw Error('network');return {ok:status===200,status,async json(){return manifest || {latestVersionCode:13,updateUrl:'https://play.google.com/store/apps/details?id=test'}}}}};
   vm.runInNewContext(source,context);await new Promise(resolve=>setImmediate(resolve));
   return {elements,requests,events,context,launches,byId(id){return elements.find(e=>e.id===id)}};
@@ -63,4 +63,8 @@ test('internal blank-target link stays in same WebView',async()=>{
  const b=await boot();const anchor={hasAttribute(){return false},getAttribute(){return 'schedule.html'},target:'_blank'};
  b.events.click({target:{closest(){return anchor}},preventDefault(){throw Error('internal prevented')},stopPropagation(){}});
  assert.equal(anchor.target,'_self');assert.equal(b.launches.length,0);
+});
+
+test('older WebView without AbortController still checks updates',async()=>{
+ const b=await boot({noAbort:true});assert.ok(b.byId('temple-update'));
 });

@@ -97,10 +97,17 @@
     if (!banner || busy || document.hidden || (!force && Date.now() - lastCheck < 30000)) return;
     if (!navigator.onLine) { showStatus('No internet connection · इंटरनेट कनेक्शन जाँचें'); return; }
     busy = true; lastCheck = Date.now();
-    var controller = new AbortController(), timer = setTimeout(function () { controller.abort(); }, 8000);
+    var controller = typeof AbortController === 'function' ? new AbortController() : null, timer;
     try {
       var url = new URL(endpoint.href); url.searchParams.set('_check', String(Date.now()));
-      var response = await fetch(url.href, { cache: 'no-store', signal: controller.signal, credentials: 'omit' });
+      var options = { cache: 'no-store', credentials: 'omit' };
+      if (controller) options.signal = controller.signal;
+      var response = await Promise.race([
+        fetch(url.href, options),
+        new Promise(function (_, reject) {
+          timer = setTimeout(function () { if (controller) controller.abort(); reject(new Error('timeout')); }, 8000);
+        })
+      ]);
       if (!response.ok) { showStatus('Update service unavailable. Your current page is still open.'); return; }
       var data = await response.json();
       showStatus('');
