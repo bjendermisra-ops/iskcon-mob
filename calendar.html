@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080d19">
+  <title>WA Stickers · Dynamic Studio</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080d19;
+      --card: #141b2b;
+      --card-border: #29344a;
+      --txt: #f8fafc;
+      --sub: #9caac2;
+      --mint: #57f4c4;
+      --mint-glow: rgba(87, 244, 196, 0.25);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--txt);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 24px 18px 100px;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 15px;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--mint); }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mint);
+      padding: 6px 14px;
+      background: rgba(87, 244, 196, 0.12);
+      border: 1px solid rgba(87, 244, 196, 0.3);
+      border-radius: 999px;
+    }
+    .hero { padding: 25px 0 20px; }
+    .eyebrow {
+      color: var(--mint);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 8vw, 54px);
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin: 10px 0 12px;
+    }
+    .hero h1 span { color: var(--mint); }
+    .hero p {
+      color: var(--sub);
+      line-height: 1.5;
+      font-size: 14px;
+      margin: 0;
+    }
+    .search-box {
+      margin: 20px 0 15px;
+      position: sticky;
+      top: 15px;
+      z-index: 10;
+    }
+    input {
+      width: 100%;
+      background: #111827;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 15px 18px;
+      color: white;
+      outline: none;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    input:focus {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 3px var(--mint-glow);
+    }
+    .heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 12px;
+      font-size: 14px;
+    }
+    .muted { color: var(--sub); }
+    .card {
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+    .anim-glow {
+      border-color: rgba(87, 244, 196, 0.4);
+      box-shadow: 0 4px 25px var(--mint-glow);
+    }
+    .previews {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .previews img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      background: #1c2538;
+      border-radius: 14px;
+      padding: 8px;
+    }
+    .title {
+      font-weight: 750;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+    }
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 14px;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 4px 9px;
+      letter-spacing: 0.4px;
+    }
+    .badge.static {
+      background: #242f46;
+      color: #cbd5e1;
+    }
+    .badge.anim {
+      background: #133d34;
+      color: var(--mint);
+    }
+    .small {
+      font-size: 12px;
+      color: var(--sub);
+    }
+    button.btn-add {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      background: var(--mint);
+      color: #06241b;
+      padding: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    button.btn-add:active { transform: scale(0.98); }
+    button.btn-add:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .notice {
+      color: #aebbd1;
+      background: #121b2b;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 25px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .empty {
+      padding: 40px;
+      text-align: center;
+      color: var(--sub);
+      font-size: 14px;
+    }
+    footer {
+      color: #64748b;
+      text-align: center;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="bar">
+    <div class="logo">WA <span>Stickers.</span></div>
+    <div class="pill">⚡ CLOUD SYNC</div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Universal WhatsApp Catalog</div>
+    <h1>Direct Add.<br><span>One-Click Magic.</span></h1>
+    <p>Explore high-definition static & animated sticker packs hosted seamlessly on GitHub.</p>
+  </section>
+
+  <div class="search-box">
+    <input id="q" placeholder="🔍 Search sticker packs by name or category..." aria-label="Search">
+  </div>
+
+  <div class="heading">
+    <strong>Featured Packs</strong>
+    <span class="muted" id="count">Loading...</span>
+  </div>
+
+  <div id="cards" aria-live="polite"></div>
+
+  <div id="status" class="notice">
+    <span>💡</span>
+    <span id="status-text">Click "+ Add to WhatsApp" on any pack to import it into your WhatsApp.</span>
+  </div>
+
+  <footer>WA Stickers Studio · GitHub Cloud Powered</footer>
+</main>
+
+<script>
+let packs = [];
+const el = id => document.getElementById(id);
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+// RENDER ALL CARDS
+function render() {
+  const query = el('q').value.trim().toLowerCase();
+  const filtered = packs.filter(p => (p.name + ' ' + (p.category || '')).toLowerCase().includes(query));
+  
+  el('count').textContent = filtered.length + ' packs available';
+  el('cards').innerHTML = '';
+
+  if (!filtered.length) {
+    el('cards').innerHTML = '<div class="empty">No matching sticker packs found. 🌸</div>';
+    return;
+  }
+
+  for (let p of filtered) {
+    const card = document.createElement('article');
+    card.className = 'card' + (p.animated ? ' anim-glow' : '');
+    
+    // Show up to 4 preview thumbnails
+    const images = (p.stickers || []).slice(0, 4).map(s => {
+      const src = s.image ? s.image : (p.baseUrl ? p.baseUrl.replace(/\/+$/, '') + '/' + s.file : s.file);
+      return `<img loading="lazy" alt="Sticker" src="${escapeHtml(src)}">`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="previews">${images}</div>
+      <div class="title">${escapeHtml(p.name)}</div>
+      <div class="badge-row">
+        <span class="badge ${p.animated ? 'anim' : 'static'}">
+          ${p.animated ? '✦ ANIMATED' : 'STATIC'}
+        </span>
+        <span class="small">${(p.stickers || []).length} stickers · ${escapeHtml(p.publisher || 'Studio')}</span>
+      </div>
+      <button type="button" class="btn-add" id="btn-${escapeHtml(p.id)}">
+        <span>+ Add to WhatsApp</span>
+      </button>
+    `;
+
+    card.querySelector('button').onclick = () => add(p);
+    el('cards').appendChild(card);
+  }
+}
+
+// ACTION: ADD TO WHATSAPP
+function add(p) {
+  if (!p.stickers || p.stickers.length < 3) {
+    alert('WhatsApp requires at least 3 stickers in a pack!');
+    return;
+  }
+  if (p.stickers.length > 30) {
+    alert('WhatsApp limits packs to maximum 30 stickers!');
+    return;
+  }
+
+  const btn = el('btn-' + p.id);
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Preparing WhatsApp...</span>';
+  }
+
+  // 1. FORMAT UNIFIED PACK PAYLOAD
+  const payload = {
+    id: p.id,
+    name: p.name,
+    publisher: p.publisher || 'WA Stickers',
+    category: p.category || 'General',
+    animated: Boolean(p.animated),
+    baseUrl: p.baseUrl || 'https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/',
+    files: p.stickers.map(s => s.file),
+    emojis: p.stickers.map(s => (s.emojis && s.emojis.length ? s.emojis[0] : '🙏'))
+  };
+
+  // 2. CALL NATIVE BRIDGE
+  if (window.StickerBridge) {
+    if (typeof window.StickerBridge.addDynamicPack === 'function') {
+      window.StickerBridge.addDynamicPack(JSON.stringify(payload));
+    } else if (typeof window.StickerBridge.addStickerPack === 'function') {
+      window.StickerBridge.addStickerPack(p.id, p.name);
+    }
+    
+    updateStatus('🚀 Sent "' + p.name + '" to Android downloader. Check notification or WhatsApp popup!');
+    setTimeout(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span>+ Add to WhatsApp</span>';
+      }
+    }, 4000);
+    return;
+  }
+
+  // Fallback when viewing in web browser
+  if (btn) {
+    btn.disabled = false;
+    btn.innerHTML = '<span>+ Add to WhatsApp</span>';
+  }
+  updateStatus('⚠️ Please open this link inside our Android App to install directly into WhatsApp!');
+}
+
+function updateStatus(msg) {
+  const elStatus = el('status-text');
+  if (elStatus) elStatus.textContent = msg;
+}
+
+// LIVE STATUS CALLBACK FROM ANDROID
+window.onNativeStatus = function(msg) {
+  updateStatus(msg);
+};
+
+// LISTEN FOR LIVE SEARCH
+el('q').addEventListener('input', render);
+
+// FETCH REAL-TIME PACKS CATALOG (NO CACHE)
+fetch('./packs.json?ts=' + Date.now(), { cache: 'no-store' })
+  .then(r => {
+    if (!r.ok) throw Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(d => {
+    packs = d.packs || [];
+    render();
+    updateStatus('✅ Loaded ' + packs.length + ' sticker packs. Ready to add!');
+  })
+  .catch(e => {
+    el('cards').innerHTML = '<div class="empty">Could not load packs catalog.<br><small>' + escapeHtml(e.message) + '</small></div>';
+    updateStatus('❌ Error loading packs.json. Please check network.');
+  });
+</script>
+</body>
+</html>
