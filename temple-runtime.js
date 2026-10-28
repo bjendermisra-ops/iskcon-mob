@@ -14,13 +14,46 @@
       title: String(manifest.title || 'Update available'),
       message: String(manifest.message || 'Please install the latest app version.') };
   }
-  if (typeof module === 'object' && module.exports) { module.exports = { updateFor: updateFor }; return; }
+  function linkTarget(input, base) {
+    if (typeof input !== 'string' || !input.trim()) return null;
+    var value = input.trim();
+    if (/[\\\x00-\x1f]/.test(value)) return null;
+    if (/^intent:/i.test(value)) {
+      var fallback = value.match(/;S\.browser_fallback_url=([^;]+)/);
+      if (!fallback) return null;
+      try { value = decodeURIComponent(fallback[1]); } catch (_) { return null; }
+    }
+    try {
+      var url = new URL(value, base);
+      if (!/^(https?:|mailto:|tel:|geo:|market:|upi:|whatsapp:|phonepe:|paytmmp:|paytm:|gpay:|tez:|bhim:)$/.test(url.protocol) || url.username || url.password) return null;
+      var site = new URL('.', base);
+      return { url: url.href, internal: url.protocol === 'https:' && url.origin === site.origin &&
+        (url.pathname === site.pathname.slice(0,-1) || url.pathname.indexOf(site.pathname) === 0) };
+    } catch (_) { return null; }
+  }
+  if (typeof module === 'object' && module.exports) { module.exports = { updateFor: updateFor, linkTarget: linkTarget }; return; }
   if (root.TempleRuntime) return;
   var script = document.currentScript;
   var endpoint = new URL('version.json', script ? script.src : location.href);
   var bridge = root.AndroidBridge || root.AndroidInterface || root.Android;
   var busy = false, lastCheck = 0, banner, dialog;
-  root.TempleRuntime = { check: check, updateFor: updateFor };
+  root.TempleRuntime = { check: check, updateFor: updateFor, openLink: openLink };
+  function openLink(input) {
+    var target = linkTarget(input, endpoint.href);
+    if (!target) return false;
+    if (!target.internal) {
+      // Existing v12 already exposes openExternal. Use it instead of navigating WebView.
+      try {
+        var current = root.AndroidBridge || root.AndroidInterface || root.Android;
+        if (current && typeof current.openExternal === 'function' &&
+            (/^(https?:|mailto:|tel:)/.test(target.url) ||
+             (typeof current.getBridgeVersion === 'function' && current.getBridgeVersion() >= 2))) {
+          current.openExternal(target.url); return true;
+        }
+      } catch (_) {}
+    }
+    location.href = target.url; return true;
+  }
   function button(label, fn) {
     var b = document.createElement('button'); b.type = 'button'; b.textContent = label;
     b.onclick = fn; return b;
@@ -43,7 +76,7 @@
     var text = document.createElement('p'); text.textContent = update.message;
     var version = document.createElement('p'); version.textContent = 'New app version: ' + update.code;
     card.append(title, text, version);
-    var install = button('Update now / अपडेट करें', function () { location.href = update.url; });
+    var install = button('Update now / अपडेट करें', function () { openLink(update.url); });
     card.appendChild(install);
     if (!update.force) card.appendChild(button('Later / बाद में', function () {
       try { sessionStorage.setItem('temple-deferred', String(update.code)); } catch (_) {}
@@ -94,6 +127,21 @@
     banner = document.createElement('button'); banner.id = 'temple-connection'; banner.type = 'button';
     banner.hidden = true; banner.setAttribute('aria-live', 'polite'); banner.onclick = function () { check(true); };
     document.body.appendChild(banner);
+    document.addEventListener('click', function (event) {
+      var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+      if (!anchor || event.defaultPrevented || anchor.hasAttribute('download')) return;
+      var target = linkTarget(anchor.getAttribute('href'), endpoint.href);
+      if (!target) return;
+      if (!target.internal) {
+        event.preventDefault(); event.stopPropagation(); openLink(target.url);
+      } else if (anchor.target === '_blank') { anchor.target = '_self'; }
+    }, true);
+    var originalOpen = root.open;
+    if (typeof originalOpen === 'function') root.open = function (url, target, features) {
+      var destination = linkTarget(url, endpoint.href);
+      if (destination && !destination.internal && bridge) { openLink(destination.url); return null; }
+      return originalOpen.call(root,url,target,features);
+    };
     root.addEventListener('online', function () { check(true); });
     root.addEventListener('offline', function () { showStatus('No internet connection · इंटरनेट कनेक्शन जाँचें'); });
     root.addEventListener('temple-network', function () { check(true); });

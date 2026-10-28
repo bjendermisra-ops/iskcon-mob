@@ -2,7 +2,16 @@
 <html lang="en">
 <head>
 <style>html{background:#fff8ee}html:has(body.dark-mode){background:#181818}</style>
-<script defer src="temple-runtime.js"></script>
+<script defer src="temple-runtime.js?v=14-routing"></script>
+<script>
+window.templeOpenExternal = function(url) {
+  if (window.TempleRuntime) return window.TempleRuntime.openLink(url);
+  var bridge = window.AndroidBridge || window.AndroidInterface || window.Android;
+  try { if (bridge && typeof bridge.openExternal === 'function') { bridge.openExternal(url); return true; } } catch (e) {}
+  window.location.href = url; return true;
+};
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#FF9933">
@@ -26,7 +35,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'"/>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Dancing+Script:wght@700&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
     
     <style>
         /* CSS Variables & Theming */
@@ -353,8 +361,6 @@
         .sm-btn { background: linear-gradient(135deg, var(--primary), #E65100); color: white; border: none; width: 100%; padding: 13px; border-radius: 14px; font-weight: 800; font-size: 0.92rem; cursor: pointer; }
 
         /* Offline Banner */
-        .offline-banner { display: none; background: linear-gradient(135deg, #d32f2f, #f44336); color: white; text-align: center; padding: 9px 15px; font-size: 0.82rem; font-weight: 700; z-index: 2000; width: 100%; position: sticky; top: 0; } 
-        body.is-offline .offline-banner { display: flex; justify-content: center; align-items: center; }
 
         /* Hidden Sections */
         .ad-support-card, .support-fab, #video-section-wrap, #lecture-section-wrap { display: none !important; }
@@ -421,9 +427,7 @@
 </script>
 
 <!-- Offline Status Alert Banner -->
-<div id="offline-banner" class="offline-banner">
-    <i class="fas fa-wifi-slash" style="margin-right:6px;"></i> <span data-key="offline_msg">You are currently offline. Showing cached contents. Keep chanting!</span>
-</div>
+
 
 <!-- Modern Reusable Dialog Overlay -->
 <div class="adAlertModalOverlayClass" id="adAlertModalOverlay" onclick="closeAdAlertModal(event)">
@@ -459,15 +463,15 @@
             <a href="courses.html" class="menu-item"><i class="fas fa-book-open-reader" style="color:#00897B;"></i> <span id="ccMenu">Courses & Training</span></a>
             <a href="calendar.html" class="menu-item"><i class="far fa-calendar-alt"></i> <span data-key="ekadashi_cal">Ekadashi Calendar</span></a>
             <a href="dono.html" class="menu-item"><i class="fas fa-hand-holding-heart" style="color:#FF6F00;"></i> <span data-key="donation">Donation</span></a>
-            <a href="chanting.html" class="menu-item"><i class="fas fa-om"></i> <span data-key="japa">Digital Japa</span></a>
+            <a href="global_jap.html" class="menu-item"><i class="fas fa-om"></i> <span data-key="global_japa">Live Global Japa</span></a>
             <a href="mantras.html" class="menu-item"><i class="fas fa-book-journal-whills"></i> <span data-key="lyric_vault">Sacred Lyrics & Prayers</span></a>
             <a href="pune.html" class="menu-item"><i class="fas fa-gopuram"></i> <span data-key="pune_temples">Pune Temples</span></a>
             <a href="schedule.html" class="menu-item"><i class="far fa-calendar-check"></i> <span data-key="schedule">Temple Schedule</span></a>
             <a href="darshan.html" class="menu-item"><i class="fas fa-video"></i> <span data-key="darshan">Live Darshan</span></a>
             
             <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(150,150,150,0.3),transparent); margin:15px 0;"></div>
-            <a href="intent://instagram.com/_u/shri_shri_radhakrishna_chandra#Intent;scheme=https;package=com.instagram.android;S.browser_fallback_url=https://www.instagram.com/shri_shri_radhakrishna_chandra?utm_source=qr;end" target="_blank" class="menu-item"><i class="fab fa-instagram" style="color:#E1306C;"></i> <span data-key="insta_page">Instagram Page</span></a>
-            <a href="https://chat.whatsapp.com/BW0QvViK1nXDZxquUTmau4?s=qt&p=a&mlu=4&ilr=4" target="_blank" class="menu-item"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span data-key="join_wa_community">Join WhatsApp Community</span></a>
+            <a href="https://www.instagram.com/shri_shri_radhakrishna_chandra/" target="_blank" class="menu-item" onclick="templeOpenExternal(this.href); return false;" rel="noopener noreferrer"><i class="fab fa-instagram" style="color:#E1306C;"></i> <span data-key="insta_page">Instagram Page</span></a>
+            <a href="https://chat.whatsapp.com/BW0QvViK1nXDZxquUTmau4?s=qt&p=a&mlu=4&ilr=4" target="_blank" class="menu-item" onclick="templeOpenExternal(this.href); return false;" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span data-key="join_wa_community">Join WhatsApp Community</span></a>
             <a href="contact.html" class="menu-item"><i class="fas fa-phone-alt"></i> <span data-key="contact">Contact</span></a>
             <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> <span data-key="about">About Temple</span></a>
             <a href="privacy.html" class="menu-item"><i class="fas fa-shield-alt"></i> <span data-key="privacy">Privacy Policy</span></a>
@@ -532,7 +536,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 </script>
 <!--/LP-->
-<div class="feast-card" id="feastCard" data-aos="fade-down" data-aos-duration="600">
+<div class="feast-card" id="feastCard">
     <div class="feast-photo" id="feastPhoto">
         <div id="feastCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
             <div class="carousel-inner h-100" id="feastCarouselInner">
@@ -565,7 +569,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <!-- ============================================================== -->
 <!-- 🌟 DYNAMIC HERO SLIDER (DATE + FULL-SPACE MULTI-PERSON SLIDER) 🌟 -->
 <!-- ============================================================== -->
-<div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-aos="zoom-in" data-aos-duration="600">
+<div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel">
     <div class="carousel-inner" id="slider-inner" style="height: 100%;">
         <div class="carousel-item active" style="background:var(--bg-color);">
             <div class="d-flex justify-content-center align-items-center h-100 flex-column" style="opacity:0.8;">
@@ -590,7 +594,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </div>
 
 <!-- 🪷 DEDICATED LIGHTWEIGHT "DAILY DARSHAN & SEVA" OPTION CARD 🪷 -->
-<a href="daily_darshan.html" class="daily-darshan-premium-card" data-aos="zoom-in" data-aos-duration="600">
+<a href="daily_darshan.html" class="daily-darshan-premium-card">
     <div class="dd-content">
         <div class="dd-icon-box"><i class="fas fa-images"></i></div>
         <div class="dd-text-box">
@@ -602,7 +606,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </a>
 
 <!-- 👶 DEDICATED KIDS SANSKAR CLASS & ADMISSION CARD 👶 -->
-<a href="kids_class.html" class="kids-class-premium-card" data-aos="zoom-in" data-aos-duration="600">
+<a href="kids_class.html" class="kids-class-premium-card">
     <div class="kc-content">
         <div class="kc-icon-box"><i class="fas fa-graduation-cap"></i></div>
         <div class="kc-text-box">
@@ -615,7 +619,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </a>
 
 <!-- Courses & Training Programs -->
-<a href="courses.html" class="courses-card" id="coursesCard" data-aos="zoom-in" data-aos-duration="600">
+<a href="courses.html" class="courses-card" id="coursesCard">
     <div class="cc-in">
         <div class="cc-icon"><i class="fas fa-book-open-reader"></i></div>
         <div class="cc-t"><div class="cc-badge" id="ccBadge">NEW</div><h4 id="ccTitle"></h4><p id="ccSub"></p></div>
@@ -624,7 +628,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </a>
 
 <!-- Gita Daily Thought / Divine Message -->
-<div class="gita-daily-thought" data-aos="fade-in" data-aos-duration="800">
+<div class="gita-daily-thought">
     <div class="g-t-head"><i class="fas fa-feather-pointed" style="color:var(--primary);"></i> <span data-key="quote_head">Divine Message</span></div>
     <div class="g-t-text">
         <span id="divine-text-val" data-key="quote_text">"A person is made by faith. As they believe, so they become."</span> <br>
@@ -635,7 +639,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <!-- Main Quick Action Cards Grid -->
 <div class="container-fluid px-3 my-2">
     <!-- Distinct, Eye-Catching Donation & Live Global Japa Row -->
-    <div class="row g-2 mb-2" data-aos="fade-up" data-aos-duration="500">
+    <div class="row g-2 mb-2">
         <div class="col-6">
             <a href="dono.html" class="feature-card shadow-sm donation-card-highlight">
                 <div class="new-badge donation-badge">SEVA</div>
@@ -658,9 +662,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     </div>
     
     <!-- WhatsApp Community & All Pune Temples Grid -->
-    <div class="row g-2 mb-3" data-aos="fade-up" data-aos-duration="600">
+    <div class="row g-2 mb-3">
         <div class="col-6">
-            <a href="https://chat.whatsapp.com/BW0QvViK1nXDZxquUTmau4?s=qt&p=a&mlu=4&ilr=4" target="_blank" class="feature-card shadow-sm" style="border: 1px solid rgba(37,211,102,0.4); background: linear-gradient(145deg, var(--card-bg) 50%, rgba(37,211,102,0.08) 100%);">
+            <a href="https://chat.whatsapp.com/BW0QvViK1nXDZxquUTmau4?s=qt&p=a&mlu=4&ilr=4" target="_blank" class="feature-card shadow-sm" style="border: 1px solid rgba(37,211,102,0.4); background: linear-gradient(145deg, var(--card-bg) 50%, rgba(37,211,102,0.08) 100%);" onclick="templeOpenExternal(this.href); return false;" rel="noopener noreferrer">
                 <i class="fab fa-whatsapp" style="color:#25D366; font-size:2rem;"></i><span data-key="wa_community" class="mt-2" style="font-size:0.8rem;">Temple WhatsApp</span>
             </a>
         </div>
@@ -672,7 +676,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     </div>
 
     <!-- Ekadashi Calendar Banner -->
-    <a href="calendar.html" class="calendar-premium-card" data-aos="fade-up" data-aos-duration="650">
+    <a href="calendar.html" class="calendar-premium-card">
         <div class="cal-icon-wrapper">
             <i class="far fa-calendar-check cal-icon"></i>
             <div class="cal-text">
@@ -684,7 +688,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     </a>
 
     <!-- Sacred Lyrics & Prayers Vault -->
-    <div class="master-lyrics-box" data-aos="flip-up" data-aos-duration="700">
+    <div class="master-lyrics-box">
         <a href="mantras.html" class="lyric-read-action">
             <div class="epic-book-icon"><i class="fas fa-book-open"></i></div>
             <div class="lyric-text-group">
@@ -693,14 +697,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
             </div>
         </a>
         <div class="lyrics-bottom-bar">
-            <a href="man.html" class="mini-meta-chip"><span data-key="a_mangal">Mangal Aarti</span></a>
+            <a href="mantras.html" class="mini-meta-chip"><span data-key="a_mangal">Mangal Aarti</span></a>
             <a href="nar.html" class="mini-meta-chip"><span data-key="a_narasimha">Narasimha</span></a>
             <a href="tul.html" class="mini-meta-chip"><span data-key="a_tulasi">Tulasi Aarti</span></a>
         </div>
     </div>
 
     <!-- Quick Navigation Links (Schedule, Darshan, Visit) -->
-    <div class="row g-2 mb-3 mt-1" data-aos="fade-up" data-aos-duration="700" id="quick-links-row">
+    <div class="row g-2 mb-3 mt-1" id="quick-links-row">
         <div class="col-4 transition-col" id="col-schedule">
             <a href="schedule.html" class="feature-card p-2" style="border-bottom: 2.5px solid #2196F3;"><i class="far fa-clock" style="color:#1976D2;"></i><span data-key="schedule">Schedule</span></a>
         </div>
@@ -713,7 +717,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     </div>
 
     <!-- Temple Address & Navigation Box (Fully Dynamic Multilingual) -->
-    <div class="address-box mx-n1" id="address-section" data-aos="zoom-in" data-aos-duration="600">
+    <div class="address-box mx-n1" id="address-section">
         <h5 style="font-family:'Cinzel',serif; color:var(--text-color); font-weight:800; margin-bottom:12px; font-size:1.35rem;" data-key="visit_h">Visit Our Temple</h5>
         <p class="address-text mx-1">
             <i class="fas fa-location-dot" style="color:var(--primary); margin-right:8px; font-size:1.2rem; margin-top:2px;"></i> 
@@ -735,8 +739,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         
         <!-- Social Icons: YouTube & Instagram Side-by-Side -->
         <div class="footer-social mt-3">
-            <a href="intent://youtube.com/@srisriradhakrsnachandraman9892#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=https://youtube.com/@srisriradhakrsnachandraman9892;end" class="f-icon f-icon-yt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="intent://instagram.com/_u/shri_shri_radhakrishna_chandra#Intent;scheme=https;package=com.instagram.android;S.browser_fallback_url=https://www.instagram.com/shri_shri_radhakrishna_chandra?utm_source=qr;end" class="f-icon f-icon-insta" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@srisriradhakrsnachandraman9892" class="f-icon f-icon-yt" target="_blank" title="YouTube" onclick="templeOpenExternal(this.href); return false;" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/shri_shri_radhakrishna_chandra/" class="f-icon f-icon-insta" target="_blank" title="Instagram" onclick="templeOpenExternal(this.href); return false;" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
         </div>
 
         <div class="footer-links mt-3">
@@ -755,7 +759,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
 <!-- Deferred JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
 <!-- ======================================================== -->
 <!-- 🛡️ NATIVE APPLICATION SYSTEM SCRIPT (STRICT PROTECTION) 🛡️ -->
@@ -783,15 +786,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         window.addEventListener('touchend', function() { if (touchTimer) clearTimeout(touchTimer); }, { passive: true });
     })();
 
-    function updateOnlineStatus() { 
-        if (!navigator.onLine) document.body.classList.add('is-offline'); 
-        else document.body.classList.remove('is-offline'); 
-    }
-    window.addEventListener('online', updateOnlineStatus); 
-    window.addEventListener('offline', updateOnlineStatus); 
-    updateOnlineStatus(); 
-
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
         const sidebar = document.getElementById('appSidebar'); 
         const openBtn = document.getElementById('openSidebarBtn'); 
         const closeBtn = document.getElementById('closeSidebarBtn'); 
@@ -808,7 +803,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
             backdrop.addEventListener('click', closeSidebar); 
         }
         
-        setTimeout(() => { try { if(typeof AOS !== 'undefined') AOS.init({ once: true, offset: 15, easing: 'ease-out-cubic' }); } catch(e){} }, 600);
     });
 
     // Custom Alert Overlay Functions
@@ -836,7 +830,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }
     
     function openMap() { 
-        window.location.href = "intent://maps.google.com/maps?q=Sri+Sri+Radha+Krishna+Chandra+Mandir+15+Number+Hadapsar+Pune#Intent;scheme=https;package=com.google.android.apps.maps;S.browser_fallback_url=https://maps.google.com/maps?q=Sri+Sri+Radha+Krishna+Chandra+Mandir+15+Number+Hadapsar+Pune;end";
+        window.templeOpenExternal("https://www.google.com/maps/search/?api=1&query=Sri+Sri+Radha+Krishna+Chandra+Mandir+15+Number+Hadapsar+Pune");
     } 
     
     function scrollToAddress() { document.getElementById('address-section').scrollIntoView({behavior: 'smooth'}); }
@@ -852,7 +846,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         var m = M[lang] || M.en;
         var text = m.msg + String.fromCharCode(10) + link;
         var q = encodeURIComponent(text);
-        function go(u) { window.location.href = u; }
+        function go(u) { if (window.TempleRuntime) window.TempleRuntime.openLink(u); else window.location.href = u; }
         function copyLink() {
             function done() { showCustomAdAlert('Hare Krishna! 🙏', m.ok, 'fa-copy'); }
             function fb() { var a = document.createElement('textarea'); a.value = link; a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch (e) {} a.remove(); }
@@ -1198,7 +1192,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
             copyright_text: "© 2026 Sri Sri Radha Krishna Chandra Mandir, Hadapsar. All Rights Reserved.",
             credit: "Designed & Developed with ❤️ by ",
             contact_dev: "Contact Developer",
-            offline_msg: "You are currently offline. Showing cached contents. Keep chanting!",
             today_is: "Today is",
             tom_is: "Tomorrow is",
             read_more: "Read Glories",
@@ -1257,7 +1250,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
             copyright_text: "© 2026 श्री श्री राधाकृष्ण चंद्र मंदिर, हडपसर। सर्वाधिकार सुरक्षित।",
             credit: "प्यार से डिज़ाइन और विकसित: ",
             contact_dev: "डेवलपर से संपर्क करें",
-            offline_msg: "आप अभी ऑफ़लाइन हैं। सुरक्षित सामग्री दिखा रहे हैं। हरे कृष्ण जपते रहें!",
             today_is: "आज है",
             tom_is: "कल है",
             read_more: "महात्म्य पढ़ें",
@@ -1316,7 +1308,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
             copyright_text: "© 2026 श्री श्री राधाकृष्ण चंद्र मंदिर, हडपसर. सर्व हक्क राखीव.",
             credit: "प्रेमाने डिझाइन आणि विकसित: ",
             contact_dev: "डेव्हलपरशी संपर्क साधा",
-            offline_msg: "तुम्ही सध्या ऑफलाइन आहात. सेव्ह केलेली माहिती दाखवत आहे. हरे कृष्ण जपत राहा!",
             today_is: "आज आहे",
             tom_is: "उद्या आहे",
             read_more: "अधिक वाचा",
@@ -1429,7 +1420,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
     window.shareFeast = function(){
         const lang = localStorage.getItem('lang') || 'en';
-        window.location.href = 'https://wa.me/?text=' + encodeURIComponent((T[lang]||T.en).shareMsg);
+        window.templeOpenExternal('https://wa.me/?text=' + encodeURIComponent((T[lang]||T.en).shareMsg));
     };
 
     const _orig = window.setLanguage;

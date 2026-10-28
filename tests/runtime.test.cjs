@@ -20,3 +20,15 @@ test('forceUpdate must be explicit boolean; remote text stays data', () => {
   assert.equal(updateFor({...valid, forceUpdate:'true'}, 13).force, false);
   assert.equal(updateFor({...valid, title:'<script>bad()</script>'}, 13).title, '<script>bad()</script>');
 });
+const {linkTarget} = require('../temple-runtime.js');
+const base = 'https://bjendermisra-ops.github.io/iskcon-mob/temple-runtime.js';
+test('internal pages stay internal; social/store/other repositories stay external', () => {
+  assert.equal(linkTarget('schedule.html',base).internal,true);
+  assert.equal(linkTarget('https://bjendermisra-ops.github.io/iskcon-mob/dev.html',base).internal,true);
+  for(const url of ['https://youtu.be/123','https://www.instagram.com/test','https://play.google.com/store/apps/details?id=test','https://bjendermisra-ops.github.io/another-project/','https://evil.test/iskcon-mob/'])
+    assert.equal(linkTarget(url,base).internal,false,url);
+});
+test('legacy intent links become safe HTTPS handoffs; unsafe links are rejected', () => {
+  assert.equal(linkTarget('intent://youtube.com/watch?v=123#Intent;scheme=https;S.browser_fallback_url=https%3A%2F%2Fyoutube.com%2Fwatch%3Fv%3D123;end',base).url,'https://youtube.com/watch?v=123');
+  for(const value of ['javascript:alert(1)','file:///secret','data:text/html,test','https://u:p@example.com','https://example.com\\@evil.test/'])assert.equal(linkTarget(value,base),null);
+});
