@@ -1,0 +1,61 @@
+{
+  "packs": [
+    {
+      "id": "test_01",
+      "name": "My First Stickers",
+      "publisher": "WA Stickers",
+      "category": "Devotional",
+      "description": "Clean static sticker collection",
+      "animated": false,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/",
+      "stickers": [
+        {
+          "file": "img2276.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/img2276.webp",
+          "emojis": ["😀", "🙏"]
+        },
+        {
+          "file": "img3589.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/img3589.webp",
+          "emojis": ["🙏", "✨"]
+        },
+        {
+          "file": "img9010.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/img9010.webp",
+          "emojis": ["😍", "❤️"]
+        }
+      ]
+    },
+    {
+      "id": "animated_01",
+      "name": "Animated Test Stickers",
+      "publisher": "WA Stickers",
+      "category": "Animated",
+      "description": "High quality animated WebP stickers for WhatsApp",
+      "animated": true,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/",
+      "stickers": [
+        {
+          "file": "bahi_animated_whatsapp.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/bahi_animated_whatsapp.webp",
+          "emojis": ["💃"]
+        },
+        {
+          "file": "bahi_an_what.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/bahi_an_what.webp",
+          "emojis": ["😄"]
+        },
+        {
+          "file": "bahi_an_whatsa.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/bahi_an_whatsa.webp",
+          "emojis": ["🙌"]
+        },
+        {
+          "file": "bahi_an_whatsapp.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/wa-stickers/main/bahi_an_whatsapp.webp",
+          "emojis": ["💚"]
+        }
+      ]
+    }
+  ]
+}
