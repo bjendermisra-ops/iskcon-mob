@@ -675,6 +675,25 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         </div>
     </div>
 
+    <!-- WhatsApp sticker feature: separate Vercel interface + native SWB integration -->
+    <div class="mb-3" id="whatsapp-stickers-entry">
+        <a href="https://wa-stickers.vercel.app/" onclick="templeOpenExternal(this.href); return false;"
+           class="feature-card shadow-sm" rel="noopener noreferrer"
+           aria-label="WhatsApp Stickers — static and animated sticker packs"
+           style="display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:12px; min-height:82px; padding:13px 16px; border:1px solid rgba(37,211,102,.42); background:linear-gradient(120deg,var(--card-bg),rgba(37,211,102,.10)); text-align:left;">
+            <span style="display:flex; align-items:center; gap:12px; min-width:0;">
+                <span aria-hidden="true" style="display:flex; justify-content:center; align-items:center; width:46px; height:46px; flex-shrink:0; border-radius:14px; background:rgba(37,211,102,.13);">
+                    <i class="fab fa-whatsapp" style="font-size:1.65rem; color:#20b85a; margin:0;"></i>
+                </span>
+                <span style="display:flex; flex-direction:column; align-items:flex-start; gap:4px; min-width:0;">
+                    <strong style="font-size:.98rem; line-height:1.25; color:var(--text-color);">WhatsApp Stickers</strong>
+                    <span style="font-size:.76rem; font-weight:500; color:var(--text-color); opacity:.77; line-height:1.3;">Static + Animated • Add to WhatsApp</span>
+                </span>
+            </span>
+            <i class="fas fa-chevron-right" aria-hidden="true" style="color:#20b85a; font-size:.95rem; margin:0;"></i>
+        </a>
+    </div>
+
     <!-- Ekadashi Calendar Banner -->
     <a href="calendar.html" class="calendar-premium-card">
         <div class="cal-icon-wrapper">
