@@ -1,0 +1,9 @@
+{
+  "enabled": false,
+  "title": "Global Japa • Live with Lokanath Swami Maharaj",
+  "mediaType": "audio",
+  "streamUrl": "",
+  "audioFallbackUrl": "",
+  "expiresAt": "",
+  "note": "Enable only when an authorized live stream is available. Set a future expiresAt so stale streams do not appear live."
+}
