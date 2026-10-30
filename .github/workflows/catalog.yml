@@ -1,0 +1,35 @@
+name: Build sticker catalog
+on:
+  push:
+    branches: [main]
+    paths: ['*.webp', 'stickers/**', 'scripts/**', 'catalog-config.json', 'legacy-packs.json', 'requirements.txt', '.github/workflows/catalog.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: sticker-catalog
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Save generated catalog
+        run: |
+          git config user.name 'sticker-catalog-bot'
+          git config user.email 'sticker-catalog-bot@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/build_catalog.py
+            git add packs.json generated
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Update sticker catalog'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          echo 'Catalog push failed; check branch and Actions write permissions.'
+          exit 1

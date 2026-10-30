@@ -1,0 +1,9 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const elements={};function elem(){return {value:'',textContent:'',classList:{toggle(){},contains(){return false}},setAttribute(){},replaceChildren(){},append(){},scrollIntoView(){}}}
+const ctx={URL,console,AbortController,document:{baseURI:'https://example.test/',getElementById:id=>elements[id]??=(elem()),createElement:elem,createTextNode:x=>x,body:elem()},window:{addEventListener(){}},localStorage:{getItem(){return null},setItem(){}},fetch:()=>new Promise(()=>{}),setTimeout:()=>1,clearTimeout(){}};vm.createContext(ctx);vm.runInContext(fs.readFileSync(require('path').join(__dirname,'../stickers.html'),'utf8').match(/<script>([\s\S]*)<\/script>/)[1],ctx);
+vm.runInContext(`packs=normalize({packs:[{id:'a',name:'Test',animated:false,baseUrl:'https://example.test/',stickers:[{file:'1.webp'},{file:'2.webp'},{file:'3.webp'}]}]});add(packs[0]);`,ctx);assert(elements.status.textContent.includes('Android app'));
+ctx.window.StickerBridge={};vm.runInContext('add(packs[0])',ctx);assert(elements.status.textContent.includes('supported'));
+ctx.window.StickerBridge={addDynamicPack(){throw Error('native failure')}};vm.runInContext('add(packs[0])',ctx);assert(elements.status.textContent.includes('native failure'));assert(vm.runInContext('pending===null',ctx));
+let payload;ctx.window.StickerBridge={addDynamicPack(p){payload=JSON.parse(p)}};vm.runInContext('add(packs[0])',ctx);assert.equal(payload.files.length,3);assert(!elements.status.textContent.includes('added'));
+ctx.window.onNativeStatus({packId:'other',state:'success'});assert(vm.runInContext('pending!==null',ctx));ctx.window.onNativeStatus({packId:'a',state:'success'});assert(vm.runInContext('pending===null',ctx));
+console.log('PASS: missing/unsupported/throwing bridge, payload, no false success, mismatched callback ignored, completion unlock');

@@ -1,0 +1,61 @@
+{
+  "packs": [
+    {
+      "id": "iskcon_static_01",
+      "name": "Sri Sri Radha Krishna",
+      "publisher": "ISKCON Hadapsar",
+      "category": "Spiritual",
+      "description": "Devotional static stickers of Radha Krishna and Temple Seva",
+      "animated": false,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/",
+      "stickers": [
+        {
+          "file": "img2276.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img2276.webp",
+          "emojis": ["🙏", "🌸"]
+        },
+        {
+          "file": "img3589.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img3589.webp",
+          "emojis": ["🙏", "✨"]
+        },
+        {
+          "file": "img9010.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img9010.webp",
+          "emojis": ["❤️", "🦚"]
+        }
+      ]
+    },
+    {
+      "id": "iskcon_animated_01",
+      "name": "Hare Krishna Kirtan",
+      "publisher": "ISKCON Hadapsar",
+      "category": "Animated",
+      "description": "Devotional animated WebP stickers for WhatsApp kirtan and celebration",
+      "animated": true,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/",
+      "stickers": [
+        {
+          "file": "bahi_animated_whatsapp.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_animated_whatsapp.webp",
+          "emojis": ["💃", "🙌"]
+        },
+        {
+          "file": "bahi_an_what.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_what.webp",
+          "emojis": ["😄", "✨"]
+        },
+        {
+          "file": "bahi_an_whatsa.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_whatsa.webp",
+          "emojis": ["🙌", "🌸"]
+        },
+        {
+          "file": "bahi_an_whatsapp.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_whatsapp.webp",
+          "emojis": ["💚", "🙏"]
+        }
+      ]
+    }
+  ]
+}

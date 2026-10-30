@@ -1,0 +1,13 @@
+{
+  "repository": "bjendermisra-ops/iskcon-mob",
+  "branch": "main",
+  "publisher": "ISKCON Hadapsar",
+  "categories": {
+    "bal-krishna": "Bal Krishna",
+    "radha-krishna": "Radha Krishna",
+    "greetings": "Greetings",
+    "festivals": "Festivals",
+    "prayers": "Prayers",
+    "kirtan": "Kirtan"
+  }
+}

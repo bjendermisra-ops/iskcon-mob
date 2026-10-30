@@ -12,18 +12,33 @@
         {
           "file": "img2276.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img2276.webp",
-          "emojis": ["🙏", "🌸"]
+          "emojis": [
+            "🙏",
+            "🌸"
+          ]
         },
         {
           "file": "img3589.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img3589.webp",
-          "emojis": ["🙏", "✨"]
+          "emojis": [
+            "🙏",
+            "✨"
+          ]
         },
         {
           "file": "img9010.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/img9010.webp",
-          "emojis": ["❤️", "🦚"]
+          "emojis": [
+            "❤️",
+            "🦚"
+          ]
         }
+      ],
+      "available": false,
+      "missingFiles": [
+        "img2276.webp",
+        "img3589.webp",
+        "img9010.webp"
       ]
     },
     {
@@ -38,23 +53,40 @@
         {
           "file": "bahi_animated_whatsapp.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_animated_whatsapp.webp",
-          "emojis": ["💃", "🙌"]
+          "emojis": [
+            "💃",
+            "🙌"
+          ]
         },
         {
           "file": "bahi_an_what.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_what.webp",
-          "emojis": ["😄", "✨"]
+          "emojis": [
+            "😄",
+            "✨"
+          ]
         },
         {
           "file": "bahi_an_whatsa.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_whatsa.webp",
-          "emojis": ["🙌", "🌸"]
+          "emojis": [
+            "🙌",
+            "🌸"
+          ]
         },
         {
           "file": "bahi_an_whatsapp.webp",
           "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/bahi_an_whatsapp.webp",
-          "emojis": ["💚", "🙏"]
+          "emojis": [
+            "💚",
+            "🙏"
+          ]
         }
+      ],
+      "available": false,
+      "missingFiles": [
+        "bahi_animated_whatsapp.webp",
+        "bahi_an_whatsapp.webp"
       ]
     }
   ]
