@@ -88,6 +88,120 @@
         "bahi_animated_whatsapp.webp",
         "bahi_an_whatsapp.webp"
       ]
+    },
+    {
+      "id": "bhakti_56cb218cf12b23bafc34",
+      "name": "Bal Krishna • Flying Hearts",
+      "publisher": "ISKCON Hadapsar",
+      "category": "Bal Krishna",
+      "animated": true,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_56cb218cf12b23bafc34/",
+      "tray": "tray.png",
+      "image_data_version": "29fc278c8539f2d7",
+      "stickers": [
+        {
+          "file": "s_67ab3d759ba0e83a.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_56cb218cf12b23bafc34/s_67ab3d759ba0e83a.webp",
+          "emojis": [
+            "❤️",
+            "🙏",
+            "✨"
+          ]
+        },
+        {
+          "file": "s_82faedc06ef7a7cf.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_56cb218cf12b23bafc34/s_82faedc06ef7a7cf.webp",
+          "emojis": [
+            "❤️",
+            "🙏",
+            "✨"
+          ]
+        },
+        {
+          "file": "s_cd77750126ae1699.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_56cb218cf12b23bafc34/s_cd77750126ae1699.webp",
+          "emojis": [
+            "❤️",
+            "🙏",
+            "✨"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bhakti_a7bb1bcd2ddf185c1ab0",
+      "name": "Bal Krishna • Prem Bhare Sandesh",
+      "publisher": "ISKCON Hadapsar",
+      "category": "Bal Krishna",
+      "animated": false,
+      "baseUrl": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/",
+      "tray": "tray.png",
+      "image_data_version": "04e4f4fe7cdaa1ec",
+      "stickers": [
+        {
+          "file": "s_d9ac177fbcf793f5.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_d9ac177fbcf793f5.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_06e309a12111bb0f.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_06e309a12111bb0f.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_95668a6b330306d2.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_95668a6b330306d2.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_ed7f6c3055693dec.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_ed7f6c3055693dec.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_bda3a27bd63f3ac9.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_bda3a27bd63f3ac9.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_34202c6ac80666c0.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_34202c6ac80666c0.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        },
+        {
+          "file": "s_bf3ac1d49fa8ec6d.webp",
+          "image": "https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/generated/bhakti_a7bb1bcd2ddf185c1ab0/s_bf3ac1d49fa8ec6d.webp",
+          "emojis": [
+            "🙏",
+            "🦚",
+            "❤️"
+          ]
+        }
+      ]
     }
   ]
 }

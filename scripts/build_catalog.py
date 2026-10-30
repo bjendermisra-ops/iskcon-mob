@@ -48,13 +48,16 @@ def run():
        if len(data)>500*1024:raise ValueError('animation exceeds 500 KB')
        im.seek(0);frame=im.convert('RGBA')
       else:
-       frame=ImageOps.exif_transpose(im).convert('RGBA')
-       frame.thumbnail((480,480),Image.Resampling.LANCZOS)
-       canvas=Image.new('RGBA',(512,512));canvas.alpha_composite(frame,((512-frame.width)//2,(512-frame.height)//2));frame=canvas
-       for quality in (90,80,70,60,45,30):
-        out=io.BytesIO();frame.save(out,'WEBP',quality=quality,method=6);data=out.getvalue()
-        if len(data)<=100*1024:break
-       if len(data)>100*1024:raise ValueError('cannot compress below 100 KB')
+       if im.format=='WEBP' and im.size==(512,512) and source.stat().st_size<=100*1024:
+        frame=im.convert('RGBA');data=source.read_bytes()
+       else:
+        frame=ImageOps.exif_transpose(im).convert('RGBA')
+        frame.thumbnail((480,480),Image.Resampling.LANCZOS)
+        canvas=Image.new('RGBA',(512,512));canvas.alpha_composite(frame,((512-frame.width)//2,(512-frame.height)//2));frame=canvas
+        for quality in (90,80,70,60,45,30):
+         out=io.BytesIO();frame.save(out,'WEBP',quality=quality,method=6);data=out.getvalue()
+         if len(data)<=100*1024:break
+        if len(data)>100*1024:raise ValueError('cannot compress below 100 KB')
       if frame.getextrema()[3][0]==255:warnings.append(f'{source.name}: opaque background; no automatic background removal')
       if first is None:first=frame.copy()
       # ASCII filenames independent of uploaded names, safe for the native downloader.
