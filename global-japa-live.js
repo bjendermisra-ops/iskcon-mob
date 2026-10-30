@@ -87,7 +87,7 @@
       var active = validConfig(incoming);
       var changed = JSON.stringify(config) !== JSON.stringify(incoming);
       config = incoming;
-      if (changed && player) clearPlayer();
+      if ((changed || !active) && player) clearPlayer();
       join.hidden = !active;
       lowData.hidden = !active || !httpsUrl(config.audioFallbackUrl);
       title.textContent = typeof config.title === 'string' ? config.title.slice(0, 100) : 'Global Japa';
