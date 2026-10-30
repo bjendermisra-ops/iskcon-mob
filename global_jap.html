@@ -566,6 +566,8 @@
         }
         .toast-msg.show { transform: translate(-50%, 0); }
     </style>
+    <link rel="stylesheet" href="global-japa-live.css?v=1">
+    <script src="global-japa-live.js?v=1" defer></script>
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
@@ -602,6 +604,18 @@
         <div id="status-badge" class="status-badge live-inactive">🕐 <span data-i18n="status_checking">CHECKING TIME...</span></div>
         <div id="status-message" class="status-message" data-i18n="status_wait_msg">Please wait...</div>
 
+        <!-- Optional native-page broadcast; existing Zoom fallbacks remain available. -->
+        <section id="gj-live" class="gj-live" data-live="offline" aria-labelledby="gj-live-title">
+          <div class="gj-live__eyebrow">📿 GLOBAL JAPA · IN-APP BROADCAST</div>
+          <h2 class="gj-live__title" id="gj-live-title">Global Japa</h2>
+          <p class="gj-live__note" id="gj-live-status" role="status" aria-live="polite">Checking live broadcast…</p>
+          <div class="gj-live__stage" id="gj-live-stage"></div>
+          <div class="gj-live__actions">
+            <button type="button" class="gj-live__button primary" id="gj-live-play" hidden>▶ Play in app</button>
+            <button type="button" class="gj-live__button" id="gj-live-audio" hidden>🎧 Low-data audio</button>
+            <button type="button" class="gj-live__button" id="gj-live-refresh">↻ Refresh status</button>
+          </div>
+        </section>
         <!-- How To Join -->
         <div class="novice-guide-banner">
             <div class="guide-title" data-i18n="guide_title">🙏 New Here? How to Join:</div>
@@ -748,12 +762,12 @@
                 subtitle: "Chant with Gurumaharaja Globally",
                 status_checking: "CHECKING TIME...",
                 status_wait_msg: "Please wait...",
-                status_live: "LIVE NOW",
-                status_live_msg: "Gurumaharaja is chanting. Join any server below!",
+                status_live: "SCHEDULED JAPA TIME",
+                status_live_msg: "Scheduled Japa window. Check the actual in-app broadcast status below.",
                 status_next: "NEXT AT 5:15 AM",
                 status_next_msg: "Waiting for next live session... (5:15 AM IST)",
                 guide_title: "🙏 New Here? How to Join:",
-                guide_step1: "Just click <span>'CONNECT'</span> button below to join instantly!",
+                guide_step1: "Use <span>Play in app</span> above when available. Existing Zoom links remain below as backup.",
                 guide_step2: "If one server says <span style='color: #FF1744;'>Full</span>, simply click the <span>Next Server</span>!",
                 name_label: "Enter Your Name (Optional)",
                 name_placeholder: "Enter name here...",
@@ -793,12 +807,12 @@
                 subtitle: "गुरुमहाराज के साथ विश्वभर में जप करें",
                 status_checking: "समय जाँचा जा रहा है...",
                 status_wait_msg: "कृपया प्रतीक्षा करें...",
-                status_live: "लाइव दर्शन चालू है",
-                status_live_msg: "गुरुमहाराज जप कर रहे हैं। नीचे दिए किसी भी सर्वर से जुड़ें!",
+                status_live: "जप का निर्धारित समय",
+                status_live_msg: "यह जप का निर्धारित समय है। वास्तविक लाइव प्रसारण की स्थिति नीचे देखें।",
                 status_next: "अगला जप 5:15 AM पर",
                 status_next_msg: "अगले लाइव सेशन का इंतज़ार है... (5:15 AM IST)",
                 guide_title: "🙏 नये हैं? ऐसे जुड़ें:",
-                guide_step1: "सीधा <span>'CONNECT'</span> बटन दबाएं, और तुरंत मीटिंग में जुड़ें!",
+                guide_step1: "ऊपर <span>ऐप में चलाएँ</span> उपलब्ध होने पर दबाएँ। Zoom लिंक नीचे बैकअप के लिए हैं।",
                 guide_step2: "अगर एक सर्वर <span style='color: #FF1744;'>Full</span> हो, तो तुरंत <span>दूसरा सर्वर</span> ट्राई करें!",
                 name_label: "अपना नाम लिखें (Optional)",
                 name_placeholder: "यहाँ नाम लिखें...",
@@ -838,12 +852,12 @@
                 subtitle: "गुरुमहाराजांसोबत विश्वभरात जप करा",
                 status_checking: "वेळ तपासत आहे...",
                 status_wait_msg: "कृपया प्रतीक्षा करा...",
-                status_live: "आता थेट चालू आहे",
-                status_live_msg: "गुरुमहाराज जप करत आहेत. खालील कोणत्याही सर्व्हरशी जोडा!",
+                status_live: "जपाची नियोजित वेळ",
+                status_live_msg: "ही जपाची नियोजित वेळ आहे. प्रत्यक्ष थेट प्रसारणाची स्थिती खाली पाहा.",
                 status_next: "पुढील जप पहाटे 5:15 वाजता",
                 status_next_msg: "पुढील लाईव्ह सेशनची प्रतीक्षा... (पहाटे 5:15 IST)",
                 guide_title: "🙏 नवीन आहात? असे जॉईन करा:",
-                guide_step1: "फक्त <span>'CONNECT'</span> बटण दाबा, आणि थेट मीटिंगमध्ये जोडा!",
+                guide_step1: "वर <span>ॲपमध्ये प्ले</span> उपलब्ध असताना दाबा. खाली Zoom मीटिंगचा पर्याय आहे.",
                 guide_step2: "जर एक सर्व्हर <span style='color: #FF1744;'>Full</span> असेल, तर <span>दुसरा सर्व्हर</span> दाबा!",
                 name_label: "तुमचे नाव लिहा (Optional)",
                 name_placeholder: "येथे नाव लिहा...",
@@ -1136,6 +1150,16 @@
                 '&auto_audio=1';
 
             setTimeout(() => {
+                // Only the dedicated in-app broadcast uses the trusted WebView.
+                // The legacy Zoom meeting remains an explicit external fallback.
+                try {
+                    if (window.TempleRuntime && typeof window.TempleRuntime.openLink === 'function' &&
+                        window.TempleRuntime.openLink(zoomUrl)) {
+                        DOM.overlay.classList.remove('active');
+                        return;
+                    }
+                } catch (e) {}
+                DOM.overlay.classList.remove('active');
                 window.location.href = zoomUrl;
             }, 350);
         }
