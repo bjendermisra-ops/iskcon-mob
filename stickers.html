@@ -1,21 +1,161 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#075c60"><meta http-equiv="Content-Security-Policy" content="frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"><title>Bhakti Stickers · ISKCON Hadapsar</title><style>
-:root{color-scheme:light;--bg:#faf7ef;--paper:#fff;--ink:#153e43;--muted:#667976;--line:#dce5df;--accent:#07676a;--soft:#e4f2ed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,sans-serif}body.dark{color-scheme:dark;--bg:#101e22;--paper:#192c30;--ink:#eff9f4;--muted:#a7bfba;--line:#355057;--accent:#70dfc9;--soft:#203c3d}header{background:#075c60;color:#fff;padding:20px max(18px,calc((100% - 740px)/2));display:flex;align-items:center;gap:12px}header b{font-size:17px}header small{display:block;color:#b7dcd6;margin-top:4px}button,input{font:inherit}button{cursor:pointer;min-height:44px}button:focus-visible,input:focus-visible{outline:3px solid #d99c39;outline-offset:3px}button{border:1px solid var(--line);border-radius:14px;background:var(--paper);color:var(--ink);padding:10px 15px}header button{margin-left:auto}main{max-width:780px;margin:auto;padding:22px 18px 110px}.hero{border:1px solid var(--line);border-radius:24px;padding:25px;background:linear-gradient(120deg,var(--soft),var(--paper));position:relative;overflow:hidden}.hero .art{float:right;font-size:65px;margin:20px 0 0 10px}h1{font-size:34px;line-height:1.2;margin:10px 0}h2{font-size:21px;margin:24px 0 12px}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:var(--accent)}p{line-height:1.6;color:var(--muted)}input{width:100%;padding:16px;border-radius:18px;border:1px solid var(--line);background:var(--paper);color:var(--ink);margin:20px 0 10px}.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.category{padding:14px 5px;background:var(--soft);font-size:13px}.category span{display:block;font-size:26px;margin-bottom:6px}button[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.filters button{flex:1;font-size:13px}.sectionbar{display:flex;align-items:center;justify-content:space-between;gap:10px}.sectionbar small{color:var(--muted)}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px;margin:0 0 16px}.cardhead{display:flex;gap:10px;align-items:start}.cardhead h3{margin:0 0 6px;font-size:18px}.cardhead small{color:var(--muted)}.save{margin-left:auto}.badge{font-size:10px;letter-spacing:1px;color:var(--accent);font-weight:800;display:block;margin-top:8px}.previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:17px 0}.previews img{display:block;width:100%;aspect-ratio:1;object-fit:contain;border-radius:14px;background:var(--bg)}.add{width:100%;background:var(--accent);border:0;color:var(--bg);font-weight:750}.dark .add{color:#102a28}button:disabled{opacity:.5;cursor:wait}.empty{padding:30px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}#status{padding:14px;background:var(--soft);border-radius:14px;font-size:13px;line-height:1.6;margin:15px 0}footer{text-align:center;font-size:12px;color:var(--muted);padding:25px}nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:12px;background:var(--paper);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:5}nav button{min-width:100px;border:0}#retry{display:block;margin:10px auto}#retry[hidden]{display:none}@media(min-width:650px){#cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{margin:0}.categories{grid-template-columns:repeat(6,1fr)}}@media(prefers-reduced-motion:no-preference){button{transition:background .15s,opacity .15s}}
-</style></head><body><header><span aria-hidden="true">🪷</span><div><b>श्री श्री राधा कृष्ण चंद्र मंदिर</b><small>ISKCON Hadapsar</small></div><button id="theme" aria-label="Toggle dark mode">◐</button></header><main><section class="hero"><img class="art" src="./krishna.webp" alt="Krishna" style="width:100px;height:100px;object-fit:contain" onerror="this.hidden=true"><div class="eyebrow">BHAKTI STICKERS</div><h1>हर संदेश में भक्ति</h1><p>Share a little joy.<br>Send a little Krishna.</p></section><input id="q" type="search" placeholder="Search devotional stickers…" aria-label="Search sticker packs"><h2 id="categoryHeading">Categories</h2><div id="categories" class="categories"></div><div id="filters" class="filters" aria-label="Sticker type"></div><div class="sectionbar"><h2 id="heading">Explore packs</h2><small id="count">Loading…</small></div><div id="status" role="status" aria-live="polite">Loading sticker packs…</div><button id="retry" hidden>Try again</button><div id="cards"></div><footer>Made for sharing Krishna’s joy · ISKCON Hadapsar</footer></main><nav aria-label="Main navigation"><button id="explore" aria-pressed="true">⌂ Explore</button><button id="browse">▦ Categories</button><button id="saved" aria-pressed="false">♡ Saved</button></nav><script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E65100"><meta http-equiv="Content-Security-Policy" content="frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"><title>Bhakti Stickers · Sri Sri Radha Krishna Chandra Mandir</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FF9933;--pd:#E65100;--bg:#FAFAFA;--card:#fff;--ink:#2b2b2b;--mu:#6b625a;--line:rgba(150,150,150,.22);--soft:#fff3e0;--wa:#128C7E;--wa2:#25D366}
+body[data-theme=dark]{color-scheme:dark;--bg:#121212;--card:#1e1e1e;--ink:#ececec;--mu:#b5aba0;--soft:#271202}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Poppins,'Noto Sans Devanagari',system-ui,sans-serif;overscroll-behavior-y:none;transition:background .3s,color .3s}
+button,input{font:inherit}button{cursor:pointer;min-height:44px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:10px 14px}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #d99c39;outline-offset:2px}
+button[aria-pressed=true]{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}
+button:disabled{opacity:.55;cursor:wait}
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px;color:#fff;background:linear-gradient(90deg,#E65100,#FF9933,#FF7043);background-size:200% auto;animation:gm 5s ease infinite;box-shadow:0 4px 15px rgba(255,153,51,.35)}
+@keyframes gm{50%{background-position:100% 50%}}
+.ib{flex:none;width:40px;height:40px;min-height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.22);color:#fff;padding:0;font-size:1.05rem;text-decoration:none}
+.tt{flex:1;min-width:0;line-height:1.2}.tt b,.tt small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tt b{font-family:Cinzel,'Noto Sans Devanagari',serif;font-size:1.05rem}.tt small{font-size:.66rem;opacity:.92}
+.lg{display:flex;gap:3px;background:rgba(0,0,0,.18);border-radius:20px;padding:3px}.lg button{min-height:30px;min-width:32px;padding:0 6px;border:0;border-radius:16px;background:none;color:#fff;font-size:.74rem;font-weight:700}.lg button[aria-pressed=true]{background:#fff;color:var(--pd);box-shadow:none}
+.mt{background:var(--soft);color:#d84315;padding:6px 0;overflow:hidden;white-space:nowrap;border-bottom:2px solid rgba(255,153,51,.3);font:800 .85rem Cinzel,serif}body[data-theme=dark] .mt{color:#ffb74d}.mt div{display:inline-block;animation:ts 24s linear infinite}.ts{padding-right:40px}@keyframes ts{to{transform:translate3d(-50%,0,0)}}
+main{max-width:780px;margin:auto;padding:16px 16px 110px}
+.hero{position:relative;overflow:hidden;min-height:170px;border-radius:22px;padding:22px 20px;color:#fff;background:radial-gradient(circle at 80% 30%,#FF8F00,#E65100 75%);box-shadow:0 10px 30px rgba(255,153,51,.28);border:2px solid rgba(255,255,255,.25)}
+.hero>*{position:relative;z-index:1}.hero .art{position:absolute;right:12px;top:14px;width:100px;height:100px;object-fit:contain}
+.eb{font-size:.68rem;letter-spacing:2px;font-weight:800;color:#FFE082}.hero h1{font-family:'Noto Sans Devanagari',Cinzel,serif;font-size:1.6rem;line-height:1.2;margin:6px 0;max-width:68%}.hero p{margin:0;font-size:.85rem;opacity:.95;max-width:68%}
+.fl{position:absolute!important;inset:0;overflow:hidden;pointer-events:none;z-index:0!important}.fl i{position:absolute;bottom:-24px;font-style:normal;font-size:1.3rem;opacity:0;animation:up 6s linear infinite}.fl i:nth-child(1){left:8%}.fl i:nth-child(2){left:34%;animation-delay:1.5s}.fl i:nth-child(3){left:58%;animation-delay:3s}.fl i:nth-child(4){left:80%;animation-delay:4.5s}
+@keyframes up{15%{opacity:.85}to{transform:translateY(-190px) rotate(14deg);opacity:0}}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.steps span{flex:1;min-width:30%;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 6px;font-size:.72rem;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.05)}
+input{width:100%;padding:14px 16px;border-radius:18px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);margin:16px 0 4px}
+h2{font-size:1.1rem;margin:20px 0 10px;font-weight:800}#categoryHeading{scroll-margin-top:90px}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.category{padding:12px 4px;border-radius:16px;background:var(--soft);font-size:.78rem;font-weight:600}.category span{display:block;font-size:1.6rem;margin-bottom:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.filters button{flex:1;font-size:.8rem}
+.sectionbar{display:flex;align-items:center;justify-content:space-between;gap:10px}.sectionbar small{color:var(--mu)}
+#sb{display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:14px;padding:10px 14px;font-size:.8rem;margin:12px 0}#status{flex:1}#stop{min-height:34px;padding:4px 12px;font-size:.78rem;font-weight:700}#stop[hidden],#retry[hidden]{display:none}#retry{display:block;margin:10px auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:0 0 16px;box-shadow:0 4px 20px rgba(0,0,0,.05)}
+.cardhead{display:flex;gap:10px;align-items:flex-start}.cardhead h3{margin:0 0 4px;font-size:1.02rem}.cardhead small{color:var(--mu)}.save{margin-left:auto;min-width:44px;font-size:1.1rem}
+.badge{display:block;margin-top:6px;font-size:.62rem;letter-spacing:1px;font-weight:800;color:var(--pd)}
+.previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.previews img{display:block;width:100%;aspect-ratio:1;object-fit:contain;border-radius:14px;background:var(--bg)}.ph{display:grid;place-items:center;aspect-ratio:1;border-radius:14px;background:var(--bg);color:var(--mu)}
+.more{width:100%;margin-bottom:10px;font-size:.82rem}
+.add{width:100%;border:0;background:linear-gradient(135deg,var(--wa),var(--wa2));color:#fff;font-weight:800;box-shadow:0 6px 16px rgba(18,140,126,.3)}
+.empty{padding:28px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--mu)}
+footer{text-align:center;font-size:.72rem;color:var(--mu);padding:24px 0 6px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:10px;background:var(--card);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px))}nav button{flex:1;max-width:140px;border:0;background:none;font-size:.8rem;font-weight:700}nav button[aria-pressed=true]{color:var(--pd);background:var(--soft);box-shadow:none}
+@media(min-width:650px){#cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{margin:0}.categories{grid-template-columns:repeat(6,1fr)}}
+@media(prefers-reduced-motion:reduce){.nav,.mt div,.fl i{animation:none}}
+</style></head><body>
+<header class="nav"><a id="back" class="ib" href="index.html" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><div class="tt"><b data-t="title"></b><small data-t="temple"></small></div><div class="lg" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="hi">हि</button><button data-l="mr">म</button></div><button id="theme" class="ib" aria-label="Dark mode"></button></header>
+<div class="mt" aria-hidden="true"><div><span class="ts">🕉️ Hare Krishna Hare Krishna Krishna Krishna Hare Hare | Hare Rama Hare Rama Rama Rama Hare Hare 🕉️</span><span class="ts">🕉️ Hare Krishna Hare Krishna Krishna Krishna Hare Hare | Hare Rama Hare Rama Rama Rama Hare Hare 🕉️</span></div></div>
+<main>
+<section class="hero"><div class="fl" aria-hidden="true"><i>🦚</i><i>🪷</i><i>🙏</i><i>🎶</i></div><img class="art" src="./krishna.webp" alt="" onerror="this.hidden=true"><div class="eb" data-t="eyebrow"></div><h1 data-t="h1"></h1><p data-t="sub"></p></section>
+<div class="steps" id="steps"></div>
+<input id="q" type="search" aria-label="Search sticker packs">
+<h2 id="categoryHeading" data-t="cats"></h2><div id="categories" class="categories"></div><div id="filters" class="filters"></div>
+<div class="sectionbar"><h2 id="heading"></h2><small id="count"></small></div>
+<div id="sb"><span id="status" role="status" aria-live="polite"></span><button id="stop" hidden></button></div>
+<button id="retry" hidden></button><div id="cards"></div>
+<footer id="foot"></footer>
+</main>
+<nav aria-label="Main navigation"><button id="explore" aria-pressed="true"></button><button id="browse"></button><button id="saved" aria-pressed="false"></button></nav>
+<script>
 'use strict';
-const $=id=>document.getElementById(id),storage={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const initialSaved=storage.get('bhakti.saved',[]);let favorites=new Set(Array.isArray(initialSaved)?initialSaved:[]),packs=[],category='All',type='all',savedOnly=false,pending=null,loadSeq=0;
+const $=id=>document.getElementById(id),TEMPLE='Sri Sri Radha Krishna Chandra Mandir',LANGS=['en','hi','mr'];
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const rw={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let LI=Math.max(0,LANGS.indexOf(rw.get('lang')));
+const S={
+title:['Bhakti Stickers','भक्ति स्टिकर्स','भक्ती स्टिकर्स'],temple:[TEMPLE,'श्री श्री राधा कृष्ण चंद्र मंदिर','श्री श्री राधा कृष्ण चंद्र मंदिर'],
+eyebrow:['BHAKTI STICKERS','भक्ति स्टिकर्स','भक्ती स्टिकर्स'],h1:['Bhakti in every message','हर संदेश में भक्ति','प्रत्येक संदेशात भक्ती'],
+sub:['Share a little joy. Send a little Krishna.','थोड़ी खुशी बाँटें, थोड़ा कृष्ण भेजें।','थोडा आनंद वाटा, थोडा कृष्ण पाठवा.'],
+s1:['1 Pick a pack','1 पैक चुनें','1 पॅक निवडा'],s2:['2 Tap Add to WhatsApp','2 Add to WhatsApp दबाएँ','2 Add to WhatsApp दाबा'],s3:['3 Confirm in WhatsApp','3 WhatsApp में पुष्टि करें','3 WhatsApp मध्ये पुष्टी करा'],
+search:['Search devotional stickers…','स्टिकर्स खोजें…','स्टिकर्स शोधा…'],cats:['Categories','श्रेणियाँ','श्रेणी'],
+all:['All packs','सभी पैक','सर्व पॅक'],anim:['Animated','एनिमेटेड','ॲनिमेटेड'],stat:['Static','स्टैटिक','स्टॅटिक'],
+hExp:['Explore packs','सभी पैक','सर्व पॅक'],hSav:['Saved packs','सेव किए पैक','सेव्ह केलेले पॅक'],packs:['packs','पैक','पॅक'],stk:['stickers','स्टिकर्स','स्टिकर्स'],
+load:['Loading sticker packs…','स्टिकर पैक लोड हो रहे हैं…','स्टिकर पॅक लोड होत आहेत…'],pick:['Choose a pack to add to WhatsApp.','WhatsApp में जोड़ने के लिए पैक चुनें।','WhatsApp मध्ये जोडण्यासाठी पॅक निवडा.'],
+add:['+ Add to WhatsApp','+ WhatsApp में जोड़ें','+ WhatsApp मध्ये जोडा'],prep:['Preparing…','तैयार हो रहा है…','तयार होत आहे…'],stop:['Cancel','रद्द करें','रद्द करा'],
+more:['View all','सभी देखें','सर्व पहा'],less:['Show fewer','कम दिखाएँ','कमी दाखवा'],
+none:['No packs here yet. Try another category or search.','यहाँ अभी कोई पैक नहीं। दूसरी श्रेणी या खोज आज़माएँ।','येथे अजून पॅक नाहीत. दुसरी श्रेणी किंवा शोध वापरा.'],
+noneS:['No saved packs yet. Tap ♡ on a pack to save it.','अभी कोई पैक सेव नहीं। पैक पर ♡ दबाएँ।','अजून पॅक सेव्ह नाहीत. पॅकवर ♡ दाबा.'],
+app:['Open this page inside the temple app to add stickers to WhatsApp.','स्टिकर्स जोड़ने के लिए यह पेज मंदिर के ऐप में खोलें।','स्टिकर्स जोडण्यासाठी हे पेज मंदिराच्या ॲपमध्ये उघडा.'],
+upd:['Please update the app to add stickers.','स्टिकर्स जोड़ने के लिए ऐप अपडेट करें।','स्टिकर्स जोडण्यासाठी ॲप अपडेट करा.'],
+noresp:['No response from the app. Please try again.','ऐप से जवाब नहीं मिला। फिर कोशिश करें।','ॲपकडून उत्तर मिळाले नाही. पुन्हा प्रयत्न करा.'],
+fail:['Could not add. Please try again.','जोड़ा नहीं जा सका। फिर कोशिश करें।','जोडता आले नाही. पुन्हा प्रयत्न करा.'],done:['Pack added to WhatsApp ✅','पैक WhatsApp में जुड़ गया ✅','पॅक WhatsApp मध्ये जोडला गेला ✅'],
+stale:['Could not refresh. Showing the last loaded packs.','अपडेट नहीं हो सका। पिछले पैक दिख रहे हैं।','अपडेट झाले नाही. मागील पॅक दिसत आहेत.'],
+nolo:['Could not load packs. Check your internet and try again.','पैक लोड नहीं हुए। इंटरनेट जाँचें और फिर कोशिश करें।','पॅक लोड झाले नाहीत. इंटरनेट तपासा आणि पुन्हा प्रयत्न करा.'],
+retry:['Try again','फिर कोशिश करें','पुन्हा प्रयत्न करा'],off:['You are offline. Adding stickers needs internet.','आप ऑफ़लाइन हैं। स्टिकर्स जोड़ने के लिए इंटरनेट चाहिए।','तुम्ही ऑफलाइन आहात. स्टिकर्स जोडण्यासाठी इंटरनेट हवे.'],
+nExp:['Explore','खोजें','शोधा'],nCat:['Categories','श्रेणी','श्रेणी'],nSav:['Saved','सेव','सेव्ह'],back:['Back','वापस','मागे'],
+foot:['© 2026 '+TEMPLE+', Hadapsar','© 2026 श्री श्री राधा कृष्ण चंद्र मंदिर, हडपसर','© 2026 श्री श्री राधा कृष्ण चंद्र मंदिर, हडपसर']};
+const t=k=>S[k][LI];
+const CT={'All':['सभी','सर्व'],'Bal Krishna':['बाल कृष्ण','बाल कृष्ण'],'Radha Krishna':['राधा कृष्ण','राधा कृष्ण'],'Greetings':['शुभकामनाएँ','शुभेच्छा'],'Festivals':['उत्सव','उत्सव'],'Prayers':['प्रार्थना','प्रार्थना'],'Kirtan':['कीर्तन','कीर्तन']};
+const tc=c=>LI&&CT[c]?CT[c][LI-1]:c;
 const icons={'All':'🪷','Bal Krishna':'🦚','Radha Krishna':'🌸','Greetings':'🙏','Festivals':'🪔','Prayers':'📿','Kirtan':'🎶','Spiritual':'🪷','Animated':'✨'};
+const sv0=ls.get('bhakti.saved',[]),fav=new Set(Array.isArray(sv0)?sv0:[]),exp=new Set();
+let packs=[],category='All',type='all',savedOnly=false,pending=null,loadSeq=0,sk='load',ready=false;
 function node(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n}
-function status(msg){$('status').textContent=String(msg)}
-function safeURL(value,base=document.baseURI){const u=new URL(value,base);if(!['https:','http:'].includes(u.protocol))throw Error('Invalid image URL');return u.href}
-function normalize(data){if(!data||!Array.isArray(data.packs))throw Error('Invalid packs.json: packs array missing');const ids=new Set();return data.packs.map(p=>{if(!p||typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||!Array.isArray(p.stickers)||typeof p.animated!=='boolean')throw Error('Invalid or duplicate pack');ids.add(p.id);const base=safeURL((p.baseUrl||'./').replace(/\/*$/,'/'));return {...p,category:String(p.category||'General'),baseUrl:base,stickers:p.stickers.map(s=>{if(!s||typeof s.file!=='string'||!s.file||s.file.includes('..')||/^[\\/]|[\\?#]/.test(s.file)||s.file.includes(':'))throw Error('Invalid sticker filename');return {...s,image:safeURL(s.image||s.file,base)}})}})}
-function controls(){const cats=['All',...new Set(['Bal Krishna','Radha Krishna','Greetings','Festivals','Prayers','Kirtan',...packs.map(p=>p.category)])];if(!cats.includes(category))category='All';$('categories').replaceChildren();cats.forEach(c=>{const b=node('button','category');b.append(node('span','',icons[c]||'🌼'),document.createTextNode(c));b.setAttribute('aria-pressed',c===category);b.onclick=()=>{category=c;controls();render()};$('categories').append(b)});$('filters').replaceChildren();[['all','All packs'],['animated','Animated'],['static','Static']].forEach(([v,label])=>{const b=node('button','',label);b.setAttribute('aria-pressed',type===v);b.onclick=()=>{type=v;controls();render()};$('filters').append(b)})}
-function render(){const q=$('q').value.trim().toLocaleLowerCase();const filtered=packs.filter(p=>p.available!==false&&(category==='All'||p.category===category)&&(type==='all'||p.animated===(type==='animated'))&&(!savedOnly||favorites.has(p.id))&&[p.name,p.category,p.publisher,p.description].join(' ').toLocaleLowerCase().includes(q));$('count').textContent=filtered.length+' packs';$('heading').textContent=savedOnly?'Saved packs':'Explore packs';$('cards').replaceChildren();if(!filtered.length){$('cards').append(node('div','empty','No packs here yet. Try another category or search.'));return}filtered.forEach(p=>{const card=node('article','card'),head=node('div','cardhead'),info=node('div');info.append(node('h3','',p.name),node('small','',p.stickers.length+' stickers · '+(p.publisher||'ISKCON Hadapsar')),node('span','badge',p.animated?'✦ ANIMATED':'STATIC'));const save=node('button','save',favorites.has(p.id)?'♥':'♡');save.setAttribute('aria-label','Save '+p.name);save.setAttribute('aria-pressed',favorites.has(p.id));save.onclick=()=>{favorites.has(p.id)?favorites.delete(p.id):favorites.add(p.id);storage.set('bhakti.saved',[...favorites]);render()};head.append(info,save);const previews=node('div','previews');p.stickers.slice(0,p.expanded?p.stickers.length:3).forEach((s,i)=>{const img=node('img');img.src=s.image;img.alt=p.name+' sticker '+(i+1);img.loading='lazy';img.decoding='async';img.onerror=()=>{img.replaceWith(node('div','empty','Preview unavailable'))};previews.append(img)});const b=node('button','add',p.available===false?'Files missing':pending&&pending.id===p.id?'Preparing…':'+ Add to WhatsApp');b.disabled=!!pending||p.available===false;if(p.available===false)card.append(node('p','small','This pack is being updated. Missing: '+(p.missingFiles||[]).join(', ')));b.onclick=()=>add(p);card.append(head,previews);if(p.stickers.length>3){const more=node('button','',p.expanded?'Show fewer':'View all '+p.stickers.length+' stickers');more.style.marginBottom='12px';more.onclick=()=>{p.expanded=!p.expanded;render()};card.append(more)}card.append(b);$('cards').append(card)})}
-function finish(msg){if(pending)clearTimeout(pending.timer);pending=null;status(msg);render()}
-function add(p){if(pending)return;if(p.available===false){status('Pack files are missing. Please try another pack.');return;}if(p.stickers.length<3||p.stickers.length>30){status('This pack needs 3–30 stickers.');return}const bridge=window.StickerBridge;if(!bridge){status('Open this page inside the ISKCON Android app to add stickers to WhatsApp.');return}if(typeof bridge.addDynamicPack!=='function'&&typeof bridge.addStickerPack!=='function'){status('This app does not expose a supported sticker import method. Please update the Android app.');return}pending={id:p.id,timer:setTimeout(()=>finish('No completion confirmation received. Check the WhatsApp popup before trying again.'),60000)};render();status('Preparing '+p.name+'…');const payload={id:p.id,name:p.name,publisher:p.publisher||'ISKCON Hadapsar',category:p.category,animated:p.animated,baseUrl:p.baseUrl,files:p.stickers.map(s=>s.file),emojis:p.stickers.map(s=>Array.isArray(s.emojis)&&s.emojis.length?s.emojis[0]:'🙏'),tray:p.tray||'',image_data_version:p.image_data_version||'1'};try{if(typeof bridge.addDynamicPack==='function'){bridge.addDynamicPack(JSON.stringify(payload));if(pending)status('Import requested. Complete the confirmation in WhatsApp.')}else{bridge.addStickerPack(p.id,p.name);if(pending)status('Import requested through the older app bridge. New dynamic packs require addDynamicPack support.')}}catch(e){finish('Could not start import: '+e.message)}}
-// Existing string callbacks remain supported. They report progress, never imply completion.
-// Optional structured callback: {packId, state:'success'|'error'|'cancelled'|'progress', message}.
-window.onNativeStatus=function(value){let d=value;if(typeof value==='string'){try{d=JSON.parse(value)}catch{status(value);return}}if(!d||typeof d!=='object')return;if(!pending||d.packId!==pending.id)return;if(['success','error','cancelled'].includes(d.state))finish(d.message||({success:'Pack added to WhatsApp.',error:'Import failed. Please try again.',cancelled:'Import cancelled.'}[d.state]));else status(d.message||'Preparing stickers…')};
-async function load(){const seq=++loadSeq;$('retry').hidden=true;status('Loading sticker packs…');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const r=await fetch('https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/packs.json?v='+Date.now(),{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();const fresh=normalize(data);if(seq!==loadSeq)return;packs=fresh;storage.set('iskcon.stickers.catalog',data);controls();render();status('Choose a pack to add to WhatsApp.')}catch(e){if(seq!==loadSeq)return;try{if(!packs.length)packs=normalize(storage.get('iskcon.stickers.catalog',null))}catch{}controls();render();status(packs.length?'Could not refresh. Showing the last loaded catalog; installation still needs internet.':'Could not load packs.json. Check your connection and try again.');$('retry').hidden=false}finally{clearTimeout(timer)}}
-$('q').oninput=render;$('retry').onclick=load;$('explore').onclick=()=>{savedOnly=false;$('explore').setAttribute('aria-pressed',true);$('saved').setAttribute('aria-pressed',false);render()};$('saved').onclick=()=>{savedOnly=true;$('explore').setAttribute('aria-pressed',false);$('saved').setAttribute('aria-pressed',true);render()};$('browse').onclick=()=>$('categoryHeading').scrollIntoView({block:'start'});document.body.classList.toggle('dark',storage.get('bhakti.dark',false));$('theme').onclick=()=>{document.body.classList.toggle('dark');storage.set('bhakti.dark',document.body.classList.contains('dark'))};window.addEventListener('online',load);window.addEventListener('offline',()=>status('You are offline. Sticker installation needs an internet connection.'));load();
+function status(m){sk=m;$('status').textContent=S[m]?t(m):m}
+function safeURL(v,base=document.baseURI){const u=new URL(v,base);if(!['https:','http:'].includes(u.protocol))throw Error('Invalid URL');return u.href}
+const pub=p=>p.publisher&&!/iskcon/i.test(p.publisher)?p.publisher:TEMPLE;
+function normalize(data){if(!data||!Array.isArray(data.packs))throw Error('Invalid packs.json');const ids=new Set(),out=[];
+data.packs.forEach(p=>{try{if(!p||typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||!Array.isArray(p.stickers)||typeof p.animated!=='boolean')throw 0;
+const base=safeURL((p.baseUrl||'./').replace(/\/*$/,'/'));
+const st=p.stickers.map(s=>{if(!s||typeof s.file!=='string'||!s.file||s.file.includes('..')||/^[\\/]|[\\?#]/.test(s.file)||s.file.includes(':'))throw 0;return{...s,image:safeURL(s.image||s.file,base)}});
+ids.add(p.id);out.push({...p,category:String(p.category||'General'),baseUrl:base,stickers:st})}catch{}});
+if(!out.length)throw Error('No valid packs');return out}
+function apply(){document.documentElement.lang=LANGS[LI];document.title=t('title')+' · '+t('temple');
+document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t(e.dataset.t));
+$('q').placeholder=t('search');$('back').setAttribute('aria-label',t('back'));
+$('steps').replaceChildren(...['s1','s2','s3'].map(k=>node('span','',t(k))));
+$('retry').textContent=t('retry');$('stop').textContent=t('stop');$('foot').textContent=t('foot');
+$('explore').textContent='⌂ '+t('nExp');$('browse').textContent='▦ '+t('nCat');$('saved').textContent='♡ '+t('nSav');
+document.querySelectorAll('.lg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===LANGS[LI]));status(sk)}
+function controls(){const cats=['All',...new Set(['Bal Krishna','Radha Krishna','Greetings','Festivals','Prayers','Kirtan',...packs.map(p=>p.category)])];if(!cats.includes(category))category='All';
+$('categories').replaceChildren(...cats.map(c=>{const b=node('button','category');b.append(node('span','',icons[c]||'🌼'),document.createTextNode(tc(c)));b.setAttribute('aria-pressed',c===category);b.onclick=()=>{category=c;controls();render()};return b}));
+$('filters').replaceChildren(...[['all','all'],['animated','anim'],['static','stat']].map(([v,k])=>{const b=node('button','',t(k));b.setAttribute('aria-pressed',type===v);b.onclick=()=>{type=v;controls();render()};return b}))}
+function render(){if(!ready)return;const q=$('q').value.trim().toLocaleLowerCase();
+const list=packs.filter(p=>p.available!==false&&(category==='All'||p.category===category)&&(type==='all'||p.animated===(type==='animated'))&&(!savedOnly||fav.has(p.id))&&[p.name,p.category,pub(p),p.description].filter(Boolean).join(' ').toLocaleLowerCase().includes(q));
+$('count').textContent=list.length+' '+t('packs');$('heading').textContent=t(savedOnly?'hSav':'hExp');$('stop').hidden=!pending;
+const box=$('cards');box.replaceChildren();
+if(!list.length){box.append(node('div','empty',t(savedOnly&&!fav.size?'noneS':'none')));return}
+list.forEach(p=>{const card=node('article','card'),head=node('div','cardhead'),info=node('div'),open=exp.has(p.id);
+info.append(node('h3','',p.name),node('small','',p.stickers.length+' '+t('stk')+' · '+pub(p)),node('span','badge',p.animated?'✦ '+t('anim').toUpperCase():t('stat').toUpperCase()));
+const sv=node('button','save',fav.has(p.id)?'♥':'♡');sv.setAttribute('aria-label','Save '+p.name);sv.setAttribute('aria-pressed',fav.has(p.id));
+sv.onclick=()=>{fav.has(p.id)?fav.delete(p.id):fav.add(p.id);ls.set('bhakti.saved',[...fav]);render()};head.append(info,sv);
+const pv=node('div','previews');p.stickers.slice(0,open?p.stickers.length:3).forEach((s,i)=>{const im=node('img');im.src=s.image;im.alt=p.name+' sticker '+(i+1);im.loading='lazy';im.decoding='async';im.onerror=()=>im.replaceWith(node('div','ph','—'));pv.append(im)});
+card.append(head,pv);
+if(p.stickers.length>3){const m=node('button','more',open?t('less'):t('more')+' '+p.stickers.length);m.onclick=()=>{open?exp.delete(p.id):exp.add(p.id);render()};card.append(m)}
+const b=node('button','add',pending&&pending.id===p.id?t('prep'):t('add'));b.disabled=!!pending;b.onclick=()=>add(p);card.append(b);box.append(card)})}
+/* Add flow: "Preparing" is cleared when the user comes back from WhatsApp (cancel or done) */
+function finish(m){if(pending){clearTimeout(pending.tm);pending=null}status(m||'pick');render()}
+function arm(){if(pending){clearTimeout(pending.tm);pending.tm=setTimeout(()=>finish('noresp'),30000)}}
+function add(p){if(pending)return;
+if(p.stickers.length<3||p.stickers.length>30){status('This pack needs 3–30 stickers.');return}
+const br=window.StickerBridge;if(!br){status('app');return}
+if(typeof br.addDynamicPack!=='function'&&typeof br.addStickerPack!=='function'){status('upd');return}
+pending={id:p.id,left:0,at:0,tm:0};arm();status('prep');render();
+const payload={id:p.id,name:p.name,publisher:pub(p),category:p.category,animated:p.animated,baseUrl:p.baseUrl,files:p.stickers.map(s=>s.file),emojis:p.stickers.map(s=>Array.isArray(s.emojis)&&s.emojis.length?s.emojis[0]:'🙏'),tray:p.tray||'',image_data_version:p.image_data_version||'1'};
+try{if(typeof br.addDynamicPack==='function')br.addDynamicPack(JSON.stringify(payload));else br.addStickerPack(p.id,p.name)}catch(e){finish('fail')}}
+const away=s=>{if(pending&&!pending.left){pending.left=s;pending.at=Date.now()}};
+const back=s=>{if(pending&&pending.left&&(pending.left==='v'||s==='v'||Date.now()-pending.at>1200))finish()};
+document.addEventListener('visibilitychange',()=>document.hidden?away('v'):back('v'));
+addEventListener('blur',()=>away('b'));addEventListener('focus',()=>back('f'));
+addEventListener('pageshow',e=>{if(pending&&(e.persisted||pending.left))finish()});
+window.onNativeStatus=function(v){let d=v;
+if(typeof v==='string'){try{d=JSON.parse(v)}catch{if(pending){if(/cancel|declin|dismiss/i.test(v))finish();else{status(v);arm()}}return}}
+if(!d||typeof d!=='object')return;
+if(d.state==='success'){finish(d.message||'done');return}
+if(!pending||(d.packId&&d.packId!==pending.id))return;
+if(d.state==='cancelled')finish();else if(d.state==='error')finish(d.message||'fail');else{status(d.message||'prep');arm()}};
+async function load(){const seq=++loadSeq;$('retry').hidden=true;if(!packs.length)status('load');
+const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),15000);
+try{const r=await fetch('https://raw.githubusercontent.com/bjendermisra-ops/iskcon-mob/main/packs.json?v='+Date.now(),{cache:'no-store',signal:ac.signal});if(!r.ok)throw Error('HTTP '+r.status);
+const data=await r.json(),fresh=normalize(data);if(seq!==loadSeq)return;packs=fresh;ls.set('iskcon.stickers.catalog',data);ready=true;controls();render();if(!pending)status('pick')}
+catch(e){if(seq!==loadSeq)return;if(!packs.length){try{packs=normalize(ls.get('iskcon.stickers.catalog',null))}catch{}}ready=true;controls();render();if(!pending)status(packs.length?'stale':'nolo');$('retry').hidden=false}
+finally{clearTimeout(tm)}}
+function tab(s){savedOnly=s;$('explore').setAttribute('aria-pressed',!s);$('saved').setAttribute('aria-pressed',s);render()}
+$('q').oninput=render;$('retry').onclick=load;$('stop').onclick=()=>finish();
+$('explore').onclick=()=>tab(false);$('saved').onclick=()=>tab(true);
+$('browse').onclick=()=>{tab(false);$('categoryHeading').scrollIntoView({block:'start',behavior:'smooth'})};
+$('back').onclick=e=>{e.preventDefault();history.length>1?history.back():location.href='index.html'};
+document.querySelectorAll('.lg button').forEach(b=>b.onclick=()=>{LI=LANGS.indexOf(b.dataset.l);rw.set('lang',b.dataset.l);apply();controls();render()});
+const th=()=>{$('theme').textContent=document.body.dataset.theme==='dark'?'☀️':'🌙'};
+document.body.dataset.theme=rw.get('theme')==='dark'?'dark':'light';th();
+$('theme').onclick=()=>{const d=document.body.dataset.theme!=='dark';document.body.dataset.theme=d?'dark':'light';rw.set('theme',d?'dark':'light');th()};
+addEventListener('online',load);addEventListener('offline',()=>status('off'));
+apply();load();
 </script></body></html>
