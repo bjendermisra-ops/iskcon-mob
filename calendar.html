@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#6b102f">
+<title>आरती एवं प्रार्थनाएँ • Sri Sri Radha Krishna Chandra Mandir</title>
+<style>
+:root{--wine:#6b102f;--wine2:#a02c37;--gold:#e6a73b;--ink:#34202a;--muted:#806c71;--bg:#fffaf0;--surface:#fffdf8;--surface2:#fff1d9;--border:#e9d5b8;--shade:0 6px 18px rgba(91,34,28,.10);--reading-size:21px;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--ink:#fff4e1;--muted:#bfbbcf;--bg:#0f1432;--surface:#1a2145;--surface2:#272c4e;--border:#46446a;--shade:0 8px 22px rgba(0,0,0,.3)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Devanagari","Nirmala UI",sans-serif;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,[role=button]:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #f2b82c;outline-offset:2px}
+input{font:inherit;-webkit-user-select:text;user-select:text}
+::-webkit-scrollbar{display:none}
+#app{position:fixed;inset:0;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)}
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#home{transition:transform .3s cubic-bezier(.2,.8,.2,1),filter .3s}
+#home.under{transform:translateX(-22%);filter:brightness(.75)}
+.bar{display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 8px) 12px 10px;background:linear-gradient(112deg,#5e0927,#9f202e 78%,#b04c18);color:#fff8e9;box-shadow:0 3px 12px rgba(51,13,26,.3);z-index:3}
+.bar .t{flex:1;min-width:0}.bar strong{display:block;font-size:16px;font-weight:800;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar small{display:block;font-size:10px;letter-spacing:.8px;color:#ffe1ae;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-size:20px;color:#fff;flex-shrink:0;transition:background .15s,transform .1s}
+.ib:active{background:#ffffff30;transform:scale(.9)}
+.logo{width:40px;height:40px;border-radius:12px;border:1px solid #e4b257;background:#fff6dd18;display:grid;place-items:center;font-size:22px;overflow:hidden;flex-shrink:0}.logo img{width:100%;height:100%;object-fit:contain}
+.wrap{padding:14px 14px 24px;max-width:820px;margin:auto}
+.hero{border:1px solid #e9bc6c;background:linear-gradient(137deg,#6c1230,#a13234 58%,#c3732a);border-radius:22px;color:#fff9ed;padding:20px;box-shadow:var(--shade);position:relative;overflow:hidden}
+.hero:before{content:'✺';position:absolute;right:-20px;top:-56px;font-size:200px;color:#f4c46b18}
+.hero h1{position:relative;margin:0 0 6px;font:750 26px/1.3 Georgia,"Noto Serif Devanagari",serif}.hero p{position:relative;margin:0;font-size:13px;line-height:1.7;color:#ffe8ca}
+.pill{display:inline-block;margin-top:12px;padding:5px 11px;border:1px solid #ffffff54;background:#ffffff1a;border-radius:30px;font-size:12px;font-weight:650;position:relative}
+.search{display:flex;align-items:center;gap:9px;margin:14px 0 4px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:0 14px}
+.search input{height:48px;width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:15px;min-width:0}.search input::placeholder{color:var(--muted)}.search span{font-size:18px;opacity:.6}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 12px}
+.chips button{white-space:nowrap;border:1px solid var(--border);background:var(--surface);border-radius:30px;padding:9px 15px;font-size:13px;font-weight:750;transition:transform .1s}
+.chips button:active{transform:scale(.94)}.chips button.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.special{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:13px 14px;border-radius:18px;border:1px solid #edba55;background:linear-gradient(105deg,#351a49,#6d153a);color:#fff0cb;box-shadow:var(--shade);transition:transform .12s}
+.special:active{transform:scale(.97)}.special .f{font-size:30px}.special div{flex:1;min-width:0}.special strong{display:block;font-size:15px}.special small{font-size:12px;opacity:.88}.special b{background:#ffc34e;color:#512222;border-radius:10px;padding:8px 11px;font-size:12px}
+.list{display:grid;gap:10px}
+.card{display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:78px;border-radius:18px;border:1px solid var(--border);background:var(--surface);box-shadow:var(--shade);transition:transform .12s,background .12s;cursor:pointer}
+.card:active{transform:scale(.975);background:var(--surface2)}.card.k{border-color:#d5a44b}
+.ico{width:50px;height:50px;display:grid;place-items:center;border-radius:15px;background:var(--surface2);border:1px solid var(--border);font-size:26px;flex-shrink:0}.card.k .ico{background:linear-gradient(130deg,#fbd27c,#de9b36)}
+.nm{flex:1;min-width:0}.nm strong{display:block;font-size:16px;line-height:1.4}.nm small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.chev{color:#b38340;font-size:26px}.heart{color:#c42b55;font-size:15px;margin-right:2px}
+.empty{text-align:center;color:var(--muted);padding:36px 12px;border:1px dashed var(--border);border-radius:16px;line-height:1.7}
+.note{margin:20px 0 0;padding:12px 14px;border-left:3px solid var(--gold);color:var(--muted);font-size:12px;line-height:1.7;background:var(--surface);border-radius:6px 12px 12px 6px}
+.tabbar{display:flex;background:var(--surface);border-top:1px solid var(--border);padding-bottom:var(--sab);z-index:3}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 7px;font-size:11px;font-weight:700;color:var(--muted);position:relative}
+.tab i{font-style:normal;font-size:22px;line-height:1;transition:transform .15s}.tab:active i{transform:scale(.85)}
+.tab.on{color:var(--wine2)}:root[data-theme="dark"] .tab.on{color:var(--gold)}
+.tab.on:before{content:'';position:absolute;top:0;width:34px;height:3px;border-radius:0 0 4px 4px;background:var(--gold)}
+/* Reader (full-screen, native push transition) */
+#reader{z-index:20;transform:translateX(100%);visibility:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;box-shadow:-10px 0 30px rgba(0,0,0,.25)}
+#reader.open{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.prog{height:3px;background:#ffffff26;margin-top:-1px;z-index:3}.prog i{display:block;height:100%;width:0;background:var(--gold)}
+.rhero{display:flex;align-items:center;gap:13px;margin-bottom:12px}.rhero .ico{width:60px;height:60px;font-size:32px;border-radius:18px}
+.rhero h2{margin:0;font:750 21px/1.35 Georgia,"Noto Serif Devanagari",serif}.rhero small{color:var(--muted);font-size:12px}
+.explain{font-size:13px;line-height:1.75;margin:0 0 14px;opacity:.92}
+.photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;margin:0 0 14px;border:1px solid var(--border)}
+.verse{padding:16px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--border);margin:0 0 12px;box-shadow:var(--shade)}
+.vtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;color:#b27a34;font-size:12px;font-weight:800}
+.vtop button{border:1px solid var(--border);background:var(--surface2);border-radius:9px;padding:6px 10px;font-size:11px;font-weight:750;color:var(--ink)}.vtop button:active{transform:scale(.93)}
+.vt{margin:0;font:500 var(--reading-size)/1.9 Georgia,"Noto Serif Devanagari","Nirmala UI",serif;white-space:pre-line;overflow-wrap:anywhere;text-wrap:pretty;-webkit-user-select:text;user-select:text}
+.mean{margin:13px 0 0;padding:11px 12px;border-radius:10px;background:var(--surface2);border-left:3px solid var(--gold);font-size:calc(var(--reading-size)*.68);line-height:1.75}.mean b{display:block;font-size:12px;color:#bf7c28;margin-bottom:3px}
+.src{display:block;text-align:center;margin:6px 0 14px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface);font-size:13px;font-weight:750;text-decoration:none;color:var(--ink)}
+.next{display:flex;align-items:center;gap:12px;padding:13px;border-radius:16px;background:linear-gradient(105deg,#6c1230,#a13234);color:#fff3da;margin-bottom:10px;transition:transform .12s}.next:active{transform:scale(.97)}.next div{flex:1;min-width:0}.next small{display:block;opacity:.8;font-size:11px}.next strong{font-size:15px}
+.rtools{display:flex;gap:6px;align-items:center;justify-content:space-between;padding:8px 10px calc(8px + var(--sab));background:var(--surface);border-top:1px solid var(--border);z-index:3}
+.rtools button{flex:1;min-width:0;height:46px;border-radius:13px;background:var(--surface2);border:1px solid var(--border);font-weight:850;font-size:15px;transition:transform .1s}
+.rtools button:active{transform:scale(.92)}.rtools button.on{background:linear-gradient(128deg,#f6c56e,#e7a53e);color:#4d2131;border-color:#d5a44b}
+.rtools output{flex:0 0 52px;text-align:center;font-size:12px;font-weight:750;color:var(--muted)}
+/* Settings sheet */
+#scrim{position:fixed;inset:0;background:#0008;opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s;z-index:40}
+#scrim.open{opacity:1;visibility:visible;transition:opacity .25s}
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--bg);border-radius:24px 24px 0 0;padding:10px 16px calc(18px + var(--sab));transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);max-width:640px;margin:auto;box-shadow:0 -10px 30px #0004}
+#sheet.open{transform:none}
+.grab{width:42px;height:5px;border-radius:5px;background:var(--border);margin:0 auto 12px}
+.sheet h3{margin:0 0 12px;font-size:17px}.lbl{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:12px 0 7px}
+.seg{display:flex;background:var(--surface);padding:4px;border:1px solid var(--border);border-radius:14px}
+.seg button{flex:1;padding:10px 4px;border-radius:10px;font-size:13px;font-weight:700;transition:background .15s}.seg button.on{background:linear-gradient(128deg,#f6c56e,#e7a53e);color:#4d2131}
+.toast{position:fixed;left:50%;bottom:calc(90px + var(--sab));transform:translate(-50%,40px);opacity:0;background:#2c1d33;color:#fffaf2;border:1px solid #dda44d;border-radius:30px;z-index:99;padding:11px 18px;font-size:13px;max-width:88%;pointer-events:none;transition:transform .22s,opacity .22s}
+.toast.show{transform:translate(-50%,0);opacity:1}
+#splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(160deg,#4d0720,#9f202e 70%,#b04c18);color:#ffe3ae;text-align:center;transition:opacity .45s,visibility 0s .45s}
+#splash.done{opacity:0;visibility:hidden}#splash .om{font:700 84px Georgia,serif;animation:glow 1.6s ease-in-out infinite alternate}#splash b{font-size:17px;padding:0 20px}#splash small{letter-spacing:2px;font-size:11px;opacity:.8}
+@keyframes glow{from{text-shadow:0 0 6px #ffcf6c55;transform:scale(.97)}to{text-shadow:0 0 26px #ffcf6c;transform:scale(1.03)}}
+@media(min-width:700px){.list{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="splash"><div class="om">ॐ</div><b id="spName">श्री श्री राधाकृष्ण चंद्र मंदिर</b><small>HARE KRISHNA</small></div>
+<div id="app">
+ <section id="home" class="screen">
+  <header class="bar"><div class="logo" id="logo">🛕</div><div class="t"><strong id="hTitle"></strong><small>SRI SRI RADHA KRISHNA CHANDRA MANDIR</small></div><button class="ib" id="themeBtn" aria-label="Theme">☾</button></header>
+  <div class="scroll" id="homeScroll"><div class="wrap">
+   <div class="hero"><h1 id="heroT"></h1><p id="heroP"></p><span class="pill" id="count"></span></div>
+   <label class="search"><span>🔍</span><input id="search" type="search" autocomplete="off"></label>
+   <div class="chips" id="chips"></div>
+   <div class="special" id="special" role="button" tabindex="0"><span class="f">🪔</span><div><strong id="spT"></strong><small id="spS"></small></div><b id="spB"></b></div>
+   <div class="list" id="list"></div><div class="empty" id="none" hidden></div>
+   <div class="note" id="note"></div>
+  </div></div>
+  <nav class="tabbar">
+   <button class="tab on" data-tab="home"><i>🏠</i><span id="tabHome"></span></button>
+   <button class="tab" data-tab="saved"><i>♥</i><span id="tabSaved"></span></button>
+   <button class="tab" data-tab="set"><i>⚙️</i><span id="tabSet"></span></button>
+  </nav>
+ </section>
+ <section id="reader" class="screen" aria-hidden="true">
+  <header class="bar"><button class="ib" id="rBack" aria-label="Back">‹</button><div class="t"><strong id="rTitle"></strong><small id="rSub"></small></div><button class="ib" id="rFav" aria-label="Save">♡</button><button class="ib" id="rShare" aria-label="Share">↗</button></header>
+  <div class="prog"><i id="prog"></i></div>
+  <div class="scroll" id="rScroll"><div class="wrap" id="rBody"></div></div>
+  <div class="rtools"><button id="fMinus" aria-label="Smaller">A−</button><output id="fPct">100%</output><button id="fPlus" aria-label="Larger">A+</button><button id="mBtn" aria-label="Meaning">अर्थ</button><button id="cBtn" aria-label="Copy">⧉</button><button id="lBtn" aria-label="Language">हि</button></div>
+ </section>
+</div>
+<div id="scrim"></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true"><div class="grab"></div><h3 id="sT"></h3>
+ <span class="lbl" id="sLang"></span><div class="seg"><button data-lang="hi">हिंदी</button><button data-lang="mr">मराठी</button><button data-lang="en">English</button></div>
+ <span class="lbl" id="sScript"></span><div class="seg"><button data-script="dev">अ देवनागरी</button><button data-script="roman">Aa Roman</button></div>
+ <span class="lbl" id="sTheme"></span><div class="seg"><button data-theme="light" id="thL"></button><button data-theme="dark" id="thD"></button></div>
+ <span class="lbl" id="sWake"></span><div class="seg"><button id="wakeBtn"></button></div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+/* ====== ONLY EDIT THESE SETTINGS FOR YOUR APP ====== */
+const CONFIG={
+ logoUrl:'',            // temple logo URL (optional)
+ damodarSpecial:true,   // Kartik / Damodar month banner
+ images:{}              // optional photo per prayer, e.g. {dam:'https://.../dam.jpg'}
+};
+/* ====== PRAYERS (Roman IAST = source; Devanagari auto-generated unless "dev" is given) ====== */
+const A=[
+{id:'dam',cat:'kartik',icon:'🪔',title:{en:'Sri Damodarastakam',hi:'श्री दामोदराष्टकम्',mr:'श्री दामोदराष्टकम्'},time:{en:'Kartik / Damodar month',hi:'कार्तिक / दामोदर मास',mr:'कार्तिक / दामोदर मास'},desc:{en:'Eight prayers to child Krishna, bound by Mother Yashoda’s love; the devotee asks for prema-bhakti rather than liberation.',hi:'माता यशोदा के प्रेम से बँधे बालकृष्ण की आठ स्तुतियाँ। इनमें मुक्ति नहीं, शुद्ध प्रेम-भक्ति की याचना है।',mr:'माता यशोदेच्या प्रेमाने बांधलेल्या बालकृष्णाच्या आठ प्रार्थना. यात मुक्तीऐवजी शुद्ध प्रेमभक्तीची याचना आहे.'},source:'https://www.iskconbv.com/songs-mantras/damodarastakam',v:[
+'namāmīśvaraṁ sac-cid-ānanda-rūpaṁ\nlasat-kuṇḍalaṁ gokule bhrājamānam\nyaśodā-bhiyolūkhalād dhāvamānaṁ\nparāmṛṣṭam atyantato drutya gopyā',
+'rudantaṁ muhur netra-yugmaṁ mṛjantaṁ\nkarāmbhoja-yugmena sātaṅka-netram\nmuhuḥ śvāsa-kampa-trirekhāṅka-kaṇṭha-\nsthita-graivaṁ dāmodaraṁ bhakti-baddham',
+'itīdṛk sva-līlābhir ānanda-kuṇḍe\nsva-ghoṣaṁ nimajjantam ākhyāpayantam\ntadīyeṣita-jñeṣu bhaktair jitatvaṁ\npunaḥ prematas taṁ śatāvṛtti vande',
+'varaṁ deva mokṣaṁ na mokṣāvadhim vā\nna cānyaṁ vṛṇe ’haṁ vareṣād apīha\nidaṁ te vapur nātha gopāla-bālaṁ\nsadā me manasy āvirāstāṁ kim anyaiḥ',
+'idaṁ te mukhāmbhojam atyanta-nīlair\nvṛtaṁ kuntalaiḥ snigdha-raktaiś ca gopyā\nmuhuś cumbitaṁ bimba-raktādharaṁ me\nmanasy āvirāstām alaṁ lakṣa-lābhaiḥ',
+'namo deva dāmodarānanta viṣṇo\nprasīda prabho duḥkha-jālābdhi-magnam\nkṛpā-dṛṣṭi-vṛṣṭyāti-dīnaṁ batānu-\ngṛhāṇeśa mām ajñam edhy akṣi-dṛśyaḥ',
+'kuverātmajau baddha-mūrtyaiva yadvat\ntvayā mocitau bhakti-bhājau kṛtau ca\ntathā prema-bhaktiṁ svakāṁ me prayaccha\nna mokṣe graho me ’sti dāmodareha',
+'namas te ’stu dāmne sphurad-dīpti-dhāmne\ntvadīyodarāyātha viśvasya dhāmne\nnamo rādhikāyai tvadīya-priyāyai\nnamo ’nanta-līlāya devāya tubhyam'],mean:[
+{hi:'मैं गोकुल में शोभायमान उन सच्चिदानन्दस्वरूप प्रभु को प्रणाम करता हूँ जो माता यशोदा के भय से दौड़े और अंततः उनके प्रेम से पकड़े गए।',mr:'गोकुळात शोभणाऱ्या सच्चिदानंदस्वरूप प्रभूंना वंदन; ते यशोदा मातेपासून पळाले आणि अखेर तिच्या प्रेमाने पकडले गेले.',en:'I bow to the eternal, conscious, blissful Lord shining in Gokula, who ran from Yashoda and was finally caught by her.'},
+{hi:'रोते हुए, आँखें मलते हुए और तेज साँसों से काँपते बालक दामोदर को माता की भक्ति ने बाँध लिया।',mr:'रडणाऱ्या, डोळे चोळणाऱ्या आणि वेगाने श्वास घेणाऱ्या बाल दामोदरांना मातेच्या भक्तीने बांधले.',en:'Little Damodara weeps and rubs His eyes; He is bound by devotion.'},
+{hi:'प्रभु अपनी बाललीलाओं से गोकुल को आनंद में डुबो देते हैं और भक्तों के प्रेम से वश में होते हैं।',mr:'प्रभू आपल्या बाललीलांनी गोकुळाला आनंद देतात आणि भक्तांच्या प्रेमाने वश होतात.',en:'His childhood pastimes immerse Gokula in joy and reveal that love conquers Him.'},
+{hi:'मुझे मोक्ष या कोई वरदान नहीं चाहिए; आपका गोपाल-बाल रूप सदा मेरे हृदय में प्रकट रहे।',mr:'मला मोक्ष किंवा इतर वर नको; तुमचे गोपाळ-बालरूप माझ्या हृदयात सदैव राहो.',en:'I seek neither liberation nor other boons—may Your child form live in my heart.'},
+{hi:'यशोदा द्वारा बार-बार चूमा गया आपका सुंदर कमलमुख सदा मेरे हृदय में रहे।',mr:'यशोदा मातेने वारंवार चुंबन घेतलेले तुमचे सुंदर कमलमुख माझ्या हृदयात राहो.',en:'May Your lotus face, lovingly kissed by Yashoda, stay within my heart.'},
+{hi:'हे दामोदर! मैं दुख-सागर में डूबा हूँ। अपनी कृपा-दृष्टि बरसाइए और मुझे दर्शन दीजिए।',mr:'हे दामोदर! मी दुःखसागरात बुडालो आहे; कृपादृष्टी करा आणि दर्शन द्या.',en:'O Damodara, immersed in sorrow I pray for Your merciful glance and vision.'},
+{hi:'जैसे आपने कुबेर के पुत्रों का उद्धार किया, वैसे मुझे भी अपनी प्रेम-भक्ति प्रदान करें; मोक्ष नहीं चाहिए।',mr:'जसे तुम्ही कुबेरपुत्रांचा उद्धार केला, तसे मला प्रेमभक्ती द्या; मोक्ष नको.',en:'As You delivered Kuvera’s sons, grant me Your loving devotion, not liberation.'},
+{hi:'आपको बाँधने वाली रस्सी, आपके विश्वाश्रय उदर, आपकी प्रिया राधिका और आपकी अनंत लीलाओं को प्रणाम।',mr:'तुम्हाला बांधणारी दोरी, विश्वाचा आश्रय असलेले उदर, प्रिय राधिका आणि अनंत लीला यांना वंदन.',en:'Obeisances to Your rope, Your universe-sheltering belly, beloved Radhika and infinite pastimes.'}]},
+{id:'man',cat:'morning',icon:'🪷',title:{en:'Mangala Arati · Gurvastakam',hi:'मंगला आरती · गुर्वष्टकम्',mr:'मंगल आरती · गुर्वष्टकम्'},time:{en:'Early morning',hi:'प्रातःकाल',mr:'पहाट'},desc:{en:'Eight verses by Srila Visvanatha Cakravarti Thakura in praise of the spiritual master.',hi:'श्रील विश्वनाथ चक्रवर्ती ठाकुर द्वारा गुरुचरणों की महिमा के आठ श्लोक।',mr:'श्रील विश्वनाथ चक्रवर्ती ठाकूर यांनी रचलेले गुरुचरणांच्या महिमेचे आठ श्लोक.'},source:'https://www.iskconbv.com/songs-mantras/mangala-arati-gurvastakam',v:[
+'saṁsāra-dāvānala-līḍha-loka-\ntrāṇāya kāruṇya-ghanāghanatvam\nprāptasya kalyāṇa-guṇārṇavasya\nvande guroḥ śrī-caraṇāravindam',
+'mahāprabhoḥ kīrtana-nṛtya-gīta-\nvāditra-mādyan-manaso rasena\nromāñca-kampāśru-taraṅga-bhājo\nvande guroḥ śrī-caraṇāravindam',
+'śrī-vigrahārādhana-nitya-nānā-\nśṛṅgāra-tan-mandira-mārjanādau\nyuktasya bhaktāṁś ca niyuñjato ’pi\nvande guroḥ śrī-caraṇāravindam',
+'catur-vidha-śrī-bhagavat-prasāda-\nsvādv-anna-tṛptān hari-bhakta-saṅghān\nkṛtvaiva tṛptiṁ bhajataḥ sadaiva\nvande guroḥ śrī-caraṇāravindam',
+'śrī-rādhikā-mādhavayor apāra-\nmādhurya-līlā-guṇa-rūpa-nāmnām\nprati-kṣaṇāsvādana-lolupasya\nvande guroḥ śrī-caraṇāravindam',
+'nikuñja-yūno rati-keli-siddhyai\nyā yālibhir yuktir apekṣaṇīyā\ntatrāti-dākṣyād ati-vallabhasya\nvande guroḥ śrī-caraṇāravindam',
+'sākṣād-dharitvena samasta-śāstrair\nuktas tathā bhāvyata eva sadbhiḥ\nkintu prabhor yaḥ priya eva tasya\nvande guroḥ śrī-caraṇāravindam',
+'yasya prasādād bhagavat-prasādo\nyasyāprasādān na gatiḥ kuto ’pi\ndhyāyan stuvaṁs tasya yaśas tri-sandhyaṁ\nvande guroḥ śrī-caraṇāravindam']},
+{id:'nar',cat:'morning',icon:'🦁',title:{en:'Sri Nrsimha Pranama',hi:'श्री नृसिंह प्रार्थना',mr:'श्री नृसिंह प्रार्थना'},time:{en:'Daily prayers',hi:'दैनिक प्रार्थना',mr:'दैनंदिन प्रार्थना'},desc:{en:'Prayers to Lord Nrsimha, the protector of Prahlada.',hi:'भक्त प्रह्लाद की रक्षा करने वाले भगवान नृसिंह को नमस्कार।',mr:'भक्त प्रल्हादाचे रक्षण करणाऱ्या भगवान नृसिंहांना वंदन.'},source:'https://www.iskconbv.com/songs-mantras/narasimha-pranama-karacha',v:[
+'namas te narasiṁhāya prahlādāhlāda-dāyine\nhiraṇyakaśipor vakṣaḥ-śilā-ṭaṅka-nakhālaye',
+'ito nṛsiṁhaḥ parato nṛsiṁho\nyato yato yāmi tato nṛsiṁhaḥ\nbahir nṛsiṁho hṛdaye nṛsiṁho\nnṛsiṁham ādiṁ śaraṇaṁ prapadye',
+'tava kara-kamala-vare nakham adbhuta-śṛṅgaṁ\ndalita-hiraṇyakaśipu-tanu-bhṛṅgam\nkeśava dhṛta-narahari-rūpa jaya jagadīśa hare'],
+dev:[
+'नमस्ते नरसिंहाय प्रह्लादाह्लाद-दायिने ।\nहिरण्यकशिपोर्वक्षः-शिला-टङ्क-नखालये ॥',
+'इतो नृसिंहः परतो नृसिंहो\nयतो यतो यामि ततो नृसिंहः ।\nबहिर्नृसिंहो हृदये नृसिंहो\nनृसिंहमादिं शरणं प्रपद्ये ॥',
+'तव कर-कमल-वरे नखम् अद्भुत-शृङ्गं\nदलित-हिरण्यकशिपु-तनु-भृङ्गम् ।\nकेशव धृत-नरहरि-रूप जय जगदीश हरे ॥'],
+mean:[
+{hi:'भक्त प्रह्लाद को आनन्द देने वाले, हिरण्यकशिपु के कठोर वक्ष को अपने नखों से विदीर्ण करने वाले प्रभु को नमस्कार।',mr:'भक्त प्रल्हादाला आनंद देणारे आणि हिरण्यकशिपूचा कठोर वक्ष विदीर्ण करणाऱ्या प्रभूंना प्रणाम.',en:'Obeisances to Lord Nrsimha, who delights Prahlada and tears apart Hiranyakashipu’s chest.'},
+{hi:'नृसिंह प्रभु यहाँ भी हैं, वहाँ भी हैं, हृदय में और बाहर भी; मैं उनकी शरण ग्रहण करता हूँ।',mr:'नृसिंह प्रभू येथे, तिथे, हृदयात आणि बाहेर सर्वत्र आहेत; मी त्यांना शरण जातो.',en:'Lord Nrsimha is here, there, within the heart and everywhere; I take refuge in Him.'},
+{hi:'हे केशव, नरहरि रूप धारण करने वाले जगदीश्वर! आपके अद्भुत नखों से हिरण्यकशिपु का विनाश हुआ; आपकी जय हो।',mr:'हे केशव, नरहरिरूप धारण करणाऱ्या जगदीशा! तुमच्या अद्भुत नखांनी हिरण्यकशिपूचा नाश झाला; जय हो.',en:'O Keshava in Your Narahari form, Your wondrous nails defeated Hiranyakashipu. All glories to You!'}]},
+{id:'tul',cat:'morning',icon:'🌿',title:{en:'Tulasi Kirtan (Tulasi Arati)',hi:'तुलसी कीर्तन (तुलसी आरती)',mr:'तुळशी कीर्तन (तुळशी आरती)'},time:{en:'Tulasi worship',hi:'तुलसी पूजन',mr:'तुळशी पूजन'},desc:{en:'Traditional Tulasi kirtan asking for the service of Sri Sri Radha-Krishna.',hi:'श्री तुलसी देवी से श्री राधा-कृष्ण की सेवा और वृंदावन-वास की प्रार्थना।',mr:'श्री तुळशीदेवींकडे राधा-कृष्णसेवा आणि वृंदावनवासाची प्रार्थना.'},source:'https://www.iskconbv.com/songs-mantras/tulasi-aarati',v:[
+'namo namaḥ tulasī kṛṣṇa-preyasi namo namaḥ\nrādhā-kṛṣṇa-sevā pābo ei abhilāṣī',
+'ye tomāra śaraṇa loy, tāra vāñchā pūrṇa hoy\nkṛpā kori’ koro tāre vṛndāvana-vāsī',
+'mora ei abhilāṣa, vilāsa kuñje dio vāsa\nnayana heribo sadā yugala-rūpa-rāśi',
+'ei nivedana dhara, sakhīra anugata koro\nsevā-adhikāra diye koro nīja dāsī',
+'dīna kṛṣṇa-dāse koy, ei yena mora hoy\nśrī-rādhā-govinda-preme sadā yena bhāsi'],
+dev:[
+'नमो नमः तुलसी कृष्ण-प्रेयसी नमो नमः ।\nराधा-कृष्ण-सेवा पाबो एइ अभिलाषी ॥',
+'ये तोमार शरण लय, तार वाञ्छा पूर्ण हय ।\nकृपा करि कोरो तारे वृन्दावन-वासी ॥',
+'मोर एइ अभिलाष, विलास-कुंजे दिओ वास ।\nनयने हेरिबो सदा युगल-रूप-राशि ॥',
+'एइ निवेदन धर, सखीर अनुगत कोरो ।\nसेवा-अधिकार दिये कोरो निज दासी ॥',
+'दीन कृष्णदासे कय, एइ येन मोर हय ।\nश्रीराधा-गोविन्द-प्रेमे सदा येन भासि ॥'],
+mean:[
+{hi:'हे कृष्णप्रिया तुलसी देवी! मैं बार-बार प्रणाम करता हूँ; मेरी अभिलाषा राधा-कृष्ण की सेवा प्राप्त करना है।',mr:'हे कृष्णप्रिय तुळशीदेवी! मी पुन्हा पुन्हा प्रणाम करतो; मला राधा-कृष्णांची सेवा लाभो.',en:'O Tulasi, beloved of Krishna, I bow repeatedly and pray to serve Radha and Krishna.'},
+{hi:'आपकी शरण लेने वाले पर कृपा करके उसे वृन्दावन का वासी बनाइए।',mr:'तुमच्या आश्रयाला येणाऱ्यावर कृपा करून त्याला वृंदावनात स्थान द्या.',en:'By Your mercy, may those who take shelter of You become residents of Vrindavan.'},
+{hi:'मुझे वृन्दावन के कुंजों में रहने और राधा-कृष्ण के युगल रूप का दर्शन करने की कृपा मिले।',mr:'मला वृंदावनातील कुंजात वास आणि राधा-कृष्णांच्या युगलरूपाचे दर्शन लाभो.',en:'Grant me a place in the groves of Vrindavan to behold Radha and Krishna together.'},
+{hi:'मुझे ब्रज की सखियों का अनुगामी बनाकर सेवा का अवसर दीजिए।',mr:'मला व्रजातील सख्यांचे अनुकरण करून सेवा करण्याची संधी द्या.',en:'Please make me a follower of the Vraja sakhis and grant me the privilege of service.'},
+{hi:'दीन कृष्णदास की प्रार्थना है कि मैं सदा राधा-गोविन्द के प्रेम में निमग्न रहूँ।',mr:'दीन कृष्णदासाची प्रार्थना आहे की मी सदैव राधा-गोविंदांच्या प्रेमात मग्न राहो.',en:'The humble servant Krishnadas prays to remain immersed in love for Radha-Govinda.'}]},
+{id:'tulp',cat:'prayer',icon:'🌱',title:{en:'Tulasi Pranama & Parikrama',hi:'तुलसी प्रणाम एवं प्रदक्षिणा मंत्र',mr:'तुळशी प्रणाम व प्रदक्षिणा मंत्र'},time:{en:'During Tulasi worship',hi:'तुलसी पूजन में',mr:'तुळशी पूजेत'},desc:{en:'Separate Tulasi pranama and circumambulation mantras; not verses of the five-stanza Tulasi Kirtan.',hi:'तुलसी कीर्तन के पाँच पदों से अलग, तुलसी प्रणाम और परिक्रमा के दो मंत्र।',mr:'तुळशी कीर्तनाच्या पाच कडव्यांपासून वेगळे, तुळशी प्रणाम व परिक्रमेचे दोन मंत्र.'},source:'https://www.iskconbv.com/songs-mantras/tulasi-aarati',v:[
+'vṛndāyai tulasī-devyai priyāyai keśavasya ca\nviṣṇu-bhakti-prade devī satyavatyai namo namaḥ',
+'yāni kāni ca pāpāni brahma-hatyādikāni ca\ntāni tāni praṇaśyanti pradakṣiṇaḥ pade pade'],
+dev:[
+'वृन्दायै तुलसी-देव्यै प्रियायै केशवस्य च ।\nविष्णु-भक्ति-प्रदे देवि सत्यवत्यै नमो नमः ॥',
+'यानि कानि च पापानि ब्रह्महत्यादिकानि च ।\nतानि तानि प्रणश्यन्ति प्रदक्षिणः पदे पदे ॥'],
+mean:[
+{hi:'केशव को प्रिय तुलसी देवी, जो विष्णु-भक्ति प्रदान करती हैं, उन्हें बारम्बार प्रणाम।',mr:'केशवांना प्रिय आणि विष्णुभक्ती देणाऱ्या तुळशीदेवींना वारंवार प्रणाम.',en:'Repeated obeisances to Tulasi Devi, beloved of Keshava and giver of devotion to Vishnu.'},
+{hi:'तुलसी देवी की प्रदक्षिणा के प्रत्येक चरण पर पापकर्मों का क्षय होने की प्रार्थना है।',mr:'तुळशीदेवींच्या प्रत्येक प्रदक्षिणा-पावलाने पापकर्मांचा क्षय होवो ही प्रार्थना.',en:'The verse glorifies the purifying power of every step taken in circumambulating Tulasi Devi.'}]},
+{id:'gur',cat:'morning',icon:'🙏',title:{en:'Guru Puja · Sri Guru Carana Padma',hi:'गुरु पूजा · श्री गुरु चरण पद्म',mr:'गुरुपूजा · श्री गुरु चरण पद्म'},time:{en:'Morning guru puja',hi:'प्रातः गुरु पूजा',mr:'सकाळची गुरुपूजा'},desc:{en:'A devotional song by Srila Narottama Dasa Thakura on taking shelter of the guru.',hi:'श्रील नरोत्तम दास ठाकुर का गुरुचरणों की शरणागति का गीत।',mr:'श्रील नरोत्तम दास ठाकूर यांचे गुरुचरणांच्या आश्रयावरील गीत.'},source:'https://www.iskconbv.com/songs-mantras/guru-puja',v:[
+'śrī-guru-caraṇa-padma, kevala-bhakati-sadma\nvando mui sāvadhāna mate\njāhāra prasāde bhāi, e bhava toriyā jāi\nkṛṣṇa-prāpti hoy jāhā ha’te',
+'guru-mukha-padma-vākya, cittete koribo aikya\nāra nā koriho mane āśā\nśrī-guru-caraṇe rati, ei se uttama-gati\nje prasāde pūre sarva āśā',
+'cakṣu-dāna dilo jei, janme janme prabhu sei\ndivya-jñāna hṛde prakāśito\nprema-bhakti jāhā hoite, avidyā vināśa jāte\nvede gāya jāhāra carito',
+'śrī-guru karuṇā-sindhu, adhama janāra bandhu\nlokanātha lokera jīvana\nhā hā prabhu koro doyā, deho more pada-chāyā\nebe yaśa ghuṣuk tribhuvana'],
+dev:[
+'श्रीगुरु-चरण-पद्म, केवल भकति-सद्म\nवन्दो मुइ सावधान मते ।\nयाँहार प्रसादे भाई, ए भव तरिया जाइ\nकृष्ण-प्राप्ति हय याँहा हइते ॥',
+'गुरु-मुख-पद्म-वाक्य, चित्तेते करिब ऐक्य\nआर ना करिहो मने आशा ।\nश्रीगुरु-चरणे रति, एइ से उत्तम-गति\nजे प्रसादे पूरे सर्व आशा ॥',
+'चक्षु-दान दिलो येइ, जन्मे जन्मे प्रभु सेइ\nदिव्य ज्ञान हृदे प्रकाशित ।\nप्रेम-भक्ति जहाँ हइते, अविद्या विनाश जाते\nवेदे गाय जहाँर चरित ॥',
+'श्रीगुरु करुणा-सिन्धु, अधम जनार बन्धु\nलोकनाथ लोकेर जीवन ।\nहा हा प्रभु कोरो दया, देहो मोरे पद-छाया\nएबे यश घुषुक त्रिभुवन ॥'],
+mean:[
+{hi:'गुरु के चरणकमल ही शुद्ध भक्ति का आश्रय हैं; उनकी कृपा से भवसागर पार कर कृष्ण की प्राप्ति होती है।',mr:'गुरुचरणकमल हे शुद्ध भक्तीचे आश्रय आहेत; त्यांच्या कृपेने संसारसागर पार करून कृष्णप्राप्ती होते.',en:'The guru’s lotus feet are the shelter of pure devotion; by his grace one crosses material existence and reaches Krishna.'},
+{hi:'गुरु के वचनों को हृदय में धारण करना और उनके चरणों में प्रेम रखना ही श्रेष्ठ मार्ग है।',mr:'गुरूंचे वचन हृदयात धारण करणे आणि त्यांच्या चरणांवर प्रेम ठेवणे हाच श्रेष्ठ मार्ग आहे.',en:'Embrace the guru’s words and cherish devotion to his lotus feet—the highest path.'},
+{hi:'गुरु ज्ञानचक्षु खोलते हैं और अज्ञान को दूर कर दिव्य ज्ञान एवं प्रेमभक्ति प्रदान करते हैं।',mr:'गुरू ज्ञानचक्षू उघडतात, अज्ञान दूर करून दिव्य ज्ञान व प्रेमभक्ती देतात.',en:'The guru opens the eyes of knowledge, dispels ignorance and awakens divine love.'},
+{hi:'हे करुणासागर गुरुदेव, पतितों के मित्र! मुझ पर दया करके अपने चरणों की छाया दीजिए।',mr:'हे करुणासागर गुरुदेव, पतितांचे मित्र! माझ्यावर कृपा करून चरणांची छाया द्या.',en:'O compassionate guru, friend of the fallen, please grant me the shelter of your feet.'}]},
+{id:'pra',cat:'prayer',icon:'🍚',title:{en:'Prasadam Prayer · Maha-prasade Govinde',hi:'प्रसाद प्रार्थना · महाप्रसादे गोविन्दे',mr:'प्रसाद प्रार्थना · महाप्रसादे गोविन्दे'},time:{en:'Before honoring prasadam',hi:'प्रसाद ग्रहण करने से पहले',mr:'महाप्रसाद घेण्यापूर्वी'},desc:{en:'The Maha-prasade verse followed by two verses of Sarira Avidya-jal, by Bhaktivinoda Thakura. For honoring prasadam, not the bhoga-offering mantras.',hi:'पहले “महाप्रसादे गोविन्दे”, फिर भक्तिविनोद ठाकुर का “शरीर अविद्या-जाल” गीत (दो पद)। यह प्रसाद ग्रहण प्रार्थना है, भोग अर्पण मंत्र नहीं।',mr:'प्रथम “महाप्रसादे गोविन्दे”, नंतर भक्तिविनोद ठाकूर यांच्या “शरीर अविद्या-जाल” गीतातील दोन कडवी. ही प्रसाद ग्रहणाची प्रार्थना आहे, नैवेद्य मंत्र नाहीत.'},source:'https://www.iskconbv.com/songs-mantras/honoring-prasadam',v:[
+'mahā-prasāde govinde\nnāma-brahmaṇi vaiṣṇave\nsvalpa-puṇyavatāṁ rājan\nviśvāso naiva jāyate',
+'śarīra avidyā-jāl, jaḍendriya tāhe kāl\njīve phele viṣaya-sāgore\ntā’ra madhye jihvā ati, lobhamoy sudurmati\ntā’ke jetā kaṭhina saṁsāre',
+'kṛṣṇa boro dayāmoy, koribāre jihvā jay\nsva-prasād-anna dilo bhāi\nsei annāmṛta pāo, rādhā-kṛṣṇa-guṇa gāo\npreme ḍāko caitanya-nitāi'],
+dev:[
+'महाप्रसादे गोविन्दे\nनाम-ब्रह्मणि वैष्णवे ।\nस्वल्प-पुण्यवतां राजन्\nविश्वासो नैव जायते ॥',
+'शरीर अविद्या-जाल, जडेन्द्रिय ताहे काल\nजीवे फेले विषय-सागरे ।\nतार मध्ये जिह्वा अति, लोभमय सुदुर्मति\nताके जेता कठिन संसारे ॥',
+'कृष्ण बड़ो दयामय, करिबारे जिह्वा जय\nस्व-प्रसाद-अन्न दिलो भाई ।\nसेइ अन्नामृत पाओ, राधा-कृष्ण-गुण गाओ\nप्रेमे डाको चैतन्य-निताइ ॥'],
+mean:[
+{hi:'हे राजन्! जिनके पुण्य बहुत कम हैं, उनमें महाप्रसाद, भगवान गोविन्द, पवित्र नाम और वैष्णवों पर श्रद्धा उत्पन्न नहीं होती।',mr:'हे राजन्! ज्यांचे पुण्य अत्यल्प आहे त्यांना महाप्रसाद, गोविंद, पवित्र नाम आणि वैष्णव यांवर श्रद्धा निर्माण होत नाही.',en:'O King, those with very little pious merit do not develop faith in maha-prasada, Govinda, the holy name and the Vaishnavas.'},
+{hi:'यह शरीर अज्ञान के जाल में बँधा है और इंद्रियाँ जीव को विषय-सागर में डालती हैं। जिह्वा को वश करना विशेष कठिन है।',mr:'हे शरीर अज्ञानाच्या जाळ्यात अडकले आहे; इंद्रिये जीवाला विषयसागरात ढकलतात. जिभेवर विजय मिळवणे फार कठीण आहे.',en:'The body is ensnared in ignorance and the senses pull the soul toward material enjoyment; the tongue is especially difficult to control.'},
+{hi:'श्रीकृष्ण कृपालु हैं; जिह्वा को जीतने के लिए उन्होंने अपना प्रसाद दिया। प्रसाद ग्रहण करते हुए राधा-कृष्ण के गुण गाओ और प्रेम से चैतन्य-निताई को पुकारो।',mr:'श्रीकृष्ण दयाळू आहेत; जिभेवर विजय मिळवण्यासाठी त्यांनी प्रसाद दिला. तो ग्रहण करताना राधा-कृष्णांचे गुण गा आणि प्रेमाने चैतन्य-निताईला हाक मारा.',en:'Krishna mercifully gives His prasada to help us conquer the tongue. Honor it, sing Radha-Krishna’s glories and call to Chaitanya-Nitai in love.'}]},
+{id:'gau',cat:'evening',icon:'🪔',title:{en:'Gaura Arati',hi:'गौर आरती',mr:'गौर आरती'},time:{en:'Evening · Sandhya arati',hi:'संध्या आरती',mr:'सायंकाळची आरती'},desc:{en:'Bhaktivinoda Thakura describes the beautiful arati of Lord Gauranga on the bank of the Ganga.',hi:'श्रील भक्तिविनोद ठाकुर द्वारा गंगातट पर श्री गौरांग महाप्रभु की आरती का वर्णन।',mr:'श्रील भक्तिविनोद ठाकूर यांनी गंगाकाठी श्री गौरांग महाप्रभूंच्या आरतीचे केलेले वर्णन.'},source:'https://www.iskconbv.com/songs-mantras/gaura-arati',v:[
+'(kibā) jaya jaya gorācānder āratiko śobhā\njāhnavī-taṭa-vane jaga-mana-lobhā\njaga-jana-mana-lobhā\n(gaurāṅger ārotik śobhā jaga-janer-mana-lobhā)',
+'dakhiṇe nitāicānd, bāme gadādhara\nikaṭe advaita, śrīnivāsa chatra-dhara',
+'bosiyāche gorācānd ratna-siṁhāsane\nārati koren brahmā-ādi deva-gaṇe',
+'narahari-ādi kori’ cāmara dhulāya\nsañjaya-mukunda-bāsu-ghoṣ-ādi gāya',
+'śaṅkha bāje ghaṇṭā bāje bāje karatāla\nmadhura mṛdaṅga bāje parama rasāla\n(śaṅkha bāje ghaṇṭā bāje madhur madhur madhur bāje)',
+'bahu-koṭi candra jini’ vadana ujjvala\ngala-deśe vana-mālā kore jhalamala',
+'śiva-śuka-nārada preme gada-gada\nbhaktivinoda dekhe gorāra sampada'],
+dev:[
+'(किबा) जय जय गोराचाँदेर आरतिको शोभा ।\nजाह्नवी-तट-वने जग-मन-लोभा ।\nजग-जन-मन-लोभा ।\n(गौरांगेर आरोतिक शोभा जग-जन-मन-लोभा) ॥',
+'दक्षिणे निताईचाँद, बामे गदाधर ।\nनिकटे अद्वैत, श्रीनिवास छत्रधर ॥',
+'बसियाछे गोराचाँद रत्न-सिंहासने ।\nआरति करेन ब्रह्मा-आदि देवगणे ॥',
+'नरहरि-आदि कोरि चामर ढुलाय ।\nसञ्जय-मुकुन्द-वासुघोष-आदि गाय ॥',
+'शंख बाजे घण्टा बाजे बाजे करताल ।\nमधुर मृदंग बाजे परम रसाल ।\n(शंख बाजे घण्टा बाजे मधुर मधुर मधुर बाजे) ॥',
+'बहु कोटि चन्द्र जिनि वदन उज्ज्वल ।\nगल-देशे वनमाला करे झलमल ॥',
+'शिव-शुक-नारद प्रेमे गद्गद ।\nभक्तिविनोद देखे गौरार सम्पद ॥'],
+mean:[
+{hi:'गंगा के किनारे श्री गौरांग महाप्रभु की आरती का सौन्दर्य समस्त जीवों का मन आकर्षित करता है।',mr:'गंगातीरी श्री गौरांग महाप्रभूंच्या आरतीचे सौंदर्य सर्व जीवांचे मन आकर्षित करते.',en:'Lord Gauranga’s beautiful arati by the Ganges attracts the hearts of all living beings.'},
+{hi:'प्रभु के दाहिने नित्यानन्द, बाएँ गदाधर और समीप अद्वैत एवं छत्र धारण किए श्रीवास उपस्थित हैं।',mr:'प्रभूंच्या उजवीकडे नित्यानंद, डावीकडे गदाधर आणि जवळ अद्वैत व छत्रधारी श्रीवास आहेत.',en:'Nityananda stands on His right, Gadadhara on His left, with Advaita and Srivasa nearby.'},
+{hi:'श्री गौरांग रत्नसिंहासन पर विराजमान हैं और ब्रह्मा आदि देवता उनकी आरती करते हैं।',mr:'श्री गौरांग रत्नसिंहासनावर विराजमान असून ब्रह्मादी देव त्यांची आरती करतात.',en:'Gauranga sits on a jeweled throne as Brahma and the demigods perform arati.'},
+{hi:'नरहरि आदि चँवर डुलाते हैं और संजय, मुकुन्द तथा वासुघोष कीर्तन गाते हैं।',mr:'नरहरि व इतर भक्त चामर ढाळतात; संजय, मुकुंद आणि वासुघोष कीर्तन गातात.',en:'Narahari and others fan Him while Sanjaya, Mukunda and Vasu Ghosha sing kirtan.'},
+{hi:'शंख, घण्टे, करताल और मृदंग की मधुर ध्वनियाँ गूँज रही हैं।',mr:'शंख, घंटा, करताल आणि मृदंग यांचे मधुर नाद गुंजत आहेत.',en:'Conches, bells, cymbals and mridanga drums resound in sweet harmony.'},
+{hi:'श्री गौरांग का मुख करोड़ों चन्द्रमाओं से अधिक उज्ज्वल है; उनके गले की वनमाला दमक रही है।',mr:'श्री गौरांगांचे मुख कोटी चंद्रांहून उजळ आहे; त्यांच्या गळ्यातील वनमाळा चमकते.',en:'His face shines brighter than countless moons and His forest-flower garland gleams.'},
+{hi:'शिव, शुक और नारद प्रेम से गद्गद हैं; भक्तिविनोद यह दिव्य ऐश्वर्य देखकर आनन्दित होते हैं।',mr:'शिव, शुक व नारद प्रेमाने गद्गद होतात; भक्तिविनोद हे दिव्य वैभव पाहतात.',en:'Shiva, Shuka and Narada are overcome with love; Bhaktivinoda beholds this glory.'}]},
+{id:'pbp',cat:'prayer',icon:'📿',title:{en:'Srila Prabhupada Pranama',hi:'श्रील प्रभुपाद प्रणाम',mr:'श्रील प्रभुपाद प्रणाम'},time:{en:'Daily',hi:'प्रतिदिन',mr:'दररोज'},desc:{en:'Prayers honoring His Divine Grace A. C. Bhaktivedanta Swami Prabhupada.',hi:'श्रील ए. सी. भक्तिवेदांत स्वामी प्रभुपाद को प्रणाम मंत्र।',mr:'श्रील ए. सी. भक्तिवेदांत स्वामी प्रभुपाद यांना प्रणाम.'},source:'https://www.iskconbv.com/songs-mantras/pranam-mantras',v:[
+'nama oṁ viṣṇu-pādāya kṛṣṇa-preṣṭhāya bhū-tale\nśrīmate bhaktivedānta-svāmin iti nāmine',
+'namas te sārasvate deve gaura-vāṇī-pracāriṇe\nnirviśeṣa-śūnyavādi-pāścātya-deśa-tāriṇe']},
+{id:'pan',cat:'mantra',icon:'🌼',title:{en:'Pancha-tattva Maha-mantra',hi:'पंचतत्त्व महामंत्र',mr:'पंचतत्त्व महामंत्र'},time:{en:'Before kirtan and japa',hi:'कीर्तन और जप से पहले',mr:'कीर्तन व जपापूर्वी'},desc:{en:'Invocation of Sri Chaitanya Mahaprabhu and His associates.',hi:'श्री चैतन्य महाप्रभु एवं उनके पार्षदों को प्रणाम।',mr:'श्री चैतन्य महाप्रभू व त्यांच्या पार्षदांना वंदन.'},source:'https://www.iskconbv.com/songs-mantras/pranam-mantras',v:[
+'(jaya) śrī-kṛṣṇa-caitanya prabhu nityānanda\nśrī-advaita gadādhara śrīvāsādi-gaura-bhakta-vṛnda'],dev:['(जय) श्री-कृष्ण-चैतन्य प्रभु नित्यानन्द\nश्री-अद्वैत गदाधर श्रीवासादि-गौर-भक्त-वृन्द']},
+{id:'hk',cat:'mantra',icon:'📿',title:{en:'Hare Krishna Maha-mantra',hi:'हरे कृष्ण महामंत्र',mr:'हरे कृष्ण महामंत्र'},time:{en:'Japa and kirtan',hi:'जप और कीर्तन',mr:'जप व कीर्तन'},desc:{en:'The sixteen-word maha-mantra, chanted in japa and kirtan.',hi:'जप एवं कीर्तन में गाया जाने वाला सोलह शब्दों का महामंत्र।',mr:'जप आणि कीर्तनात उच्चारला जाणारा सोळा शब्दांचा महामंत्र.'},source:'https://www.iskconbv.com/songs-mantras/hare-krishna-maha-mantra',v:[
+'hare kṛṣṇa hare kṛṣṇa\nkṛṣṇa kṛṣṇa hare hare\nhare rāma hare rāma\nrāma rāma hare hare'],dev:['हरे कृष्ण हरे कृष्ण\nकृष्ण कृष्ण हरे हरे ।\nहरे राम हरे राम\nराम राम हरे हरे ॥']}
+];
+/* ====== UI TEXT ====== */
+const T={
+hi:{temple:'श्री श्री राधाकृष्ण चंद्र मंदिर',hero:'आरती एवं प्रार्थनाएँ',heroP:'शुद्ध पाठ पढ़ें, भावार्थ समझें और भक्तिमय दिन की शुरुआत करें।',count:'पाठ',search:'आरती, मंत्र या प्रार्थना खोजें…',filters:['सभी','प्रातः','संध्या','प्रार्थना','मंत्र','कार्तिक'],tabs:['होम','पसंदीदा','सेटिंग'],spT:'दामोदर मास विशेष',spS:'दामोदराष्टकम् — सभी ८ श्लोक',spB:'पढ़ें',verse:'श्लोक',meaning:'सरल भावार्थ',copyV:'कॉपी',src:'मूल स्रोत खोलें ↗',next:'अगला पाठ',empty:'इस खोज में कोई पाठ नहीं मिला।',emptySaved:'अभी कोई पसंदीदा नहीं है।\nकिसी पाठ में ♡ दबाकर सेव करें।',note:'रोमन पाठ प्रकाशित वैष्णव गीत-संग्रहों पर आधारित है। देवनागरी रूप लिप्यंतरण से बनता है; बंगाली गीतों का उच्चारण अलग हो सकता है। भावार्थ सरल व्याख्याएँ हैं, शब्दशः अनुवाद नहीं। सार्वजनिक उपयोग से पहले वरिष्ठ भक्त से पाठ जाँच कराएँ।',copied:'कॉपी हो गया',saved:'पसंदीदा में जोड़ा',unsaved:'पसंदीदा से हटाया',settings:'सेटिंग',lang:'भाषा',script:'पाठ की लिपि',theme:'थीम',light:'☀ दिन',dark:'☾ रात',wake:'पढ़ते समय स्क्रीन चालू रखें',on:'✓ चालू',off:'बंद',nowake:'इस ऐप में यह सुविधा उपलब्ध नहीं',share:'शेयर',back:'वापस',code:'हि'},
+mr:{temple:'श्री श्री राधाकृष्ण चंद्र मंदिर',hero:'आरती आणि प्रार्थना',heroP:'पवित्र स्तोत्रे, तीन भाषांतील भावार्थ आणि सुलभ वाचन.',count:'पाठ',search:'आरती, मंत्र किंवा प्रार्थना शोधा…',filters:['सर्व','सकाळ','संध्याकाळ','प्रार्थना','मंत्र','कार्तिक'],tabs:['होम','आवडते','सेटिंग'],spT:'दामोदर मास विशेष',spS:'दामोदराष्टकम् — सर्व ८ श्लोक',spB:'वाचा',verse:'श्लोक',meaning:'सोप्या भाषेत अर्थ',copyV:'कॉपी',src:'मूळ स्रोत उघडा ↗',next:'पुढील पाठ',empty:'या शोधासाठी कोणताही पाठ सापडला नाही.',emptySaved:'अजून कोणतेही आवडते नाही.\nपाठात ♡ दाबून सेव्ह करा.',note:'रोमन पाठ प्रकाशित वैष्णव गीतसंग्रहांवर आधारित आहे. देवनागरी लिपी लिप्यंतरणाने तयार होते; बंगाली गीतांचे उच्चार वेगळे असू शकतात. भावार्थ सोपे स्पष्टीकरण आहेत, शब्दशः भाषांतर नाही. प्रकाशित करण्यापूर्वी वरिष्ठ भक्तांकडून तपासून घ्या.',copied:'कॉपी झाले',saved:'आवडत्यांमध्ये जोडले',unsaved:'आवडत्यांमधून काढले',settings:'सेटिंग',lang:'भाषा',script:'पाठाची लिपी',theme:'थीम',light:'☀ दिवस',dark:'☾ रात्र',wake:'वाचताना स्क्रीन चालू ठेवा',on:'✓ चालू',off:'बंद',nowake:'ही सुविधा या ऍपमध्ये उपलब्ध नाही',share:'शेअर',back:'मागे',code:'म'},
+en:{temple:'Sri Sri Radha Krishna Chandra Mandir',hero:'Sacred Lyrics & Prayers',heroP:'Authentic prayer texts, simple explanations and a peaceful reading experience.',count:'prayers',search:'Search an aarti, mantra or prayer…',filters:['All','Morning','Evening','Prayers','Mantras','Kartik'],tabs:['Home','Saved','Settings'],spT:'Damodar month special',spS:'Damodarastakam — all 8 verses',spB:'Read',verse:'Verse',meaning:'Simple meaning',copyV:'Copy',src:'Open source ↗',next:'Next prayer',empty:'No prayers match your search.',emptySaved:'Nothing saved yet.\nTap ♡ inside a prayer to save it.',note:'Roman texts are based on published Vaishnava song collections. The Devanagari view is transliterated and Bengali songs may be pronounced differently. Meanings are simple explanations, not word-for-word translations. Please have a senior devotee review before publishing.',copied:'Copied',saved:'Saved',unsaved:'Removed from saved',settings:'Settings',lang:'Language',script:'Reading script',theme:'Theme',light:'☀ Light',dark:'☾ Dark',wake:'Keep screen on while reading',on:'✓ On',off:'Off',nowake:'Not supported in this app',share:'Share',back:'Back',code:'EN'}};
+const CATS=['all','morning','evening','prayer','mantra','kartik'];
+const ALIAS={dam:'damodar ashtakam damodarashtakam',man:'mangala arati guru astakam',nar:'narasimha nrisimha nrisingha narsimha',tul:'tulsi tulasi aarti',tulp:'tulasi tulsi pranam pradakshina parikrama',gur:'guru puja guru vandana',pra:'prasad prasadam',gau:'gaura gauranga',pbp:'prabhupada',pan:'panchatattva pancha tattva',hk:'hare krishna mahamantra'};
+/* ====== HELPERS ====== */
+const $=id=>document.getElementById(id);
+const get=(k,f)=>{try{return localStorage.getItem(k)||f}catch{return f}};
+const put=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fold=s=>String(s).toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const tick=()=>{try{navigator.vibrate&&navigator.vibrate(8)}catch{}};
+const t=()=>T[lang];
+const byId=id=>A.find(a=>a.id===id);
+/* IAST -> Devanagari */
+const vowels={a:'',ā:'ा',i:'ि',ī:'ी',u:'ु',ū:'ू',ṛ:'ृ',ṝ:'ॄ',ḷ:'ॢ',e:'े',ai:'ै',o:'ो',au:'ौ'};
+const indep={a:'अ',ā:'आ',i:'इ',ī:'ई',u:'उ',ū:'ऊ',ṛ:'ऋ',ṝ:'ॠ',ḷ:'ऌ',e:'ए',ai:'ऐ',o:'ओ',au:'औ'};
+const cons={k:'क',kh:'ख',g:'ग',gh:'घ',ṅ:'ङ',c:'च',ch:'छ',j:'ज',jh:'झ',ñ:'ञ',ṭ:'ट',ṭh:'ठ',ḍ:'ड',ḍh:'ढ',ṇ:'ण',t:'त',th:'थ',d:'द',dh:'ध',n:'न',p:'प',ph:'फ',b:'ब',bh:'भ',m:'म',y:'य',r:'र',l:'ल',v:'व',w:'व',ś:'श',ṣ:'ष',s:'स',h:'ह'};
+function toDev(s){const x=s.toLowerCase();let o='',p=false;
+ for(let i=0;i<x.length;){const ch=x[i];
+  if(ch==='ṁ'||ch==='ṃ'){p=false;o+='ं';i++;continue}
+  if(ch==='ḥ'){p=false;o+='ः';i++;continue}
+  if(ch==='’'||ch==="'"||ch==='`'){i++;continue}
+  const two=x.slice(i,i+2),tok=(vowels[two]!==undefined||cons[two])?two:ch;
+  if(vowels[tok]!==undefined){o+=p?vowels[tok]:indep[tok];p=false;i+=tok.length;continue}
+  if(cons[tok]){if(p)o+='्';o+=cons[tok];p=true;i+=tok.length;continue}
+  if(p){o+='्';p=false}o+=ch;i++}
+ if(p)o+='्';return o}
+const verseText=(a,i)=>script==='dev'?(a.dev&&a.dev[i]||toDev(a.v[i])):a.v[i];
+const prayerText=a=>a.title[lang]+'\n\n'+a.v.map((_,i)=>`${t().verse} ${i+1}\n${verseText(a,i)}`).join('\n\n')+'\n\n'+a.source;
+/* ====== STATE ====== */
+let lang=get('lang','hi');if(!T[lang])lang='hi';
+let script=get('srkcm_aarti_script',lang==='en'?'roman':'dev');if(script!=='roman'&&script!=='dev')script='dev';
+let font=Math.max(15,Math.min(35,Number(get('srkcm_aarti_font','21'))||21));
+let theme=get('srkcm_aarti_theme','light')==='dark'?'dark':'light';
+let showMean=get('srkcm_aarti_mean','1')==='1';
+let favs=[];try{const s=JSON.parse(get('srkcm_aarti_favourites','[]'));if(Array.isArray(s))favs=s.filter(x=>typeof x==='string')}catch{}
+let filter='all',tab='home',query='',current=null,wakeWanted=false,wakeLock=null,toastTimer;
+/* ====== RENDER: HOME ====== */
+function applyUI(){
+ const r=document.documentElement;r.lang=lang;r.dataset.theme=theme;r.style.setProperty('--reading-size',font+'px');
+ $('fPct').textContent=Math.round(font/21*100)+'%';
+ const tx=t();
+ $('hTitle').textContent=tx.temple;$('spName').textContent=tx.temple;$('heroT').textContent=tx.hero;$('heroP').textContent=tx.heroP;
+ $('count').textContent=A.length+' '+tx.count;$('search').placeholder=tx.search;$('note').textContent=tx.note;
+ $('spT').textContent=tx.spT;$('spS').textContent=tx.spS;$('spB').textContent=tx.spB;
+ $('tabHome').textContent=tx.tabs[0];$('tabSaved').textContent=tx.tabs[1];$('tabSet').textContent=tx.tabs[2];
+ $('sT').textContent=tx.settings;$('sLang').textContent=tx.lang;$('sScript').textContent=tx.script;$('sTheme').textContent=tx.theme;$('sWake').textContent=tx.wake;
+ $('thL').textContent=tx.light;$('thD').textContent=tx.dark;$('wakeBtn').textContent=wakeWanted?tx.on:tx.off;$('wakeBtn').classList.toggle('on',wakeWanted);
+ $('themeBtn').textContent=theme==='dark'?'☀':'☾';$('lBtn').textContent=tx.code;$('mBtn').classList.toggle('on',showMean);$('mBtn').textContent=lang==='en'?'Aa∙':'अर्थ';
+ $('rBack').setAttribute('aria-label',tx.back);$('rShare').setAttribute('aria-label',tx.share);
+ document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+ document.querySelectorAll('[data-script]').forEach(b=>b.classList.toggle('on',b.dataset.script===script));
+ document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('on',b.dataset.theme===theme));
+ document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===(tab==='saved'?'saved':'home')));
+ const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content='#6b102f';
+}
+function visible(){const q=fold(query.trim());return A.filter(a=>{
+ if(tab==='saved'&&!favs.includes(a.id))return false;
+ if(tab==='home'&&filter!=='all'&&a.cat!==filter)return false;
+ if(q&&!fold([a.id,ALIAS[a.id]||'',...Object.values(a.title),...Object.values(a.desc),...a.v].join(' ')).includes(q))return false;
+ return true})}
+function renderChips(){const w=$('chips');w.hidden=tab==='saved';w.innerHTML=CATS.map((c,i)=>`<button type="button" data-cat="${c}" class="${filter===c?'on':''}">${esc(t().filters[i])}</button>`).join('')}
+function renderList(){
+ const v=visible();
+ $('list').innerHTML=v.map(a=>`<div class="card ${a.id==='dam'&&CONFIG.damodarSpecial?'k':''}" role="button" tabindex="0" data-open="${a.id}"><span class="ico" aria-hidden="true">${a.icon}</span><span class="nm"><strong>${esc(a.title[lang])}</strong><small>${favs.includes(a.id)?'<span class="heart">♥</span>':''}${esc(a.time[lang])} · ${a.v.length} ${esc(t().verse)}</small></span><span class="chev" aria-hidden="true">›</span></div>`).join('');
+ $('none').hidden=v.length>0;$('none').style.whiteSpace='pre-line';$('none').textContent=tab==='saved'&&!query?t().emptySaved:t().empty;
+ $('special').hidden=!(CONFIG.damodarSpecial&&tab==='home'&&filter==='all'&&!query);
+}
+function renderHome(){applyUI();renderChips();renderList()}
+/* ====== RENDER: READER ====== */
+function renderReader(keepScroll){
+ const a=byId(current);if(!a)return;const tx=t();
+ $('rTitle').textContent=a.title[lang];$('rSub').textContent=a.time[lang]+' · '+a.v.length+' '+tx.verse;
+ $('rFav').textContent=favs.includes(a.id)?'♥':'♡';
+ const img=CONFIG.images&&CONFIG.images[a.id];
+ const list=visible(),idx=list.findIndex(x=>x.id===a.id),nx=list.length>1?list[(idx+1)%list.length]:null;
+ $('rBody').innerHTML=`<div class="rhero"><span class="ico" aria-hidden="true">${a.icon}</span><div><h2>${esc(a.title[lang])}</h2><small>${esc(a.time[lang])}</small></div></div>${img?`<img class="photo" src="${esc(img)}" alt="" onerror="this.remove()">`:''}<p class="explain">${esc(a.desc[lang])}</p>`+
+ a.v.map((_,i)=>`<article class="verse"><div class="vtop"><span>${esc(tx.verse)} ${i+1} / ${a.v.length}</span><button type="button" data-vcopy="${i}">⧉ ${esc(tx.copyV)}</button></div><p class="vt" lang="${script==='dev'?'hi':'en'}">${esc(verseText(a,i))}</p>${showMean&&a.mean&&a.mean[i]?`<div class="mean"><b>${esc(tx.meaning)}</b>${esc(a.mean[i][lang])}</div>`:''}</article>`).join('')+
+ `<a class="src" href="${esc(a.source)}" target="_blank" rel="noopener noreferrer">${esc(tx.src)}</a>`+
+ (nx&&nx.id!==a.id?`<div class="next" role="button" tabindex="0" data-next="${nx.id}"><span class="ico" style="width:42px;height:42px;font-size:22px">${nx.icon}</span><div><small>${esc(tx.next)}</small><strong>${esc(nx.title[lang])}</strong></div><span class="chev" style="color:#ffd17b">›</span></div>`:'');
+ if(!keepScroll)$('rScroll').scrollTop=0;$('prog').style.width='0';
+}
+/* ====== NAVIGATION (history-aware so Android Back works) ====== */
+const reader=$('reader'),home=$('home');
+function openReader(id){current=id;renderReader(false);reader.classList.add('open');reader.setAttribute('aria-hidden','false');home.classList.add('under');
+ if(!(history.state&&history.state.r))history.pushState({r:1},'');tick()}
+function doCloseReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');home.classList.remove('under');renderList()}
+function closeReader(){if(history.state&&history.state.r)history.back();else doCloseReader()}
+function openSheet(){$('scrim').classList.add('open');$('sheet').classList.add('open');if(!(history.state&&history.state.s))history.pushState({s:1},'')}
+function doCloseSheet(){$('scrim').classList.remove('open');$('sheet').classList.remove('open')}
+function closeSheet(){if(history.state&&history.state.s)history.back();else doCloseSheet()}
+window.addEventListener('popstate',()=>{if($('sheet').classList.contains('open'))doCloseSheet();else if(reader.classList.contains('open'))doCloseReader()});
+/* For Sketchware: call webView.evaluateJavascript("handleBack()") if you want manual control. Returns true if handled. */
+window.handleBack=function(){if($('sheet').classList.contains('open')){closeSheet();return true}if(reader.classList.contains('open')){closeReader();return true}return false};
+/* ====== ACTIONS ====== */
+function toast(s){const e=$('toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),1900)}
+async function copyText(txt){if(navigator.clipboard&&window.isSecureContext){try{await navigator.clipboard.writeText(txt);return true}catch{}}
+ const a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand('copy')}catch{}a.remove();return ok}
+function toggleFav(id){const on=favs.includes(id);favs=on?favs.filter(x=>x!==id):[...favs,id];put('srkcm_aarti_favourites',JSON.stringify(favs));toast(on?t().unsaved:t().saved);tick();$('rFav').textContent=on?'♡':'♥'}
+function setFont(v){font=Math.max(15,Math.min(35,v));put('srkcm_aarti_font',font);applyUI()}
+function setLang(l){lang=l;put('lang',l);script=l==='en'?'roman':'dev';put('srkcm_aarti_script',script);renderHome();if(current)renderReader(true)}
+function setScript(s){script=s;put('srkcm_aarti_script',s);applyUI();if(current)renderReader(true)}
+function setTheme(x){theme=x;put('srkcm_aarti_theme',x);applyUI()}
+function setTab(x){tab=x;if(x==='saved')filter='all';renderHome();$('homeScroll').scrollTop=0}
+async function refreshWake(){if(!wakeWanted||document.visibilityState!=='visible'||!navigator.wakeLock)return;try{wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}catch{wakeWanted=false;toast(t().nowake);applyUI()}}
+/* ====== EVENTS ====== */
+$('list').addEventListener('click',e=>{const c=e.target.closest('[data-open]');if(c)openReader(c.dataset.open)});
+$('list').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const c=e.target.closest('[data-open]');if(c){e.preventDefault();openReader(c.dataset.open)}}});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;filter=b.dataset.cat;tick();renderChips();renderList()});
+$('special').onclick=()=>openReader('dam');
+$('search').addEventListener('input',e=>{query=e.target.value;renderList()});
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tick();b.dataset.tab==='set'?openSheet():setTab(b.dataset.tab)});
+$('themeBtn').onclick=()=>setTheme(theme==='dark'?'light':'dark');
+$('rBack').onclick=closeReader;
+$('rFav').onclick=()=>current&&toggleFav(current);
+$('rShare').onclick=()=>{const a=byId(current);if(!a)return;if(navigator.share)navigator.share({title:a.title[lang],text:prayerText(a)}).catch(()=>{});else copyText(prayerText(a)).then(ok=>toast(ok?t().copied:'—'))};
+$('cBtn').onclick=()=>{const a=byId(current);if(a)copyText(prayerText(a)).then(ok=>toast(ok?t().copied:'—'))};
+$('fMinus').onclick=()=>setFont(font-2);$('fPlus').onclick=()=>setFont(font+2);
+$('mBtn').onclick=()=>{showMean=!showMean;put('srkcm_aarti_mean',showMean?'1':'0');applyUI();renderReader(true)};
+$('lBtn').onclick=()=>{const o=['hi','mr','en'];setLang(o[(o.indexOf(lang)+1)%3])};
+$('rBody').addEventListener('click',e=>{
+ const v=e.target.closest('[data-vcopy]');if(v){const a=byId(current);copyText(verseText(a,+v.dataset.vcopy)).then(ok=>toast(ok?t().copied:'—'));return}
+ const n=e.target.closest('[data-next]');if(n){current=n.dataset.next;renderReader(false);tick()}});
+$('rScroll').addEventListener('scroll',()=>{const s=$('rScroll'),m=s.scrollHeight-s.clientHeight;$('prog').style.width=(m>0?Math.min(100,s.scrollTop/m*100):0)+'%'},{passive:true});
+$('scrim').onclick=closeSheet;
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+document.querySelectorAll('[data-script]').forEach(b=>b.onclick=()=>setScript(b.dataset.script));
+document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>setTheme(b.dataset.theme));
+$('wakeBtn').onclick=async()=>{if(wakeWanted){wakeWanted=false;if(wakeLock){try{await wakeLock.release()}catch{}wakeLock=null}applyUI();return}
+ if(!navigator.wakeLock){toast(t().nowake);return}wakeWanted=true;await refreshWake();applyUI()};
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&wakeWanted&&!wakeLock)refreshWake()});
+/* swipe from the left edge = back (like a native app) */
+let sx=0,sy=0,edge=false;
+document.addEventListener('touchstart',e=>{const p=e.touches[0];sx=p.clientX;sy=p.clientY;edge=sx<28&&reader.classList.contains('open')},{passive:true});
+document.addEventListener('touchend',e=>{if(!edge)return;const p=e.changedTouches[0];if(p.clientX-sx>70&&Math.abs(p.clientY-sy)<60)closeReader();edge=false},{passive:true});
+/* block pinch/double-tap zoom and context menu outside text */
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('contextmenu',e=>{if(!e.target.closest('.vt'))e.preventDefault()});
+/* optional logo */
+if(CONFIG.logoUrl){const im=document.createElement('img');im.alt='';im.src=CONFIG.logoUrl;im.onload=()=>{$('logo').textContent='';$('logo').appendChild(im)}}
+history.replaceState({h:1},'');
+renderHome();
+setTimeout(()=>$('splash').classList.add('done'),850);
+</script>
+</body>
+</html>
