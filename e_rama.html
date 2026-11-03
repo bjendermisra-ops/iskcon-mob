@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>html{background:#fff8ee}html:has(body.dark-mode){background:#181818}</style>
+<script defer src="temple-runtime.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#1a0b3b">
+<title>Rama Ekadashi 2026 · Shree Shree Radha Krishna Chandra Mandir</title>
+<link rel="preconnect" href="https://i.ibb.co" crossorigin>
+<style>
+:root{--f:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari","Noto Sans","Nirmala UI","Kohinoor Devanagari",sans-serif;--ink:#1a0b3b;--cream:#fff4dc;--pink:#ff2e93;--gold:#ffb800;--teal:#19e3c8;--lilac:#b69cff}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* native feel: no selection, no callout, no tap flash, no zoom */
+*{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
+::-webkit-scrollbar{display:none}
+#app{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column}
+#scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;scrollbar-width:none}
+button{touch-action:manipulation;font-family:var(--f)}
+body{font:500 clamp(15px,4.3vw,17px)/1.7 var(--f);color:var(--cream);background:linear-gradient(160deg,#3a1478,#1a0b3b 55%,#2a0f4a);}
+h1,h2,h3,.disp{font-family:var(--f);font-weight:800;line-height:1.1}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+section{padding:34px 0}
+h2{font-size:clamp(26px,7vw,40px);margin-bottom:16px;color:var(--gold)}
+html[lang=hi] h1,html[lang=hi] h2,html[lang=hi] h3,html[lang=hi] .big,html[lang=mr] h1,html[lang=mr] h2,html[lang=mr] h3,html[lang=mr] .big{line-height:1.35;letter-spacing:0}
+html[lang=hi] h1,html[lang=mr] h1{padding:4px 0;line-height:1.25}
+.bar{flex:none;position:relative;z-index:20;background:var(--ink);border-bottom:3px solid var(--gold);padding:calc(8px + env(safe-area-inset-top)) 12px 8px;display:flex;gap:10px;align-items:center}
+.bar b{flex:1;font:800 14px/1.2 var(--f);color:var(--gold)}
+.back{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid var(--cream);background:var(--pink);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:3px 3px 0 var(--gold)}
+.back svg{width:22px;height:22px}
+.lang{display:flex;gap:6px;flex-shrink:0}
+.lang button{font:800 14px var(--f);border:2px solid var(--cream);background:transparent;color:var(--cream);border-radius:99px;padding:4px 12px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--teal);color:var(--ink);border-color:var(--teal)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hero{text-align:center;padding-top:26px;overflow:hidden}
+.pill{display:inline-block;background:var(--pink);color:#fff;font:800 15px var(--f);padding:4px 16px;border-radius:99px;transform:rotate(-3deg);border:3px solid var(--cream)}
+h1{font-size:clamp(38px,12vw,76px);margin:14px 0 6px;color:var(--gold);text-shadow:3px 3px 0 var(--pink)}
+.sub{font-size:20px;color:var(--lilac)}
+.art{width:min(84vw,340px);margin:10px auto 0;display:block}
+/* GITA CHIP in hero (tap = scroll to Gita card) */
+.gchip{display:inline-flex;align-items:center;gap:8px;margin-top:16px;max-width:100%;font:800 clamp(14px,4vw,17px)/1.3 var(--f);color:var(--ink);background:var(--teal);border:3px solid var(--cream);border-radius:99px;padding:9px 16px;cursor:pointer;box-shadow:4px 4px 0 var(--pink);animation:pulse 2.2s ease-in-out infinite}
+.gchip:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--pink)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+/* IMAGE SLOTS: a slot with no URL is hidden automatically */
+.pic{display:none;overflow:hidden;border:4px solid var(--ink);border-radius:20px;background:linear-gradient(135deg,#5b1fa8,#c4146f);aspect-ratio:16/9;box-shadow:5px 5px 0 var(--ink)}
+.pic.on{display:block}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pic.herop{aspect-ratio:1;width:min(84vw,360px);margin:16px auto 0;border-color:var(--gold);border-radius:26px;box-shadow:9px 9px 0 var(--pink)}
+.pic.sq{aspect-ratio:4/3;margin-bottom:14px}
+.pic.sc{margin-bottom:14px}
+.marq{overflow:hidden;background:var(--gold);color:var(--ink);border-block:3px solid var(--cream);margin:6px 0;white-space:nowrap}
+.marq div{display:inline-block;padding:8px 0;font:800 20px var(--f);animation:mq 32s linear infinite;will-change:transform}
+@keyframes mq{to{transform:translate3d(-50%,0,0)}}
+.card{background:var(--cream);color:var(--ink);border:3px solid var(--cream);border-radius:22px;padding:18px;box-shadow:7px 7px 0 var(--pink)}
+.card h3{font-size:clamp(20px,5.4vw,24px);margin-bottom:6px}
+.card p+p{margin-top:12px}
+.grid{display:grid;gap:22px}
+@media(min-width:640px){.g2{grid-template-columns:1fr 1fr}}
+.dates .card:nth-child(1){box-shadow:7px 7px 0 var(--gold)}
+.dates .card:nth-child(2){box-shadow:7px 7px 0 var(--teal)}
+.big{font:800 clamp(22px,6.4vw,30px)/1.2 var(--f);color:var(--pink);margin-bottom:4px}
+.status{margin-top:22px;text-align:center;background:var(--teal);color:var(--ink);border:3px solid var(--cream);border-radius:16px;padding:12px;font:800 20px/1.3 var(--f);box-shadow:5px 5px 0 var(--ink)}
+.small{font-size:14px;opacity:.85;margin-top:12px;text-align:center}
+.tag{font:800 13px var(--f);background:var(--ink);color:var(--gold);padding:2px 10px;border-radius:99px;display:inline-block;margin-bottom:6px}
+.glory .card{border-top-width:12px}
+.glory .card:nth-child(1){border-top-color:var(--gold)}.glory .card:nth-child(2){border-top-color:var(--teal)}.glory .card:nth-child(3){border-top-color:var(--lilac)}.glory .card:nth-child(4){border-top-color:var(--pink)}
+.katha .card{box-shadow:7px 7px 0 var(--teal)}
+.katha .card:nth-of-type(2){box-shadow:7px 7px 0 var(--gold)}
+.katha .card:nth-of-type(3){box-shadow:7px 7px 0 var(--lilac)}
+.lead{margin-bottom:18px;font-size:18px;color:var(--cream)}
+.close{margin-top:22px;background:linear-gradient(135deg,var(--pink),#7b3fe4);border:3px solid var(--cream);border-radius:22px;padding:20px;box-shadow:7px 7px 0 var(--gold)}
+.close p+p{margin-top:12px}
+.steps{list-style:none;padding:0;counter-reset:s;display:grid;gap:14px}
+.steps li{counter-increment:s;background:var(--cream);color:var(--ink);border:3px solid var(--cream);border-radius:18px;padding:12px 14px 12px 64px;position:relative;box-shadow:5px 5px 0 var(--teal)}
+.steps li::before{content:counter(s);position:absolute;left:12px;top:10px;width:38px;height:38px;border-radius:50%;background:var(--pink);color:#fff;font:800 22px/38px var(--f);text-align:center;border:3px solid var(--ink)}
+/* health note under the steps */
+.hnote{margin-top:18px;background:rgba(25,227,200,.14);border:3px dashed var(--teal);border-radius:16px;padding:12px 14px;font-size:15px;line-height:1.6;text-align:left;opacity:1}
+/* DIWALI WEEK timeline */
+.week{list-style:none;padding:0;display:grid;gap:12px}
+.week li{background:var(--cream);color:var(--ink);border:3px solid var(--cream);border-left:12px solid var(--gold);border-radius:16px;padding:10px 14px;box-shadow:4px 4px 0 var(--pink)}
+.week li:nth-child(even){border-left-color:var(--teal)}
+.week li:nth-child(3n){border-left-color:var(--lilac)}
+.week li:first-child{border-left-color:var(--pink);box-shadow:4px 4px 0 var(--gold)}
+.mantra{text-align:center;background:linear-gradient(135deg,var(--pink),#7b3fe4);border:3px solid var(--cream);border-radius:26px;padding:24px 16px;box-shadow:8px 8px 0 var(--gold)}
+.mantra p{font:800 clamp(20px,5.5vw,28px)/1.35 var(--f)}
+.quote{font:800 clamp(22px,6vw,32px)/1.25 var(--f);text-align:center;color:var(--teal)}
+/* GITA PATHAN */
+.gita-card{background:linear-gradient(135deg,var(--teal),#7ff5e3);color:var(--ink);border:3px solid var(--cream);border-radius:26px;padding:22px 18px;box-shadow:8px 8px 0 var(--gold);text-align:center;position:relative}
+.gita-card .tag{background:var(--ink);color:var(--teal);font-size:14px;padding:3px 14px}
+.gita-ico{font-size:44px;line-height:1.2;margin-bottom:2px}
+.gita-time{font:800 clamp(30px,9.5vw,46px)/1.2 var(--f);color:var(--ink);margin:6px 0;background:var(--cream);border:3px solid var(--ink);border-radius:16px;padding:6px 10px;display:inline-block;box-shadow:4px 4px 0 var(--pink)}
+.gita-card p{margin-top:10px}
+.gita-place{font-weight:800;background:rgba(26,11,59,.12);border-radius:14px;padding:8px 12px}
+.gita-note{font-size:15px;opacity:.9}
+.mapbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;font:800 18px var(--f);color:var(--cream);background:var(--ink);border:3px solid var(--cream);border-radius:99px;padding:12px 16px;cursor:pointer;box-shadow:4px 4px 0 var(--pink)}
+.mapbtn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--pink)}
+.mapbtn svg{width:22px;height:22px;flex:none}
+.share{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;font:800 19px var(--f);color:#fff;background:#1faa59;border:3px solid var(--cream);border-radius:99px;padding:14px 18px;cursor:pointer;box-shadow:5px 5px 0 var(--ink)}
+.share:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.share:disabled{opacity:.7}
+.share svg{width:24px;height:24px;flex:none}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:50;max-width:88vw;text-align:center;background:var(--ink);color:var(--cream);border:3px solid var(--gold);border-radius:16px;padding:10px 16px;font:700 15px/1.4 var(--f);transition:opacity .3s,transform .3s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+/* gentle reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+footer{text-align:center;padding:34px 18px calc(40px + env(safe-area-inset-bottom));background:var(--gold);color:var(--ink);border-top:4px solid var(--cream);margin-top:30px}
+footer .disp{font-size:26px}
+@media(max-width:360px){.wrap{padding:0 14px}.card{padding:14px}.lang button{padding:4px 9px}.bar b{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<!-- ================= EDIT HERE ================= -->
+<script>
+const CONFIG = {
+  fastDate: "2026-11-05",   // Ekadashi fast day (YYYY-MM-DD) - Thursday, Rama Ekadashi
+  backUrl: "/",             // used only if the page cannot go back in history
+
+  // App download link (goes inside the share message)
+  appUrl: "https://sriradha.vercel.app/app",
+
+  // Temple location. Replace with the exact Google Maps share link of the temple.
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Shree+Radha+Krishna+Chandra+Mandir+Hadapsar+Pune",
+
+  // IMAGE THAT GETS SHARED ON WHATSAPP (real image file is sent, not a link).
+  // Leave "" to share the text message only. Put a Rama Ekadashi / Lakshmi-Narayana poster link here.
+  // Tip: if the image is on the same site as this page (like "/share.jpg"), it always works.
+  // If it is on another site, that site must allow CORS (ibb.co does).
+  shareImage: "",
+
+  // Language sync with your app's home page.
+  // Put here the localStorage key in which your home page saves the language ("en" / "hi" / "mr").
+  langKey: "lang",
+  showLangSwitch: true,     // set false to hide EN/हिं/मरा buttons and follow the app's language only
+
+  // Page images (leave "" to hide that slot; the lotus drawing shows when hero is empty)
+  images: {
+    hero:    "",  // square 1:1  - Lakshmi-Narayana (Lord Vishnu with Mata Lakshmi)
+    meaning: "",  // 16:9 - Mata Lakshmi on a lotus with diyas
+    who:     "",  // 4:3  - Lakshmi-Narayana / Lord Damodara
+    k1:      "",  // 16:9 - King Muchukunda, the drum announcing Ekadashi
+    k2:      "",  // 16:9 - Prince Shobhana keeping the fast
+    k3:      ""   // 16:9 - Chandrabhaga and Shobhana on Mount Mandarachala
+  }
+};
+</script>
+
+<div id="app">
+<div class="bar">
+  <button class="back" id="back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <b data-i="temple"></b>
+  <div class="lang" id="langbox" role="group" aria-label="Language">
+    <button data-l="en">EN</button><button data-l="hi">हिं</button><button data-l="mr">मरा</button>
+  </div>
+</div>
+
+<div id="scroll">
+<header class="hero">
+  <div class="wrap">
+    <span class="pill" data-i="pill"></span>
+    <h1 data-i="title"></h1>
+    <p class="sub" data-i="sub"></p>
+    <button class="gchip" id="gchip" type="button" data-i="chip"></button>
+    <div class="pic herop" data-img="hero"></div>
+    <svg class="art" id="art" viewBox="0 0 300 300" role="img" aria-label="Lotus with Sudarshan chakra">
+      <defs><ellipse id="p" cx="0" cy="-62" rx="24" ry="62"/><ellipse id="q" cx="0" cy="-42" rx="17" ry="42"/></defs>
+      <circle cx="150" cy="160" r="130" fill="#ffb80022"/>
+      <g class="ring"><circle cx="150" cy="160" r="128" fill="none" stroke="#ffb800" stroke-width="4" stroke-dasharray="3 14" stroke-linecap="round"/>
+        <g fill="#19e3c8"><circle cx="150" cy="30" r="7"/><circle cx="280" cy="160" r="7"/><circle cx="150" cy="290" r="7"/><circle cx="20" cy="160" r="7"/></g></g>
+      <g transform="translate(150,185)" stroke="#1a0b3b" stroke-width="3">
+        <g fill="#ff2e93"><use href="#p" transform="rotate(-80)"/><use href="#p" transform="rotate(80)"/><use href="#p" transform="rotate(-55)"/><use href="#p" transform="rotate(55)"/><use href="#p" transform="rotate(-28)"/><use href="#p" transform="rotate(28)"/><use href="#p"/></g>
+        <g fill="#ff8fd0"><use href="#q" transform="rotate(-40)"/><use href="#q" transform="rotate(40)"/><use href="#q" transform="rotate(-14)"/><use href="#q" transform="rotate(14)"/></g>
+      </g>
+      <circle cx="150" cy="150" r="38" fill="#ffb800" stroke="#1a0b3b" stroke-width="4"/>
+      <g stroke="#1a0b3b" stroke-width="3" stroke-linecap="round"><path d="M150 118v64M118 150h64M127 127l46 46M173 127l-46 46"/></g>
+      <circle cx="150" cy="150" r="11" fill="#fff4dc" stroke="#1a0b3b" stroke-width="3"/>
+    </svg>
+  </div>
+</header>
+
+<div class="marq" aria-hidden="true"><div id="mq"></div></div>
+
+<main class="wrap">
+
+<!-- GITA PATHAN -->
+<section id="gita" style="padding-bottom:6px">
+  <div class="gita-card">
+    <span class="tag" data-i="gitaTag"></span>
+    <div class="gita-ico" aria-hidden="true">📖</div>
+    <h2 style="color:var(--ink);margin:4px 0 8px;font-size:clamp(24px,6.6vw,34px)" data-i="gitaH"></h2>
+    <div class="gita-time" data-i="gitaTime"></div>
+    <p data-i="gitaP"></p>
+    <p class="gita-place" data-i="gitaPlace"></p>
+    <button class="mapbtn" id="mapbtn" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z"/></svg>
+      <span data-i="mapBtn"></span>
+    </button>
+    <p class="gita-note" data-i="gitaN"></p>
+  </div>
+</section>
+
+<section class="dates">
+  <h2 data-i="whenH"></h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag" data-i="fastL"></span><div class="big" data-i="fastD"></div><p data-i="fastN"></p></div>
+    <div class="card"><span class="tag" data-i="parL"></span><div class="big" data-i="parD"></div><p data-i="parN"></p></div>
+  </div>
+  <div class="status" id="status"></div>
+  <p class="small" data-i="note"></p>
+</section>
+
+<section class="rv">
+  <h2 data-i="meanH"></h2>
+  <div class="card">
+    <div class="pic sq" data-img="meaning" style="aspect-ratio:16/9"></div>
+    <p data-i="meanP"></p>
+  </div>
+</section>
+
+<section class="rv">
+  <h2 data-i="whoH"></h2>
+  <div class="card">
+    <div class="pic sq" data-img="who"></div>
+    <p data-i="whoP"></p>
+  </div>
+</section>
+
+<section class="glory rv">
+  <h2 data-i="gloryH"></h2>
+  <div class="grid g2">
+    <div class="card"><h3 data-i="g1h"></h3><p data-i="g1"></p></div>
+    <div class="card"><h3 data-i="g2h"></h3><p data-i="g2"></p></div>
+    <div class="card"><h3 data-i="g3h"></h3><p data-i="g3"></p></div>
+    <div class="card"><h3 data-i="g4h"></h3><p data-i="g4"></p></div>
+  </div>
+</section>
+
+<section class="katha">
+  <h2 data-i="kathaH"></h2>
+  <p class="lead" data-i="kathaIntro"></p>
+  <div class="grid">
+    <div class="card rv"><div class="pic sc" data-img="k1"></div><h3 data-i="k1h"></h3><p data-i="k1a"></p><p data-i="k1b"></p></div>
+    <div class="card rv"><div class="pic sc" data-img="k2"></div><h3 data-i="k2h"></h3><p data-i="k2a"></p><p data-i="k2b"></p><p data-i="k2c"></p></div>
+    <div class="card rv"><div class="pic sc" data-img="k3"></div><h3 data-i="k3h"></h3><p data-i="k3a"></p><p data-i="k3b"></p></div>
+  </div>
+  <div class="close rv"><p data-i="k4a"></p><p data-i="k4b"></p></div>
+</section>
+
+<section class="rv">
+  <h2 data-i="howH"></h2>
+  <ol class="steps">
+    <li data-i="h1"></li><li data-i="h2"></li><li data-i="h3"></li><li data-i="h4"></li><li data-i="h5"></li>
+  </ol>
+  <p class="hnote" data-i="hnote"></p>
+</section>
+
+<section class="rv">
+  <h2 data-i="weekH"></h2>
+  <ul class="week">
+    <li data-i="w0"></li><li data-i="w1"></li><li data-i="w2"></li><li data-i="w3"></li><li data-i="w4"></li><li data-i="w5"></li>
+  </ul>
+</section>
+
+<section class="rv">
+  <div class="mantra">
+    <p>ॐ नमो भगवते वासुदेवाय</p>
+    <p style="font-size:18px;margin:14px 0">हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे<br>हरे राम हरे राम राम राम हरे हरे</p>
+    <p style="font-size:16px;font-weight:600" data-i="mantraN"></p>
+  </div>
+</section>
+
+<section class="rv"><p class="quote" data-i="truth"></p></section>
+
+<section class="rv" style="padding-top:6px">
+  <button class="share" id="share" type="button">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.4-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"/></svg>
+    <span data-i="share"></span>
+  </button>
+</section>
+</main>
+
+<footer>
+  <div class="disp" data-i="temple"></div>
+  <p class="disp" style="font-size:20px;margin-top:6px" data-i="bye"></p>
+</footer>
+</div><!-- /scroll -->
+</div><!-- /app -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* NOTE: status messages (s0, s2, s3, s4) never use "tomorrow" / "in N days".
+   Before the fast day it always shows the fixed date, so it reads correctly whenever someone opens the page.
+   Timings used: Pune panchang. Ekadashi tithi ends 10:37 AM on 5 Nov; parana 6 Nov, 6:36 AM to 10:24 AM. */
+const T={
+en:{temple:"Shree Shree Radha Krishna Chandra Mandir",pill:"Ekadashi Vrat · 5 Nov 2026",title:"Rama Ekadashi",sub:"The Ekadashi of Mata Lakshmi, just before Diwali",
+chip:"📖 Gita Pathan every Ekadashi · 11 AM – 2 PM ›",
+whenH:"When is it?",fastL:"Upavas · Fast",fastD:"Thu, 5 Nov 2026",fastN:"Kartika Krishna Ekadashi (Ashwin Vadya in the Marathi calendar). Observe the fast all day. The Ekadashi tithi lasts till 10:37 AM.",parL:"Parana · Break the fast",parD:"Fri, 6 Nov 2026",parN:"Morning, 6:36 AM to 10:24 AM. Dhanteras also falls on this day.",
+note:"Timings are for Pune and can vary slightly by city. Please follow your temple's announcement.",
+gitaTag:"EVERY EKADASHI",gitaH:"Gita Pathan at the Temple",gitaTime:"11:00 AM – 2:00 PM",gitaP:"On every Ekadashi, the temple holds Shrimad Bhagavad Gita pathan from 11 AM to 2 PM. Come with your family, listen, read along and let Krishna's words fill your day.",gitaPlace:"📍 Shree Shree Radha Krishna Chandra Mandir, 15 Number, Hadapsar",mapBtn:"Open in Google Maps",gitaN:"Everyone is welcome. Even a little time with the Gita counts.",
+meanH:"What does the name mean?",meanP:"<b>Rama</b> is a name of Mata Lakshmi, the consort of Lord Vishnu. The word also means \"the one who gives joy\". This Ekadashi falls in the dark fortnight just before Diwali, so many families begin welcoming Lakshmi-Narayana on this day. The Puranas praise it as a vrat that cleanses even the heaviest sins.",
+whoH:"Who do we worship?",whoP:"Lord Vishnu together with <b>Mata Lakshmi</b> (Lakshmi-Narayana). Kartika is also Damodara masa, so devotees honour Lord Damodara too and offer ghee lamps in the evening. Thursday is Lord Vishnu's day, which makes this Ekadashi even more special.",
+gloryH:"Why is it so powerful?",g1h:"Sins washed away",g1:"The Puranas say this vrat, kept with faith, destroys even the gravest sins.",g2h:"Path to Vishnu's abode",g2:"The devotee who keeps it sincerely is said to reach the abode of the Lord.",g3h:"Lakshmi-Narayana's grace",g3:"A calm, clean and prayerful start to the Diwali week, with the whole family remembering the Lord.",g4h:"Faith over fear",g4:"The katha teaches that a vrat kept with love and faith is what truly counts.",
+kathaH:"The Complete Katha",kathaIntro:"Yudhishthira asked Shri Krishna: \"O Janardana, what is the name and glory of the Ekadashi of Kartika Krishna paksha?\" The Lord replied: \"Listen, O king. It is called Rama Ekadashi. It removes even the heaviest sins. I will tell you its story.\"",
+k1h:"1. King Muchukunda's kingdom",k1a:"Long ago there lived a king named Muchukunda, a great devotee of Lord Vishnu and a friend of the devatas. In his kingdom the rule of Ekadashi was kept so strictly that when the drum announced the day, no one took food, not even the animals.",k1b:"His daughter Chandrabhaga was married to Shobhana, a gentle prince. Shobhana was physically very weak and had never been able to bear hunger.",
+k2h:"2. Shobhana's vow",k2a:"In the month of Kartika, Shobhana came to stay at his father-in-law's palace, and Rama Ekadashi arrived just then. When the drum sounded, he was afraid. How could he go a whole day without food or water?",k2b:"Chandrabhaga told him gently: \"In my father's land no one eats on this day. If you cannot fast, you may go elsewhere.\" After thinking, Shobhana said: \"No, I will keep the vrat, and let fate decide.\"",k2c:"Hungry and thirsty, he suffered through the day and night, and by dawn he left his body. Chandrabhaga performed his last rites, stayed on in her father's house, and kept every Ekadashi with devotion.",
+k3h:"3. The kingdom on Mandarachala",k3a:"By the merit of that Rama Ekadashi, Shobhana received a shining kingdom on Mount Mandarachala. A Brahmin named Somasharma from Muchukunda's land saw him there and recognised him. Shobhana said: \"This kingdom is not stable, because I fasted out of fear and not out of faith.\"",k3b:"Chandrabhaga heard this, reached the mountain with the help of Sage Vamadeva, and offered Shobhana the merit of all the Ekadashis she had kept since childhood. At once the kingdom became steady, and the couple lived there together in joy.",
+k4a:"Shri Krishna said: \"O Yudhishthira, whoever keeps Rama Ekadashi with faith is freed from sin and reaches the abode of Vishnu. Even hearing this katha purifies the heart.\"",k4b:"The lesson of Rama Ekadashi: faith, not fear, gives a vrat its meaning, and sincere devotion can lift those we love.",
+howH:"How to observe",h1:"<b>Dashami (4 Nov):</b> eat one simple satvic meal before sunset, without grains, onion, garlic or non-veg. Pluck tulsi leaves today, as they are not plucked on Ekadashi.",h2:"<b>Morning:</b> bathe, take a sankalp (vow) before Lakshmi-Narayana or Lord Krishna and light a ghee lamp.",h3:"<b>Worship:</b> offer tulsi, flowers, a lamp and incense to Lord Vishnu, and lotus or red flowers to Mata Lakshmi.",h4:"<b>Chant and stay awake:</b> chant Hare Krishna, read the katha, sing Damodarashtakam and keep jagaran. Join the Gita Pathan at the temple, 11 AM to 2 PM.",h5:"<b>Parana (6 Nov):</b> break the fast the next morning between 6:36 and 10:24 AM, after offering food to the Lord. Share food or give a donation.",
+hnote:"<b>Health first:</b> if you are pregnant, elderly, diabetic or on regular medicines, keep a simple fruit or satvic fast. Never skip prescribed medicines. Children need not fast.",
+weekH:"Diwali week ahead",w0:"<b>Thu, 5 Nov:</b> Rama Ekadashi · Vasu Baras (Govatsa Dwadashi) in the evening in Maharashtra",w1:"<b>Fri, 6 Nov:</b> Parana in the morning, Dhanteras in the evening",w2:"<b>Sat, 7 Nov:</b> Choti Diwali (Naraka Chaturdashi)",w3:"<b>Sun, 8 Nov:</b> Diwali · Lakshmi Puja",w4:"<b>Tue, 10 Nov:</b> Govardhan Puja · Bali Pratipada",w5:"<b>Wed, 11 Nov:</b> Bhai Dooj",
+mantraN:"Chant with a calm mind. Even a few rounds count.",
+truth:"A vrat kept with faith and love is worth far more than one kept out of fear.",bye:"Hare Krishna! Jai Shree Radha Krishna 🙏",
+share:"Share on WhatsApp",
+shareMsg:"🙏 Hare Krishna!\n\n📅 Rama Ekadashi: Thu, 5 Nov 2026\n🍽️ Parana: Fri, 6 Nov, 6:36 AM to 10:24 AM\n\n📖 Gita Pathan at the temple every Ekadashi: 11 AM to 2 PM\n📍 Shree Shree Radha Krishna Chandra Mandir, 15 Number, Hadapsar\n🗺️ {map}\n\n📲 For full information, download the app:\n{app}",
+tNoImg:"Image could not be attached. Sharing the message only.",tCopied:"Message copied",
+s0:"🪷 Rama Ekadashi Vrat: Thu, 5 Nov 2026",s2:"🪷 Today is Rama Ekadashi. Join Gita Pathan 11 AM to 2 PM at the temple!",s3:"🍽️ Today is parana day. Break your fast between 6:36 and 10:24 AM",s4:"🙏 Hari Bol! Rama Ekadashi 2026 vrat is complete",back:"Back"},
+hi:{temple:"श्री श्री राधा कृष्ण चंद्र मंदिर",pill:"एकादशी व्रत · 5 नवंबर 2026",title:"रमा एकादशी",sub:"दीपावली से पहले माता लक्ष्मी की एकादशी",
+chip:"📖 प्रत्येक एकादशी गीता पठण · सुबह 11 से 2 ›",
+whenH:"कब है?",fastL:"उपवास",fastD:"गुरुवार, 5 नवंबर 2026",fastN:"कार्तिक कृष्ण एकादशी (मराठी पंचांग में आश्विन वद्य)। पूरे दिन उपवास रखें। एकादशी तिथि सुबह 10:37 बजे तक है।",parL:"पारण (व्रत खोलना)",parD:"शुक्रवार, 6 नवंबर 2026",parN:"सुबह 6:36 से 10:24 बजे तक। इसी दिन धनतेरस भी है।",
+note:"समय पुणे के अनुसार हैं, शहर के अनुसार थोड़ा अंतर हो सकता है। कृपया अपने मंदिर की घोषणा देखें।",
+gitaTag:"प्रत्येक एकादशी",gitaH:"मंदिर में गीता पठण",gitaTime:"सुबह 11 से दोपहर 2 बजे",gitaP:"प्रत्येक एकादशी को मंदिर में सुबह 11 बजे से दोपहर 2 बजे तक श्रीमद्भगवद्गीता का पठण होता है। परिवार के साथ पधारें, सुनें, साथ में पढ़ें और कृष्ण के वचनों से अपना दिन पावन करें।",gitaPlace:"📍 श्री श्री राधा कृष्ण चंद्र मंदिर, 15 नंबर, हडपसर",mapBtn:"Google Maps में खोलें",gitaN:"सभी का स्वागत है। गीता के साथ थोड़ा समय भी फलदायी है।",
+meanH:"नाम का अर्थ क्या है?",meanP:"<b>रमा</b> भगवान विष्णु की अर्धांगिनी माता लक्ष्मी का नाम है। इस शब्द का अर्थ \"आनंद देने वाली\" भी है। यह एकादशी दीपावली से ठीक पहले कृष्ण पक्ष में आती है, इसलिए कई परिवार इसी दिन से लक्ष्मी-नारायण के स्वागत की तैयारी शुरू करते हैं। पुराणों में इसे बड़े से बड़े पाप को धोने वाला व्रत कहा गया है।",
+whoH:"किसकी पूजा होती है?",whoP:"भगवान विष्णु और <b>माता लक्ष्मी</b> (लक्ष्मी-नारायण)। कार्तिक दामोदर मास भी है, इसलिए भक्त भगवान दामोदर का भी पूजन करते हैं और संध्या को घी का दीपक अर्पित करते हैं। गुरुवार भगवान विष्णु का दिन है, इसलिए यह एकादशी और भी विशेष है।",
+gloryH:"इतनी महिमा क्यों?",g1h:"पापों का नाश",g1:"पुराणों के अनुसार श्रद्धा से किया गया यह व्रत बड़े से बड़े पाप को भी नष्ट कर देता है।",g2h:"विष्णु धाम की प्राप्ति",g2:"जो भक्त इसे सच्चे मन से करता है, उसे भगवान के धाम की प्राप्ति होती है।",g3h:"लक्ष्मी-नारायण की कृपा",g3:"दीपावली सप्ताह की शांत, पवित्र और प्रार्थनामय शुरुआत, जब पूरा परिवार भगवान का स्मरण करता है।",g4h:"भय नहीं, श्रद्धा",g4:"कथा सिखाती है कि प्रेम और श्रद्धा से किया गया व्रत ही सच्चा व्रत है।",
+kathaH:"संपूर्ण व्रत कथा",kathaIntro:"धर्मराज युधिष्ठिर ने श्रीकृष्ण से पूछा: \"हे जनार्दन, कार्तिक कृष्ण पक्ष की एकादशी का क्या नाम और क्या महिमा है?\" भगवान बोले: \"हे राजन्, सुनो। इसका नाम रमा एकादशी है। यह बड़े से बड़े पापों को हर लेती है। मैं तुम्हें इसकी कथा सुनाता हूँ।\"",
+k1h:"1. राजा मुचुकुन्द का राज्य",k1a:"प्राचीन काल में मुचुकुन्द नाम के एक राजा थे, जो भगवान विष्णु के परम भक्त और देवताओं के मित्र थे। उनके राज्य में एकादशी का नियम इतनी कठोरता से निभाया जाता था कि जब ढोल बजाकर एकादशी की घोषणा होती, तब पशु भी अन्न ग्रहण नहीं करते थे।",k1b:"उनकी पुत्री चंद्रभागा का विवाह शोभन नाम के कोमल स्वभाव के राजकुमार से हुआ था। शोभन शरीर से बहुत दुर्बल था और भूख सहन नहीं कर पाता था।",
+k2h:"2. शोभन का संकल्प",k2a:"कार्तिक मास में शोभन अपने ससुर के महल आया और ठीक तभी रमा एकादशी आ गयी। ढोल की आवाज़ सुनकर वह डर गया। पूरा दिन बिना अन्न-जल के कैसे रहेगा?",k2b:"चंद्रभागा ने प्रेम से कहा: \"मेरे पिता के राज्य में इस दिन कोई भोजन नहीं करता। यदि आप उपवास नहीं कर सकते, तो कहीं और चले जाइए।\" सोचकर शोभन बोला: \"नहीं, मैं व्रत करूँगा, आगे जो भाग्य में हो।\"",k2c:"भूख-प्यास से तड़पते हुए उसने दिन और रात बिताई और भोर होते-होते उसके प्राण निकल गये। चंद्रभागा ने उसका अंतिम संस्कार किया, पिता के घर ही रहने लगी और हर एकादशी श्रद्धा से करती रही।",
+k3h:"3. मंदराचल का दिव्य राज्य",k3a:"उस रमा एकादशी के पुण्य से शोभन को मंदराचल पर्वत पर एक तेजस्वी राज्य मिला। मुचुकुन्द के नगर के सोमशर्मा नामक ब्राह्मण ने उसे वहाँ देखकर पहचान लिया। शोभन ने कहा: \"यह राज्य अस्थिर है, क्योंकि मैंने व्रत श्रद्धा से नहीं, भय से किया था।\"",k3b:"यह सुनकर चंद्रभागा वामदेव ऋषि की सहायता से पर्वत पर पहुँची और बचपन से किये अपने सभी एकादशी व्रतों का पुण्य शोभन को अर्पित कर दिया। उसी क्षण राज्य स्थिर हो गया और दोनों वहाँ सुखपूर्वक साथ रहने लगे।",
+k4a:"श्रीकृष्ण ने कहा: \"हे युधिष्ठिर, जो श्रद्धा से रमा एकादशी करता है, वह पापों से मुक्त होकर विष्णु धाम को प्राप्त होता है। इस कथा को सुनने मात्र से भी हृदय पवित्र होता है।\"",k4b:"रमा एकादशी की सीख: व्रत को अर्थ भय से नहीं, श्रद्धा से मिलता है, और सच्ची भक्ति अपने प्रियजनों का भी उद्धार कर सकती है।",
+howH:"व्रत कैसे करें",h1:"<b>दशमी (4 नवंबर):</b> सूर्यास्त से पहले एक बार सात्त्विक भोजन करें, अन्न, प्याज, लहसुन और मांसाहार के बिना। तुलसी दल आज ही तोड़ लें, क्योंकि एकादशी को तुलसी नहीं तोड़ी जाती।",h2:"<b>सुबह:</b> स्नान करें, लक्ष्मी-नारायण या भगवान कृष्ण के सामने संकल्प लें और घी का दीपक जलाएँ।",h3:"<b>पूजा:</b> भगवान विष्णु को तुलसी, फूल, दीप और धूप अर्पित करें, और माता लक्ष्मी को कमल या लाल फूल।",h4:"<b>जप और जागरण:</b> हरे कृष्ण का जप करें, कथा पढ़ें, दामोदराष्टकम् गाएँ और जागरण करें। मंदिर में सुबह 11 से दोपहर 2 बजे तक गीता पठण में आएँ।",h5:"<b>पारण (6 नवंबर):</b> अगली सुबह 6:36 से 10:24 के बीच भगवान को भोग लगाकर व्रत खोलें। अन्न या दान दें।",
+hnote:"<b>पहले स्वास्थ्य:</b> गर्भवती, बुजुर्ग, मधुमेह के रोगी या नियमित दवा लेने वाले फलाहार या सात्त्विक उपवास रखें। डॉक्टर की दी हुई दवा कभी न छोड़ें। बच्चों को उपवास की आवश्यकता नहीं।",
+weekH:"आगे दीपावली सप्ताह",w0:"<b>गुरु, 5 नवंबर:</b> रमा एकादशी · महाराष्ट्र में संध्या को वसुबारस (गोवत्स द्वादशी)",w1:"<b>शुक्र, 6 नवंबर:</b> सुबह पारण, संध्या को धनतेरस",w2:"<b>शनि, 7 नवंबर:</b> छोटी दिवाली (नरक चतुर्दशी)",w3:"<b>रवि, 8 नवंबर:</b> दीपावली · लक्ष्मी पूजन",w4:"<b>मंगल, 10 नवंबर:</b> गोवर्धन पूजा · बलि प्रतिपदा",w5:"<b>बुध, 11 नवंबर:</b> भाई दूज",
+mantraN:"शांत मन से जप करें। थोड़ी माला भी फलदायी है।",
+truth:"श्रद्धा और प्रेम से किया गया व्रत, भय से किये गये व्रत से कहीं श्रेष्ठ है।",bye:"हरे कृष्ण! जय श्री राधा कृष्ण 🙏",
+share:"WhatsApp पर शेयर करें",
+shareMsg:"🙏 हरे कृष्ण!\n\n📅 रमा एकादशी: गुरुवार, 5 नवंबर 2026\n🍽️ पारण: शुक्रवार, 6 नवंबर, सुबह 6:36 से 10:24 बजे\n\n📖 प्रत्येक एकादशी को मंदिर में गीता पठण: सुबह 11 से दोपहर 2 बजे\n📍 श्री श्री राधा कृष्ण चंद्र मंदिर, 15 नंबर, हडपसर\n🗺️ {map}\n\n📲 पूरी जानकारी के लिए ऐप डाउनलोड करें:\n{app}",
+tNoImg:"फोटो जोड़ी नहीं जा सकी। केवल संदेश शेयर हो रहा है।",tCopied:"संदेश कॉपी हो गया",
+s0:"🪷 रमा एकादशी व्रत: गुरुवार, 5 नवंबर 2026",s2:"🪷 आज रमा एकादशी है। मंदिर में सुबह 11 से 2 बजे गीता पठण में आएँ!",s3:"🍽️ आज पारण का दिन है। सुबह 6:36 से 10:24 के बीच व्रत खोलें",s4:"🙏 हरि बोल! रमा एकादशी 2026 का व्रत पूर्ण हुआ",back:"वापस"},
+mr:{temple:"श्री श्री राधा कृष्ण चंद्र मंदिर",pill:"एकादशी व्रत · ५ नोव्हेंबर २०२६",title:"रमा एकादशी",sub:"दिवाळीपूर्वीची माता लक्ष्मीची एकादशी",
+chip:"📖 प्रत्येक एकादशी गीता पठण · सकाळी ११ ते २ ›",
+whenH:"कधी आहे?",fastL:"उपवास",fastD:"गुरुवार, ५ नोव्हेंबर २०२६",fastN:"आश्विन वद्य (कार्तिक कृष्ण) एकादशी. दिवसभर उपवास करा. एकादशी तिथी सकाळी १०:३७ पर्यंत आहे.",parL:"पारण (उपवास सोडणे)",parD:"शुक्रवार, ६ नोव्हेंबर २०२६",parN:"सकाळी ६:३६ ते १०:२४ पर्यंत. याच दिवशी धनत्रयोदशीही आहे.",
+note:"वेळा पुण्यानुसार आहेत, शहरानुसार थोडा फरक असू शकतो. कृपया आपल्या मंदिराची सूचना पाहा.",
+gitaTag:"प्रत्येक एकादशी",gitaH:"मंदिरात गीता पठण",gitaTime:"सकाळी ११ ते दुपारी २",gitaP:"प्रत्येक एकादशीला मंदिरात सकाळी ११ वाजल्यापासून दुपारी २ वाजेपर्यंत श्रीमद्भगवद्गीतेचे पठण होते. कुटुंबासह या, ऐका, सोबत वाचा आणि कृष्णाच्या वचनांनी आपला दिवस पावन करा.",gitaPlace:"📍 श्री श्री राधा कृष्ण चंद्र मंदिर, १५ नंबर, हडपसर",mapBtn:"Google Maps मध्ये उघडा",gitaN:"सर्वांचे स्वागत आहे. गीतेसोबत थोडा वेळही फलदायी आहे.",
+meanH:"नावाचा अर्थ काय?",meanP:"<b>रमा</b> हे भगवान विष्णूंची अर्धांगिनी माता लक्ष्मीचे नाव आहे. या शब्दाचा अर्थ \"आनंद देणारी\" असाही आहे. ही एकादशी दिवाळीच्या अगदी आधी कृष्ण पक्षात येते, म्हणून अनेक कुटुंबे याच दिवसापासून लक्ष्मी-नारायणाच्या स्वागताची तयारी सुरू करतात. पुराणांत हे व्रत मोठ्यात मोठी पापे धुऊन टाकणारे सांगितले आहे.",
+whoH:"कोणाची पूजा करतात?",whoP:"भगवान विष्णू आणि <b>माता लक्ष्मी</b> (लक्ष्मी-नारायण). कार्तिक हा दामोदर मासही आहे, म्हणून भक्त भगवान दामोदरांचीही पूजा करतात आणि संध्याकाळी तुपाचा दिवा अर्पण करतात. गुरुवार हा भगवान विष्णूंचा दिवस आहे, त्यामुळे ही एकादशी आणखी विशेष आहे.",
+gloryH:"इतके महत्त्व का?",g1h:"पापांचा नाश",g1:"पुराणांनुसार श्रद्धेने केलेले हे व्रत मोठ्यात मोठी पापेही नष्ट करते.",g2h:"विष्णुधामाची प्राप्ती",g2:"जो भक्त हे व्रत मनापासून करतो, त्याला भगवंताच्या धामाची प्राप्ती होते.",g3h:"लक्ष्मी-नारायणाची कृपा",g3:"दिवाळी सप्ताहाची शांत, पवित्र आणि प्रार्थनामय सुरुवात, जेव्हा सारे कुटुंब भगवंताचे स्मरण करते.",g4h:"भीती नव्हे, श्रद्धा",g4:"कथा शिकवते की प्रेमाने आणि श्रद्धेने केलेले व्रतच खरे व्रत आहे.",
+kathaH:"संपूर्ण व्रतकथा",kathaIntro:"धर्मराज युधिष्ठिराने श्रीकृष्णांना विचारले: \"हे जनार्दना, कार्तिक कृष्ण पक्षातील एकादशीचे नाव आणि महिमा काय आहे?\" भगवान म्हणाले: \"हे राजा, ऐक. तिचे नाव रमा एकादशी आहे. ती मोठ्यात मोठी पापे हरण करते. मी तुला तिची कथा सांगतो.\"",
+k1h:"१. राजा मुचुकुंदाचे राज्य",k1a:"प्राचीन काळी मुचुकुंद नावाचा एक राजा होता. तो भगवान विष्णूंचा परम भक्त आणि देवांचा मित्र होता. त्याच्या राज्यात एकादशीचा नियम इतका कठोरपणे पाळला जाई की ढोल वाजवून एकादशीची घोषणा झाली की पशूसुद्धा अन्न घेत नसत.",k1b:"त्याची कन्या चंद्रभागा हिचा विवाह शोभन नावाच्या सौम्य स्वभावाच्या राजपुत्राशी झाला होता. शोभन शरीराने अतिशय दुर्बल होता आणि त्याला भूक सहन होत नसे.",
+k2h:"२. शोभनाचा संकल्प",k2a:"कार्तिक महिन्यात शोभन सासऱ्यांच्या महालात आला आणि तेव्हाच रमा एकादशी आली. ढोलाचा आवाज ऐकून तो घाबरला. दिवसभर अन्नपाण्याशिवाय कसा राहणार?",k2b:"चंद्रभागा प्रेमाने म्हणाली: \"माझ्या वडिलांच्या राज्यात या दिवशी कोणी जेवत नाही. तुम्हाला उपवास जमत नसेल तर दुसरीकडे जा.\" विचार करून शोभन म्हणाला: \"नाही, मी व्रत करीन, पुढे नशिबात असेल ते होईल.\"",k2c:"भुकेने आणि तहानेने व्याकूळ होऊन त्याने दिवस आणि रात्र काढली आणि पहाटेपर्यंत त्याचे प्राण गेले. चंद्रभागेने त्याचे अंत्यसंस्कार केले, ती वडिलांच्या घरीच राहू लागली आणि प्रत्येक एकादशी श्रद्धेने करत राहिली.",
+k3h:"३. मंदराचलावरील दिव्य राज्य",k3a:"त्या रमा एकादशीच्या पुण्याने शोभनाला मंदराचल पर्वतावर एक तेजस्वी राज्य मिळाले. मुचुकुंदाच्या नगरातील सोमशर्मा नावाच्या ब्राह्मणाने त्याला तेथे पाहून ओळखले. शोभन म्हणाला: \"हे राज्य अस्थिर आहे, कारण मी व्रत श्रद्धेने नव्हे तर भीतीने केले होते.\"",k3b:"हे ऐकून चंद्रभागा वामदेव ऋषींच्या मदतीने पर्वतावर पोहोचली आणि बालपणापासून केलेल्या सर्व एकादशी व्रतांचे पुण्य तिने शोभनाला अर्पण केले. त्याच क्षणी राज्य स्थिर झाले आणि दोघे तेथे आनंदाने एकत्र राहू लागले.",
+k4a:"श्रीकृष्ण म्हणाले: \"हे युधिष्ठिरा, जो श्रद्धेने रमा एकादशी करतो, तो पापांतून मुक्त होऊन विष्णुधामाला जातो. ही कथा ऐकल्यानेही हृदय पवित्र होते.\"",k4b:"रमा एकादशीचा संदेश: व्रताला अर्थ भीतीने नव्हे, तर श्रद्धेने मिळतो, आणि खरी भक्ती आपल्या प्रियजनांचाही उद्धार करू शकते.",
+howH:"व्रत कसे करावे",h1:"<b>दशमी (४ नोव्हेंबर):</b> सूर्यास्ताआधी एकदा सात्त्विक भोजन करा, धान्य, कांदा, लसूण आणि मांसाहाराशिवाय. तुळशीची पाने आजच तोडून ठेवा, कारण एकादशीला तुळस तोडत नाहीत.",h2:"<b>सकाळी:</b> स्नान करा, लक्ष्मी-नारायण किंवा भगवान कृष्णांसमोर संकल्प करा आणि तुपाचा दिवा लावा.",h3:"<b>पूजा:</b> भगवान विष्णूंना तुळस, फुले, दीप आणि धूप अर्पण करा आणि माता लक्ष्मीला कमळ किंवा लाल फुले.",h4:"<b>जप आणि जागरण:</b> हरे कृष्ण जप करा, कथा वाचा, दामोदराष्टकम् म्हणा आणि जागरण करा. मंदिरात सकाळी ११ ते दुपारी २ गीता पठणात सहभागी व्हा.",h5:"<b>पारण (६ नोव्हेंबर):</b> दुसऱ्या दिवशी सकाळी ६:३६ ते १०:२४ दरम्यान भगवंताला नैवेद्य दाखवून उपवास सोडा. अन्नदान किंवा दान करा.",
+hnote:"<b>आधी आरोग्य:</b> गर्भवती, ज्येष्ठ, मधुमेही किंवा नियमित औषधे घेणाऱ्यांनी फलाहार किंवा सात्त्विक उपवास करावा. डॉक्टरांनी दिलेली औषधे कधीही चुकवू नका. मुलांना उपवासाची गरज नाही.",
+weekH:"पुढे दिवाळी सप्ताह",w0:"<b>गुरु, ५ नोव्हेंबर:</b> रमा एकादशी · महाराष्ट्रात संध्याकाळी वसुबारस (गोवत्स द्वादशी)",w1:"<b>शुक्र, ६ नोव्हेंबर:</b> सकाळी पारण, संध्याकाळी धनत्रयोदशी",w2:"<b>शनि, ७ नोव्हेंबर:</b> नरक चतुर्दशी (छोटी दिवाळी)",w3:"<b>रवि, ८ नोव्हेंबर:</b> दिवाळी · लक्ष्मीपूजन",w4:"<b>मंगळ, १० नोव्हेंबर:</b> गोवर्धन पूजा · बलिप्रतिपदा",w5:"<b>बुध, ११ नोव्हेंबर:</b> भाऊबीज",
+mantraN:"शांत मनाने जप करा. थोड्या माळा केल्या तरी फलदायी आहे.",
+truth:"श्रद्धा आणि प्रेमाने केलेले व्रत, भीतीने केलेल्या व्रतापेक्षा कितीतरी श्रेष्ठ आहे.",bye:"हरे कृष्ण! जय श्री राधा कृष्ण 🙏",
+share:"WhatsApp वर शेअर करा",
+shareMsg:"🙏 हरे कृष्ण!\n\n📅 रमा एकादशी: गुरुवार, ५ नोव्हेंबर २०२६\n🍽️ पारण: शुक्रवार, ६ नोव्हेंबर, सकाळी ६:३६ ते १०:२४\n\n📖 प्रत्येक एकादशीला मंदिरात गीता पठण: सकाळी ११ ते दुपारी २\n📍 श्री श्री राधा कृष्ण चंद्र मंदिर, १५ नंबर, हडपसर\n🗺️ {map}\n\n📲 संपूर्ण माहितीसाठी ॲप डाउनलोड करा:\n{app}",
+tNoImg:"फोटो जोडता आला नाही. फक्त संदेश शेअर होत आहे.",tCopied:"संदेश कॉपी झाला",
+s0:"🪷 रमा एकादशी व्रत: गुरुवार, ५ नोव्हेंबर २०२६",s2:"🪷 आज रमा एकादशी आहे. मंदिरात सकाळी ११ ते २ गीता पठणाला या!",s3:"🍽️ आज पारणाचा दिवस आहे. सकाळी ६:३६ ते १०:२४ दरम्यान उपवास सोडा",s4:"🙏 हरी बोल! रमा एकादशी २०२६ चे व्रत पूर्ण झाले",back:"मागे"}
+};
+
+const LANGS=["en","hi","mr"];
+let CUR="en";
+
+/* ---------- language: same as the app's home page ---------- */
+function normLang(v){
+  if(v==null)return null;
+  v=String(v).toLowerCase().replace(/["'\s]/g,"");
+  if(v.startsWith("mr")||v.startsWith("mar"))return "mr";
+  if(v.startsWith("hi"))return "hi";
+  if(v.startsWith("en"))return "en";
+  return null;
+}
+function pick(){
+  try{const q=normLang(new URLSearchParams(location.search).get("lang"));if(q)return q;}catch(e){}
+  const a=normLang(window.APP_LANG);if(a)return a;                 // app can set window.APP_LANG = "hi" before load
+  try{const s=normLang(localStorage.getItem(CONFIG.langKey));if(s)return s;}catch(e){}
+  return normLang(navigator.languages&&navigator.languages[0]||navigator.language)||"en";
+}
+
+/* ---------- status banner ----------
+   No "tomorrow" / "in N days" text. Always a fixed, date-based message:
+   - before fast day  -> shows the Ekadashi date
+   - fast day         -> "Today is Rama Ekadashi..."
+   - next day         -> "Today is parana day..."
+   - after that       -> vrat complete                                   */
+function status(l){
+  const t=T[l],a=CONFIG.fastDate.split("-").map(Number),n=new Date(),
+  d=Math.round((new Date(a[0],a[1]-1,a[2])-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);
+  return d>0?t.s0:d===0?t.s2:d===-1?t.s3:t.s4;
+}
+function setLang(l,fromUser){
+  CUR=l;
+  const t=T[l];document.documentElement.lang=l;
+  document.querySelectorAll("[data-i]").forEach(e=>{e.innerHTML=t[e.dataset.i]});
+  document.getElementById("status").textContent=status(l);
+  document.getElementById("back").setAttribute("aria-label",t.back);
+  document.querySelectorAll("[data-l]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l==l));
+  const m=document.getElementById("mq");m.textContent=("हरे कृष्ण • HARE KRISHNA • "+t.temple+" • ").repeat(6);
+  if(fromUser){
+    try{localStorage.setItem(CONFIG.langKey,l)}catch(e){}           // keep the whole app in the same language
+    try{if(typeof window.APP_ON_LANG==="function")window.APP_ON_LANG(l)}catch(e){}
+  }
+}
+document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>setLang(b.dataset.l,true));
+if(CONFIG.showLangSwitch===false)document.getElementById("langbox").style.display="none";
+
+/* ---------- helpers ---------- */
+let toastTimer;
+function toast(msg){
+  const e=document.getElementById("toast");e.textContent=msg;e.classList.add("on");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove("on"),3200);
+}
+function openUrl(u){
+  if(typeof window.APP_OPEN==="function")return window.APP_OPEN(u);   // app can open links natively
+  const w=window.open(u,"_blank","noopener");if(!w)location.href=u;
+}
+
+/* Back button: app hook first, then browser history, then CONFIG.backUrl */
+document.getElementById("back").onclick=()=>{
+  if(typeof window.APP_BACK==="function")return window.APP_BACK();
+  if(history.length>1)return history.back();
+  location.href=CONFIG.backUrl;
+};
+
+/* Gita chip scrolls to the Gita card; Map button opens location */
+document.getElementById("gchip").onclick=()=>{
+  const g=document.getElementById("gita");
+  try{g.scrollIntoView({behavior:"smooth",block:"start"})}catch(e){g.scrollIntoView()}
+};
+document.getElementById("mapbtn").onclick=()=>openUrl(CONFIG.mapUrl);
+
+/* ---------- SHARE: real image + message in selected language ---------- */
+function shareText(){
+  return T[CUR].shareMsg.replace("{map}",CONFIG.mapUrl).replace("{app}",CONFIG.appUrl);
+}
+let SHARE_FILE=null,SHARE_LOADING=null;
+function prepImage(){
+  if(SHARE_FILE)return Promise.resolve(SHARE_FILE);
+  if(SHARE_LOADING)return SHARE_LOADING;
+  if(!CONFIG.shareImage)return Promise.resolve(null);
+  SHARE_LOADING=fetch(CONFIG.shareImage,{mode:"cors",cache:"force-cache"})
+    .then(r=>{if(!r.ok)throw new Error("http "+r.status);return r.blob()})
+    .then(b=>{
+      let type=(b.type&&b.type.startsWith("image/"))?b.type:"image/png";
+      const ext=type.split("/")[1].replace("jpeg","jpg").replace("svg+xml","svg");
+      SHARE_FILE=new File([b],"rama-ekadashi."+ext,{type:type});
+      return SHARE_FILE;
+    })
+    .catch(()=>{SHARE_FILE=null;return null})
+    .finally(()=>{SHARE_LOADING=null});
+  return SHARE_LOADING;
+}
+prepImage(); // load once at page start so the button works instantly
+
+async function doShare(){
+  const text=shareText(),btn=document.getElementById("share");
+  // 1) native app hook (WebView): app receives text + image link and shares natively
+  if(typeof window.APP_SHARE==="function")return window.APP_SHARE(text,CONFIG.shareImage,CUR);
+  // 2) if the image is still loading, wait a moment (max ~2.5s)
+  if(!SHARE_FILE&&SHARE_LOADING){
+    btn.disabled=true;
+    await Promise.race([SHARE_LOADING,new Promise(r=>setTimeout(r,2500))]);
+    btn.disabled=false;
+  }
+  // 3) Web Share with the image file + text
+  if(navigator.share){
+    let data=null;
+    try{
+      if(SHARE_FILE&&navigator.canShare&&navigator.canShare({files:[SHARE_FILE]})){
+        data={files:[SHARE_FILE],text:text,title:T[CUR].title};
+      }
+    }catch(e){data=null}
+    if(data){
+      try{await navigator.share(data);return}
+      catch(e){if(e&&e.name==="AbortError")return}
+    }
+    // image not possible: share text only
+    try{
+      await navigator.share({text:text,title:T[CUR].title});
+      if(!data&&CONFIG.shareImage)toast(T[CUR].tNoImg);
+      return;
+    }catch(e){if(e&&e.name==="AbortError")return}
+  }
+  // 4) last fallback: WhatsApp link with text (image cannot be attached this way)
+  if(CONFIG.shareImage)toast(T[CUR].tNoImg);
+  openUrl("https://wa.me/?text="+encodeURIComponent(text));
+}
+document.getElementById("share").onclick=doShare;
+
+/* ---------- Image slots ---------- */
+document.querySelectorAll("[data-img]").forEach(box=>{
+  const url=CONFIG.images[box.dataset.img];
+  if(!url)return;
+  const im=new Image();const hero=box.dataset.img==="hero";im.loading=hero?"eager":"lazy";im.decoding="async";if(hero)im.fetchPriority="high";im.alt="";
+  im.onload=()=>{box.appendChild(im);box.classList.add("on");
+    if(box.dataset.img==="hero")document.getElementById("art").style.display="none";};
+  im.src=url;   // if the link is broken, the slot just stays hidden
+});
+
+/* ---------- Gentle reveal on scroll ---------- */
+(function(){
+  const els=document.querySelectorAll(".rv");
+  if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return;}
+  const io=new IntersectionObserver(es=>{es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}})},{root:document.getElementById("scroll"),threshold:.08});
+  els.forEach(e=>io.observe(e));
+})();
+
+/* ---------- Native feel: block zoom, long-press menu, selection, drag ---------- */
+["contextmenu","selectstart","dragstart","gesturestart","gesturechange","gestureend","copy","cut"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&["+","-","=","0","a","c"].includes(e.key))e.preventDefault()});
+setLang(pick(),false);
+</script>
+</body>
+</html>
