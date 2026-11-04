@@ -3,6 +3,7 @@
 <head>
 <style>html{background:#fff8ee}html:has(body.dark-mode){background:#181818}</style>
 <script defer src="temple-runtime.js"></script>
+<script defer src="temple-ads.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <meta name="theme-color" content="#FF9933">
@@ -346,27 +347,11 @@
     </div>
 </div>
 
-<!-- Rewarded Ads to Support App Hosting Section Widget -->
-<div class="ad-support-card" data-aos="fade-up" data-aos-duration="700">
-    <div class="ad-support-title">
-        <i class="fas fa-hands-praying"></i> <span data-key="ad_widget_title">Support Application Maintenance</span>
-    </div>
-    <div class="ad-support-desc" id="ad-support-desc-text" data-key="ad_widget_desc">
-        Dear Devotee, watching 5 short ads daily helps us cover expensive server hosting, API costs, and developer maintenance to keep updates completely free of cost. This is solely for app sustenance and not for temple funds. Thank you for your support!
-    </div>
-    <div class="ad-progress-container" id="ad-progress-beads">
-        <div class="ad-bead" id="bead-1"></div>
-        <div class="ad-bead" id="bead-2"></div>
-        <div class="ad-bead" id="bead-3"></div>
-        <div class="ad-bead" id="bead-4"></div>
-        <div class="ad-bead" id="bead-5"></div>
-    </div>
-    <button class="ad-watch-btn" id="adWatchBtn" onclick="requestAdWatch()">
-        <i class="fas fa-play-circle"></i> <span id="ad-btn-text" data-key="ad_widget_btn">Watch Ad & Support</span>
-    </button>
-    <div class="ad-status-lbl" id="adStatusLabel">
-        <span data-key="ad_widget_status_text">Support Progress:</span> <span id="ad-view-count">0/5</span>
-    </div>
+<!-- Native rewarded placement: explicit opt-in and a stated reward. -->
+<div class="ad-support-card">
+  <div class="ad-support-title">Daily Reflection · दैनिक चिंतन</div>
+  <div class="ad-support-desc">Watch an optional ad to unlock a reflection card and personal note space for 24 hours.<br>विज्ञापन देखकर चिंतन कार्ड 24 घंटे के लिए खोलें।</div>
+  <button class="ad-watch-btn" onclick="requestAdWatch()">Watch & unlock / देखकर खोलें</button>
 </div>
 
 <div class="container-fluid px-3 my-2">
@@ -564,133 +549,17 @@
     // ==========================================
     let adCooldownInterval = null;
 
-    function setupAdStateAndUI() {
-        const todayDate = new Date().toDateString();
-        const storedDate = localStorage.getItem('iskcon_ad_date');
-        
-        if (storedDate !== todayDate) {
-            localStorage.setItem('iskcon_ad_date', todayDate);
-            localStorage.setItem('iskcon_ad_count', '0');
-        }
-
-        updateAdWidgetUI();
+    function setupAdStateAndUI() {}
+    function updateAdWidgetUI() {}
+    let templeRewardBusy = false;
+    async function requestAdWatch() {
+        if (templeRewardBusy) return;
+        if (!window.TempleAds) { showAdLoadingAlert(); return; }
+        templeRewardBusy = true;
+        try { TempleAds.message(await TempleAds.open('daily_reflection')); }
+        finally { templeRewardBusy = false; }
     }
-
-    function updateAdWidgetUI() {
-        const lang = localStorage.getItem('lang') || 'en';
-        const texts = langData[lang];
-        
-        const count = parseInt(localStorage.getItem('iskcon_ad_count') || '0');
-        const lastAdTime = parseInt(localStorage.getItem('iskcon_last_ad_time') || '0');
-        const now = Date.now();
-        const timeDiff = now - lastAdTime;
-        const cooldownRemaining = Math.max(0, 40000 - timeDiff); // 40 seconds cooldown
-
-        for (let i = 1; i <= 5; i++) {
-            const bead = document.getElementById(`bead-${i}`);
-            if (bead) {
-                if (i <= count) {
-                    bead.classList.add('completed');
-                } else {
-                    bead.classList.remove('completed');
-                }
-            }
-        }
-
-        document.getElementById('ad-view-count').innerText = `${count}/5`;
-
-        const watchBtn = document.getElementById('adWatchBtn');
-        const btnText = document.getElementById('ad-btn-text');
-
-        if (adCooldownInterval) {
-            clearInterval(adCooldownInterval);
-            adCooldownInterval = null;
-        }
-
-        if (count >= 5) {
-            watchBtn.disabled = true;
-            btnText.innerText = texts.ad_widget_thanks;
-            document.getElementById('ad-support-desc-text').innerText = texts.ad_widget_thanks;
-        } else if (cooldownRemaining > 0) {
-            watchBtn.disabled = true;
-            startAdCountdown(cooldownRemaining);
-        } else {
-            watchBtn.disabled = false;
-            btnText.innerText = texts.ad_widget_btn;
-            document.getElementById('ad-support-desc-text').innerText = texts.ad_widget_desc;
-        }
-    }
-
-    function startAdCountdown(remainingTimeMs) {
-        const lang = localStorage.getItem('lang') || 'en';
-        const texts = langData[lang];
-        const watchBtn = document.getElementById('adWatchBtn');
-        const btnText = document.getElementById('ad-btn-text');
-
-        let secondsLeft = Math.ceil(remainingTimeMs / 1000);
-        watchBtn.disabled = true;
-        btnText.innerText = `${texts.ad_widget_cooldown} ${secondsLeft}s`;
-
-        adCooldownInterval = setInterval(() => {
-            secondsLeft--;
-            if (secondsLeft <= 0) {
-                clearInterval(adCooldownInterval);
-                adCooldownInterval = null;
-                updateAdWidgetUI();
-            } else {
-                btnText.innerText = `${texts.ad_widget_cooldown} ${secondsLeft}s`;
-            }
-        }, 1000);
-    }
-
-    function requestAdWatch() {
-        const lang = localStorage.getItem('lang') || 'en';
-        const count = parseInt(localStorage.getItem('iskcon_ad_count') || '0');
-        const lastAdTime = parseInt(localStorage.getItem('iskcon_last_ad_time') || '0');
-        const now = Date.now();
-
-        if (count >= 5) {
-            showCustomAdAlert("Hare Krishna! 🙏", lang === 'hi' ? "आप पहले ही दैनिक सीमा तक पहुँच चुके हैं। धन्यवाद!" : (lang === 'mr' ? "तुम्ही आधीच दैनिक मर्यादा पूर्ण केली आहे. धन्यवाद!" : "You have already reached the daily limit. Thank you!"), "fa-circle-check");
-            return;
-        }
-
-        if (now - lastAdTime < 40000) {
-            showCustomAdAlert("Patience 🌸", lang === 'hi' ? "कृपया कूलडाउन खत्म होने तक प्रतीक्षा करें!" : (lang === 'mr' ? "कृपया कूलडाउन संपेपर्यंत प्रतीक्षा करा!" : "Please wait for the cooldown to finish!"), "fa-hourglass-half");
-            return;
-        }
-
-        showCustomAdAlert("Loading Ad... ⚡", lang === 'hi' ? "विज्ञापन लोड हो रहा है, कृपया कुछ क्षण प्रतीक्षा करें... हरे कृष्ण!" : "Preparing your ad, please wait a moment... Hare Krishna!", "fa-spinner");
-
-        setTimeout(() => {
-            closeAdAlertModal(null);
-            if (window.AndroidInterface && typeof window.AndroidInterface.triggerNativeAd === 'function') {
-                window.AndroidInterface.triggerNativeAd();
-            } else {
-                console.log("Ad bridge simulation.");
-                adWatchedSuccess();
-            }
-        }, 1200);
-    }
-
-    window.adWatchedSuccess = function() {
-        let count = parseInt(localStorage.getItem('iskcon_ad_count') || '0');
-        count = Math.min(count + 1, 5);
-        
-        localStorage.setItem('iskcon_ad_count', count.toString());
-        localStorage.setItem('iskcon_last_ad_time', Date.now().toString());
-
-        updateAdWidgetUI();
-        
-        const lang = localStorage.getItem('lang') || 'en';
-        if (lang === 'hi') {
-            showCustomAdAlert("धन्यवाद! 🙏", "ऐप के रखरखाव और सर्वर लागत में सहयोग के लिए आपका बहुत-बहुत धन्यवाद! हरे कृष्ण!", "fa-heart");
-        } else if (lang === 'mr') {
-            showCustomAdAlert("धन्यवाद! 🙏", "ॲपच्या देखभालीसाठी आणि सर्व्हर खर्चासाठी सहकार्य केल्याबद्दल खूप खूप धन्यवाद! हरे कृष्ण!", "fa-heart");
-        } else {
-            showCustomAdAlert("Thank You! 🙏", "Thank you very much for supporting app maintenance and server hosting! Hare Krishna!", "fa-heart");
-        }
-    }
-
+    // No simulated completion and no localStorage reward counter.
     // 🌟 Native Webview callback to prevent ugly browser alert dialogs 🌟
     window.showAdLoadingAlert = function() {
         const lang = localStorage.getItem('lang') || 'en';
@@ -972,3 +841,4 @@
 </script>
 </body>
 </html>
+
