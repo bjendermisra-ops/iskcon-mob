@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "enabled": true,
+  "placements": {
+    "daily_reflection": {
+      "enabled": true,
+      "type": "rewarded",
+      "reward": "Unlock the Daily Reflection card for 24 hours / दैनिक चिंतन कार्ड 24 घंटे के लिए खोलें",
+      "ttlSeconds": 86400,
+      "target": "daily-reflection.html"
+    },
+    "game_extra_life": {
+      "enabled": true,
+      "type": "rewarded",
+      "reward": "Receive one extra life in this game / इस खेल में एक अतिरिक्त जीवन पाएँ",
+      "ttlSeconds": 0
+    },
+    "game_level_complete": {
+      "enabled": true,
+      "type": "interstitial"
+    }
+  }
+}
