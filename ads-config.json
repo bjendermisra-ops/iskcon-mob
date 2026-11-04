@@ -7,13 +7,43 @@
       "type": "rewarded",
       "reward": "Unlock the Daily Reflection card for 24 hours / दैनिक चिंतन कार्ड 24 घंटे के लिए खोलें",
       "ttlSeconds": 86400,
-      "target": "daily-reflection.html"
+      "target": "daily-reflection.html",
+      "ui": {
+        "title": {
+          "en": "A moment for yourself",
+          "hi": "खुद के लिए एक पल",
+          "mr": "स्वतःसाठी एक क्षण"
+        },
+        "icon": "🌸",
+        "accent": "#a21d63",
+        "accentEnd": "#ee8d32",
+        "rewardText": {
+          "en": "Unlock your reflection card and personal notes for 24 hours.",
+          "hi": "अपना चिंतन कार्ड और निजी नोट्स 24 घंटे के लिए खोलें।",
+          "mr": "चिंतन कार्ड आणि वैयक्तिक नोंदी २४ तासांसाठी उघडा."
+        }
+      }
     },
     "game_extra_life": {
       "enabled": true,
       "type": "rewarded",
       "reward": "Receive one extra life in this game / इस खेल में एक अतिरिक्त जीवन पाएँ",
-      "ttlSeconds": 0
+      "ttlSeconds": 0,
+      "ui": {
+        "title": {
+          "en": "One more chance!",
+          "hi": "एक और मौका!",
+          "mr": "आणखी एक संधी!"
+        },
+        "icon": "❤️",
+        "accent": "#6344ce",
+        "accentEnd": "#d83f8c",
+        "rewardText": {
+          "en": "Watch an ad to receive one extra life.",
+          "hi": "विज्ञापन देखकर एक अतिरिक्त जीवन पाएँ।",
+          "mr": "जाहिरात पाहून एक अतिरिक्त जीवन मिळवा."
+        }
+      }
     },
     "game_level_complete": {
       "enabled": true,
