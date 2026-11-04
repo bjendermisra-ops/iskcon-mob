@@ -57,3 +57,13 @@ Current production units:
 Rewarded Interstitial is not included: no ID for that format was supplied. The SDK dependency installed in Sketchware remains the build environment's responsibility.
 
 Before release, use an AdMob test device to exercise success, early close, no-fill, offline, double taps, background/return and process restart. Do not click your own live ads. This source was syntax/logic checked; APK compilation, real AdMob delivery and device UI are not verified by these checks.
+
+
+
+## Colourful reward popup (v20 / bridge v2)
+
+`TempleAds.reward(id)` and `TempleAds.open(id)` show the shared web popup automatically. v19 retains its native confirmation, so there is never a web-plus-native double popup. v20 sends userConfirmed only after the user presses Watch ad; dismissing the popup never starts a native ad request. Existing stored unlocks bypass the popup.
+
+Configure each rewarded placement's `ui`: `title` and `rewardText` accept a string or an object with `en`, `hi`, `mr`; `icon` is a short emoji/text; `accent` and `accentEnd` must be six-digit hex colours. The rewardText must accurately describe the actual configured reward and duration. The script renders strings as text, not HTML. You can edit this shared JS for entirely different layouts without changing the APK. Camera/SDK ad creatives cannot be styled by this popup.
+
+The language follows localStorage.lang. Reduced-motion settings disable the entrance animation. Cancellation, backgrounding and Escape close the prompt without an ad. Native reward decisions, cooldowns and the full-screen ad lock remain active. Any custom replacement must retain a clear reward explanation, an explicit Watch ad button and an easy cancel option.
