@@ -57,16 +57,9 @@ body { background-color:var(--bg-dark); background-image:radial-gradient(circle 
 .v-spin { position:absolute; width:44px; height:44px; border:3px solid rgba(255,153,51,.15); border-top-color:var(--primary); border-radius:50%; animation:spin .8s linear infinite; }
 .v-bottom { position:relative; z-index:3; padding:14px 14px calc(18px + env(safe-area-inset-bottom)); background:linear-gradient(0deg,rgba(0,0,0,.95) 60%,transparent); text-align:center; }
 .v-title { color:#FFD700; font-size:1.05rem; font-weight:600; line-height:1.3; margin-bottom:12px; word-wrap:break-word; }
-.v-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-.v-btn { border:none; color:#fff; padding:10px 18px; border-radius:24px; font-weight:600; font-size:.9rem; display:inline-flex; align-items:center; gap:8px; }
-.v-btn.share { background:linear-gradient(135deg,#FF9933,#e8751a); }
-.v-btn.wa { background:#25D366; }
-.v-btn.dl { background:transparent; border:1px solid var(--primary); }
 .v-nav { position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,255,255,.1); color:#fff; }
 .v-nav.prev { left:8px; } .v-nav.next { right:8px; }
 
-#toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(20px); background:rgba(30,30,30,.95); color:#fff; border:1px solid rgba(255,153,51,.5); padding:10px 18px; border-radius:22px; font-size:.85rem; z-index:100001; opacity:0; pointer-events:none; transition:all .3s; max-width:85vw; text-align:center; }
-#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -115,14 +108,10 @@ body { background-color:var(--bg-dark); background-image:radial-gradient(circle 
     </div>
     <div class="v-bottom">
         <div class="v-title" id="vTitle"></div>
-        <div class="v-actions">
-            <button class="v-btn share" id="btnShare"><i class="fas fa-share-nodes"></i> <span data-i18n="share">Share</span></button>
-            <button class="v-btn wa" id="btnWa"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-            <button class="v-btn dl" id="btnDl"><i class="fas fa-download"></i> <span data-i18n="download">Download</span></button>
-        </div>
+
     </div>
 </div>
-<div id="toast"></div>
+
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -132,7 +121,6 @@ const firebaseConfig = { apiKey:"AIzaSyAEbzUad0edV07OMF2slPJyJeWd10-Clc8", authD
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const APP_LINK = "https://sriradha.vercel.app/app";
 const CACHE_KEY = 'mandir_darshan_cache_v3';
 try { localStorage.removeItem('iskcon_darshan_cache_v2'); } catch(e) {}
 
@@ -141,13 +129,6 @@ const I18N = {
   en: { hdr:'Divine Gallery', loading:'Loading Darshan...', fAll:'All Darshan', fDaily:'Daily Darshan', fFest:'Festivals', fEvent:'Events', empty:'No Darshan Found.', share:'Share', download:'Download', darshan:'Darshan', preparing:'Preparing image...', sharedTxt:'Opening share...', dlStart:'Downloading...', dlFail:'Download not supported here. Opening image.', shareFallback:'Sharing text with app link' },
   hi: { hdr:'दिव्य गैलरी', loading:'दर्शन लोड हो रहे हैं...', fAll:'सभी दर्शन', fDaily:'दैनिक दर्शन', fFest:'त्योहार', fEvent:'कार्यक्रम', empty:'कोई दर्शन नहीं मिला।', share:'शेयर', download:'डाउनलोड', darshan:'दर्शन', preparing:'फोटो तैयार हो रही है...', sharedTxt:'शेयर खुल रहा है...', dlStart:'डाउनलोड हो रहा है...', dlFail:'यहाँ डाउनलोड सपोर्टेड नहीं है। फोटो खोल रहे हैं।', shareFallback:'ऐप लिंक के साथ टेक्स्ट शेयर हो रहा है' },
   mr: { hdr:'दिव्य गॅलरी', loading:'दर्शन लोड होत आहे...', fAll:'सर्व दर्शन', fDaily:'दैनिक दर्शन', fFest:'सण', fEvent:'कार्यक्रम', empty:'दर्शन सापडले नाही.', share:'शेअर', download:'डाउनलोड', darshan:'दर्शन', preparing:'फोटो तयार होत आहे...', sharedTxt:'शेअर उघडत आहे...', dlStart:'डाउनलोड होत आहे...', dlFail:'येथे डाउनलोड समर्थित नाही. फोटो उघडत आहे.', shareFallback:'ॲप लिंकसह मजकूर शेअर होत आहे' }
-};
-
-/* Share message: sirf app link + text, image link nahi */
-const SHARE_MSG = {
-  en: t => `🙏 *Hare Krishna!* 🙏\n\n🌸 Divine Darshan of\n*${t}*\n\n🛕 Sri Sri Radha Krishna Chandra Mandir\n\n✨ Get daily darshan, aartis, festival updates & more on our official app 👇\n📲 ${APP_LINK}\n\n_Hare Krishna Hare Krishna, Krishna Krishna Hare Hare_\n_Hare Rama Hare Rama, Rama Rama Hare Hare_ 🌺`,
-  hi: t => `🙏 *हरे कृष्ण!* 🙏\n\n🌸 दिव्य दर्शन\n*${t}*\n\n🛕 श्री श्री राधा कृष्ण चंद्र मंदिर\n\n✨ रोज़ाना दर्शन, आरती, त्योहारों की जानकारी और बहुत कुछ पाने के लिए हमारा आधिकारिक ऐप डाउनलोड करें 👇\n📲 ${APP_LINK}\n\n_हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे_\n_हरे राम हरे राम, राम राम हरे हरे_ 🌺`,
-  mr: t => `🙏 *हरे कृष्ण!* 🙏\n\n🌸 दिव्य दर्शन\n*${t}*\n\n🛕 श्री श्री राधा कृष्ण चंद्र मंदिर\n\n✨ दररोजचे दर्शन, आरती, सणांची माहिती आणि बरेच काही मिळवण्यासाठी आमचे अधिकृत ॲप डाउनलोड करा 👇\n📲 ${APP_LINK}\n\n_हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे_\n_हरे राम हरे राम, राम राम हरे हरे_ 🌺`
 };
 
 const getLang = () => { const l = localStorage.getItem('lang'); return I18N[l] ? l : 'en'; };
@@ -172,12 +153,6 @@ let isInitialLoad = true, imagesToLoadForFirstBatch = 0, imagesLoadedForFirstBat
 const galleryContainer = document.getElementById('my-gallery');
 const emptyState = document.getElementById('emptyState');
 const scrollTrigger = document.getElementById('scroll-trigger');
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400);
-}
 
 /* ---------- Cache + Firestore ---------- */
 try {
@@ -419,72 +394,6 @@ vStage.addEventListener('touchend', e => {
   }
   t0 = null;
 }, { passive:true });
-
-/* ---------- Share / Download ---------- */
-const safeName = d => (titleOf(d) || 'darshan').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40) + '.jpg';
-
-async function getBlob(url) {
-  const res = await fetch(url, { mode:'cors' });
-  if (!res.ok) throw new Error('fetch failed');
-  return await res.blob();
-}
-
-function shareTextOnWhatsApp(text) {
-  window.location.href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
-}
-
-document.getElementById('btnWa').onclick = () => {
-  const d = viewList[cur]; if (!d) return;
-  shareTextOnWhatsApp(SHARE_MSG[getLang()](titleOf(d)));
-};
-
-document.getElementById('btnShare').onclick = async () => {
-  const d = viewList[cur]; if (!d) return;
-  const text = SHARE_MSG[getLang()](titleOf(d));
-  try {
-    if (navigator.share) {
-      toast(T('preparing'));
-      let files = [];
-      try {
-        const blob = await getBlob(d.imageUrl);
-        files = [new File([blob], safeName(d), { type: blob.type || 'image/jpeg' })];
-      } catch(e) { files = []; }
-
-      if (files.length && navigator.canShare && navigator.canShare({ files })) {
-        await navigator.share({ files, text, title: titleOf(d) });
-        return;
-      }
-      await navigator.share({ text, title: titleOf(d) });
-      return;
-    }
-  } catch(err) {
-    if (err && err.name === 'AbortError') return;
-  }
-  toast(T('shareFallback'));
-  setTimeout(() => shareTextOnWhatsApp(text), 500);
-};
-
-document.getElementById('btnDl').onclick = async () => {
-  const d = viewList[cur]; if (!d) return;
-  toast(T('dlStart'));
-  try {
-    const blob = await getBlob(d.imageUrl);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = safeName(d);
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-  } catch(e) {
-    try {
-      const a = document.createElement('a');
-      a.href = d.imageUrl; a.download = safeName(d); a.rel = 'noopener';
-      document.body.appendChild(a); a.click(); a.remove();
-    } catch(e2) {
-      toast(T('dlFail'));
-      window.open(d.imageUrl, '_blank');
-    }
-  }
-};
 
 /* ---------- Filters / Language ---------- */
 document.querySelectorAll('.filter-chip').forEach(chip => {
