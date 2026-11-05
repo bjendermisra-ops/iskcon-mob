@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>html{background:#fff8ee}html:has(body.dark-mode){background:#181818}</style>
+<script defer src="temple-runtime.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>Sri Sri Radha Krishna Chandra Gallery</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Poppins:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+<style>
+:root { --primary:#FF9933; --bg-dark:#050505; --epic-shadow:0 10px 25px rgba(0,0,0,.7); }
+body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,#1a1005 0%,transparent 50%); font-family:'Poppins','Noto Sans Devanagari',sans-serif; color:#fff; margin:0; padding-bottom:40px; -webkit-font-smoothing:antialiased; overscroll-behavior-y:none; -webkit-tap-highlight-color:transparent; }
+
+/* Loader */
+.super-loader { position:fixed; inset:0; background:var(--bg-dark); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .4s ease-out; }
+.spinner-mandala { width:60px; height:60px; border:4px solid rgba(255,153,51,.1); border-top:4px solid var(--primary); border-radius:50%; animation:spin .8s linear infinite; will-change:transform; }
+@keyframes spin { 100% { transform:rotate(360deg); } }
+
+/* Header */
+.premium-header { position:sticky; top:0; z-index:1040; background:rgba(10,5,2,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,153,51,.15); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 20px rgba(0,0,0,.6); transform:translateZ(0); }
+.header-title { font-family:'Cinzel',serif; font-size:1.3rem; font-weight:800; color:#fff; margin:0; text-transform:uppercase; letter-spacing:.5px; }
+.lang-select { background:rgba(255,153,51,.15); border:1px solid var(--primary); color:#fff; border-radius:8px; padding:4px 8px; outline:none; font-size:.9rem; }
+.lang-select option { color:#000; }
+
+/* Filters */
+.filter-scroll { display:flex; overflow-x:auto; gap:8px; padding:12px 18px 6px; scrollbar-width:none; white-space:nowrap; align-items:center; -webkit-overflow-scrolling:touch; }
+.filter-scroll::-webkit-scrollbar { display:none; }
+.filter-chip { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#ddd; padding:6px 16px; border-radius:20px; font-size:.85rem; cursor:pointer; transition:all .25s ease; white-space:nowrap; }
+.filter-chip.active { background:var(--primary); color:#fff; border-color:var(--primary); font-weight:500; box-shadow:0 4px 10px rgba(255,153,51,.2); }
+.date-filter-input { background:rgba(255,255,255,.05); border:1px solid var(--primary); color:var(--primary); border-radius:20px; padding:5px 12px; font-family:'Poppins',sans-serif; font-size:.85rem; outline:none; }
+::-webkit-calendar-picker-indicator { filter:invert(1); opacity:.8; }
+
+/* Grid */
+.pswp-gallery { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:14px; }
+.date-header-row { grid-column:1/-1; font-family:'Cinzel',serif; color:var(--primary); font-size:1.15rem; font-weight:800; border-bottom:1px solid rgba(255,153,51,.2); padding-bottom:4px; margin-top:10px; display:flex; align-items:center; gap:8px; text-shadow:0 2px 4px rgba(0,0,0,.8); }
+.gallery-item { position:relative; border-radius:12px; overflow:hidden; aspect-ratio:3/4; background:#111; box-shadow:var(--epic-shadow); display:block; transform:translateZ(0); content-visibility:auto; contain-intrinsic-size:150px 200px; cursor:pointer; }
+.gallery-item img { width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .4s ease-in-out; will-change:opacity; -webkit-user-drag:none; user-select:none; }
+.gallery-item.loaded img { opacity:1; }
+.watermark-overlay { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg); font-family:'Cinzel','Noto Sans Devanagari',serif; font-size:.7rem; font-weight:800; line-height:1.25; color:rgba(255,255,255,.15); pointer-events:none; z-index:5; text-align:center; width:100%; }
+.caption-overlay { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.7) 40%,rgba(0,0,0,.95) 100%); padding:25px 8px 10px; text-align:center; }
+.cap-title { font-size:.8rem; font-weight:500; color:#fff; display:block; word-wrap:break-word; white-space:normal; line-height:1.3; text-shadow:0 1px 3px rgba(0,0,0,.8); }
+.empty-state { grid-column:1/-1; text-align:center; padding:40px 20px; color:#888; display:none; }
+#scroll-trigger { grid-column:1/-1; height:1px; width:100%; opacity:0; pointer-events:none; }
+
+/* ===== In-app Viewer ===== */
+#viewer { position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:100000; display:none; flex-direction:column; touch-action:none; }
+#viewer.open { display:flex; }
+.v-top { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:12px 16px; z-index:3; background:linear-gradient(180deg,rgba(0,0,0,.7),transparent); }
+.v-count { font-size:.85rem; color:#ddd; background:rgba(255,255,255,.1); padding:4px 12px; border-radius:14px; }
+.v-close { width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,.12); color:#fff; font-size:1.1rem; }
+.v-stage { flex:1; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.v-stage img { max-width:100%; max-height:100%; object-fit:contain; transform-origin:center center; will-change:transform; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+.v-spin { position:absolute; width:44px; height:44px; border:3px solid rgba(255,153,51,.15); border-top-color:var(--primary); border-radius:50%; animation:spin .8s linear infinite; }
+.v-bottom { position:relative; z-index:3; padding:14px 14px calc(18px + env(safe-area-inset-bottom)); background:linear-gradient(0deg,rgba(0,0,0,.95) 60%,transparent); text-align:center; }
+.v-title { color:#FFD700; font-size:1.05rem; font-weight:600; line-height:1.3; margin-bottom:12px; word-wrap:break-word; }
+.v-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.v-btn { border:none; color:#fff; padding:10px 18px; border-radius:24px; font-weight:600; font-size:.9rem; display:inline-flex; align-items:center; gap:8px; }
+.v-btn.share { background:linear-gradient(135deg,#FF9933,#e8751a); }
+.v-btn.wa { background:#25D366; }
+.v-btn.dl { background:transparent; border:1px solid var(--primary); }
+.v-nav { position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,255,255,.1); color:#fff; }
+.v-nav.prev { left:8px; } .v-nav.next { right:8px; }
+
+#toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(20px); background:rgba(30,30,30,.95); color:#fff; border:1px solid rgba(255,153,51,.5); padding:10px 18px; border-radius:22px; font-size:.85rem; z-index:100001; opacity:0; pointer-events:none; transition:all .3s; max-width:85vw; text-align:center; }
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="super-loader" class="super-loader">
+    <div class="spinner-mandala"></div>
+    <div id="loaderText" style="color:var(--primary); font-family:'Cinzel',serif; font-weight:700; margin-top:15px; letter-spacing:1px;">Loading Darshan...</div>
+</div>
+
+<div class="premium-header">
+    <a href="index.html" style="color:#fff; font-size:1.2rem; text-decoration:none;"><i class="fas fa-arrow-left"></i></a>
+    <h1 class="header-title" id="hdrTitle">Divine Gallery</h1>
+    <select class="lang-select" id="languageSelector">
+        <option value="en">EN</option>
+        <option value="hi">HI</option>
+        <option value="mr">MR</option>
+    </select>
+</div>
+
+<div class="filter-scroll" id="categoryFilters">
+    <input type="date" class="date-filter-input" id="datePickerFilter">
+    <div class="filter-chip active" data-filter="all" data-i18n="fAll">All Darshan</div>
+    <div class="filter-chip" data-filter="daily" data-i18n="fDaily">Daily Darshan</div>
+    <div class="filter-chip" data-filter="festival" data-i18n="fFest">Festivals</div>
+    <div class="filter-chip" data-filter="event" data-i18n="fEvent">Events</div>
+</div>
+
+<div class="pswp-gallery" id="my-gallery">
+    <div class="empty-state" id="emptyState">
+        <i class="fas fa-image" style="font-size:3rem; margin-bottom:10px; opacity:.5;"></i><br><span id="emptyText">No Darshan Found.</span>
+    </div>
+    <div id="scroll-trigger"></div>
+</div>
+
+<!-- Viewer -->
+<div id="viewer">
+    <div class="v-top">
+        <span class="v-count" id="vCount"></span>
+        <button class="v-close" id="vClose" aria-label="Close"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="v-stage" id="vStage">
+        <div class="v-spin" id="vSpin"></div>
+        <img id="vImg" alt="Darshan" draggable="false">
+        <button class="v-nav prev" id="vPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="v-nav next" id="vNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="v-bottom">
+        <div class="v-title" id="vTitle"></div>
+        <div class="v-actions">
+            <button class="v-btn share" id="btnShare"><i class="fas fa-share-nodes"></i> <span data-i18n="share">Share</span></button>
+            <button class="v-btn wa" id="btnWa"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+            <button class="v-btn dl" id="btnDl"><i class="fas fa-download"></i> <span data-i18n="download">Download</span></button>
+        </div>
+    </div>
+</div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = { apiKey:"AIzaSyAEbzUad0edV07OMF2slPJyJeWd10-Clc8", authDomain:"image-hit-7ce47.firebaseapp.com", databaseURL:"https://image-hit-7ce47-default-rtdb.firebaseio.com", projectId:"image-hit-7ce47" };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const APP_LINK = "https://sriradha.vercel.app/app";
+const CACHE_KEY = 'mandir_darshan_cache_v3';
+try { localStorage.removeItem('iskcon_darshan_cache_v2'); } catch(e) {}
+
+/* ---------- i18n ---------- */
+const I18N = {
+  en: { hdr:'Divine Gallery', loading:'Loading Darshan...', fAll:'All Darshan', fDaily:'Daily Darshan', fFest:'Festivals', fEvent:'Events', empty:'No Darshan Found.', share:'Share', download:'Download', darshan:'Darshan', preparing:'Preparing image...', sharedTxt:'Opening share...', dlStart:'Downloading...', dlFail:'Download not supported here. Opening image.', shareFallback:'Sharing text with app link' },
+  hi: { hdr:'दिव्य गैलरी', loading:'दर्शन लोड हो रहे हैं...', fAll:'सभी दर्शन', fDaily:'दैनिक दर्शन', fFest:'त्योहार', fEvent:'कार्यक्रम', empty:'कोई दर्शन नहीं मिला।', share:'शेयर', download:'डाउनलोड', darshan:'दर्शन', preparing:'फोटो तैयार हो रही है...', sharedTxt:'शेयर खुल रहा है...', dlStart:'डाउनलोड हो रहा है...', dlFail:'यहाँ डाउनलोड सपोर्टेड नहीं है। फोटो खोल रहे हैं।', shareFallback:'ऐप लिंक के साथ टेक्स्ट शेयर हो रहा है' },
+  mr: { hdr:'दिव्य गॅलरी', loading:'दर्शन लोड होत आहे...', fAll:'सर्व दर्शन', fDaily:'दैनिक दर्शन', fFest:'सण', fEvent:'कार्यक्रम', empty:'दर्शन सापडले नाही.', share:'शेअर', download:'डाउनलोड', darshan:'दर्शन', preparing:'फोटो तयार होत आहे...', sharedTxt:'शेअर उघडत आहे...', dlStart:'डाउनलोड होत आहे...', dlFail:'येथे डाउनलोड समर्थित नाही. फोटो उघडत आहे.', shareFallback:'ॲप लिंकसह मजकूर शेअर होत आहे' }
+};
+
+/* Share message: sirf app link + text, image link nahi */
+const SHARE_MSG = {
+  en: t => `🙏 *Hare Krishna!* 🙏\n\n🌸 Divine Darshan of\n*${t}*\n\n🛕 Sri Sri Radha Krishna Chandra Mandir\n\n✨ Get daily darshan, aartis, festival updates & more on our official app 👇\n📲 ${APP_LINK}\n\n_Hare Krishna Hare Krishna, Krishna Krishna Hare Hare_\n_Hare Rama Hare Rama, Rama Rama Hare Hare_ 🌺`,
+  hi: t => `🙏 *हरे कृष्ण!* 🙏\n\n🌸 दिव्य दर्शन\n*${t}*\n\n🛕 श्री श्री राधा कृष्ण चंद्र मंदिर\n\n✨ रोज़ाना दर्शन, आरती, त्योहारों की जानकारी और बहुत कुछ पाने के लिए हमारा आधिकारिक ऐप डाउनलोड करें 👇\n📲 ${APP_LINK}\n\n_हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे_\n_हरे राम हरे राम, राम राम हरे हरे_ 🌺`,
+  mr: t => `🙏 *हरे कृष्ण!* 🙏\n\n🌸 दिव्य दर्शन\n*${t}*\n\n🛕 श्री श्री राधा कृष्ण चंद्र मंदिर\n\n✨ दररोजचे दर्शन, आरती, सणांची माहिती आणि बरेच काही मिळवण्यासाठी आमचे अधिकृत ॲप डाउनलोड करा 👇\n📲 ${APP_LINK}\n\n_हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे_\n_हरे राम हरे राम, राम राम हरे हरे_ 🌺`
+};
+
+const getLang = () => { const l = localStorage.getItem('lang'); return I18N[l] ? l : 'en'; };
+const T = k => I18N[getLang()][k] || I18N.en[k];
+const titleOf = d => { const l = getLang(); return (l==='hi' ? (d.title_hi||d.title_en) : l==='mr' ? (d.title_mr||d.title_en) : d.title_en) || T('darshan'); };
+
+function applyStaticLang() {
+  document.documentElement.lang = getLang();
+  document.getElementById('hdrTitle').textContent = T('hdr');
+  document.getElementById('loaderText').textContent = T('loading');
+  document.getElementById('emptyText').textContent = T('empty');
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T(el.getAttribute('data-i18n')));
+}
+
+/* ---------- State ---------- */
+let allDarshanData = [], flattenedList = [], viewList = [];
+let renderIndex = 0;
+const CHUNK_SIZE = 10;
+let currentFilter = 'all', currentDateFilter = '';
+let isInitialLoad = true, imagesToLoadForFirstBatch = 0, imagesLoadedForFirstBatch = 0, loaderFallbackTimeout;
+
+const galleryContainer = document.getElementById('my-gallery');
+const emptyState = document.getElementById('emptyState');
+const scrollTrigger = document.getElementById('scroll-trigger');
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ---------- Cache + Firestore ---------- */
+try {
+  const cached = localStorage.getItem(CACHE_KEY);
+  if (cached) { allDarshanData = JSON.parse(cached); buildAndRenderList(true); }
+} catch(e) { console.error('Cache parsing error', e); }
+
+const q = query(collection(db, "iskcon_images"), orderBy("timestamp", "desc"));
+onSnapshot(q, snapshot => {
+  const fetched = [];
+  snapshot.forEach(doc => fetched.push(doc.data()));
+  allDarshanData = fetched;
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(allDarshanData)); } catch(e) {}
+  buildAndRenderList(true);
+}, err => { console.error('Gallery load error', err); checkAndHideLoader(true); });
+
+setTimeout(() => checkAndHideLoader(true), 8000);
+
+/* ---------- Build list ---------- */
+function buildAndRenderList(reset = false) {
+  if (reset) {
+    renderIndex = 0;
+    document.querySelectorAll('.gallery-item, .date-header-row').forEach(el => el.remove());
+  }
+  const filtered = allDarshanData.filter(item => {
+    const catMatch = currentFilter === 'all' || item.category === currentFilter;
+    const dateMatch = currentDateFilter === '' || item.darshan_date === currentDateFilter;
+    return catMatch && dateMatch;
+  });
+
+  if (filtered.length === 0) {
+    flattenedList = []; viewList = [];
+    emptyState.style.display = 'block';
+    checkAndHideLoader(true);
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  const grouped = {};
+  filtered.forEach(item => {
+    const k = item.darshan_date || 'Unknown Date';
+    (grouped[k] = grouped[k] || []).push(item);
+  });
+  const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+
+  flattenedList = []; viewList = [];
+  const locale = getLang()==='en' ? 'en-IN' : getLang()==='hi' ? 'hi-IN' : 'mr-IN';
+  sortedDates.forEach(dateText => {
+    const d = new Date(dateText);
+    const friendly = isNaN(d) ? dateText : d.toLocaleDateString(locale, { day:'numeric', month:'short', year:'numeric' });
+    flattenedList.push({ isHeader:true, label:friendly });
+    grouped[dateText].forEach(data => {
+      viewList.push(data);
+      flattenedList.push({ isHeader:false, data, vIndex: viewList.length - 1 });
+    });
+  });
+
+  if (reset) renderNextChunk();
+}
+
+/* ---------- Chunk render (no <a href>, so nothing opens outside) ---------- */
+function renderNextChunk() {
+  if (renderIndex >= flattenedList.length) return;
+  const fragment = document.createDocumentFragment();
+  const chunk = flattenedList.slice(renderIndex, renderIndex + CHUNK_SIZE);
+
+  chunk.forEach(item => {
+    if (item.isHeader) {
+      const h = document.createElement('div');
+      h.className = 'date-header-row';
+      h.innerHTML = '<i class="far fa-calendar-alt"></i> ';
+      h.appendChild(document.createTextNode(item.label));
+      fragment.appendChild(h);
+      return;
+    }
+    const data = item.data;
+    const title = titleOf(data);
+
+    const card = document.createElement('div');
+    card.className = 'gallery-item';
+    card.setAttribute('role', 'button');
+    card.dataset.index = item.vIndex;
+
+    const wm = document.createElement('div');
+    wm.className = 'watermark-overlay';
+    wm.innerHTML = 'SRI SRI<br>RADHA KRISHNA CHANDRA';
+
+    const img = document.createElement('img');
+    img.alt = 'Darshan';
+    img.loading = isInitialLoad ? 'eager' : 'lazy';
+    img.draggable = false;
+    img.src = data.imageUrl;
+
+    const cap = document.createElement('div');
+    cap.className = 'caption-overlay';
+    const span = document.createElement('span');
+    span.className = 'cap-title';
+    span.textContent = title;
+    cap.appendChild(span);
+
+    card.append(wm, img, cap);
+    fragment.appendChild(card);
+
+    if (isInitialLoad) {
+      imagesToLoadForFirstBatch++;
+      const done = () => { card.classList.add('loaded'); imagesLoadedForFirstBatch++; checkAndHideLoader(); };
+      img.onload = done; img.onerror = done;
+    } else {
+      img.onload = () => card.classList.add('loaded');
+      img.onerror = () => card.classList.add('loaded');
+    }
+  });
+
+  galleryContainer.insertBefore(fragment, scrollTrigger);
+  renderIndex += CHUNK_SIZE;
+
+  if (isInitialLoad && imagesToLoadForFirstBatch === 0) checkAndHideLoader(true);
+  if (isInitialLoad && !loaderFallbackTimeout) loaderFallbackTimeout = setTimeout(() => checkAndHideLoader(true), 6000);
+}
+
+function checkAndHideLoader(force = false) {
+  if (force || imagesLoadedForFirstBatch >= imagesToLoadForFirstBatch) {
+    isInitialLoad = false;
+    const loader = document.getElementById('super-loader');
+    if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 400); }
+  }
+}
+
+new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !isInitialLoad) renderNextChunk();
+}, { rootMargin: '300px' }).observe(scrollTrigger);
+
+/* ---------- Click on card -> open in-app viewer ---------- */
+galleryContainer.addEventListener('click', e => {
+  const card = e.target.closest('.gallery-item');
+  if (!card) return;
+  e.preventDefault();
+  openViewer(parseInt(card.dataset.index, 10));
+});
+
+/* ---------- Viewer ---------- */
+const viewer = document.getElementById('viewer');
+const vStage = document.getElementById('vStage');
+const vImg = document.getElementById('vImg');
+const vSpin = document.getElementById('vSpin');
+let cur = 0, scale = 1, tx = 0, ty = 0, viewerOpen = false;
+
+function applyTransform(anim) {
+  vImg.style.transition = anim ? 'transform .25s ease' : 'none';
+  vImg.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+}
+function resetZoom(anim) { scale = 1; tx = 0; ty = 0; applyTransform(anim); }
+
+function showImage(i) {
+  if (!viewList.length) return;
+  cur = (i + viewList.length) % viewList.length;
+  const d = viewList[cur];
+  resetZoom(false);
+  vSpin.style.display = 'block';
+  vImg.style.opacity = '0';
+  vImg.onload = () => { vSpin.style.display = 'none'; vImg.style.opacity = '1'; };
+  vImg.onerror = () => { vSpin.style.display = 'none'; vImg.style.opacity = '1'; };
+  vImg.src = d.imageUrl;
+  document.getElementById('vTitle').textContent = titleOf(d);
+  document.getElementById('vCount').textContent = (cur + 1) + ' / ' + viewList.length;
+}
+
+function openViewer(i) {
+  viewer.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!viewerOpen) { try { history.pushState({ viewer:1 }, ''); } catch(e) {} }
+  viewerOpen = true;
+  showImage(i);
+}
+function closeViewer(fromPop) {
+  if (!viewerOpen) return;
+  viewerOpen = false;
+  viewer.classList.remove('open');
+  document.body.style.overflow = '';
+  vImg.removeAttribute('src');
+  if (!fromPop) { try { if (history.state && history.state.viewer) history.back(); } catch(e) {} }
+}
+window.addEventListener('popstate', () => { if (viewerOpen) closeViewer(true); });
+
+document.getElementById('vClose').onclick = () => closeViewer();
+document.getElementById('vPrev').onclick = e => { e.stopPropagation(); showImage(cur - 1); };
+document.getElementById('vNext').onclick = e => { e.stopPropagation(); showImage(cur + 1); };
+document.addEventListener('keydown', e => {
+  if (!viewerOpen) return;
+  if (e.key === 'Escape') closeViewer();
+  if (e.key === 'ArrowLeft') showImage(cur - 1);
+  if (e.key === 'ArrowRight') showImage(cur + 1);
+});
+
+/* Touch: swipe / pinch / pan / double-tap */
+let t0 = null, pinchStart = 0, pinchScale = 1, lastTap = 0, panStart = null;
+const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+vStage.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    pinchStart = dist(e.touches); pinchScale = scale; t0 = null; panStart = null;
+  } else if (e.touches.length === 1) {
+    const t = e.touches[0];
+    t0 = { x:t.clientX, y:t.clientY, time:Date.now() };
+    panStart = { x:t.clientX, y:t.clientY, tx, ty };
+  }
+}, { passive:true });
+
+vStage.addEventListener('touchmove', e => {
+  if (e.touches.length === 2 && pinchStart) {
+    scale = Math.min(5, Math.max(1, pinchScale * dist(e.touches) / pinchStart));
+    if (scale === 1) { tx = 0; ty = 0; }
+    applyTransform(false);
+  } else if (e.touches.length === 1 && scale > 1 && panStart) {
+    const t = e.touches[0];
+    tx = panStart.tx + (t.clientX - panStart.x);
+    ty = panStart.ty + (t.clientY - panStart.y);
+    applyTransform(false);
+  }
+}, { passive:true });
+
+vStage.addEventListener('touchend', e => {
+  if (e.touches.length > 0) return;
+  pinchStart = 0;
+  if (scale < 1.05) resetZoom(true);
+  if (!t0) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - t0.x, dy = t.clientY - t0.y;
+  const quick = Date.now() - t0.time < 400;
+  if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      if (scale > 1) resetZoom(true); else { scale = 2.5; tx = 0; ty = 0; applyTransform(true); }
+      lastTap = 0;
+    } else lastTap = now;
+  } else if (scale === 1) {
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) && quick) showImage(cur + (dx < 0 ? 1 : -1));
+    else if (dy > 110 && Math.abs(dy) > Math.abs(dx)) closeViewer();
+  }
+  t0 = null;
+}, { passive:true });
+
+/* ---------- Share / Download ---------- */
+const safeName = d => (titleOf(d) || 'darshan').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40) + '.jpg';
+
+async function getBlob(url) {
+  const res = await fetch(url, { mode:'cors' });
+  if (!res.ok) throw new Error('fetch failed');
+  return await res.blob();
+}
+
+function shareTextOnWhatsApp(text) {
+  window.location.href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+}
+
+document.getElementById('btnWa').onclick = () => {
+  const d = viewList[cur]; if (!d) return;
+  shareTextOnWhatsApp(SHARE_MSG[getLang()](titleOf(d)));
+};
+
+document.getElementById('btnShare').onclick = async () => {
+  const d = viewList[cur]; if (!d) return;
+  const text = SHARE_MSG[getLang()](titleOf(d));
+  try {
+    if (navigator.share) {
+      toast(T('preparing'));
+      let files = [];
+      try {
+        const blob = await getBlob(d.imageUrl);
+        files = [new File([blob], safeName(d), { type: blob.type || 'image/jpeg' })];
+      } catch(e) { files = []; }
+
+      if (files.length && navigator.canShare && navigator.canShare({ files })) {
+        await navigator.share({ files, text, title: titleOf(d) });
+        return;
+      }
+      await navigator.share({ text, title: titleOf(d) });
+      return;
+    }
+  } catch(err) {
+    if (err && err.name === 'AbortError') return;
+  }
+  toast(T('shareFallback'));
+  setTimeout(() => shareTextOnWhatsApp(text), 500);
+};
+
+document.getElementById('btnDl').onclick = async () => {
+  const d = viewList[cur]; if (!d) return;
+  toast(T('dlStart'));
+  try {
+    const blob = await getBlob(d.imageUrl);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = safeName(d);
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  } catch(e) {
+    try {
+      const a = document.createElement('a');
+      a.href = d.imageUrl; a.download = safeName(d); a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch(e2) {
+      toast(T('dlFail'));
+      window.open(d.imageUrl, '_blank');
+    }
+  }
+};
+
+/* ---------- Filters / Language ---------- */
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFilter = chip.getAttribute('data-filter');
+    buildAndRenderList(true);
+  });
+});
+document.getElementById('datePickerFilter').addEventListener('change', e => {
+  currentDateFilter = e.target.value;
+  buildAndRenderList(true);
+});
+
+const langSel = document.getElementById('languageSelector');
+langSel.value = getLang();
+langSel.addEventListener('change', () => {
+  localStorage.setItem('lang', langSel.value);
+  applyStaticLang();
+  buildAndRenderList(true);
+  if (viewerOpen) showImage(cur);
+});
+applyStaticLang();
+</script>
+</body>
+</html>
