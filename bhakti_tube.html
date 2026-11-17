@@ -424,6 +424,7 @@ body.col-2 .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   </div>
 </div>
 
+<script src="temple-share.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 /* ═════════════════════════════════════════════════════════
@@ -1199,6 +1200,11 @@ $('shareWa').addEventListener('click',()=>{
 
 $('shareNative').addEventListener('click',()=>{
   const txt=getShareText();
+  if(window.TempleShare&&typeof TempleShare.shareText==='function'){
+    TempleShare.shareText(txt,BHAKTI_APP_URL);
+    $('shareModal').classList.remove('open');
+    return;
+  }
   if(navigator.share){
     navigator.share({title:'श्री श्री राधा कृष्ण चंद्र मंदिर',text:txt,url:BHAKTI_APP_URL}).catch(()=>{});
     $('shareModal').classList.remove('open');
