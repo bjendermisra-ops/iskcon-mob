@@ -1226,6 +1226,19 @@
     if(!d||d.timezone!=='Asia/Kolkata'||!Array.isArray(d.events))return false;
     const e=d.events.find(x=>x.id===9001);
     if(e&&/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(e.time))LIVE_START_MIN=Number(e.time.slice(0,2))*60+Number(e.time.slice(3));
+    // Keep existing countdown/status translations in sync with admin changes.
+    try{
+       const clockText=fmt(LIVE_START_MIN);
+       if(typeof translations!=='undefined'){
+         translations.en.status_next='NEXT AT '+clockText;
+         translations.en.status_next_msg='Waiting for next session... ('+clockText+' IST)';
+         translations.hi.status_next='अगला जप '+clockText+' पर';
+         translations.hi.status_next_msg='अगले जप सेशन का इंतज़ार है... ('+clockText+' IST)';
+         translations.mr.status_next='पुढील जप '+clockText+' वाजता';
+         translations.mr.status_next_msg='पुढील जप सत्राची प्रतीक्षा... ('+clockText+' IST)';
+       }
+       if(typeof updateClockAndStatus==='function')updateClockAndStatus();
+    }catch(_){}
     try{if(bridge()&&typeof AndroidBridge.configureTempleSchedule==='function')AndroidBridge.configureTempleSchedule(JSON.stringify(d))}catch(_){}
     return true;
  }
