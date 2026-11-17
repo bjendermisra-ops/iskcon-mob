@@ -1460,6 +1460,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function setLanguage(lang) {
         localStorage.setItem('lang', lang); 
+        try { if(window.AndroidBridge && AndroidBridge.setReminderLanguage) AndroidBridge.setReminderLanguage(lang); } catch(e) {}
         const texts = langData[lang] || langData['en'];
         
         document.querySelectorAll('[data-key]').forEach(el => {
