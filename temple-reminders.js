@@ -48,6 +48,18 @@ function drawJapa(){
   $("japaSave").textContent=l==="en"?"Saved ✓":"सेव ✓";
  };
  try{
+  if(typeof translations!=="undefined"){
+   const next=clock(j.time);
+   translations.en.status_next="NEXT AT "+next;
+   translations.en.status_next_msg="Waiting for next live session... ("+next+" IST)";
+   translations.hi.status_next="अगला जप "+next+" पर";
+   translations.hi.status_next_msg="अगले लाइव सेशन का इंतज़ार है... ("+next+" IST)";
+   translations.mr.status_next="पुढील जप "+next+" वाजता";
+   translations.mr.status_next_msg="पुढील लाईव्ह सेशनची प्रतीक्षा... ("+next+" IST)";
+  }
+  if(typeof lastStatusKey!=="undefined")lastStatusKey="";
+ }catch(e){}
+ try{
   if(typeof LIVE_START_MIN!=="undefined")LIVE_START_MIN=+j.time.slice(0,2)*60+(+j.time.slice(3));
   if(typeof LIVE_END_MIN!=="undefined")LIVE_END_MIN=+j.end.slice(0,2)*60+(+j.end.slice(3));
   if(typeof updateClockAndStatus==="function")updateClockAndStatus();
