@@ -555,6 +555,7 @@
         <div class="test-info">
             <div class="test-title" id="lbl_test_title">⚡ 10s Alarm Test</div>
             <div class="test-desc" id="lbl_test_desc">Verify sound on phone before real aarti</div>
+            <button type="button" onclick="openScheduleAlarmSoundSettings()" style="padding:5px 10px;margin-top:6px;border-radius:10px;background:#fff7eb;color:#703a14;border:1px solid #d6a268">⚙ Sound settings</button>
         </div>
         <button class="btn-test-action" onclick="trigger10SecondTest()" id="btn_test_action">
             <i class="fas fa-bolt"></i> <span id="lbl_btn_test">Test Now</span>
@@ -910,61 +911,37 @@
         container.innerHTML = lineHTML + eventsHTML;
     }
 
-    let testCountdownTimer = null;
-
+    /* V23 REAL TEST — same native AlarmManager receiver, channel and saved event.
+       No JavaScript countdown, fake pass or old loud-receiver fallback. */
     function trigger10SecondTest() {
-        const text = UI_TEXT[appLang];
-        const btn = document.getElementById('btn_test_action');
-
-        if (window.AndroidBridge && window.AndroidBridge.hasExactAlarmPermission) {
-            if (!window.AndroidBridge.hasExactAlarmPermission()) {
-                window.AndroidBridge.requestExactAlarmPermission();
-                return;
-            }
+        const b=window.AndroidBridge, show=(message)=>showToast(message);
+        if(!b || typeof b.getReminderEngineVersion!=='function' ||
+             Number(b.getReminderEngineVersion())<23 || typeof b.testTempleReminder!=='function'){
+             show('Please install Android APK v23 for the real alarm test');return;
         }
-        if (window.AndroidBridge && window.AndroidBridge.hasNotificationPermission) {
-            if (!window.AndroidBridge.hasNotificationPermission()) {
-                window.AndroidBridge.requestNotificationPermission();
-            }
+        let h=null;try{h=JSON.parse(b.getTempleReminderStatus(false))}catch(_){}
+        if(!h||!h.notifications){
+            show('Allow app notifications first.');if(b.requestNotificationPermission)b.requestNotificationPermission();return;
         }
-
-        if (window.AndroidBridge && typeof window.AndroidBridge.testTempleReminder === 'function') {
-            window.AndroidBridge.testTempleReminder(10);
-        } else if (window.AndroidBridge && window.AndroidBridge.testLoudAlarm) {
-            window.AndroidBridge.testLoudAlarm(10);
-        } else if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
-            window.AndroidBridge.setReminderAdvanced(
-                "⚡ 10s टेस्ट अलार्म सफल!",
-                text.testSuccessMsg,
-                Date.now() + 10000,
-                9999,
-                "schedule.html",
-                "दर्शन देखें 🙏"
-            );
-        } else {
-            showToast("ऐप के अंदर यह 100% फुल लाउड वॉल्यूम में बजेगा!");
+        if(!h.exact){
+            show('Allow exact Alarms & reminders first.');if(b.requestExactAlarmPermission)b.requestExactAlarmPermission();return;
         }
+        if(!h.channelEnabled||!h.channelSound){
+            show('Schedule channel is silent — open Sound settings.');return;
+        }
+        if(h.alarmVolume===0){show('Alarm volume is zero. Increase it in device settings.');return}
+        let any=false;
+        try{any=EVENTS.some(e=>b.isTempleDailyReminderEnabled&&b.isTempleDailyReminderEnabled(e.id))}catch(_){}
+        if(!any){show('First enable and save at least one daily reminder.');return}
+        let ok=false;try{ok=b.testTempleReminder(10)===true}catch(_){}
+        show(ok?'Real scheduled reminder test queued for 10 seconds. Verify sound on phone.':
+           'Real alarm test failed to schedule. Check permissions.');
+    }
 
-        showToast(text.testStarted);
-
-        let remaining = 10;
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${remaining}s...`;
-
-        clearInterval(testCountdownTimer);
-        testCountdownTimer = setInterval(() => {
-            remaining--;
-            if (remaining > 0) {
-                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${remaining}s...`;
-            } else {
-                clearInterval(testCountdownTimer);
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fas fa-check"></i> Test Passed!`;
-                setTimeout(() => {
-                    btn.innerHTML = `<i class="fas fa-bolt"></i> <span id="lbl_btn_test">${text.testBtn}</span>`;
-                }, 3500);
-            }
-        }, 1000);
+    function openScheduleAlarmSoundSettings(){
+        try{if(window.AndroidBridge&&typeof AndroidBridge.openTempleReminderSoundSettings==='function')
+            AndroidBridge.openTempleReminderSoundSettings(false);
+        else showToast('Install Android APK v23 to open channel settings.')}catch(_){}
     }
 
     let activeSheetEventIndex = -1;
