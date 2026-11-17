@@ -670,10 +670,12 @@
  </label>
  <div style="display:flex;flex-wrap:wrap;gap:10px">
    <button id="japa-r-save" type="button" style="background:#c55b08;color:white;border:0;border-radius:10px;padding:12px 17px;font-weight:700">Save Reminders</button>
-   <button id="japa-r-test" type="button" style="background:#633b16;color:white;border:0;border-radius:10px;padding:12px 14px;font-weight:700">10-second Test</button>
+   <button id="japa-r-test" type="button" style="background:#633b16;color:white;border:0;border-radius:10px;padding:12px 14px;font-weight:700">Real alarm test (10s)</button>
+   <button id="japa-r-settings" type="button" style="border:1px solid #af8344;background:#fff;color:#633b16;border-radius:10px;padding:12px 14px;font-weight:700">Sound settings</button>
  </div>
  <p id="japa-r-help" style="font-size:12px;line-height:1.5;margin-top:10px">Offline on Android, when permission is granted. Tap a notification to open Global Japa.</p>
  <div id="japa-r-status" role="status" style="font-size:12px;margin-top:8px"></div>
+ <div id="japa-r-health" style="white-space:pre-line;font-size:12px;margin-top:8px"></div>
 </section>
 <!-- JAPA COUNTER -->
         <div class="info-card japa-counter-wrapper">
@@ -1214,16 +1216,19 @@ mr:['📿 दररोज ग्लोबल जप स्मरण','जपा�
 };
 let enabled=localStorage.getItem('japa_reminder_enabled_v21')==='1';
 function lang(){const v=localStorage.getItem('lang')||'hi';return langs[v]?v:'hi'}
-function bridge(){return window.AndroidBridge&&typeof window.AndroidBridge.configureGlobalJapaReminders==='function'?window.AndroidBridge:null}
+function bridge(){return window.AndroidBridge&&typeof AndroidBridge.getReminderEngineVersion==='function'&&Number(AndroidBridge.getReminderEngineVersion())>=23&&typeof AndroidBridge.configureGlobalJapaReminders==='function'?AndroidBridge:null}
+function check(){try{const b=bridge();return b&&typeof b.getTempleReminderStatus==='function'?JSON.parse(b.getTempleReminderStatus(true)):null}catch(_){return null}}
+function problem(h){if(!h)return 'Install Android APK v23 with native reminder engine';if(!h.notifications)return 'Allow app notifications in Android settings';if(!h.exact)return 'Allow Alarms & reminders permission for exact delivery';if(!h.channelEnabled||!h.channelSound)return 'Global Japa channel is silent; open Sound settings';if(h.alarmVolume===0)return 'Alarm volume is zero; increase Alarm volume';return ''}
 function displayTime(min){const h=Math.floor(min/60),m=min%60;return (h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')}
 function render(){
  const t=langs[lang()];
  el('japa-r-title').textContent=t[0];el('japa-r-early-label').textContent=t[1];
  el('japa-r-start-label').textContent=t[2];el('japa-r-ahead-label').textContent=t[3];
- el('japa-r-save').textContent=t[4];el('japa-r-test').textContent=t[5];
+ el('japa-r-save').textContent=t[4];el('japa-r-test').textContent='🔔 Real alarm test (10s)';el('japa-r-settings').textContent='⚙ Sound settings';
  const ahead=Number(el('japa-r-ahead').value)||10;
  el('japa-r-times').textContent=(el('japa-r-early').checked?displayTime((LIVE_START_MIN+1440-ahead)%1440)+' / ':'')+displayTime(LIVE_START_MIN)+' IST';
  el('japa-r-ahead').disabled=!el('japa-r-early').checked;
+ const h=check();if(h){const fmt=ms=>new Date(ms).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});const next=[];if(h.nextEarly>0)next.push('Early: '+fmt(h.nextEarly)+' IST');if(h.nextStart>0)next.push('Start: '+fmt(h.nextStart)+' IST');const issue=problem(h);el('japa-r-health').textContent=next.join(' | ')+(issue?'\n'+issue:'')+(h.dnd?'\nDND active':'')+(h.ringerMode===0?'\nSilent mode enabled':'');}
 }
 function status(message){el('japa-r-status').textContent=message}
 function applyData(d){
@@ -1258,23 +1263,25 @@ function save(){
     status(t[9]);return;
   }
   const early=el('japa-r-early').checked,atStart=el('japa-r-start').checked,ahead=Number(el('japa-r-ahead').value)||10;
-  b.configureGlobalJapaReminders(early,atStart,ahead);
+  if(early||atStart){const issue=problem(check());if(issue){if(issue.includes('Alarms & reminders')&&typeof b.requestExactAlarmPermission==='function')b.requestExactAlarmPermission();if(issue.includes('Allow app notifications')&&typeof b.requestNotificationPermission==='function')b.requestNotificationPermission();status(issue);return}}
+  const saved=b.configureGlobalJapaReminders(early,atStart,ahead);
+  if(saved!==true){status(problem(check())||'Native reminder save rejected');return}
   enabled=early||atStart;
   localStorage.setItem('japa_reminder_enabled_v21',enabled?'1':'0');
   status(enabled?t[6]:t[7]);
-  if(enabled&&typeof b.hasExactAlarmPermission==='function'&&!b.hasExactAlarmPermission()){
-     status((enabled?t[6]:t[7])+' For exact timing, allow Alarms & reminders in Android settings.');
-     if(typeof b.requestExactAlarmPermission==='function')b.requestExactAlarmPermission();
-  }
+  render();
  }catch(_){status(t[8])}
 }
 el('japa-r-save').addEventListener('click',save);
 el('japa-r-test').addEventListener('click',()=>{
  const b=bridge(),t=langs[lang()];
- if(!b||typeof b.testTempleReminder!=='function'){status(t[8]);return}
- if(typeof b.isNotificationDeliveryEnabled==='function'&&!b.isNotificationDeliveryEnabled()){status(t[9]);return}
- b.testTempleReminder(10);status('🔔 10s');
+ if(!b||typeof b.testTempleReminder!=='function'){status('Install Android APK v23');return}
+ const h=check();if(!h||!h.enabled){status('First enable and Save Japa reminders, then test');return}
+ const issue=problem(h);if(issue){status(issue);return}
+ let scheduled=false;try{scheduled=b.testTempleReminder(10)===true}catch(_){ }
+ status(scheduled?'Real Japa alarm scheduled in 10 seconds; verify actual sound (not automatic pass)':'Real alarm could not be scheduled; check permissions');
 });
+el('japa-r-settings').addEventListener('click',()=>{const b=bridge();if(b&&typeof b.openTempleReminderSoundSettings==='function')b.openTempleReminderSoundSettings(true)});
 for(const id of ['japa-r-early','japa-r-start','japa-r-ahead'])el(id).addEventListener('change',render);
 // Match notification language to the current Japa page setting.
 const priorSetLanguage=window.setLanguage;
@@ -1287,11 +1294,12 @@ if(typeof priorSetLanguage==='function'){
  };
 }
 window.addEventListener('load',()=>{
+ const stale=document.getElementById('japaSave');if(stale){const card=stale.closest('section');if(card)card.remove()}
  try{if(bridge()&&typeof AndroidBridge.setNativePref==='function')
        AndroidBridge.setNativePref('ebook_lang',lang())}catch(_){}
  try{if(bridge()&&typeof AndroidBridge.isGlobalJapaDailyReminderEnabled==='function')
  enabled=!!AndroidBridge.isGlobalJapaDailyReminderEnabled()}catch(_){}
- if(enabled){el('japa-r-early').checked=true;el('japa-r-start').checked=true;}
+ const h=check();if(h){enabled=!!h.enabled;el('japa-r-early').checked=!!h.early;el('japa-r-start').checked=!!h.start;if([5,10,15].includes(h.advanceMinutes))el('japa-r-ahead').value=String(h.advanceMinutes);}
  render();sync();
 });
 render();
