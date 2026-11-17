@@ -657,7 +657,16 @@
             <div class="btn-helper-text" style="color: #00E676;">🔓 <span data-i18n="helper_s3">Password is automatically injected!</span></div>
         </div>
 
-        <!-- JAPA COUNTER -->
+        <!-- V21 native offline Global Japa reminders -->
+<section id="temple-japa-reminder-card" style="margin:16px auto;max-width:720px;padding:18px;border-radius:18px;background:#fff0d8;border:1px solid #dfa255;color:#633b16">
+  <div style="display:flex;gap:12px;align-items:center;justify-content:space-between">
+    <div><strong id="japa-r-title">📿 Daily Global Japa Reminder</strong><div id="japa-r-times" style="font-size:13px;margin-top:6px">5:05 AM + 5:15 AM IST</div></div>
+    <button id="japa-r-toggle" type="button" aria-pressed="false" style="background:#c55b08;color:white;border:0;border-radius:10px;padding:12px 14px;font-weight:700">Turn ON</button>
+  </div>
+  <p id="japa-r-help" style="font-size:12px;line-height:1.5;margin-top:8px">Offline: 10 minutes before and at start. Tap the notification to open this page.</p>
+  <div id="japa-r-status" role="status" style="font-size:12px;margin-top:8px"></div>
+</section>
+<!-- JAPA COUNTER -->
         <div class="info-card japa-counter-wrapper">
             <div class="info-label" style="color: #FFD700;">🕉 <span data-i18n="counter_title">Digital Japa Counter</span></div>
             <div class="counter-display" id="bead-count">0</div>
@@ -1185,5 +1194,60 @@
         startClock();
     </script>
 <script src="temple-reminders.js?v=21" defer></script>
+<script>
+(function(){
+ const get=x=>document.getElementById(x),KEY='japa_reminder_enabled_v21';
+ const labels={
+ en:['📿 Daily Global Japa Reminder','Turn ON','Turn OFF','Offline Japa reminders; tap notification to open this page.','Update the Android app to v21.','Reminders active.','Reminders off.'],
+ hi:['📿 रोज़ ग्लोबल जप रिमाइंडर','चालू करें','बंद करें','ऑफलाइन जप रिमाइंडर; नोटिफिकेशन टैप करके यही पेज खोलें।','Android ऐप v21 अपडेट करें।','रिमाइंडर चालू हैं।','रिमाइंडर बंद हैं।'],
+ mr:['📿 दररोज ग्लोबल जप स्मरण','सुरू करा','बंद करा','ऑफलाइन जप स्मरण; नोटिफिकेशन टॅप केल्यावर हे पेज उघडेल.','Android अॅप v21 अपडेट करा.','स्मरण सुरू आहे.','स्मरण बंद आहे.']
+ };
+ const language=()=>labels[localStorage.getItem('lang')]?localStorage.getItem('lang'):'hi';
+ const bridge=()=>window.AndroidBridge&&typeof AndroidBridge.setGlobalJapaDailyReminder==='function'?AndroidBridge:null;
+ let active=localStorage.getItem(KEY)==='1';
+ function fmt(t){let h=Math.floor(t/60),m=t%60;return (h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')}
+ function show(){
+   const t=labels[language()],b=get('japa-r-toggle');
+   if(!b)return;
+   get('japa-r-title').textContent=t[0];b.textContent=active?t[2]:t[1];b.setAttribute('aria-pressed',String(active));
+   b.style.background=active?'#247b4a':'#c55b08';
+   get('japa-r-help').textContent=t[3];
+   get('japa-r-times').textContent=fmt((LIVE_START_MIN+1430)%1440)+' + '+fmt(LIVE_START_MIN)+' IST';
+ }
+ async function sync(){
+   try{const saved=localStorage.getItem('temple_schedule_v21');if(saved)apply(JSON.parse(saved))}catch(_){}
+   try{const controller=new AbortController(),stop=setTimeout(()=>controller.abort(),6000);
+     const r=await fetch('data/schedule.json',{cache:'no-store',signal:controller.signal});clearTimeout(stop);
+     if(!r.ok)return;const data=await r.json();
+     if(apply(data))localStorage.setItem('temple_schedule_v21',JSON.stringify(data));
+   }catch(_){}finally{show()}
+ }
+ function apply(d){
+    if(!d||d.timezone!=='Asia/Kolkata'||!Array.isArray(d.events))return false;
+    const e=d.events.find(x=>x.id===9001);
+    if(e&&/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(e.time))LIVE_START_MIN=Number(e.time.slice(0,2))*60+Number(e.time.slice(3));
+    try{if(bridge()&&typeof AndroidBridge.configureTempleSchedule==='function')AndroidBridge.configureTempleSchedule(JSON.stringify(d))}catch(_){}
+    return true;
+ }
+ get('japa-r-toggle').addEventListener('click',()=>{
+   const b=bridge(),t=labels[language()];
+   if(!b){get('japa-r-status').textContent=t[4];return}
+   let next=!active;
+   if(next){
+     try{if(b.hasNotificationPermission&&!b.hasNotificationPermission())b.requestNotificationPermission()}catch(_){}
+     try{if(b.hasExactAlarmPermission&&!b.hasExactAlarmPermission())b.requestExactAlarmPermission()}catch(_){}
+   }
+   try{b.setGlobalJapaDailyReminder(next);
+     active=next;localStorage.setItem(KEY,next?'1':'0');
+     get('japa-r-status').textContent=next?t[5]:t[6];show()
+   }catch(_){get('japa-r-status').textContent=t[4]}
+ });
+ window.addEventListener('load',()=>{
+  setTimeout(()=>{try{if(bridge()&&typeof AndroidBridge.isGlobalJapaDailyReminderEnabled==='function')active=!!AndroidBridge.isGlobalJapaDailyReminderEnabled()}catch(_){}
+   show();sync()},650)
+ });
+ show();
+})();
+</script>
 </body>
 </html>
