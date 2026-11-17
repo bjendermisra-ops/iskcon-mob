@@ -711,7 +711,7 @@
         }
     };
 
-    const EVENTS =[
+    let EVENTS =[
         { id: 101, t: "04:30 AM", h: 4.5, 
           en: { n: "Mangal Aarti", d: "First Darshan of the Day" }, 
           hi: { n: "मंगल आरती", d: "दिन का पहला पावन दर्शन" }, 
@@ -802,11 +802,42 @@
         else if(appLang === 'mr') document.body.classList.add('font-marathi');
     }
 
+
+    /* v21 offline cache + versioned remote schedule */
+    function applyTempleScheduleCatalog(data){
+      if(!data||data.timezone!=='Asia/Kolkata'||!Array.isArray(data.events))return false;
+      for(const u of data.events){
+        const e=EVENTS.find(x=>x.id===u.id);
+        if(!e||!/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(u.time))continue;
+        const h=Number(u.time.slice(0,2)),m=Number(u.time.slice(3));
+        e.h=h+m/60;
+        e.t=String(h%12||12).padStart(2,'0')+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM');
+        for(const l of ['en','hi','mr'])if(u.name&&typeof u.name[l]==='string'&&u.name[l].length<120)e[l].n=u.name[l];
+        e.active=u.active!==false;
+      }
+      try{if(window.AndroidBridge&&typeof AndroidBridge.configureTempleSchedule==='function')AndroidBridge.configureTempleSchedule(JSON.stringify(data))}catch(_){}
+      EVENTS.forEach(e=>{const r=reminderStore[e.id];if(r){
+        r.timestamp=calculateExactAlarmTarget(e.h,r.advanceMinutes||0).timestamp;
+        r.eventHour=e.h;
+      }});
+      renderUI();updateTime();return true;
+    }
+    async function loadTempleScheduleCatalog(){
+      try{const cached=localStorage.getItem('temple_schedule_v21');if(cached)applyTempleScheduleCatalog(JSON.parse(cached))}catch(_){}
+      try{const ctl=new AbortController(),timeout=setTimeout(()=>ctl.abort(),6000);
+        const response=await fetch('data/schedule.json',{cache:'no-store',signal:ctl.signal});clearTimeout(timeout);
+        if(!response.ok)return;const data=await response.json();
+        if(applyTempleScheduleCatalog(data))localStorage.setItem('temple_schedule_v21',JSON.stringify(data));
+      }catch(_){}
+    }
+
     function bootLoader() {
         appLang = detectGlobalLanguage(); 
         applyLanguageFont();
         initTheme();
         loadSavedReminders();
+        loadTempleScheduleCatalog();
+        try{if(window.AndroidBridge&&AndroidBridge.setNativePref)AndroidBridge.setNativePref('ebook_lang',appLang)}catch(_){}
 
         renderUI();
         updateTime();
@@ -830,6 +861,7 @@
         else appLang = 'en';
 
         localStorage.setItem('lang', appLang);
+        try{if(window.AndroidBridge&&AndroidBridge.setNativePref)AndroidBridge.setNativePref('ebook_lang',appLang)}catch(_){}
         applyLanguageFont();
         renderUI();
         updateTime();
