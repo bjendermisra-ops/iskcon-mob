@@ -780,28 +780,20 @@
     }
 
     /* 🔥 100% सही अलार्म टारगेट कैलकुलेटर (बग-फ्री) */
+    // V21: every temple event is expressed in Asia/Kolkata (IST), even for overseas users.
     function calculateExactAlarmTarget(eventHourDecimal, advanceMins = 0) {
-        const now = new Date();
-        const target = new Date();
-
-        let targetH = Math.floor(eventHourDecimal);
-        let targetM = Math.round((eventHourDecimal - targetH) * 60);
-
-        target.setHours(targetH, targetM, 0, 0);
-        target.setTime(target.getTime() - (advanceMins * 60 * 1000));
-
+        const now = Date.now();
+        const ist = new Date(now + 330 * 60000);
+        const h = Math.floor(eventHourDecimal);
+        const m = Math.round((eventHourDecimal - h) * 60);
+        let target = Date.UTC(ist.getUTCFullYear(), ist.getUTCMonth(), ist.getUTCDate(), h, m)
+                   - 330 * 60000 - advanceMins * 60000;
         let isTomorrow = false;
-        // अगर आज का यह समय पहले ही बीत चुका है तभी कल पर ले जाओ!
-        if (target.getTime() <= now.getTime()) {
-            target.setDate(target.getDate() + 1);
-            isTomorrow = true;
-        }
-
-        return {
-            timestamp: target.getTime(),
-            isTomorrow: isTomorrow,
-            formattedTime: target.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
+        if (target <= now) { target += 86400000; isTomorrow = true; }
+        const formattedTime = new Date(target).toLocaleTimeString([], {
+            timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit'
+        }) + ' IST';
+        return { timestamp: target, isTomorrow, formattedTime };
     }
 
     function applyLanguageFont() {
@@ -1134,7 +1126,8 @@
 
     function updateTime() {
         const now = new Date();
-        const curH = now.getHours() + (now.getMinutes() / 60) + (now.getSeconds() / 3600);
+        const nowIST = new Date(now.getTime() + 330 * 60000);
+        const curH = nowIST.getUTCHours() + (nowIST.getUTCMinutes() / 60) + (nowIST.getUTCSeconds() / 3600);
         const text = UI_TEXT[appLang];
 
         // 1. मंदिर खुला या बंद स्टेटस
@@ -1168,17 +1161,8 @@
 
         for (let i = 0; i < EVENTS.length; i++) {
             const ev = EVENTS[i];
-            let evDate = new Date();
-            let th = Math.floor(ev.h);
-            let tm = Math.round((ev.h - th) * 60);
-            evDate.setHours(th, tm, 0, 0);
-
-            // अगर आज का यह समय बीत चुका है, तो कल के लिए जोड़ो
-            if (evDate.getTime() <= now.getTime()) {
-                evDate.setDate(evDate.getDate() + 1);
-            }
-
-            let diff = evDate.getTime() - now.getTime();
+            // The native alarm and countdown both use fixed Asia/Kolkata times.
+            const diff = calculateExactAlarmTarget(ev.h, 0).timestamp - now.getTime();
             if (diff < minDiffMs) {
                 minDiffMs = diff;
                 nextAartiEvent = ev;
