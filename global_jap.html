@@ -1276,7 +1276,19 @@ el('japa-r-test').addEventListener('click',()=>{
  b.testTempleReminder(10);status('🔔 10s');
 });
 for(const id of ['japa-r-early','japa-r-start','japa-r-ahead'])el(id).addEventListener('change',render);
+// Match notification language to the current Japa page setting.
+const priorSetLanguage=window.setLanguage;
+if(typeof priorSetLanguage==='function'){
+ window.setLanguage=function(l){
+   priorSetLanguage.apply(this,arguments);
+   try{if(window.AndroidBridge&&typeof AndroidBridge.setNativePref==='function')
+       AndroidBridge.setNativePref('ebook_lang',l)}catch(_){}
+   render();
+ };
+}
 window.addEventListener('load',()=>{
+ try{if(bridge()&&typeof AndroidBridge.setNativePref==='function')
+       AndroidBridge.setNativePref('ebook_lang',lang())}catch(_){}
  try{if(bridge()&&typeof AndroidBridge.isGlobalJapaDailyReminderEnabled==='function')
  enabled=!!AndroidBridge.isGlobalJapaDailyReminderEnabled()}catch(_){}
  if(enabled){el('japa-r-early').checked=true;el('japa-r-start').checked=true;}
