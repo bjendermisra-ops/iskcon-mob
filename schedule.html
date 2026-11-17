@@ -928,7 +928,9 @@
             }
         }
 
-        if (window.AndroidBridge && window.AndroidBridge.testLoudAlarm) {
+        if (window.AndroidBridge && typeof window.AndroidBridge.testTempleReminder === 'function') {
+            window.AndroidBridge.testTempleReminder(10);
+        } else if (window.AndroidBridge && window.AndroidBridge.testLoudAlarm) {
             window.AndroidBridge.testLoudAlarm(10);
         } else if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
             window.AndroidBridge.setReminderAdvanced(
