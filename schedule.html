@@ -1142,15 +1142,24 @@
         const statusSubEl = document.getElementById('lbl_status_sub');
         const countdownEl = document.getElementById('lbl_countdown');
 
-        let isOpen = (curH >= 4.5 && curH < 13.0) || (curH >= 16.25 && curH < 21.0);
+        // V21: use the same synced IST schedule as the reminders, not fixed UI times.
+        const eventTime = (id, fallback) => {
+            const event = EVENTS.find(x => x.id === id);
+            return event ? event.h : fallback;
+        };
+        const openAm = eventTime(101, 4.5);
+        const closeMid = eventTime(106, 13.0);
+        const openPm = eventTime(107, 16.25);
+        const closePm = eventTime(110, 21.0);
+        let isOpen = (curH >= openAm && curH < closeMid) || (curH >= openPm && curH < closePm);
 
         if(isOpen) {
             statusEl.innerHTML = `<span class="status-dot dot-green"></span> ${text.open}`;
             statusSubEl.innerText = text.subOpen;
         } else {
             statusEl.innerHTML = `<span class="status-dot dot-red"></span> ${text.closed}`;
-            if(curH >= 13.0 && curH < 16.25) statusSubEl.innerText = text.subClosedEve; 
-            else statusSubEl.innerText = text.subClosedMorn;
+            if(curH >= closeMid && curH < openPm) statusSubEl.innerText = (appLang === 'en' ? 'Opens at ' : appLang === 'hi' ? 'खुलेगा ' : 'उघडेल ') + EVENTS.find(x => x.id === 107)?.t; 
+            else statusSubEl.innerText = (appLang === 'en' ? 'Opens at ' : appLang === 'hi' ? 'खुलेगा ' : 'उघडेल ') + (EVENTS.find(x => x.id === 101)?.t || '04:30 AM');
         }
 
         // 2. 🔥 अगली आरती का बिल्कुल सटीक 1-सेकंड लाइव काउंटडाउन (26 घंटे वाला बग खत्म)
