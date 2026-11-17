@@ -1,141 +1,116 @@
 {
-  "version": 21,
+  "schema": 1,
+  "version": "2026-11-17-v1",
   "timezone": "Asia/Kolkata",
-  "updated": "2026-11-17",
-  "japa": {
-    "time": "05:15",
-    "end": "07:30",
-    "enabled": true
-  },
   "events": [
     {
       "id": 101,
       "time": "04:30",
-      "enabled": true,
-      "en": "Mangal Aarti",
-      "hi": "मंगल आरती",
-      "mr": "मंगल आरती",
-      "desc": {
-        "en": "First Darshan of the Day",
-        "hi": "दिन का पहला पावन दर्शन",
-        "mr": "दिवसाचे पहिले दर्शन"
+      "active": true,
+      "name": {
+        "en": "Mangal Aarti",
+        "hi": "मंगल आरती",
+        "mr": "मंगल आरती"
       }
     },
     {
       "id": 102,
       "time": "05:15",
-      "enabled": true,
-      "en": "Tulasi Aarti",
-      "hi": "तुलसी आरती",
-      "mr": "तुळशी आरती",
-      "desc": {
-        "en": "Worship & Prayers",
-        "hi": "तुलसी पूजन व परिक्रमा",
-        "mr": "तुळशी पूजा व प्रदक्षिणा"
+      "active": true,
+      "name": {
+        "en": "Tulasi Aarti",
+        "hi": "तुलसी आरती",
+        "mr": "तुळशी आरती"
       }
     },
     {
       "id": 103,
       "time": "07:30",
-      "enabled": true,
-      "en": "Guru Puja",
-      "hi": "गुरु पूजा",
-      "mr": "गुरू पूजा",
-      "desc": {
-        "en": "Spiritual Master Worship",
-        "hi": "गुरु वंदना व कीर्तन",
-        "mr": "गुरू वंदना व कीर्तन"
+      "active": true,
+      "name": {
+        "en": "Guru Puja",
+        "hi": "गुरु पूजा",
+        "mr": "गुरू पूजा"
       }
     },
     {
       "id": 104,
       "time": "08:30",
-      "enabled": true,
-      "en": "Darshan Aarti",
-      "hi": "दर्शन आरती",
-      "mr": "दर्शन आरती",
-      "desc": {
-        "en": "Full Sringar View",
-        "hi": "भव्य शृंगार दर्शन",
-        "mr": "भव्य शृंगार दर्शन"
+      "active": true,
+      "name": {
+        "en": "Darshan Aarti",
+        "hi": "दर्शन आरती",
+        "mr": "दर्शन आरती"
       }
     },
     {
       "id": 105,
       "time": "12:30",
-      "enabled": true,
-      "en": "Raj Bhoga Aarti",
-      "hi": "राज भोग आरती",
-      "mr": "राज भोग आरती",
-      "desc": {
-        "en": "Noon Bhoga Offering",
-        "hi": "दोपहर पावन भोग आरती",
-        "mr": "दुपारची आरती"
+      "active": true,
+      "name": {
+        "en": "Raj Bhoga Aarti",
+        "hi": "राज भोग आरती",
+        "mr": "राज भोग आरती"
       }
     },
     {
       "id": 106,
       "time": "13:00",
-      "enabled": true,
-      "en": "Temple Closes",
-      "hi": "मंदिर विश्राम",
-      "mr": "मंदिर बंद",
-      "desc": {
-        "en": "Afternoon Rest",
-        "hi": "दोपहर दर्शन बंद",
-        "mr": "विश्रांतीची वेळ"
+      "active": true,
+      "name": {
+        "en": "Temple Closes",
+        "hi": "मंदिर विश्राम",
+        "mr": "मंदिर बंद"
       }
     },
     {
       "id": 107,
       "time": "16:15",
-      "enabled": true,
-      "en": "Utthapana Aarti",
-      "hi": "उत्थापन आरती",
-      "mr": "उत्थापन आरती",
-      "desc": {
-        "en": "Temple Re-opens",
-        "hi": "संध्या दर्शन खुलता है",
-        "mr": "मंदिर पुन्हा उघडते"
+      "active": true,
+      "name": {
+        "en": "Utthapana Aarti",
+        "hi": "उत्थापन आरती",
+        "mr": "उत्थापन आरती"
       }
     },
     {
       "id": 108,
       "time": "19:00",
-      "enabled": true,
-      "en": "Sandhya Aarti",
-      "hi": "संध्या आरती",
-      "mr": "संध्या आरती",
-      "desc": {
-        "en": "Gaura Aarti & Kirtan",
-        "hi": "गौरा आरती व मधुर कीर्तन",
-        "mr": "गौर आरती व कीर्तन"
+      "active": true,
+      "name": {
+        "en": "Sandhya Aarti",
+        "hi": "संध्या आरती",
+        "mr": "संध्या आरती"
       }
     },
     {
       "id": 109,
       "time": "20:30",
-      "enabled": true,
-      "en": "Shayana Aarti",
-      "hi": "शयन आरती",
-      "mr": "शयन आरती",
-      "desc": {
-        "en": "Last Darshan Service",
-        "hi": "दिन का अंतिम पावन दर्शन",
-        "mr": "दिवसाचे शेवटचे दर्शन"
+      "active": true,
+      "name": {
+        "en": "Shayana Aarti",
+        "hi": "शयन आरती",
+        "mr": "शयन आरती"
       }
     },
     {
       "id": 110,
       "time": "21:00",
-      "enabled": true,
-      "en": "Temple Closes",
-      "hi": "मंदिर बंद",
-      "mr": "मंदिर बंद",
-      "desc": {
-        "en": "Good Night & Rest",
-        "hi": "शुभ रात्रि",
-        "mr": "शुभ रात्री"
+      "active": true,
+      "name": {
+        "en": "Temple Closes",
+        "hi": "मंदिर बंद",
+        "mr": "मंदिर बंद"
+      }
+    },
+    {
+      "id": 9001,
+      "time": "05:15",
+      "active": true,
+      "name": {
+        "en": "Global Japa",
+        "hi": "ग्लोबल जप",
+        "mr": "ग्लोबल जप"
       }
     }
   ]
