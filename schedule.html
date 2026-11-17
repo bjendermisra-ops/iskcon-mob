@@ -855,7 +855,7 @@
         document.getElementById('lbl_test_desc').innerText = text.testDesc;
         document.getElementById('lbl_btn_test').innerText = text.testBtn;
 
-        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+        const hasAll = EVENTS.every((_, idx) => reminderStore[EVENTS[idx].id] !== undefined);
         document.getElementById('btn_quick_all').innerHTML = `<i class="fas ${hasAll ? 'fa-bell-slash' : 'fa-bell'}"></i> ${hasAll ? text.clearAll : text.setAll}`;
 
         const container = document.getElementById('container_schedule');
@@ -864,7 +864,7 @@
 
         EVENTS.forEach((item, index) => {
             const langData = item[appLang]; 
-            const isSet = reminderStore[index] !== undefined;
+            const isSet = reminderStore[item.id] !== undefined;
 
             eventsHTML += `
             <div class="event-card" id="card_${index}">
@@ -972,8 +972,8 @@
         document.getElementById('btn_sheet_save').innerHTML = `<i class="fas fa-bell"></i> ${text.saveReminder}`;
         document.getElementById('btn_sheet_cancel').innerHTML = `<i class="fas fa-bell-slash"></i> ${text.cancelReminder}`;
 
-        const isAlreadySet = reminderStore[eventIndex] !== undefined;
-        selectedAdvanceMinutes = isAlreadySet ? reminderStore[eventIndex].advanceMinutes : 15;
+        const isAlreadySet = reminderStore[EVENTS[eventIndex].id] !== undefined;
+        selectedAdvanceMinutes = isAlreadySet ? reminderStore[EVENTS[eventIndex].id].advanceMinutes : 15;
 
         updatePillSelection(selectedAdvanceMinutes);
         updateSheetPreview();
@@ -1029,18 +1029,16 @@
         const advanceNoticeText = selectedAdvanceMinutes === 0 ? "शुरू होने वाली है" : `${selectedAdvanceMinutes} मिनट में शुरू होगी`;
         const eventMsg = `श्री श्री राधाकृष्ण चंद्र मंदिर: ${event[appLang].n} ${advanceNoticeText}। दर्शन व प्रार्थना के लिए ऐप खोलें।`;
 
-        if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
+        if (window.AndroidBridge && window.AndroidBridge.setScheduleReminder) {
+            window.AndroidBridge.setScheduleReminder(event.id, selectedAdvanceMinutes, true);
+        } else if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
             window.AndroidBridge.setReminderAdvanced(
-                `🔔 ${eventTitle}`,
-                eventMsg,
-                calc.timestamp,
-                reqCode,
-                "schedule.html",
-                "दर्शन देखें 🙏"
+                `🔔 ${eventTitle}`, eventMsg, calc.timestamp, reqCode,
+                "schedule.html", "दर्शन देखें 🙏"
             );
         }
 
-        reminderStore[activeSheetEventIndex] = {
+        reminderStore[EVENTS[activeSheetEventIndex].id] = {
             advanceMinutes: selectedAdvanceMinutes,
             reqCode: reqCode,
             timestamp: calc.timestamp,
@@ -1059,11 +1057,13 @@
         const text = UI_TEXT[appLang];
         const reqCode = 3000 + activeSheetEventIndex;
 
-        if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
+        if (window.AndroidBridge && window.AndroidBridge.setScheduleReminder) {
+            window.AndroidBridge.setScheduleReminder(EVENTS[activeSheetEventIndex].id, 0, false);
+        } else if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
             window.AndroidBridge.cancelReminder(reqCode);
         }
 
-        delete reminderStore[activeSheetEventIndex];
+        delete reminderStore[EVENTS[activeSheetEventIndex].id];
         saveRemindersToStorage();
         updateTime();
         closeSheet();
@@ -1073,11 +1073,13 @@
 
     function toggleAllDailyReminders() {
         const text = UI_TEXT[appLang];
-        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+        const hasAll = EVENTS.every((_, idx) => reminderStore[EVENTS[idx].id] !== undefined);
 
         if (hasAll) {
             EVENTS.forEach((_, idx) => {
-                if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
+                if (window.AndroidBridge && window.AndroidBridge.setScheduleReminder) {
+                    window.AndroidBridge.setScheduleReminder(EVENTS[idx].id, 0, false);
+                } else if (window.AndroidBridge && window.AndroidBridge.cancelReminder) {
                     window.AndroidBridge.cancelReminder(3000 + idx);
                 }
             });
@@ -1099,11 +1101,13 @@
                 const eventTitle = `${event[appLang].n} (${event.t})`;
                 const eventMsg = `श्री श्री राधाकृष्ण चंद्र मंदिर: ${event[appLang].n} 15 मिनट में शुरू होगी। दर्शन के लिए जुड़ें।`;
 
-                if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
+                if (window.AndroidBridge && window.AndroidBridge.setScheduleReminder) {
+                    window.AndroidBridge.setScheduleReminder(event.id, 15, true);
+                } else if (window.AndroidBridge && window.AndroidBridge.setReminderAdvanced) {
                     window.AndroidBridge.setReminderAdvanced(`🔔 ${eventTitle}`, eventMsg, calc.timestamp, reqCode, "schedule.html", "दर्शन देखें 🙏");
                 }
 
-                reminderStore[idx] = { 
+                reminderStore[EVENTS[idx].id] = { 
                     advanceMinutes: 15, 
                     reqCode: reqCode, 
                     timestamp: calc.timestamp,
@@ -1215,7 +1219,7 @@
             const bellBtn = document.getElementById(`btn_bell_${index}`);
             if (!badgeEl || !bellBtn) return;
 
-            const reminder = reminderStore[index];
+            const reminder = reminderStore[item.id];
             if (reminder) {
                 bellBtn.classList.add('scheduled');
 
@@ -1254,7 +1258,7 @@
             }
         });
 
-        const hasAll = EVENTS.every((_, idx) => reminderStore[idx] !== undefined);
+        const hasAll = EVENTS.every((_, idx) => reminderStore[EVENTS[idx].id] !== undefined);
         const quickAllBtn = document.getElementById('btn_quick_all');
         if (quickAllBtn) {
             quickAllBtn.innerHTML = `<i class="fas ${hasAll ? 'fa-bell-slash' : 'fa-bell'}"></i> ${hasAll ? text.clearAll : text.setAll}`;
@@ -1262,5 +1266,6 @@
     }
 
 </script>
+<script src="temple-reminders.js?v=21" defer></script>
 </body>
 </html>
