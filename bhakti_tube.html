@@ -845,13 +845,42 @@ function setVol(n){vol=clamp(+n,0,100);if(yt){yt.setVolume(vol);if(vol>0&&muted)
 function toggleMute(){if(!yt)return;muted=!muted;muted?yt.mute():yt.unMute();mIcon();showCtrl()}
 function cycleRate(){const R=[.75,1,1.25,1.5,1.75,2];rate=R[(R.indexOf(rate)+1)%R.length];if(yt)yt.setPlaybackRate(rate);$('spd').textContent=rate+'x';LS.s('crm_rate',rate);toast('Speed '+rate+'x');showCtrl()}
 function setFill(f,msg){fill=f;vb.classList.toggle('fill',f);$('bzoom').classList.toggle('on',f);LS.s('crm_fill',f);if(msg)toast(f?'Zoom: Fill':'Zoom: Fit')}
-function toggleFS(){
-  try{const f=document.fullscreenElement||document.webkitFullscreenElement;
-    if(!f)(modal.requestFullscreen||modal.webkitRequestFullscreen||function(){}).call(modal);
-    else(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document)}catch(e){}
+/* Fullscreen is requested from the user gesture. Native WebChromeClient
+   onShowCustomView/onHideCustomView must be connected for Android WebView. */
+let fullscreenPending=false;
+async function toggleFS(){
+  if(fullscreenPending)return;
+  fullscreenPending=true;
+  try{
+    const active=!!(document.fullscreenElement||document.webkitFullscreenElement);
+    if(!active){
+      const request=modal.requestFullscreen||modal.webkitRequestFullscreen;
+      if(!request){toast('Fullscreen is not supported by this WebView');return}
+      await Promise.resolve(request.call(modal));
+      if(cv&&cv.type!=='shorts'){
+        try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('landscape')}catch(_){}
+        orient('landscape');immersive(true);
+      }
+    }else{
+      try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock()}catch(_){}
+      const exit=document.exitFullscreen||document.webkitExitFullscreen;
+      if(exit)await Promise.resolve(exit.call(document));
+      orient(cv&&cv.type==='shorts'?'portrait':'sensor');immersive(false);
+    }
+  }catch(e){console.warn('Fullscreen request failed',e);toast('Fullscreen unavailable on this device')}
+  finally{fullscreenPending=false;fsIcon()}
 }
 function fsIcon(){$('fsi').innerHTML=svg((document.fullscreenElement||document.webkitFullscreenElement)?P.fsx:P.fs)}
-document.addEventListener('fullscreenchange',fsIcon);document.addEventListener('webkitfullscreenchange',fsIcon);
+function syncFullscreenState(){
+  const active=!!(document.fullscreenElement||document.webkitFullscreenElement);
+  if(!active){try{screen.orientation&&screen.orientation.unlock&&screen.orientation.unlock()}catch(_){}
+    if(isOpen())orient(cv&&cv.type==='shorts'?'portrait':'sensor');
+    immersive(false);
+  }else if(cv&&cv.type!=='shorts'){immersive(true)}
+  fsIcon();
+}
+document.addEventListener('fullscreenchange',syncFullscreenState);
+document.addEventListener('webkitfullscreenchange',syncFullscreenState);
 
 /* ═════ AUTOPLAY & NEXT SHORTS QUEUE ═════ */
 function pool(){return cv&&cv.type==='shorts'?all.filter(v=>v.type==='shorts'):view}
