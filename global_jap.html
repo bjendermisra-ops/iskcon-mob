@@ -1210,15 +1210,15 @@
 'use strict';
 const el=id=>document.getElementById(id);
 const langs={
-en:['📿 Daily Global Japa Reminders','Before Japa','At Japa start','Remind before','Save reminders','Test sound (10s)','Saved: offline reminders enabled.','Reminders disabled.','Install Android APK v22 to enable native reminders.','Notifications are blocked in Android settings. Please allow them and save again.'],
-hi:['📿 रोज़ ग्लोबल जप रिमाइंडर','जप से पहले','जप शुरू होने पर','कितने मिनट पहले','रिमाइंडर सेव करें','आवाज़ टेस्ट (10s)','सेव हो गया: ऑफलाइन रिमाइंडर चालू।','रिमाइंडर बंद कर दिए।','Native रिमाइंडर के लिए Android APK v22 इंस्टॉल करें।','Android सेटिंग में नोटिफिकेशन बंद हैं। इन्हें चालू करके फिर सेव करें।'],
-mr:['📿 दररोज ग्लोबल जप स्मरण','जपाआधी','जप सुरू होताना','किती मिनिटे आधी','स्मरण जतन करा','आवाज चाचणी (10s)','जतन झाले: ऑफलाइन स्मरण सुरू।','स्मरण बंद झाले.','Native स्मरणासाठी Android APK v22 स्थापित करा.','Android सेटिंगमध्ये नोटिफिकेशन बंद आहेत. ते सुरू करून पुन्हा जतन करा.']
+en:['📿 Daily Global Japa Reminders','Before Japa','At Japa start','Remind before','Save reminders','Test sound (10s)','Saved: offline reminders enabled.','Reminders disabled.','Install Android APK v24 to enable native reminders.','Notifications are blocked in Android settings. Please allow them and save again.'],
+hi:['📿 रोज़ ग्लोबल जप रिमाइंडर','जप से पहले','जप शुरू होने पर','कितने मिनट पहले','रिमाइंडर सेव करें','आवाज़ टेस्ट (10s)','सेव हो गया: ऑफलाइन रिमाइंडर चालू।','रिमाइंडर बंद कर दिए।','Native रिमाइंडर के लिए Android APK v24 इंस्टॉल करें।','Android सेटिंग में नोटिफिकेशन बंद हैं। इन्हें चालू करके फिर सेव करें।'],
+mr:['📿 दररोज ग्लोबल जप स्मरण','जपाआधी','जप सुरू होताना','किती मिनिटे आधी','स्मरण जतन करा','आवाज चाचणी (10s)','जतन झाले: ऑफलाइन स्मरण सुरू।','स्मरण बंद झाले.','Native स्मरणासाठी Android APK v24 स्थापित करा.','Android सेटिंगमध्ये नोटिफिकेशन बंद आहेत. ते सुरू करून पुन्हा जतन करा.']
 };
 let enabled=localStorage.getItem('japa_reminder_enabled_v21')==='1';
 function lang(){const v=localStorage.getItem('lang')||'hi';return langs[v]?v:'hi'}
 function bridge(){return window.AndroidBridge&&typeof AndroidBridge.getReminderEngineVersion==='function'&&Number(AndroidBridge.getReminderEngineVersion())>=23&&typeof AndroidBridge.configureGlobalJapaReminders==='function'?AndroidBridge:null}
 function check(){try{const b=bridge();return b&&typeof b.getTempleReminderStatus==='function'?JSON.parse(b.getTempleReminderStatus(true)):null}catch(_){return null}}
-function problem(h){if(!h)return 'Install Android APK v23 with native reminder engine';if(!h.notifications)return 'Allow app notifications in Android settings';if(!h.exact)return 'Allow Alarms & reminders permission for exact delivery';if(!h.channelEnabled||!h.channelSound)return 'Global Japa channel is silent; open Sound settings';if(h.alarmVolume===0)return 'Alarm volume is zero; increase Alarm volume';return ''}
+function problem(h){if(!h)return 'Install Android APK v24 with native reminder engine';if(!h.notifications)return 'Allow app notifications in Android settings';if(!h.exact)return 'Allow Alarms & reminders permission for exact delivery';if(!h.channelEnabled||!h.channelSound)return 'Global Japa channel is silent; open Sound settings';/* Alarm volume zero is allowed: native ringing engine uses repeating vibration. */return ''}
 function displayTime(min){const h=Math.floor(min/60),m=min%60;return (h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')}
 function render(){
  const t=langs[lang()];
@@ -1228,7 +1228,7 @@ function render(){
  const ahead=Number(el('japa-r-ahead').value)||10;
  el('japa-r-times').textContent=(el('japa-r-early').checked?displayTime((LIVE_START_MIN+1440-ahead)%1440)+' / ':'')+displayTime(LIVE_START_MIN)+' IST';
  el('japa-r-ahead').disabled=!el('japa-r-early').checked;
- const h=check();if(h){const fmt=ms=>new Date(ms).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});const next=[];if(h.nextEarly>0)next.push('Early: '+fmt(h.nextEarly)+' IST');if(h.nextStart>0)next.push('Start: '+fmt(h.nextStart)+' IST');const issue=problem(h);el('japa-r-health').textContent=next.join(' | ')+(issue?'\n'+issue:'')+(h.dnd?'\nDND active':'')+(h.ringerMode===0?'\nSilent mode enabled':'');}
+ const h=check();if(h){const fmt=ms=>new Date(ms).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});const next=[];if(h.nextEarly>0)next.push('Early: '+fmt(h.nextEarly)+' IST');if(h.nextStart>0)next.push('Start: '+fmt(h.nextStart)+' IST');const issue=problem(h);el('japa-r-health').textContent=next.join(' | ')+(issue?'\n'+issue:'')+(h.dnd?'\nDND active':'')+(h.ringerMode===0?'\nSilent mode: alarm stream still used':'')+(h.alarmVolume===0?'\nAlarm volume zero: vibration-only when permitted':'');}
 }
 function status(message){el('japa-r-status').textContent=message}
 function applyData(d){
@@ -1275,7 +1275,7 @@ function save(){
 el('japa-r-save').addEventListener('click',save);
 el('japa-r-test').addEventListener('click',()=>{
  const b=bridge(),t=langs[lang()];
- if(!b||typeof b.testTempleReminder!=='function'){status('Install Android APK v23');return}
+ if(!b||typeof b.testTempleReminder!=='function'){status('Install Android APK v24');return}
  const h=check();if(!h||!h.enabled){status('First enable and Save Japa reminders, then test');return}
  const issue=problem(h);if(issue){status(issue);return}
  let scheduled=false;try{scheduled=b.testTempleReminder(10)===true}catch(_){ }
