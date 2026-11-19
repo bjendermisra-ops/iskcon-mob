@@ -83,5 +83,11 @@ function checkDay(){const n=dayKey();if(n!==today){today=n;render();renderUpcomi
 function net(){document.documentElement.classList.toggle('is-offline',!navigator.onLine)}addEventListener('online',net);addEventListener('offline',net);
 let timer;function resume(){clearInterval(timer);checkDay();if(!document.hidden)timer=setInterval(checkDay,30000)}document.addEventListener('visibilitychange',()=>{if(document.hidden)clearInterval(timer);else{const lang=safeStore.get('lang');if(LANG.includes(lang)&&lang!==LANG[L])setLang(lang);document.documentElement.dataset.theme=safeStore.get('theme')||document.documentElement.dataset.theme;theme();resume()}});addEventListener('pageshow',resume);
 setLang(LANG[L]);theme();net();resume();
+const requested=new URLSearchParams(location.search).get('date');
+if(Object.prototype.hasOwnProperty.call(EVENTS,requested)){
+    const parts=requested.split('-').map(Number);
+    year=parts[0];month=parts[1]-1;selected=requested;
+    render();openDialog(requested,$('#days [data-date="'+requested+'"]'));
+}
 })();
 </script></body></html>

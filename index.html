@@ -593,6 +593,12 @@ body[data-theme=dark]{background-image:radial-gradient(1.5px 1.5px at 20px 30px,
             <a href="courses.html" class="menu-item"><i class="fas fa-book-open-reader" style="color:#00897B;"></i> <span id="ccMenu">Courses & Training</span></a>
 <!--WS:START--><a href="stickers.html" class="menu-item" data-ws><i class="fab fa-whatsapp" style="color:#25D366;"></i> <span id="wsM">WhatsApp Stickers</span><span class="ws-new" id="wsMb">NEW</span></a><!--WS:END-->
 
+            <button type="button" id="offline-books-menu" class="menu-item" style="display:none;width:100%;text-align:start" onclick="window.AndroidBridge.openOfflineLibrary()"><i class="fas fa-book-open"></i> <span data-key="offline_books">Offline Books</span></button>
+            <script>
+                if (window.AndroidBridge && typeof AndroidBridge.openOfflineLibrary === 'function') {
+                    document.getElementById('offline-books-menu').style.display = 'flex';
+                }
+            </script>
             <a href="calendar.html" class="menu-item"><i class="far fa-calendar-alt"></i> <span data-key="ekadashi_cal">Ekadashi Calendar</span></a>
             <a href="dono.html" class="menu-item"><i class="fas fa-hand-holding-heart" style="color:#FF6F00;"></i> <span data-key="donation">Donation</span></a>
             <a href="global_jap.html?v=24" class="menu-item"><i class="fas fa-om"></i> <span data-key="global_japa">Live Global Japa</span></a>
@@ -1283,7 +1289,7 @@ document.addEventListener("DOMContentLoaded", function() {
             quote_text: `"A person is made by faith. As they believe, so they become."`,
             live_now: "LIVE DARSHAN NOW",
             tap_to_watch: "Tap here to join the live broadcast",
-            ekadashi_cal: "Ekadashi Calendar",
+            offline_books: "Offline Books", ekadashi_cal: "Ekadashi Calendar",
             ekadashi_cal_sub: "Accurate fasting dates & timings",
             daily_darshan_head: "Daily Darshan & Seva",
             daily_darshan_sub: "Deity Shringar, Rajbhog Seva & Festivals",
@@ -1341,7 +1347,7 @@ document.addEventListener("DOMContentLoaded", function() {
             quote_text: `"मनुष्य अपने विश्वास से निर्मित होता है। जैसा वह विश्वास करता है, वैसा ही बन जाता है।"`,
             live_now: "लाइव दर्शन चालू है",
             tap_to_watch: "लाइव दर्शन से जुड़ने के लिए टैप करें",
-            ekadashi_cal: "एकादशी कैलेंडर",
+            offline_books: "ऑफ़लाइन पुस्तकें", ekadashi_cal: "एकादशी कैलेंडर",
             ekadashi_cal_sub: "सभी उपवास तिथियों को सटीक रूप से जानें",
             daily_darshan_head: "दैनिक दर्शन व सेवा",
             daily_darshan_sub: "श्री विग्रह शृंगार, राजभोग सेवा व उत्सव",
@@ -1399,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", function() {
             quote_text: `"माणूस त्याच्या विश्वासाने घडतो. तो जसा विश्वास ठेवतो तसाच बनतो."`,
             live_now: "थेट दर्शन चालू आहे",
             tap_to_watch: "थेट दर्शनासाठी येथे टॅप करा",
-            ekadashi_cal: "एकादशी कॅलेंडर",
+            offline_books: "ऑफलाइन पुस्तके", ekadashi_cal: "एकादशी कॅलेंडर",
             ekadashi_cal_sub: "सर्व उपवासाच्या तारखा अचूकपणे पहा",
             daily_darshan_head: "आजचे दर्शन आणि सेवा",
             daily_darshan_sub: "श्री विग्रह शृंगार, राजभोग सेवा आणि उत्सव",
