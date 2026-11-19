@@ -428,7 +428,7 @@ body.col-2 .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 </div>
 
 <script src="temple-share.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
 /* ═════════════════════════════════════════════════════════
    COMPLETE VIDEO LIST (AUTHENTIC YOUTUBE IDS - ZERO DUPLICATES)
@@ -674,8 +674,14 @@ function render(){
 
 function loadMoreCards(){
   if(renderedCount>=view.length)return;
-  renderedCount=Math.min(view.length,renderedCount+BATCH_SIZE);
-  render();
+  const from=renderedCount;
+  renderedCount=Math.min(view.length,from+BATCH_SIZE);
+  const button=$('loadMoreBtn');
+  const footer=button && button.closest('.load-more-wrap');
+  if(!footer){render();return}
+  footer.insertAdjacentHTML('beforebegin',view.slice(from,renderedCount).map(cardHtml).join(''));
+  if(renderedCount===view.length)footer.remove();
+  else button.textContent='और वीडियो देखें ('+(view.length-renderedCount)+' बाकी)';
 }
 
 window.addEventListener('scroll',()=>{
@@ -762,19 +768,85 @@ function launchShortsExperience(){
 }
 
 /* ═════════ PLAYER ═════════ */
-let yt,ready=false,pending=null,cv=null,idx=-1,playing=false,muted=false,dur=0,ticker=null,hider=null,ctrlOn=false,drag=false,endT=null,lastSave=0;
+let apiScript, playerReady=false, retryNext, yt,pending=null,cv=null,idx=-1,playing=false,muted=false,dur=0,ticker=null,hider=null,ctrlOn=false,drag=false,endT=null,lastSave=0;
 const modal=$('modal'),stage=$('stage'),vb=$('vb'),ctrl=$('ctrl'),topb=$('top'),clk=$('clk'),prog=$('prog');
 const isOpen=()=>modal.classList.contains('open');
 
-window.onYouTubeIframeAPIReady=function(){
-  ready=true;
-  /* youtube-nocookie + controls:1 reduces cookie/tracker bloat and memory inside WebView */
+function playerUnavailable(){
+  spin(false);
+  $('err').classList.add('on');
+  showCtrl();
+}
+
+function ensurePlayer(){
+  if (!isOpen() || !pending || yt) return;
+  if (!window.YT || typeof YT.Player !== 'function') {
+    if (apiScript) return;
+    apiScript=document.createElement('script');
+    apiScript.src='https://www.youtube.com/iframe_api';
+    apiScript.onerror=()=>{
+      apiScript.remove();
+      apiScript=null;
+      if(isOpen()) playerUnavailable();
+    };
+    document.head.appendChild(apiScript);
+    return;
+  }
   const vars={autoplay:1,controls:1,rel:0,modestbranding:1,playsinline:1,fs:0,disablekb:1,iv_load_policy:3,cc_load_policy:0,enablejsapi:1};
   if(location.protocol.indexOf('http')===0)vars.origin=location.origin;
-  try{yt=new YT.Player('yti',{host:'https://www.youtube-nocookie.com',playerVars:vars,events:{onReady:onReady,onStateChange:onState,onError:onErr}})}catch(e){console.error(e)}
-};
-function onReady(){try{yt.setVolume(vol)}catch(e){}if(pending){load(pending.id,pending.s);pending=null}}
-function load(id,s){try{if(ready&&yt&&yt.loadVideoById)yt.loadVideoById({videoId:id,startSeconds:s||0,suggestedQuality:'medium'});else pending={id,s}}catch(e){}}
+  try {
+    yt=new YT.Player('yti',{host:'https://www.youtube-nocookie.com',playerVars:vars,events:{
+      onReady(e){
+        if(e.target!==yt || !isOpen())return;
+        playerReady=true;
+        yt.setVolume(vol);
+        playPending();
+      },
+      onStateChange(e){if(e.target===yt && isOpen())onState(e)},
+      onError(e){if(e.target===yt && isOpen())onErr(e)}
+    }});
+  } catch(e){playerUnavailable()}
+}
+window.onYouTubeIframeAPIReady=ensurePlayer;
+
+function playPending(){
+  if(!playerReady || !pending || document.hidden)return;
+  const request=pending;
+  pending=null;
+  try{yt.loadVideoById({videoId:request.id,startSeconds:request.s||0,suggestedQuality:'medium'})}
+  catch(e){playerUnavailable()}
+}
+function load(id,s){pending={id,s};ensurePlayer();playPending()}
+function releasePlayer(){
+  clearTimeout(retryNext);
+  clearInterval(ticker);
+  clearTimeout(hider);
+  clearInterval(endT);
+  pending=null;
+  playerReady=false;
+  const old=yt;
+  yt=null;
+  if(old){try{old.destroy()}catch(e){}}
+  const mount=$('yti');
+  if(mount)mount.remove();
+  const next=document.createElement('div');
+  next.id='yti';
+  vb.appendChild(next);
+  playing=false;
+  wake(false);
+}
+document.addEventListener('visibilitychange',()=>{
+  if(!isOpen())return;
+  if(document.hidden){
+    savePos();
+    clearTimeout(retryNext);
+    cancelEnd();
+    clearInterval(ticker);
+    if(playerReady){try{yt.pauseVideo()}catch(e){}}
+    wake(false);
+  }else{playPending()}
+});
+window.addEventListener('pagehide',()=>{if(isOpen())closeModal(true)});
 
 function markAsSeen(id){
   if(!id||seen[id])return;
@@ -785,13 +857,14 @@ function markAsSeen(id){
 function onState(e){
   const S=YT.PlayerState,s=e.data;
   if(s===S.PLAYING){
+    if(document.hidden){try{yt.pauseVideo()}catch(e){} return;}
     playing=true;spin(false);
     $('poster').classList.add('off');
     $('poster').style.backgroundImage='';
     cancelEnd();
     try{dur=yt.getDuration()||dur;yt.setPlaybackRate(rate)}catch(x){}
     setPP();startTicker();showCtrl();
-  }else if(s===S.PAUSED){playing=false;setPP();savePos();showCtrl();spin(false)}
+  }else if(s===S.PAUSED){clearInterval(ticker);playing=false;setPP();savePos();showCtrl();spin(false)}
   else if(s===S.BUFFERING){spin(true)}
   else if(s===S.ENDED){
     playing=false;setPP();clearInterval(ticker);
@@ -799,14 +872,15 @@ function onState(e){
     onEnded();
   }
 }
-function onErr(){
+function onErr(e){
   if(!cv)return;
+  if(![100,101,150].includes(e.data)){playerUnavailable();return;}
   const gone=cv.id,nxt=nextOf(gone);
   bad[gone]=now();LS.s('crm_bad',bad);
   const i=all.findIndex(v=>v.id===gone);if(i>-1)all.splice(i,1);
   const keep=nxt&&nxt.id!==gone?nxt:null;
   cv=null;applyFilters();
-  if(keep){toast('अगला वीडियो शुरू हो रहा है...');setTimeout(()=>{if(isOpen())openVideo(keep)},1000)}
+  if(keep){toast('अगला वीडियो शुरू हो रहा है...');retryNext=setTimeout(()=>{if(isOpen()&&!document.hidden)openVideo(keep)},1000)}
   else{$('err').classList.add('on');showCtrl()}
 }
 
@@ -983,6 +1057,7 @@ $('qs').addEventListener('click',e=>{const q=e.target.closest('.qi');if(!q)retur
 
 function openVideo(v,dir){
   if(!v||!v.id)return;
+  clearTimeout(retryNext);
   cancelEnd();
   cv=v;
   const sh=v.type==='shorts';
@@ -1013,7 +1088,7 @@ function openVideo(v,dir){
 function closeModal(fromPop){
   if(!isOpen())return;
   savePos();cancelEnd();clearInterval(ticker);clearTimeout(hider);
-  try{if(yt&&yt.stopVideo)yt.stopVideo()}catch(e){}
+  releasePlayer();
   const wasFS=nativeFS;
   if(nativeFS){nativeFS=false;modal.classList.remove('native-fullscreen');}
   if(document.fullscreenElement||document.webkitFullscreenElement){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(_){}}
