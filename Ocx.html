@@ -3,7 +3,6 @@
 <head>
 <style>html{background:#fff8ee}html:has(body.dark-mode){background:#181818}</style>
 <script defer src="temple-runtime.js"></script>
-<script defer src="temple-ads.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <meta name="theme-color" content="#FF9933">
@@ -347,11 +346,8 @@
     </div>
 </div>
 
-<!-- Native rewarded placement: explicit opt-in and a stated reward. -->
 <div class="ad-support-card">
-  <div class="ad-support-title">Daily Reflection · दैनिक चिंतन</div>
-  <div class="ad-support-desc">Watch an optional ad to unlock a reflection card and personal note space for 24 hours.<br>विज्ञापन देखकर चिंतन कार्ड 24 घंटे के लिए खोलें।</div>
-  <button class="ad-watch-btn" onclick="requestAdWatch()">Watch & unlock / देखकर खोलें</button>
+  <a href="daily-reflection.html" class="ad-support-title">Daily Reflection · दैनिक चिंतन</a>
 </div>
 
 <div class="container-fluid px-3 my-2">
@@ -483,8 +479,7 @@
         if (typeof bootstrap === 'undefined') { openBtn.removeAttribute('data-bs-toggle'); closeBtn.removeAttribute('data-bs-dismiss'); openBtn.addEventListener('click', openSidebar); closeBtn.addEventListener('click', closeSidebar); backdrop.addEventListener('click', closeSidebar); }
         
         setTimeout(() => { try { if(typeof AOS !== 'undefined') AOS.init({ once: true, offset: 20, easing: 'ease-out-cubic' }); } catch(e){} }, 800);
-        
-        setupAdStateAndUI();
+
     });
     
     function runFallbackSlider() {
@@ -545,29 +540,6 @@
     }
 
     // ==========================================
-    // 📿 REWARDED ADS SUPPORT SYSTEM (NATIVE BRIDGE)
-    // ==========================================
-    let adCooldownInterval = null;
-
-    function setupAdStateAndUI() {}
-    function updateAdWidgetUI() {}
-    let templeRewardBusy = false;
-    async function requestAdWatch() {
-        if (templeRewardBusy) return;
-        if (!window.TempleAds) { showAdLoadingAlert(); return; }
-        templeRewardBusy = true;
-        try { TempleAds.message(await TempleAds.open('daily_reflection')); }
-        finally { templeRewardBusy = false; }
-    }
-    // No simulated completion and no localStorage reward counter.
-    // 🌟 Native Webview callback to prevent ugly browser alert dialogs 🌟
-    window.showAdLoadingAlert = function() {
-        const lang = localStorage.getItem('lang') || 'en';
-        const msg = lang === 'hi' 
-            ? "विज्ञापन लोड हो रहा है, कृपया कुछ सेकंड बाद पुनः प्रयास करें 🙏" 
-            : (lang === 'mr' ? "जाहिरात लोड होत आहे, कृपया काही सेकंदांनंतर पुन्हा प्रयत्न करा 🙏" : "Ad is loading, please try again in a few seconds 🙏");
-        showCustomAdAlert("Hare Krishna! 🙏", msg, "fa-spinner");
-    };
 </script>
 
 <script type="module">
@@ -825,7 +797,7 @@
 
         if (typeof window.updateDivineMessageUI === 'function') window.updateDivineMessageUI();
         window.renderMasterSlider(); 
-        updateAdWidgetUI(); 
+
     }
 
     const savedLang = localStorage.getItem('lang') || 'en';

@@ -971,32 +971,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else { sheet(); }
     }
 
-    // Rewarded Ads Interface (Preserved Logic)
-    function setupAdStateAndUI() {
-        const todayDate = new Date().toDateString();
-        const storedDate = localStorage.getItem('iskcon_ad_date');
-        if (storedDate !== todayDate) {
-            localStorage.setItem('iskcon_ad_date', todayDate);
-            localStorage.setItem('iskcon_ad_count', '0');
-        }
-    }
-    function updateAdWidgetUI() {}
-    function requestAdWatch() {
-        if (window.AndroidInterface && typeof window.AndroidInterface.triggerNativeAd === 'function') {
-            window.AndroidInterface.triggerNativeAd();
-        } else {
-            adWatchedSuccess();
-        }
-    }
-    window.adWatchedSuccess = function() {
-        let count = parseInt(localStorage.getItem('iskcon_ad_count') || '0');
-        count = Math.min(count + 1, 5);
-        localStorage.setItem('iskcon_ad_count', count.toString());
-        localStorage.setItem('iskcon_last_ad_time', Date.now().toString());
-    };
-    window.showAdLoadingAlert = function() {
-        showCustomAdAlert("Hare Krishna! 🙏", "Loading ad, please wait a moment... 🙏", "fa-spinner");
-    };
 </script>
 
 <!-- Firebase Realtime Listeners -->
